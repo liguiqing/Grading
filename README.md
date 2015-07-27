@@ -1,2 +1,2 @@
 # Grading
-[需求与分析](http://report.cntest.com)
+[需求与分析](https://github.com/liguiqing/Grading/blob/master/docs/rahtml/index.html)
