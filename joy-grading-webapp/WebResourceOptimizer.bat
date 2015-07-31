@@ -1,0 +1,1 @@
+cmd /c "E:\nodejs\node E:\nodejs\r.js -o build.js"
