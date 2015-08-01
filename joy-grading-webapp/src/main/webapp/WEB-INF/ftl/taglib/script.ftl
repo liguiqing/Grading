@@ -7,7 +7,7 @@
   </#if>
   <script type="text/javascript" data-main="${request.contextPath}/static/script/main"  src="${request.contextPath}/static/script/require.js"></script>
    <script type="text/javascript">
-   var v = 20150524;//+ + new Date;
+   var v = + + new Date;
 	requirejs.config({
 		urlArgs : "v="+v
 	});

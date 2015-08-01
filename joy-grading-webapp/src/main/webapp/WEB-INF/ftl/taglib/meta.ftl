@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/font-awesome.min.css" />
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/bootstrap-datetimepicker.css"/>
     
+    <link rel="stylesheet" href="${request.contextPath}/static/css/grading.css"/>
+    
     <!--[if IE 7]>
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/font-awesome-ie7.min.css"/>
     <![endif]-->
