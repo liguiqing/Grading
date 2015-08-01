@@ -1,0 +1,49 @@
+html {
+	height: 100%;
+	position: relative;
+}
+body {
+	background-color: #e4e6e9;
+	color: #393939;
+	font-family: 'microsoft yahei', 'Open Sans';
+	line-height: 1.5;
+	height: 100%;
+	padding-bottom: 0;
+}
+
+.workspace{
+	padding:0;
+	background: #2b2f3e;
+	padding-top:60px;
+}
+
+.workspace .container{
+	padding:0;
+	width:100%;
+}
+
+.img-panel,.point-panel,.point-panel ul{
+	padding-left:0px;
+	padding-right:0px;
+}
+
+.img-panel,.point-panel ul{
+	overflow: auto;
+}
+
+.img-panel img{
+	width:100%;
+}
+
+.point-panel ul{
+	color:#fff;
+}
+
+.img-zoom{
+	left:0;
+	bottom:0;
+}
+
+.img-zoom img,.img-panel img{
+    display: none;
+}
