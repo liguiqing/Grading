@@ -53,12 +53,10 @@
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="org.springframework.web" additivity="false">
-		<level value="debug" />
+		<level value="info" />
 		<appender-ref ref="ASYNC" />
 	</logger>
-	
-	
-	
+
 	<logger name="org.hibernate" additivity="false">
 		<level value="info" />
 		<appender-ref ref="ASYNC" />

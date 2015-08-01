@@ -29,11 +29,11 @@ if(!window.app){
 
 requirejs.config({
 	contextPath : window.app.rootPath,
-	baseUrl : window.app.rootPath + "static/scripts/", 
+	baseUrl : window.app.rootPath + "static/script/", 
 	optimize : "none",
 
 	paths : {
-		"jquery" : "lib/jquery/jquery",
+		"jquery" : "lib/jquery/jquery.min",
 		"bootstrap" : "lib/bootstrap/bootstrap.min"
 	},
 	shim : {

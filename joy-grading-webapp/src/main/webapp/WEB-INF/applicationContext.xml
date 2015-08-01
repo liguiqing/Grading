@@ -20,7 +20,7 @@
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:conf.properties</value>
+				<value>/WEB-INF/conf.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -29,7 +29,7 @@
 	<bean id="cacheManager"
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
 		<property name="configLocation">
-			<value>classpath:ehcache.xml</value>
+			<value>/WEB-INF/ehcache.xml</value>
 		</property>
 		<!-- 由于其框架也使用了Ehcache, 保证各方都使用同一个缓存管理器 -->
 		<property name="shared" value="true" />

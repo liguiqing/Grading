@@ -42,7 +42,7 @@
 	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
 		<discardingThreshold>0</discardingThreshold>
 		<queueSize>1000</queueSize>
-		<appender-ref ref="${logger.out}" />
+		<appender-ref ref="CONSOLE" />
 	</appender>
 	<logger name="org.springframework.context" additivity="false">
 		<level value="info" />
@@ -53,12 +53,10 @@
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="org.springframework.web" additivity="false">
-		<level value="debug" />
+		<level value="info" />
 		<appender-ref ref="ASYNC" />
 	</logger>
-	
-	
-	
+
 	<logger name="org.hibernate" additivity="false">
 		<level value="info" />
 		<appender-ref ref="ASYNC" />

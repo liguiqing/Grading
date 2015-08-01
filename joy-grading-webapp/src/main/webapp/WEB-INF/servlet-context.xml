@@ -52,11 +52,11 @@
     </bean>
     
     <bean id="freemarkerConfiguration" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		 <property name="location" value="classpath:freemarker.properties" />
+		 <property name="location" value="/WEB-INF/freemarker.properties" />
 	</bean>
 	
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="${servlet.view.template.freemarker.path}" />
+        <property name="templateLoaderPath" value="/WEB-INF/ftl/" />
         <property name="freemarkerSettings" ref="freemarkerConfiguration" />
         <property name="freemarkerVariables">
             <map>
