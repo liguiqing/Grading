@@ -34,10 +34,12 @@ requirejs.config({
 
 	paths : {
 		"jquery" : "lib/jquery/jquery.min",
-		"bootstrap" : "lib/bootstrap/bootstrap.min"
+		"bootstrap" : "lib/bootstrap/bootstrap.min",
+		"jqueryUI" : "lib/jquery/jquery-ui.min",
 	},
 	shim : {
-		'bootstrap' : {deps:['jquery']}
+		'bootstrap' : {deps:['jquery']},
+		'jqueryUI' : {deps:['jquery']}
 	}
 });
 

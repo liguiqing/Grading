@@ -1,13 +1,15 @@
 <#macro meta title="" autofit=true>
   <#if autofit=true>  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
   <#else>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
   </#if>
     <link href="${request.contextPath}/static/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/font-awesome.min.css" />
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/bootstrap-datetimepicker.css"/>
-    
+    <link rel="stylesheet" href="${request.contextPath}/static/css/custom-theme/jquery-ui-1.10.3.custom.css"/>
+    <link rel="stylesheet" href="${request.contextPath}/static/css/custom-theme/jquery-ui-1.10.3.theme.css"/>
+    <link rel="stylesheet" href="${request.contextPath}/static/css/custom-theme/jquery.ui.1.10.3.ie.css"/>
     <link rel="stylesheet" href="${request.contextPath}/static/css/grading.css"/>
     
     <!--[if IE 7]>

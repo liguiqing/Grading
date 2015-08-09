@@ -2,8 +2,10 @@ html {
 	height: 100%;
 	position: relative;
 }
+
 body {
-	background-color: #e4e6e9;
+	background-color: #2b2f3e;
+	background: url("img/grid-bg.png" ) repeat;
 	color: #393939;
 	font-family: 'microsoft yahei', 'Open Sans';
 	line-height: 1.5;
@@ -11,39 +13,133 @@ body {
 	padding-bottom: 0;
 }
 
-.workspace{
-	padding:0;
-	background: #2b2f3e;
-	padding-top:60px;
+ul li {
+	list-style: none;
 }
 
-.workspace .container{
-	padding:0;
-	width:100%;
+.workspace {
+	padding: 0;
+	padding-top: 54px;
+	height:100%;
 }
 
-.img-panel,.point-panel,.point-panel ul{
-	padding-left:0px;
-	padding-right:0px;
+.workspace .row{
+	background-color: #666;
+}
+.workspace .container,.workspace .container-fluid {
+	padding: 0;
+	width: 100%;
 }
 
-.img-panel,.point-panel ul{
+.img-panel {
+	padding-left: 0px;
+	padding-right: 0px;
+	height:100%;
+}
+
+.img-panel,.point-panel {
 	overflow: auto;
 }
 
-.img-panel img{
-	width:100%;
+.img-panel img {
+	width: 100%;
 }
 
-.point-panel ul{
-	color:#fff;
+.point-panel {
+	color: #000;
+	padding-left: 0px;
+	padding-right: 0px;
+	background: #666;
+	height:100%;
 }
 
-.img-zoom{
-	left:0;
-	bottom:0;
+ .point-panel-marking{
+	margin-bottom:1px;
 }
 
-.img-zoom img,.img-panel img{
-    display: none;
+.point-panel-toolbar {
+	
+}
+
+.point-input {
+	
+}
+
+.point-btn {
+	color: #c83025;
+}
+
+.point-panel-toolbar .icon {
+	padding-left: 10px;
+}
+
+.point-panel .panel-body {
+	max-height: 300px;
+	min-height:200px;
+	overflow: auto;
+}
+
+.point-panel .point-desc {
+	padding: 0px 10px 1px 1px;
+}
+
+.point-panel .point-input {
+	padding-right: 0px;
+	border-right-width: 0px;
+	font-size: 15pt;
+	color: #c83025;
+}
+
+.point-panel .point-mark {
+	border-left-width: 0px;
+	border-color: #3c763d;
+}
+
+.point-panel .point-mark-select-right {
+	border-color: #3c763d;
+}
+
+.point-panel-detail {
+	max-height: 300px;
+	overflow: auto;
+}
+
+.point-panel-detail .dropdown-menu li>a i,.point-panel-total .dropdown-menu li>a i{
+	padding: 0 10px 0 0;
+}
+
+.point-panel-detail .dropdown-menu li>a span,.point-panel-total .dropdown-menu li>a span{
+	padding: 0 15px 0 0;
+}
+
+.point-panel-total {
+	
+}
+
+.point-panel .form-control-feedback {
+	color: #000;
+}
+
+.img-zoom {
+	left: 0;
+	bottom: 0;
+}
+
+.img-zoom img,.img-panel img {
+	display: block;
+}
+
+.point-panel-desc{
+	
+}
+
+.status-bar {
+	width: 100%;
+	color: #fff;
+	padding: 5px 0;
+}
+
+.status-bar li {
+	float: left;
+	padding-right: 15px
 }

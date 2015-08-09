@@ -1,124 +1,48 @@
-// Misc: mixins
-//==============
+// Mixins
+// --------------------------
 
-
-//Changes the color and the hovering properties of the navbar
-.navbar-variant(@color; @font-color: rgba(255, 255, 255, 0.8); @hover-color: #f6f6f6; @hover-bg: rgba(0, 0, 0, 0.1)) {
-    background-color: @color;
-    //Navbar links
-    .nav a {
-        color: @font-color;
-    }
-
-    .nav > li > a:hover,
-        .nav > li > a:active,
-        .nav > li > a:focus,
-        .nav .open > a,
-        .nav .open > a:hover,
-        .nav .open > a:focus {
-        background: @hover-bg;
-        color: @hover-color;
-    }
-
-    .navbar-right > .nav {
-        margin-right: 10px;
-    }
-    //Add color to the sidebar toggle button
-    .sidebar-toggle .icon-bar {
-        background: @font-color;
-       
-    }
-    .sidebar-toggle:hover .icon-bar {
-        background: @hover-color!important;
-    }
+.icon(@icon) {
+  .icon-FontAwesome();
+  content: @icon;
 }
 
-//Logo color variation
-.logo-variant(@color) {
-    background-color: @color;
-    color: #f9f9f9;
-    > a {
-        color: #f9f9f9;
-    }
-
-    &:hover {
-        background: darken(@color, 1%);
-    }
+.icon-FontAwesome() {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  -webkit-font-smoothing: antialiased;
+  *margin-right: .3em; // fixes ie7 issues
 }
 
-//Box solid color variantion creator
-.box-solid-variant(@color) {
-    > .box-header {
-        color: #fff;
-        background: @color;        
-        background-color: @color;   
-        a {
-            color: #444;
-        }
-    }
-}
-
-//Transform function that rotates eements
-.transform(@degree) {
-    transform:rotate(@degree);
-    -ms-transform:rotate(@degree); /* IE 9 */
-    -webkit-transform:rotate(@degree); /* Safari and Chrome */
-}
-//For floating elements
-.clearfix() {
-    &:before,
-        &:after {
-        display: table;
-        content: " ";
-    }
-
-    &:after {
-        clear: both;
-    }
-}
-
-//border radius creator
 .border-radius(@radius) {
-    -webkit-border-radius: @radius;
-    -moz-border-radius: @radius;
-    border-radius: @radius;
-}
-//Different radius each side
-.border-radius(@top-left; @top-right; @bottom-left; @bottom-right) {
-    -webkit-border-top-left-radius: @top-left;
-    -webkit-border-top-right-radius: @top-right;
-    -webkit-border-bottom-right-radius: @bottom-right;
-    -webkit-border-bottom-left-radius: @bottom-left;
-
-    -moz-border-radius-topleft: @top-left;
-    -moz-border-radius-topright: @top-right;
-    -moz-border-radius-bottomright: @bottom-right;
-    -moz-border-radius-bottomleft: @bottom-left;
-
-    border-top-left-radius: @top-left;
-    border-top-right-radius: @top-right;
-    border-bottom-right-radius: @bottom-right;
-    border-bottom-left-radius: @bottom-left;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
 }
 
-//Bootstrap mixins for progress bars. You can find original copies 
-//with the bootstrap assets (www.getbootstrap.com)
-.progress-bar-variant(@color) {
-    background-color: @color;
-    .progress-striped & {
-        #gradient > .striped();
+.icon-stack(@width: 2em, @height: 2em, @top-font-size: 1em, @base-font-size: 2em) {
+  .icon-stack {
+    position: relative;
+    display: inline-block;
+    width: @width;
+    height: @height;
+    line-height: @width;
+    vertical-align: -35%;
+    [class^="icon-"],
+    [class*=" icon-"] {
+      display: block;
+      text-align: center;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      font-size: @top-font-size;
+      line-height: inherit;
+      *line-height: @height;
     }
-}
-// Animations
-.animation(@animation) {
-    -webkit-animation: @animation;
-    animation: @animation;
-}
-#gradient {
-    .striped(@color: rgba(255,255,255,.15); @angle: 45deg) {
-        background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, @color), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, @color), color-stop(.75, @color), color-stop(.75, transparent), to(transparent));
-        background-image: -webkit-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
-        background-image: -moz-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
-        background-image: linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+    .icon-stack-base {
+      font-size: @base-font-size;
+      *line-height: @height / @base-font-size;
     }
+  }
 }
