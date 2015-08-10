@@ -18,8 +18,7 @@ ul li {
 }
 
 .workspace {
-	padding: 0;
-	padding-top: 54px;
+	padding: 55px 15px 0 0;
 	height:100%;
 }
 
@@ -37,18 +36,52 @@ ul li {
 	height:100%;
 }
 
-.img-panel,.point-panel {
+.img-panel,.point-panel-detail {
 	overflow: auto;
+	min-height: 100px;
 }
 
 .img-panel img {
 	width: 100%;
+	position: absolute;
+	top:0px;
+}
+
+.img-panel-toolbox {
+	position: absolute;
+	top:0px;
+	width:80px;
+}
+
+.img-panel-toolbox .divider{
+    height: 1px;
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+.img-panel-toolbox .pull-right {
+	margin: -10px 0 0 15px;
+}
+
+.img-panel-toolbox .glyphicon {
+	top:0px;
+	left:10px;
+	cursor: pointer;
+}
+
+.img-panel-toolbox ul{
+	
+}
+
+.img-panel-toolbox .panel-body{
+	padding:5px 0px;
 }
 
 .point-panel {
 	color: #000;
-	padding-left: 0px;
-	padding-right: 0px;
+	padding-left: 1px;
+	padding-right: 1px;
 	background: #666;
 	height:100%;
 }
@@ -79,8 +112,8 @@ ul li {
 	overflow: auto;
 }
 
-.point-panel .point-desc {
-	padding: 0px 10px 1px 1px;
+.point-panel .point-panel-desc {
+	padding: 0px 0px 1px 1px;
 }
 
 .point-panel .point-input {
@@ -131,6 +164,12 @@ ul li {
 
 .point-panel-desc{
 	
+}
+
+.point-panel-desc .panel-body{
+	min-height:100px;
+	max-height:200px;
+	overflow: auto;
 }
 
 .status-bar {
