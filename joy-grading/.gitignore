@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 .project
 .settings/
 .classpath
 .idea/
+=======
+.classpath
+.project
+.settings/
+>>>>>>> origin/master
 target/

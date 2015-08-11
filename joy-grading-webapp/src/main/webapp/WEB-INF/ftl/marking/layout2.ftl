@@ -33,8 +33,20 @@
         <div class="container-fluid">
         <div class="row">
             <div class="col-md-9 img-panel">
-                <img src="${request.contextPath}/static/css/img/sj.jpg">
-                <div class="img-panel-toolbox"  title=""></div>
+                 <img src="${request.contextPath}/static/css/img/sj.jpg">
+                 <div class="panel panel-success navbar-fixed-top img-panel-toolbox"  >
+                       <div class="panel-heading">
+					       <div class="pull-right">
+                                 <i class=" glyphicon  icon-double-angle-left"></i>
+                           </div>                                            
+                       </div>
+                       <div class="panel-body ">
+                           <ul >
+                               <li><i class="icon-suitcase"></i></li>
+                               <li role="separator" class="divider"></li>                             
+                           </ul>
+                       </div>
+                 </div>            
             </div>
             <div class="col-md-3 point-panel">
                 <form class="form-horizontal">

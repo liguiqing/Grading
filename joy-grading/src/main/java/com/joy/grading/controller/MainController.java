@@ -1,5 +1,5 @@
 /**
- * Joy Anything (优异安心)
+ * Joy Anything (卓越安心)
  * 
  * <p><b>© 2015-2015 </b></p>
  * 
