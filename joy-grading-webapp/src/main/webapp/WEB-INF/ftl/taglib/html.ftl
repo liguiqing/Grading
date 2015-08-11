@@ -11,6 +11,6 @@
   <#nested >
 </body>
 <#import "script.ftl" as script>
-<@script.script/>
+<@script.script entry="${entryjs}"/>
 </html>
 </#macro>

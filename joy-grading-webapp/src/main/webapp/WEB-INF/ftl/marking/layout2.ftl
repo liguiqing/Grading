@@ -1,5 +1,5 @@
 <#import "/taglib/html.ftl" as doc> 
-<@doc.html entryjs="index" title="Grading">
+<@doc.html entryjs="grading" title="Grading">
 	<nav id="navigation" class="navbar navbar-default navbar-fixed-top  navbar-inverse " role="navigation">
 	    <div class="container">
 	        <div class="navbar-header">
@@ -33,7 +33,7 @@
         <div class="container-fluid">
         <div class="row">
             <div class="col-md-9 img-panel">
-                 <img src="${request.contextPath}/static/css/img/sj.jpg">
+                 <div id="imgContainer" style="height:100%;"></div>
                  <div class="panel panel-success navbar-fixed-top img-panel-toolbox"  >
                        <div class="panel-heading">
 					       <div class="pull-right">

@@ -36,6 +36,8 @@ requirejs.config({
 		"jquery" : "lib/jquery/jquery.min",
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
 		"jqueryUI" : "lib/jquery/jquery-ui.min",
+		"jqueryM":"lib/jquery/jquery.mobile-1.4.5.min",
+		"logger":"util/logger"
 	},
 	shim : {
 		'bootstrap' : {deps:['jquery']},
