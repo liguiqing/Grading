@@ -6,7 +6,6 @@ html {
 body {
 	background-color: #2b2f3e;
 	background: url("img/grid-bg.png" ) repeat;
-	color: #393939;
 	font-family: 'microsoft yahei', 'Open Sans';
 	line-height: 1.5;
 	height: 100%;
@@ -17,40 +16,54 @@ ul li {
 	list-style: none;
 }
 
+.transparent-100 {  
+      filter:alpha(opacity=100);  
+      -moz-opacity:1;  
+      -khtml-opacity: 1;  
+      opacity: 1;  
+} 
+
+.transparent-50 {  
+      filter:alpha(opacity=50);  
+      -moz-opacity:0.5;  
+      -khtml-opacity: 0.5;  
+      opacity: 0.5;  
+} 
+
+.transparent-25{  
+      filter:alpha(opacity=25);  
+      -moz-opacity:0.25;  
+      -khtml-opacity: 0.25;  
+      opacity: 0.25;  
+} 
+
 .workspace {
-	padding: 55px 15px 0 0;
+	padding: 50px 15px 0 0;
 	height:100%;
 }
 
-.workspace .row{
-	background-color: #666;
-}
+
 .workspace .container,.workspace .container-fluid {
 	padding: 0;
 	width: 100%;
 }
 
 .img-panel {
-	padding-left: 0px;
 	padding-right: 0px;
 	height:100%;
 }
 
 .img-panel,.point-panel-detail {
-	overflow: auto;
 	min-height: 100px;
 }
 
-.img-panel img {
-	width: 100%;
-	position: absolute;
-	top:0px;
-}
+
 
 .img-panel-toolbox {
 	position: absolute;
-	top:0px;
-	width:80px;
+	top:1px;
+	left:20px;
+	width:60px;
 }
 
 .img-panel-toolbox .divider{
@@ -71,6 +84,21 @@ ul li {
 }
 
 .img-panel-toolbox ul{
+	padding:0 ;
+	font-size: 20px;
+}
+
+.img-panel-toolbox ul>li {
+	padding:0 20px ;
+	cursor: pointer;
+}
+.img-panel-toolbox ul>li.img-tool {
+	height:24px;
+	width:24px;
+}
+
+.img-panel-toolbox ul>li:HOVER {
+	font-size: 24px;
 	
 }
 
@@ -80,9 +108,8 @@ ul li {
 
 .point-panel {
 	color: #000;
-	padding-left: 1px;
-	padding-right: 1px;
-	background: #666;
+	padding-left: 0px;
+	padding-right: 2px;
 	height:100%;
 }
 

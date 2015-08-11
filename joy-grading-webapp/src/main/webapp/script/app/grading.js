@@ -21,11 +21,15 @@
 					imgToolbox.css({top:top});
 				});
 				imgToolbox.find('i.glyphicon').click(function(){
-					$(this).toggleClass('icon-double-angle-right');
-					if(imgToolbox.width()==78){
-						imgToolbox.css({width:'10px'});
+					var $this = $(this);
+					$this.toggleClass('icon-double-angle-right');
+					imgToolbox.toggleClass('transparent-25');
+					if(imgToolbox.hasClass('transparent-25')){
+						$this.parent().parent().css({'padding-left':'2px'});
+						imgToolbox.css({width:'10px'}).find('div.panel-body').hide();
 					}else{
-						imgToolbox.css({width:'80px'});
+						imgToolbox.css({width:'60px'}).find('div.panel-body').show();
+						$this.parent().parent().css({'padding-left':'15px'});
 					}
 					
 				});
@@ -34,14 +38,12 @@
 			
 			function setImgPanelHeight(){
 				
-	            var h1 = $('body').height()-navigationPanel.height()-statusPanel.height()-15;
+	            var h1 = $('body').height()-navigationPanel.height()-statusPanel.height()-11;
 	            imgPanel.height(h1);
-	            var h2 =  h1-markingPanel.height()-pointDescBody.prev().height()-2;
-	            if(h2 > 75){
-	            	pointDescBody.height(h2-statusPanel.height()-25);
-	            } else{
-	            	pointDescBody.height(75);
-	            }
+	            var h2 =  h1-markingPanel.height();
+	            pointDescPanel.height(h2-5);
+	            pointDescBody.height(pointDescPanel.height()-pointDescBody.prev().height()-50);
+	       
 	            logger.log(pointDescBody.height());
 			};
 		};

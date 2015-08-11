@@ -7,9 +7,6 @@
     <link href="${request.contextPath}/static/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/font-awesome.min.css" />
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/bootstrap-datetimepicker.css"/>
-    <link rel="stylesheet" href="${request.contextPath}/static/css/custom-theme/jquery-ui-1.10.3.custom.css"/>
-    <link rel="stylesheet" href="${request.contextPath}/static/css/custom-theme/jquery-ui-1.10.3.theme.css"/>
-    <link rel="stylesheet" href="${request.contextPath}/static/css/custom-theme/jquery.ui.1.10.3.ie.css"/>
     <link rel="stylesheet" href="${request.contextPath}/static/css/grading.css"/>
     
     <!--[if IE 7]>
@@ -17,6 +14,7 @@
     <![endif]-->
 
     <!--[if lt IE 9]>
+    <link rel="stylesheet" href="${request.contextPath}/static/css/custom-theme/jquery.ui.1.10.3.ie.css"/>
     <script src="${request.contextPath}/static/scripts/lib/bootstrap/html5shiv.js"></script>
     <script src="${request.contextPath}/static/scripts/lib/bootstrap/respond.min.js"></script>
     <![endif]-->

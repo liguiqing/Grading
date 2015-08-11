@@ -76,9 +76,9 @@
 					overflow : "hidden",
 					KhtmlUserSelect : "none",
 					MozUserSelect : "none",
-					backgroundColor:"#cccccc",
-					webkitUserSelect : "none",
-					border:"1px solid"
+					//backgroundColor:"#cccccc",
+					webkitUserSelect : "none"
+					//border:"1px solid"
 				});
 				$viewContainer.attr("unselectable", "on");
 				$viewContainer.on("selectstart", function () {

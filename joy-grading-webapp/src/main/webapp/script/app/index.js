@@ -32,11 +32,11 @@
 			};
 			
 			function setImgPanelHeight(){
-	            var h1 = $('body').height()-navigationPanel.height()-statusPanel.height()-15;
+	            var h1 = $('body').height()-navigationPanel.height()-statusPanel.height();
 	            imgPanel.height(h1);
-	            var h2 =  h1-markingPanel.height()-pointDescBody.prev().height()-2;
+	            var h2 =  h1-markingPanel.height()-pointDescBody.prev().height();
 	            if(h2 > 75){
-	            	pointDescBody.height(h2-statusPanel.height()-25);
+	            	pointDescBody.height(h2-statusPanel.height()-10);
 	            } else{
 	            	pointDescBody.height(75);
 	            }

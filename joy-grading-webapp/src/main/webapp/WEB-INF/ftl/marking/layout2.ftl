@@ -34,17 +34,21 @@
         <div class="row">
             <div class="col-md-9 img-panel">
                  <div id="imgContainer" style="height:100%;"></div>
-                 <div class="panel panel-success navbar-fixed-top img-panel-toolbox"  >
+                 <div class="panel panel-success  img-panel-toolbox"  >
                        <div class="panel-heading">
 					       <div class="pull-right">
                                  <i class=" glyphicon  icon-double-angle-left"></i>
                            </div>                                            
                        </div>
                        <div class="panel-body ">
-                           <ul >
-                               <li><i class="icon-suitcase"></i></li>
-                               <li role="separator" class="divider"></li>                             
-                           </ul>
+                            <ul>
+                                <li class="img-tool"><i class="icon-refresh"></i></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="img-tool"><i class=" icon-trash"></i></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="img-tool"><i class="icon-fullscreen"></i></li>
+                                                                                                
+					       </ul>
                        </div>
                  </div>            
             </div>
@@ -55,7 +59,7 @@
                             <h3 class="panel-title">
                                 <span>第五题</span>
                                 <div class="pull-right point-panel-toolbar">
-                                    <i class="icon glyphicon icon-cog"></i><i class="icon glyphicon glyphicon-question-sign"></i>
+                                    <i class="icon glyphicon icon-cog"></i>
                                 </div>
                             </h3>
                         </div>
@@ -119,9 +123,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="pull-left">
+                                <button type="button" class=" btn  btn-warning " >上一卷 </button> 
+                                <button type="button" class=" btn  btn-primary " >当前卷</button>
+                            </div>   
+                                                     
                             <div class="pull-right">
-                                <span type="button" class="btn btn-xs btn-success" role-for="delete">记分 </span> 
-                                <span type="button" class="btn btn-xs btn-danger" role-for="over">重改</span>
+                                <button type="button" class=" btn  btn-success " >记分 </button> 
+                                <button type="button" class=" btn  btn-danger " disabled="disabled">重改</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
