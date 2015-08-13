@@ -1,6 +1,6 @@
 <#import "/taglib/html.ftl" as doc> 
 <@doc.html entryjs="grading" title="Grading">
-	<nav id="navigation" class="navbar navbar-default navbar-fixed-top  navbar-inverse " role="navigation">
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top  navbar-inverse " role="navigation" style="background: url('../img/header_bg.gif' ) repeat;">
 	    <div class="container">
 	        <div class="navbar-header">
 	            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
