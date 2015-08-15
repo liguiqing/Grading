@@ -1,6 +1,7 @@
 <#import "/taglib/html.ftl" as doc> 
 <@doc.html entryjs="grading" title="Grading">
-	<nav id="navigation" class="navbar navbar-default navbar-fixed-top  navbar-inverse " role="navigation" style="background: url('../img/header_bg.gif' ) repeat;">
+    <#import "pointInputGroup.ftl" as pig> 
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top  navbar-inverse tool-bar" role="navigation" >
 	    <div class="container">
 	        <div class="navbar-header">
 	            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
@@ -46,8 +47,7 @@
                                 <li role="separator" class="divider"></li>
                                 <li class="img-tool"><i class=" icon-trash"></i></li>
                                 <li role="separator" class="divider"></li>
-                                <li class="img-tool"><i class="icon-fullscreen"></i></li>
-                                                                                                
+                                <li class="img-tool"><i class="icon-fullscreen"></i></li>                          
 					       </ul>
                        </div>
                  </div>            
@@ -65,71 +65,24 @@
                         </div>
 
                         <div class="panel-body point-panel-detail">
-                            <div class="form-group  has-success has-feedback">
-                                <label class="control-label col-sm-4" for="inputSuccess1"> 得分点1</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" id="inputSuccess1" placeholder="0-5分" data-from="0" data-to="5" data-interval="0.5" class="form-control point-input" aria-label="...">
-                                        <div class="input-group-btn">
-                                            <span type="button" class="btn btn-default point-mark point-btn" data-toggle="inputSuccess1" data-value="data-to">
-                                                <i class="icon-ok icon-large"></i>
-                                            </span>
-											<span type="button" class="btn btn-default point-mark point-btn" data-toggle="inputSuccess1" data-value="data-from">
-                                                <i class="icon-remove icon-large"></i>
-                                            </span>
-                                            <button type="button"
-                                                class="btn btn-default dropdown-toggle point-mark-select-right"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="#" class="point-btn" data-toggle="inputSuccess1" data-value="data-to"><i class="icon-star icon-large"></i><span>满分</span><i class="icon-key icon-large"></i><b>A</b></a></li>
-                                                <li><a href="#" class="point-btn" data-toggle="inputSuccess1" data-value="data-from"><i class="icon-star-empty icon-large"></i><span>零分</span><i class="icon-key icon-large"></i><b>S</b></li>
-                                                <li role="separator" class="divider"></li>
-                                                <li><a href="#"><i class="icon-edit icon-large"></i>给分说明</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                                                                                                             
+                            <#assign point ={"name":"给分点1","from":"0","to":"2","interval":"0.5"} >
+                            <@pig.pointInputGroup dataToggle="inputSuccess1" recommend=false point=point />
+                           <#assign point ={"name":"给分点2","from":"0","to":"4","interval":"0.5"} >
+                            <@pig.pointInputGroup dataToggle="inputSuccess2" recommend=false point=point />  
+                           <#assign point ={"name":"给分点3","from":"0","to":"4","interval":"0.5"} >
+                            <@pig.pointInputGroup dataToggle="inputSuccess3" recommend=false point=point />                                                                                                                                       
                         </div>
                         
-                        <div class="panel-footer ">
-                           <div class="form-group  has-success has-feedback point-panel-total">
-                                <label class="control-label col-sm-4" for="inputSuccess"> 得分</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" id="inputSuccess" placeholder="0-20分" data-from="0" data-to="20" data-interval="0.5" class="form-control point-input" aria-label="...">
-                                        <div class="input-group-btn">
-                                            <span type="button" class="btn btn-default point-mark point-btn" data-toggle="inputSuccess" data-value="data-to">
-                                                <i class="icon-ok icon-large"></i>
-                                            </span>
-											<span type="button" class="btn btn-default point-mark point-btn" data-toggle="inputSuccess" data-value="data-from">
-                                                <i class="icon-remove icon-large"></i>
-                                            </span>
-                                            <button type="button"
-                                                class="btn btn-default dropdown-toggle point-mark-select-right"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="#" class="point-btn" data-toggle="inputSuccess" data-value="data-to"><i class="icon-star icon-large"></i><span>满分</span><i class="icon-key icon-large"></i><b>A</b></a></li>
-                                                <li><a href="#" class="point-btn" data-toggle="inputSuccess" data-value="data-from"><i class="icon-star-empty icon-large"></i><span>零分</span><i class="icon-key icon-large"></i><b>S</b></li>
-                                                <li role="separator" class="divider"></li>
-                                                <li><a href="#"><i class="icon-thumbs-up icon-large"></i>推荐</a></li>
-                                                <li><a href="#"><i class="icon-edit icon-large"></i>给分说明</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="panel-footer point-panel-total">
+                            <#assign point ={"name":"总分","from":"0","to":"10","interval":"0.5"} >
+                            <@pig.pointInputGroup dataToggle="inputSuccess" recommend=true point=point />
                             <div class="pull-left">
                                 <button type="button" class=" btn  btn-warning " >上一卷 </button> 
                                 <button type="button" class=" btn  btn-primary " >当前卷</button>
-                            </div>   
+                            </div>
                                                      
                             <div class="pull-right">
-                                <button type="button" class=" btn  btn-success " >记分 </button> 
+                                <button type="button" class=" btn  btn-success  point-record" >记分</button> 
                                 <button type="button" class=" btn  btn-danger " disabled="disabled">重改</button>
                             </div>
                             <div class="clearfix"></div>
@@ -185,7 +138,7 @@
     
     <footer class="navbar-fixed-bottom navbar-inverse status-bar">
         <div class="pull-left status-bar">
-			<ul ><li>科目</li><li>语文</li><li>试卷总数</li><li>112</li></ul>
+			<ul><li>科目</li><li>语文</li><li>试卷总数</li><li>112</li></ul>
 		</div>
 		<div class="clearfix"></div>
     </footer>

@@ -37,6 +37,9 @@ ul li {
       opacity: 0.25;  
 } 
 
+.tool-bar{
+	background: url('img/header_bg.gif' ) repeat;
+}
 .workspace {
 	padding: 50px 15px 0 0;
 	height:100%;
@@ -122,7 +125,7 @@ ul li {
 }
 
 .point-input {
-	
+
 }
 
 .point-btn {
@@ -148,6 +151,8 @@ ul li {
 	border-right-width: 0px;
 	font-size: 15pt;
 	color: #c83025;
+	border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;	
 }
 
 .point-panel .point-mark {
@@ -178,15 +183,6 @@ ul li {
 
 .point-panel .form-control-feedback {
 	color: #000;
-}
-
-.img-zoom {
-	left: 0;
-	bottom: 0;
-}
-
-.img-zoom img,.img-panel img {
-	display: block;
 }
 
 .point-panel-desc{

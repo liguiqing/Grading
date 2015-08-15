@@ -35,20 +35,22 @@ requirejs.config({
 	paths : {
 		"jquery" : "lib/jquery/jquery.min",
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
-		"jqueryUI" : "lib/jquery/jquery-ui.min",
 		"jqueryM":"lib/jquery/jquery.mobile-1.4.5.min",
-		"logger":"util/logger"
+		"dialog":"commons/dialog",
+		"logger":"util/logger",
+		"funcs":"commons/functions",
+		"StringBuffer":"ext/StringBuffer",
+		"Map":"ext/Map"
 	},
 	shim : {
-		'bootstrap' : {deps:['jquery']},
-		'jqueryUI' : {deps:['jquery']}
+		'bootstrap' : {deps:['jquery']}
 	}
 });
 
 //两次require,确保公共方法加载完成后才加入模块
-require(['jquery','bootstrap'], function() {
+require(['jquery','bootstrap','funcs'], function() {
 	var p = [ 'app/' + window.app.entry ];
-	if(!window.JSON){//IE系列浏览器不支持JSON，使用JSON2
+	if(!window.JSON){//如果浏览器不支持JSON，使用JSON2
 		p[1]="util/json2";
 	}
 	require(p, function(module) {

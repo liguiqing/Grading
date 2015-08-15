@@ -1,7 +1,7 @@
 (function() {
 	"use strict";
-	var deps = [ 'jquery','logger','app/marking/ImgView','app/marking/point'];
-	define(deps, function($,logger,ImgView,point) {
+	var deps = [ 'jquery','logger','app/marking/ImgView','app/marking/point','dialog'];
+	define(deps, function($,logger,ImgView,point,dialog) {
 		var Grading = function() {
 			var imgPanel = $('div.img-panel');
 			var markingPanel = $('div.point-panel-marking');
@@ -16,9 +16,14 @@
 				setImgPanelHeight();
 				point.init();
 				$(window).resize(setImgPanelHeight);
-				imgPanel.scroll(function(){
-					var top = $(this).scrollTop();
-					imgToolbox.css({top:top});
+				markingPanel.on('click','button.point-record',function(){
+					point.validate(function(){
+						
+					});
+				});
+				imgToolbox.find('div.panel-body ').on('click','ul .icon-refresh',function(){
+					imgContainer.children().remove();
+					ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
 				});
 				imgToolbox.find('i.glyphicon').click(function(){
 					var $this = $(this);
@@ -38,7 +43,7 @@
 			
 			function setImgPanelHeight(){
 				
-	            var h1 = $('body').height()-navigationPanel.height()-statusPanel.height()-11;
+	            var h1 = getClientHeight()-navigationPanel.height()-statusPanel.height()-11;
 	            imgPanel.height(h1);
 	            var h2 =  h1-markingPanel.height();
 	            pointDescPanel.height(h2-5);
