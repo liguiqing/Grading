@@ -7,11 +7,16 @@
 
 package com.joy.grading.controller;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,6 +47,13 @@ public class MainController {
 		if("0".equals(l))
 			l="";
 		return ModelAndViewFactory.newModelAndViewFor("marking/layout"+l).build();
+	}
+	
+	@RequestMapping(value="/marking",method=RequestMethod.POST)
+	public ModelAndView onPostMark(@RequestBody Map model)throws Exception{
+		logger.debug("URL /mark Method POST");
+		logger.debug("model {}" ,model);
+		return ModelAndViewFactory.newModelAndViewFor("marking/layout2").build();
 	}
 }
 

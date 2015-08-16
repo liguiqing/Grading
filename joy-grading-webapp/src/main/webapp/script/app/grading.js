@@ -1,7 +1,7 @@
 (function() {
 	"use strict";
-	var deps = [ 'jquery','logger','app/marking/ImgView','app/marking/point','dialog'];
-	define(deps, function($,logger,ImgView,point,dialog) {
+	var deps = [ 'jquery','logger','app/marking/ImgView','app/marking/point','ui','ajaxwrapper'];
+	define(deps, function($,logger,ImgView,point,ui,ajaxWrapper) {
 		var Grading = function() {
 			var imgPanel = $('div.img-panel');
 			var markingPanel = $('div.point-panel-marking');
@@ -17,8 +17,27 @@
 				point.init();
 				$(window).resize(setImgPanelHeight);
 				markingPanel.on('click','button.point-record',function(){
-					point.validate(function(){
-						
+					point.validate(function(data){
+						if(data.success){
+							ajaxWrapper.postJson('marking',data.item,{beforeMsg:{tipText:"系统正在计分...."},successMsg:{tipText:"第五题计分成功"}});
+						}else{
+							ui.modal( '计分错误',data.message,'sm', [ {
+										text :  "按总分计",
+										clazz : 'btn-primary',
+										callback : function() {
+											var $this = $(this);
+											ajaxWrapper.postJson('marking',data.item,{beforeMsg:{tipText:"系统正在计分...."},successMsg:{tipText:"第五题计分成功"}},
+													function(data){
+												$this.trigger('close');
+											});
+										}
+									}, {
+										text : "重改",
+										callback : function() {
+											$(this).trigger('close');
+										}
+									} ]);
+						}
 					});
 				});
 				imgToolbox.find('div.panel-body ').on('click','ul .icon-refresh',function(){

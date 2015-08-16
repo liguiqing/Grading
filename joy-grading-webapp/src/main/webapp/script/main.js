@@ -6,7 +6,7 @@ function getUrlFileName(){
 	return fileName;
 }
 
-window['Joy'] = cntest = {
+window['Joy'] = Joy = {
 	version : '1.0'
 };
 
@@ -22,7 +22,7 @@ if(!window.app){
 			window.app = {rootPath:"",entry:includeEntry};
 		}
 	} else {
-		//如果两个都没有设置则自动加载 与网址后缀名相同的js
+		//如果两个都没有设置则自动加载与网址后缀名相同的js
 		window.app = {rootPath:"",entry:getUrlFileName()};
 	}
 }
@@ -37,6 +37,9 @@ requirejs.config({
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
 		"jqueryM":"lib/jquery/jquery.mobile-1.4.5.min",
 		"dialog":"commons/dialog",
+		"ui":"commons/uiwrapper", 
+		"ajax":"commons/ajax",
+		"ajaxwrapper":"commons/ajaxwrapper",
 		"logger":"util/logger",
 		"funcs":"commons/functions",
 		"StringBuffer":"ext/StringBuffer",
@@ -57,6 +60,5 @@ require(['jquery','bootstrap','funcs'], function() {
 		if(module){
 			module.render();
 		}
-		
 	});
 });

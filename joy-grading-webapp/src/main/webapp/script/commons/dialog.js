@@ -4,101 +4,95 @@
 		window.zindex = 9999;  //最高层级
 		window.idialog = 0; //记录有一个非模态框		
 
-		function getdialog(settings,ismodal) {
-			var $oDialogBox = $('<div class="dialog-box"></div>');
-			$oDialogBox.html('<div class="dialog">\
+		function createDialog(settings,modalize) {
+			var $dialogBox = $('<div class="dialog-box"></div>');
+			$dialogBox.html('<div class="dialog">\
 								<div class="dialog-content">\
 									<div class="dialog-body"></div>\
 								</div>\
 							</div>');
-			$oDialogBox.css('z-index', ++window.zindex);
+			$dialogBox.css('z-index', ++window.zindex);
 
-			var $oDialog = $oDialogBox.find('.dialog');
-			$oDialog.addClass('dialog-' + settings.size);
-			$oDialog.find('.dialog-body').html(settings.body);
+			var $dialog = $dialogBox.find('.dialog');
+			$dialog.addClass('dialog-' + settings.size);
+			$dialog.find('.dialog-body').html(settings.body);
 			if (settings.header.show === true) {
-				var $oHeader = $('<div class="dialog-header">\
+				var $header = $('<div class="dialog-header">\
 							        <button type="button" class="close">&times;</button>\
-							        <h4 class="dialog-title">' + settings.header.txt + '</h4>\
+							        <h4 class="dialog-title">' + settings.header.text + '</h4>\
 								</div>');
-				$oHeader.prependTo($oDialogBox.find('.dialog-content'));
+				$header.prependTo($dialogBox.find('.dialog-content'));
 			}
 
 			if (settings.footer.show === true) {
-
-				var $oFooter = $('<div class="dialog-footer"></div>');
-
+				var $footer = $('<div class="dialog-footer"></div>');
 				for (var i = 0; i < settings.footer.buttons.length; i++) {
-
-					var $oBtn = $('<button class="btn"></button>');
-
-					$oBtn.attr('type', settings.footer.buttons[i].type).addClass('btn-' + settings.footer.buttons[i].sty).html(settings.footer.buttons[i].txt);
-
-					$oBtn.on('click', settings.footer.buttons[i].callback);
-
-					$oBtn.on('close', function() {
+					var $btn = $('<button class="btn"></button>');
+					$btn.attr('type', settings.footer.buttons[i].type).addClass( settings.footer.buttons[i].clazz).html(settings.footer.buttons[i].text);
+					$btn.on('click', settings.footer.buttons[i].callback);
+					$btn.on('close', function() {
 						removemodal();
 					});
-
-					$oBtn.appendTo($oFooter);
+					$btn.appendTo($footer);
 				};
 
-				$oFooter.appendTo($oDialog.find('.dialog-content'));
+				$footer.appendTo($dialog.find('.dialog-content'));
 			}
 
 			if (settings.untransparent === false) {
-				$oDialog.addClass('trsp');
+				$dialog.addClass('trsp');
 			}
 
-			$oDialogBox.appendTo($(document.body));
+			$dialogBox.appendTo($(document.body));
 
-			var $oTarget = settings.target;
-			if ($oTarget[0].nodeName == 'body' || $oTarget[0].nodeName == 'BODY') {
-				var iLeft = iRight = iTop = iBottom = 0;
+			var $target = settings.target;
+			var left , right , top , bottom ;
+			if ($target[0].nodeName == 'body' || $target[0].nodeName == 'BODY') {
+				left = right = top = bottom = 0;
 			} else {
-				var iLeft = getLeftOf($oTarget[0]);
-				var iRight = getClientWidth() - (iLeft + $oTarget.width());
-				var iTop = getTopOf($oTarget[0]);
-				var iBottom = getClientHeight()- $oTarget.height() - iTop;
+				left = getLeftOf($target[0]);
+				right = getClientWidth() - (left + $target.width());
+				top = getTopOf($target[0]);
+				bottom = getClientHeight()- $target.height() - top;
 			}
 
-			if(ismodal){
-				$oDialogBox.addClass('modal-box');
-				$oDialogBox.css({left:iLeft,right:iRight,top:iTop,bottom:iBottom});
+			if(modalize){
+				$dialogBox.addClass('modal-box');
+				$dialogBox.css({left:left,right:right,top:top,bottom:bottom});
 
-				$oDialog.css({
+				$dialog.css({
 					top: 40,
-					left:(settings.target[0].offsetWidth-$oDialog[0].offsetWidth)/2
+					left:(settings.target[0].offsetWidth-$dialog[0].offsetWidth)/2
 				});
 			
 				if (settings.backdrop === true) {
 					var $oBackdrop = $('<div class="dialog-backdrop"></div>');
 					$oBackdrop.css({
-						left: iLeft,
-						right: iRight,
-						top: iTop,
-						bottom: iBottom
+						left: left,
+						right: right,
+						top: top,
+						bottom: bottom
 					});
-					$oBackdrop.prependTo($oDialogBox);
+					$oBackdrop.prependTo($dialogBox);
 				}
 
 			}else{
-				$oDialogBox.addClass('nonmodal-box');
-				$oDialogBox.css({
+				$dialogBox.addClass('nonmodal-box');
+				$dialogBox.css({
 					top: getTopOf(settings.target[0]) + getScrollerTop() + 40,
-					left: getLeftOf(settings.target[0]) + (settings.target[0].offsetWidth - $oDialog[0].offsetWidth) / 2
+					left: getLeftOf(settings.target[0]) + (settings.target[0].offsetWidth - $dialog[0].offsetWidth) / 2
 				});
 				
 			}
 
 			if(settings.moveable === true){				
-				comDrag($oHeader[0]);								
-				$oHeader.mousedown(function(e) {
-					$oDialog.css('z-index', ++window.zindex);
+				drag($header[0]);								
+				$header.mousedown(function(e) {
+					$dialog.css('z-index', ++window.zindex);
 
-					var disX = e.clientX - $oDialog[0].offsetLeft;
-					var disY = e.clientY - $oDialog[0].offsetTop;
-					var that = $oDialog[0];
+					var disX = e.clientX - $dialog[0].offsetLeft;
+					var disY = e.clientY - $dialog[0].offsetTop;
+					var that = $dialog[0];
 
 					document.onmousemove = function(e) {
 						var e = e || window.event;
@@ -106,9 +100,9 @@
 						var T = e.clientY - disY;
 						L = L < 0 ? 0 : L;
 						T = T < 0 ? 0 : T;
-						if(ismodal){
-							var iMaxL = $oDialogBox[0].offsetWidth - $oDialog[0].offsetWidth;
-							var iMaxT = $oDialogBox[0].offsetHeight- $oDialog[0].offsetHeight;
+						if(modalize){
+							var iMaxL = $dialogBox[0].offsetWidth - $dialog[0].offsetWidth;
+							var iMaxT = $dialogBox[0].offsetHeight- $dialog[0].offsetHeight;
 						}else{
 							var iMaxL = getClientWidth - that.offsetWidth;
 							var iMaxT = getClientHeight()- that.offsetHeight;
@@ -122,49 +116,49 @@
 					}
 
 					document.onmouseup = function() {
-						$oHeader.css({'cursor':'default'});						
+						$header.css({'cursor':'default'});						
 						document.onmousemove = document.onmouseup = null;
 					}
 				});			
 			}
 				
 			
-			$oDialog.find('.close').on('click', function() {
+			$dialog.find('.close').on('click', function() {
 				removemodal();
 			});
 
 			function removemodal() {
-				$oDialog.animate({
+				$dialog.animate({
 					opacity: 0,
 					top: '-=12px'
 				}, 200, function() {
 
 					if (settings.backdrop === false) {
-						$oDialogBox.remove();
+						$dialogBox.remove();
 					} else {
 						$oBackdrop.animate({
 							opacity: 0
 						}, 200, function() {
-							$oDialogBox.remove();
+							$dialogBox.remove();
 						});
 					}
 				});
 			}
 
-			$oDialogBox.show = function(){
+			$dialogBox.show = function(){
 				if(settings.backdrop){
-					$oDialogBox.find('.dialog-backdrop').animate({opacity:0.5},200,function(){
-						$oDialog.animate({opacity:1,top:'+=12px'},300);
+					$dialogBox.find('.dialog-backdrop').animate({opacity:0.5},200,function(){
+						$dialog.animate({opacity:1,top:'+=12px'},300);
 					});
 				}else{
 					
-					$oDialog.animate({opacity:1,top:'+=12px'},300);					
+					$dialog.animate({opacity:1,top:'+=12px'},300);					
 				}
 				return this;				
 			};
 			
 
-			return $oDialogBox;
+			return $dialogBox;
 		}
 
 		var dialog = {
@@ -180,19 +174,19 @@
 					delay:1000,
 					header:{show:false},
 					footer:{show:false,buttons:[]},
-					tip_txt:'这是一个提示',
-					icon_info:'ing',
+					tipText:'这是一个提示',
+					iconInfo:'ing',
 					target: $('body')				
 				};
 
 				$.extend(settings,defaultSettings,opts,baseSettings);
 
-				var $oDialogBox = getdialog(settings,false); 
+				var $dialogBox = createDialog(settings,false); 
 
-				$oDialogBox.find('.dialog-body').html('<p class="tipcont"><span class="tip-icon"></span>&nbsp;&nbsp;&nbsp;<span class="tip-txt">'+settings.tip_txt+'</span></p>');
-				$oDialogBox.find('.tipcont').addClass('updata-'+settings.icon_info);				
+				$dialogBox.find('.dialog-body').html('<p class="tipcont"><span class="tip-icon"></span>&nbsp;&nbsp;&nbsp;<span class="tip-text">'+settings.tipText+'</span></p>');
+				$dialogBox.find('.tipcont').addClass('update-'+settings.iconInfo);				
 				
-				$oDialogBox.show().delay(settings.delay).animate({
+				$dialogBox.show().delay(settings.delay).animate({
 						opacity:0,
 						top:'-=7px'					
 						},settings.speed,function(){
@@ -208,16 +202,16 @@
 				var defaultSettings ={
 					target: $(document.body),
 					backdrop:true,
-					header:{show:true,txt:"提示"},
+					header:{show:true,text:"提示"},
 					footer:{
 						show:true,
 						buttons:[
-							{type:'submit',txt:"确定",sty:'primary',callback:function(){}},
-							{type:'button',txt:"取消",sty:'default',callback:function(){$(this).trigger('close');}}
+							{type:'submit',text:"确定",clazz:'btn-primary',callback:function(){}},
+							{type:'button',text:"取消",clazz:'btn-default',callback:function(){$(this).trigger('close');}}
 						]
 					},
-					tip_txt:'这是一个提示',
-					icon_info:'updata-ing',
+					tipText:'这是一个提示',
+					iconInfo:'update-ing',
 					moveable:false,
 					untransparent:true,
 					tipsType:'msgif'
@@ -225,8 +219,8 @@
 
 				$.extend(settings,defaultSettings,opts,{size:'sm'});
 
-				var $oModalBox = getdialog(settings,true);
-				var $oModal = $oModalBox.find('.dialog');
+				var $modalBox = createDialog(settings,true);
+				var $oModal = $modalBox.find('.dialog');
 				//显示进度条
 				if(settings.tipsType == 'progressbar'){
 					var processbar = 	function ($source){
@@ -252,26 +246,26 @@
 						};
 						process(10);
 						return bar;
-					}($oModalBox);
-					$oModalBox.find('.dialog-body').html(processbar);
-					$oModalBox['complete'] = function(){
+					}($modalBox);
+					$modalBox.find('.dialog-body').html(processbar);
+					$modalBox['complete'] = function(){
 						
 					};
 				}else{
-					$oModalBox.find('.dialog-body').html('<p class="tipcont"><span class="tip-icon"></span>&nbsp;&nbsp;&nbsp;<span class="tip-txt">'
-							+ settings.tip_txt + '</span></p>');
-					$oModalBox['complete'] = function(){
-						$oModalBox.fadeOut(function(){						
+					$modalBox.find('.dialog-body').html('<p class="tipcont"><span class="tip-icon"></span>&nbsp;&nbsp;&nbsp;<span class="tip-text">'
+							+ settings.tipText + '</span></p>');
+					$modalBox['complete'] = function(){
+						$modalBox.fadeOut(function(){						
 							$(this).remove();
 						});
 					};
 				}
-				$oModalBox.find('.tipcont').addClass('updata-'+settings.icon_info);
+				$modalBox.find('.tipcont').addClass('update-'+settings.iconInfo);
 
-				$oModalBox.show();
+				$modalBox.show();
 				
 				
-				return $oModalBox;
+				return $modalBox;
 			},
 
 			modal: function(opts){
@@ -282,19 +276,19 @@
 					backdrop: true,
 					header: {
 						show: true,
-						txt: "提示"
+						text: "提示"
 					},
 					footer: {
 						show: true,
 						buttons: [{
 							type: 'submit',
-							txt: "确定",
-							sty: 'primary',
+							text: "确定",
+							clazz:'btn-primary',
 							callback: function() {}
 						}, {
 							type: 'button',
-							txt: "取消",
-							sty: 'default',
+							text: "取消",
+							clazz:'btn-default',
 							callback: function() {
 								$(this).trigger('close');
 							}
@@ -306,10 +300,10 @@
 				var settings = {};
 				$.extend(true,settings,defaultSettings,opts);
 
-				var $oModalBox = getdialog(settings,true);
+				var $modalBox = createDialog(settings,true);
 				
-				$oModalBox.show();
-				return $oModalBox;
+				$modalBox.show();
+				return $modalBox;
 			},
 
 			nonmodal: function(opts){
@@ -318,19 +312,19 @@
 					target: $('body'),
 					header: {
 						show: true,
-						txt: "提示"
+						text: "提示"
 					},
 					footer: {
 						show: true,
 						buttons: [{
 							type: 'submit',
-							txt: "确定",
-							sty: 'primary',
+							text: "确定",
+							clazz:'btn-primary',
 							callback: function() {}
 						}, {
 							type: 'button',
-							txt: "取消",
-							sty: 'default',
+							text: "取消",
+							clazz:'btn-default',
 							callback: function() {
 								$(this).trigger('close')
 							}
@@ -341,7 +335,7 @@
 				var settings = {};
 				$.extend(true,settings,defaultSettings, opts,{backdrop:false});
 
-				var $oNonmodalBox = getdialog(settings,false);
+				var $oNonmodalBox = createDialog(settings,false);
 				$oNonmodalBox.show();
 				return $oNonmodalBox;
 			}

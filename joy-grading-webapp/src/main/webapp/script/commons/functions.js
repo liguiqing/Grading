@@ -5,7 +5,7 @@
 
 (function() {
 	"use strict";
-	define([], function() {
+	define(['jquery'], function($) {
 		window['getScrollerTop'] = function() {
 			return document.body.scrollTop
 					|| document.documentElement.scrollTop;
@@ -46,22 +46,57 @@
 			elment.value = elment.value.replace(/^\./g, ""); // 验证第一个字符是数字而不是
 			elment.value = elment.value.replace(/\.{2,}/g, "."); // 只保留第一个.
 																	// 清除多余的
-			elment.value = elment.value.replace(".", "$#$").replace(/\./g, "")
-					.replace("$#$", ".");
-			elment.value = elment.value.replace(/^(\-)*(\d+)\.(\d).*$/,
-					'$1$2.$3'); // 只能输入一个小数
+			elment.value = elment.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
 		};
 
-		window['divisive'] = function(exp1, exp2) {
-			var n1 = Math.round(exp1); // 四舍五入
-			var n2 = Math.round(exp2); // 四舍五入
-			var rslt = n1 / n2; // 除
-			if (rslt >= 0) {
-				rslt = Math.floor(rslt); // 返回值为小于等于其数值参数的最大整数值。
-			} else {
-				rslt = Math.ceil(rslt); // 返回值为大于等于其数字参数的最小整数。
-			}
-			return rslt;
+		/*  元素拖动效果  onmouseover="comDrag(this)"  */
+		window['drag'] = function (obj){
+			var parent = obj.parentNode;
+			var disX=0, disY=0;
+			obj.onmousedown=function(ev){
+				if(ev && ev.button != 0) return;
+				var ev = ev || window.event;
+				disX=ev.clientX-parent.offsetLeft;
+				disY=ev.clientY-parent.offsetTop;
+				bind(document,'mousemove',fnMove);
+				obj.style.cursor = "move";
+				function fnMove(ev){
+					var ev= ev || event;
+					var L=ev.clientX-disX;
+					var T=ev.clientY-disY;
+					parent.style.left=L+'px';
+					parent.style.top=T+'px';
+				};
+				
+				bind(document,'mouseup',fnUp);
+				function fnUp(){
+					obj.style.cursor = "default";
+					remove(document,'mousemove',fnMove);
+					remove(document,'mouseup',fnUp);
+				};
+				
+				function bind(obj, evName, fn) {
+					if (obj.addEventListener) {
+						obj.addEventListener(evName, fn, false);
+					} else {
+						obj.attachEvent('on' + evName, fn);
+					}
+				};
+				
+				function remove(obj, evName, fn){
+					if( obj.removeEventListener){
+						obj.removeEventListener(evName,fn,false);
+					}else{
+						obj.detachEvent('on'+evName, fn);	
+					}		
+				}
+				
+				return false;
+			};
+		}
+		
+		window['login'] = function(data) {
+
 		}
 	});
 })();

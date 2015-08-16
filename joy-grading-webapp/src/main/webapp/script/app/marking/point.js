@@ -2,17 +2,32 @@
 	"use strict";
 	var deps = [ 'jquery' ];
 	var PointModle = {};
-	define(deps, function($) {
+	define(deps, function($,dialog) {
 		var point = function() {
+			var _$detailPointValues = $('div.point-panel-detail input.point-input');
+			var _$totalPointValue = $('div.point-panel-total input.point-input');
 			this.count = function() {
 				var total = 0;
-				$('div.point-panel-detail input.point-input').each(function() {
+				_$detailPointValues.each(function() {
 					total += this.value * 1;
 				});
-				$('div.point-panel-total input.point-input').val(total);
+				_$totalPointValue.val(total);
 			};
 			this.reset = function(){
-				$('input.point-input').val(0);
+				_$totalPointValue.val(0);
+				_$detailPointValues.val(0);
+			};
+			this.validate = function(callback){
+				var data = {success:true,message:"",item:{name:'item 5'}};
+				var detailToal = 0;
+				_$detailPointValues.each(function(){
+					detailToal += this.value * 1;
+				});
+				if(detailToal != _$totalPointValue.val() * 1){
+					data.success = false;
+					data.message = "该题得分点合计分(<b style='color:#c83025'>"+detailToal+"</b>)与总分(<b style='color:#c83025'>"+ _$totalPointValue.val()+"</b>)不一致";
+				}
+				callback(data);
 			};
 			this.init = function(model) {
 				var self = this;
@@ -36,6 +51,7 @@
 					}
 				}).on('keyup','.point-input',function(e){
 					onlyNumber(this);
+					this.value = this.value.replace(/^(\-)*(\d+)\.(\d).*$/,'$1$2.$3'); // 只能输入一个小数
 					if(this.value * 1 > $(this).attr('data-to') * 1){
 						this.value = "";
 						return true;
