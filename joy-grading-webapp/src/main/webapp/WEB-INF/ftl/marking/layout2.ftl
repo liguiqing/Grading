@@ -1,3 +1,4 @@
+<#compress>
 <#import "/taglib/html.ftl" as doc> 
 <@doc.html entryjs="grading" title="Grading">
     <#import "pointInputGroup.ftl" as pig> 
@@ -143,3 +144,4 @@
 		<div class="clearfix"></div>
     </footer>
 </@doc.html>
+</#compress>

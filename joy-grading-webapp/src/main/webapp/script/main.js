@@ -6,6 +6,32 @@ function getUrlFileName(){
 	return fileName;
 }
 
+function getBrowser(){
+    var browser = {};
+	var ua = navigator.userAgent.toLowerCase();
+
+    var s;
+	//浏览器
+    (s = ua.match(/msie ([\d.]+)/)) ? browser.ie = s[1] :
+    (s = ua.match(/firefox\/([\d.]+)/)) ? browser.firefox = s[1] :
+    (s = ua.match(/chrome\/([\d.]+)/)) ? browser.chrome = s[1] :
+    (s = ua.match(/opera.([\d.]+)/)) ? browser.opera = s[1] :
+    (s = ua.match(/version\/([\d.]+).*safari/)) ? browser.safari = s[1] : 0;
+	
+	//移动设备
+    (s = ua.match(/ipad/i)) ? browser.ipad = true:
+    (s = ua.match(/iphone os/i)) ? browser.iphone = true:
+    (s = ua.match(/midp/i)) ? browser.midp = strue:
+    (s = ua.match(/android/i)) ? browser.android = true:
+    (s = ua.match(/windows ce/i)) ? browser.windowsCE = true:
+    (s = ua.match(/windows mobile/i)) ? browser.windowsMobile = true:0;
+	
+	browser.isMobile = function(){
+		return browser.ipad||browser.iphone||browser.midp||browser.android||browser.windowCE||browser.windowsMobile;
+	};
+	return browser;
+}
+
 window['Joy'] = Joy = {
 	version : '1.0'
 };
@@ -26,16 +52,19 @@ if(!window.app){
 		window.app = {rootPath:"",entry:getUrlFileName()};
 	}
 }
-
-requirejs.config({
+var browser = getBrowser();
+var jqueryPath = "lib/jquery/jquery.min";
+if(browser.ie && browser.ie * 1 < 10){
+	jqueryPath = "lib/jquery/jquery-1.11.3.min";
+}
+var config = {
 	contextPath : window.app.rootPath,
 	baseUrl : window.app.rootPath + "static/script/", 
 	optimize : "none",
 
 	paths : {
-		"jquery" : "lib/jquery/jquery.min",
+		"jquery" : jqueryPath,
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
-		"jqueryM":"lib/jquery/jquery.mobile-1.4.5.min",
 		"dialog":"commons/dialog",
 		"ui":"commons/uiwrapper", 
 		"ajax":"commons/ajax",
@@ -48,7 +77,13 @@ requirejs.config({
 	shim : {
 		'bootstrap' : {deps:['jquery']}
 	}
-});
+};
+if(browser.isMobile()){
+    config.paths["jqueryM"] = "lib/jquery/jquery.mobile-1.4.5.min";
+	config.shim["jqueryM"] = {deps:['jquery']};
+}
+if(console){console.log(config)}
+requirejs.config(config);
 
 //两次require,确保公共方法加载完成后才加入模块
 require(['jquery','bootstrap','funcs'], function() {

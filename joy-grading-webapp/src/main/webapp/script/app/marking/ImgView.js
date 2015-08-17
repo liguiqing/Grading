@@ -1,6 +1,10 @@
 (function () {
-	var modle = ["jquery","logger", 'jqueryM'];
-	define(modle, function ($,logger) {
+	var deps = ["jquery","logger"];
+	var browser = getBrowser();
+	if(browser.isMobile()){
+		deps = ["jquery","logger",'jqueryM']
+	}
+	define(deps, function ($,logger) {
 		var defOpts = {
 			containerId : "img",
 			imgSrc : null,
