@@ -66,16 +66,16 @@
                         </div>
 
                         <div class="panel-body point-panel-detail">
-                            <#assign point ={"name":"给分点1","from":"0","to":"2","interval":"0.5"} >
+                            <#assign point ={"label":"给分点3","name":"point1","from":"0","to":"2","interval":"0.5"} >
                             <@pig.pointInputGroup dataToggle="inputSuccess1" recommend=false point=point />
-                           <#assign point ={"name":"给分点2","from":"0","to":"4","interval":"0.5"} >
+                           <#assign point ={"label":"给分点3","name":"point2","from":"0","to":"4","interval":"0.5"} >
                             <@pig.pointInputGroup dataToggle="inputSuccess2" recommend=false point=point />  
-                           <#assign point ={"name":"给分点3","from":"0","to":"4","interval":"0.5"} >
+                           <#assign point ={"label":"给分点3","name":"point3","from":"0","to":"4","interval":"0.5"} >
                             <@pig.pointInputGroup dataToggle="inputSuccess3" recommend=false point=point />                                                                                                                                       
                         </div>
                         
                         <div class="panel-footer point-panel-total">
-                            <#assign point ={"name":"总分","from":"0","to":"10","interval":"0.5"} >
+                            <#assign point ={"label":"给分点3","name":"point","from":"0","to":"10","interval":"0.5"} >
                             <@pig.pointInputGroup dataToggle="inputSuccess" recommend=true point=point />
                    
                             <div class="pull-right">
