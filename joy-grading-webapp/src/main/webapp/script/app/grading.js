@@ -1,13 +1,14 @@
 (function() {
 	"use strict";
 	var deps = [ 'jquery','logger','app/marking/ImgView','app/marking/point','ui','ajaxwrapper'];
+	var __browser = getBrowser();
 	define(deps, function($,logger,ImgView,point,ui,ajaxWrapper) {
 		var Grading = function() {
 			var imgPanel = $('div.img-panel');
 			var markingPanel = $('div.point-panel-marking');
 			var markingBody = markingPanel.find('div.panel-body');
-			var pointDescPanel = $('div.point-panel-desc');
-			var pointDescBody = pointDescPanel.find('div.panel-body');
+			var pointCompletedcPanel = $('div.point-panel-completed');
+			var pointDescBody = pointCompletedcPanel.find('div.panel-body');
 			var statusPanel = $('.navbar-fixed-bottom');
 			var navigationPanel = $('#navigation');
 			var imgContainer = $('#imgContainer');
@@ -60,13 +61,19 @@
 				ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
 			};
 			
-			function setImgPanelHeight(){
-				
-	            var h1 = getClientHeight()-navigationPanel.height()-statusPanel.height()-11;
+			function setImgPanelHeight(){			
+	            var h1 = getClientHeight()-navigationPanel.height()-statusPanel.height();
 	            imgPanel.height(h1);
 	            var h2 =  h1-markingPanel.height();
-	            pointDescPanel.height(h2-5);
-	            pointDescBody.height(pointDescPanel.height()-pointDescBody.prev().height()-50);
+	            pointCompletedcPanel.height(h2-2);
+	            return;
+				if(!__browser.ie){
+					pointDescBody.height(pointCompletedcPanel.height()-pointDescBody.prev().height()-60);
+				}else if(__browser.ie * 1 < 9){
+					pointDescBody.height(pointCompletedcPanel.height()-pointDescBody.prev().height()-100);
+				}else {
+					pointDescBody.height(pointCompletedcPanel.height()-pointDescBody.prev().height()-60);
+				}
 	       
 	            logger.log(pointDescBody.height());
 			};

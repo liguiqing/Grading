@@ -82,7 +82,17 @@ if(browser.isMobile()){
     config.paths["jqueryM"] = "lib/jquery/jquery.mobile-1.4.5.min";
 	config.shim["jqueryM"] = {deps:['jquery']};
 }
-if(console){console.log(config)}
+//IE禁止响应式布局
+if(browser.ie && !browser.isMobile()){
+	var metas = document.getElementsByTagName('meta');
+	for(var i=0;i<metas.length;i++){
+		var name = metas[i].attributes["name"]
+		if(name && name.value === "viewport"){
+			metas[i].parentNode.removeChild(metas[i]);
+			break;
+		}
+	}
+}
 requirejs.config(config);
 
 //两次require,确保公共方法加载完成后才加入模块

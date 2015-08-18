@@ -34,9 +34,9 @@
     <div class="workspace ">
         <div class="container-fluid">
         <div class="row">
-            <div class="col-md-9 img-panel">
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 img-panel">
                  <div id="imgContainer" style="height:100%;"></div>
-                 <div class="panel panel-success  img-panel-toolbox"  >
+                 <div class="panel panel-success  img-panel-toolbox">
                        <div class="panel-heading">
 					       <div class="pull-right">
                                  <i class=" glyphicon  icon-double-angle-left"></i>
@@ -53,7 +53,7 @@
                        </div>
                  </div>            
             </div>
-            <div class="col-md-3 point-panel">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 point-panel">
                 <form class="form-horizontal">
                     <div class="panel panel-success point-panel-marking">
                         <div class="panel-heading">
@@ -77,11 +77,7 @@
                         <div class="panel-footer point-panel-total">
                             <#assign point ={"name":"总分","from":"0","to":"10","interval":"0.5"} >
                             <@pig.pointInputGroup dataToggle="inputSuccess" recommend=true point=point />
-                            <div class="pull-left">
-                                <button type="button" class=" btn  btn-warning " >上一卷 </button> 
-                                <button type="button" class=" btn  btn-primary " >当前卷</button>
-                            </div>
-                                                     
+                   
                             <div class="pull-right">
                                 <button type="button" class=" btn  btn-success  point-record" >记分</button> 
                                 <button type="button" class=" btn  btn-danger " disabled="disabled">重改</button>
@@ -90,46 +86,26 @@
                         </div>
                     </div>
                 </form>
-				<div class="panel panel-success point-panel-desc">
+				<div class="panel panel-success point-panel-completed">
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                                <span>第五题给分说明</span>                          
+                                <span>已阅试卷(最近10张)</span>                          
                             </h3>
                         </div>
 
                         <div class="panel-body ">
-                            <p class="text-left">       
-                            adsfdf
-                            adsfasdf
-                            </p>              
-                            <p class="text-left">       
-                            adsfdf
-                            adsfasdf
-                            </p> 
-                            <p class="text-left">       
-                            adsfdf
-                            adsfasdf
-                            </p> 
-                            <p class="text-left">       
-                            adsfdf
-                            adsfasdf
-                            </p>  
-                            <p class="text-left">       
-                            adsfdf
-                            adsfasdf
-                            </p>              
-                            <p class="text-left">       
-                            adsfdf
-                            adsfasdf
-                            </p> 
-                            <p class="text-left">       
-                            adsfdf
-                            adsfasdf
-                            </p> 
-                            <p class="text-left">       
-                            adsfdf
-                            adsfasdf
-                            </p>                                                                                                                                                                                                       
+							<ul>
+								<li><i class="icon-star"></i><a href="javascript:void(0);">024575546</a></li>
+								<li><i class="icon-star-half"></i><a href="javascript:void(0);">024575547</a></li>
+								<li><i class="icon-star"></i><a href="javascript:void(0);">024575548</a></li>
+								<li><i class="icon-star-empty"></i><a href="javascript:void(0);">024575549</a></li>
+								<li><i class="icon-star"></i><a href="javascript:void(0);">024575646</a></li>
+								<li><i class="icon-star-half"></i><a href="javascript:void(0);">024576547</a></li>
+								<li><i class="icon-star"></i><a href="javascript:void(0);">024573548</a></li>
+								<li><i class="icon-star-empty"></i><a href="javascript:void(0);">054575549</a></li>
+								<li><i class="icon-star"></i><a href="javascript:void(0);">034573548</a></li>
+								<li><i class="icon-star-empty"></i><a href="javascript:void(0);">154575549</a></li>										
+							</ul>
                         </div>
                     </div>                
             </div>
