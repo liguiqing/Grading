@@ -3,7 +3,6 @@
 <html lang="zh-cn">
 <head>
   <title>${title}</title>	
-  <meta charset="utf-8" />   
   <#import "meta.ftl" as meta> 
   <@meta.meta/>
 </head>
