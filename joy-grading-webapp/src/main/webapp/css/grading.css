@@ -136,9 +136,19 @@
 	padding: 0 15px 0 0;
 }
 
-
+.point-panel-total .col-sm-6{
+	padding-left:30px;
+}
+.point-reset .col-sm-6{
+	padding-right:20px;
+}
 .point-panel .form-control-feedback {
 	color: #000;
+}
+
+.point-panel .point-desc {
+	margin-top: -15px;
+	margin-bottom: 10px;
 }
 
 .point-panel-completed {
@@ -146,8 +156,6 @@
 }
 
 .point-panel-completed .panel-body{
-	min-height:100px;
-	max-height:200px;
 	overflow: auto;
 }
 

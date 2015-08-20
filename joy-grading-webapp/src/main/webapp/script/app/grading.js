@@ -53,7 +53,7 @@
 			                  	};
 		
 		function shortKeyPoint(key){
-			var $curInput = $('div.point-panel input:focus');//得到当得聚焦状态的打分输入框
+			var $curInput = $('aside.point-panel input:focus');//得到当得聚焦状态的打分输入框
 			var keyDefs = $curInput.parent().find('b');//得到打分输入框的定义的快捷键
 			keyDefs.each(function(){
 				var $b = $(this);
@@ -71,11 +71,11 @@
 		};
 		
 		var Grading = function() {
-			var imgPanel = $('div.img-panel');
+			var imgPanel = $('aside.img-panel');
 			var markingPanel = $('div.point-panel-marking');
 			var markingBody = markingPanel.find('div.panel-body');
-			var pointCompletedcPanel = $('div.point-panel-completed');
-			var pointDescBody = pointCompletedcPanel.find('div.panel-body');
+			var pointCompletedPanel = $('div.point-panel-completed');
+			var pointDescBody = pointCompletedPanel.find('div.panel-body');
 			var statusPanel = $('.navbar-fixed-bottom');
 			var navigationPanel = $('#navigation');
 			var imgContainer = $('#imgContainer');
@@ -102,7 +102,7 @@
 						});
 					}else{
 						ui.modal( '计分错误',data.message,'sm', [ {
-									text :  "按总分计",
+									text :  data.confirmText,
 									clazz : 'btn-primary',
 									callback : function() {
 										var $this = $(this);
@@ -134,7 +134,7 @@
 
 				point.init(this);
 				$(window).resize(setImgPanelHeight);
-				markingPanel.on('click','button.point-record',function(){
+				markingPanel.on('click','div.point-record button',function(){
 					_grading.record();
 				});
 				imgToolbox.find('div.panel-body ').on('click','ul .icon-refresh',function(){
@@ -161,14 +161,16 @@
 	            var h1 = getClientHeight()-navigationPanel.height()-statusPanel.height();
 	            imgPanel.height(h1);
 	            var h2 =  h1-markingPanel.height();
-	            pointCompletedcPanel.height(h2-2);
-	            return;
+	            pointCompletedPanel.height(h2-2);
+	            
 				if(!__browser.ie){
-					pointDescBody.height(pointCompletedcPanel.height()-pointDescBody.prev().height()-60);
+					pointDescBody.height(getClientHeight()-markingPanel.height()-pointDescBody.prev().height());
+					logger.log("-----------------------------");
 				}else if(__browser.ie * 1 < 9){
-					pointDescBody.height(pointCompletedcPanel.height()-pointDescBody.prev().height()-100);
+					pointDescBody.height(pointCompletedPanel.height()-pointDescBody.prev().height()-100);
 				}else {
-					pointDescBody.height(pointCompletedcPanel.height()-pointDescBody.prev().height()-60);
+					pointDescBody.height(getClientHeight()-markingPanel.height()-pointDescBody.prev().height()*2);
+					logger.log("-----------++------------------");
 				}
 	       
 	            logger.log(pointDescBody.height());

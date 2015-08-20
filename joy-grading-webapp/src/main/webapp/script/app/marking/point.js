@@ -22,7 +22,7 @@
 			
 			this.next = function(){
 				logger.log('next');
-				var $curInput = $('div.point-panel input:focus');
+				var $curInput = $('aside.point-panel input:focus');
 				if($curInput.parents('.point-panel-total').size()){
 					this.grading.record();
 				}else{
@@ -33,6 +33,7 @@
 								return false;
 							}else{
 								_$totalPointValue.focus();
+								_$totalPointValue.select();
 							}
 						}
 					});
@@ -41,14 +42,14 @@
 			
 			this.prev = function(){
 				logger.log('prev');
-				var $curInput = $('div.point-panel input:focus');
+				var $curInput = $('aside.point-panel input:focus');
 				if($curInput.parents('.point-panel-total').size()){
-					_$detailPointValues.last().focus();
+					_$detailPointValues.last().focus().select();;
 				}else{
 					_$detailPointValues.each(function(i){
 						if(this.name == $curInput[0].name){
 							if(i != 0 ){
-								_$detailPointValues[i-1].focus();
+								$(_$detailPointValues[i-1]).focus().select();
 								return false;
 							}
 						}
@@ -57,11 +58,19 @@
 			};
 			
 			this.validate = function(callback){
-				var data = {success:true,message:"",item:{name:'item 5'}};
-				var detailToal = 0;
+				var data = {success:true,message:"",item:{name:'item 5'},confirmText:"按总分计"};
+				var detailToal = "";
 				_$detailPointValues.each(function(){
+					if(this.value === "")
+						return true;
 					detailToal += this.value * 1;
 				});
+				if(detailToal === "" &&  _$totalPointValue.val() === ""){
+					data.success = false;
+					data.confirmText = "按零分计";
+					data.message = "该题还没有批改！";
+				}
+				
 				if(detailToal != _$totalPointValue.val() * 1){
 					data.success = false;
 					data.message = "该题得分点合计分(<b style='color:#c83025'>"+detailToal+"</b>)与总分(<b style='color:#c83025'>"+ _$totalPointValue.val()+"</b>)不一致";
@@ -76,11 +85,11 @@
 			this.init = function(grading) {
 				this.grading = grading;
 				var self = this;
-				_$detailPointValues[0].focus();
+				$(_$detailPointValues[0]).focus().select();
 				//受父级多种样式的叠加影响，打分框的左边圆角无效
-				$('div.point-panel .point-input').css({'border-top-left-radius':'4px','border-bottom-left-radius':'4px'});
+				$('aside.point-panel .point-input').css({'border-top-left-radius':'4px','border-bottom-left-radius':'4px'});
 				//点击打分
-				$('div.point-panel').on('click', '.point-btn', function() {
+				$('aside.point-panel').on('click', '.point-btn', function() {
 					var $btn = $(this);
 					var dataToggle = $btn.attr('data-toggle');
 					var $input = $('#' + dataToggle);

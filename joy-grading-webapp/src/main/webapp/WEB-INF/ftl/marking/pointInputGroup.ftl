@@ -30,4 +30,7 @@
    </div>
   </div>
  </div> 
+ <div class="row point-desc" >
+   <div class="col-sm-4"></div><div class="col-sm-8">${point.from}-${point.to}分，最小分值：${point.interval}分</div>
+ </div>
 </#macro>

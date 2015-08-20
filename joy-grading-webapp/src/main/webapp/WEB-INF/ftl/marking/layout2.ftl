@@ -34,7 +34,7 @@
     <div class="workspace ">
         <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 img-panel">
+            <aside class="col-xs-9 col-sm-9 col-md-9 col-lg-9 img-panel">
                  <div id="imgContainer" style="height:100%;"></div>
                  <div class="panel panel-success  img-panel-toolbox">
                        <div class="panel-heading">
@@ -52,8 +52,8 @@
 					       </ul>
                        </div>
                  </div>            
-            </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 point-panel">
+            </aside>
+            <aside class="col-xs-3 col-sm-3 col-md-3 col-lg-3 point-panel">
                 <form class="form-horizontal">
                     <div class="panel panel-success point-panel-marking">
                         <div class="panel-heading">
@@ -78,9 +78,9 @@
                             <#assign point ={"label":"本题得分","name":"point","from":"0","to":"10","interval":"0.5"} >
                             <@pig.pointInputGroup dataToggle="inputSuccess" recommend=true point=point />
                    
-                            <div class="pull-right">
-                                <button type="button" class=" btn  btn-success  point-record" >记分</button> 
-                                <button type="button" class=" btn  btn-danger " disabled="disabled">重改</button>
+                            <div class="row">
+                                <div class="col-sm-6 point-record"><button type="button" class=" button button-action button-rounded " >记分</button> </div>
+                                <div class="col-sm-6 point-reset"><button type="button" class="  button button-action button-rounded " disabled="disabled">重改</button></div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -108,7 +108,7 @@
 							</ul>
                         </div>
                     </div>                
-            </div>
+              </aside>
             </div>
         </div>
     </div>
