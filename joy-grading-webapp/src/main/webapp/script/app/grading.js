@@ -75,7 +75,7 @@
 			var markingPanel = $('div.point-panel-marking');
 			var markingBody = markingPanel.find('div.panel-body');
 			var pointCompletedPanel = $('div.point-panel-completed');
-			var pointDescBody = pointCompletedPanel.find('div.panel-body');
+			var pointCompletedBody = pointCompletedPanel.find('div.panel-body');
 			var statusPanel = $('.navbar-fixed-bottom');
 			var navigationPanel = $('#navigation');
 			var imgContainer = $('#imgContainer');
@@ -84,7 +84,8 @@
 			this.nextPaper = function(){
 				point.reset();
 				this.clear();
-				ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
+				//ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
+				ImgView.next(app.contextPath + "/static/css/img/sj.jpg");
 			};
 			
 			this.clear = function(){
@@ -157,23 +158,24 @@
 				ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
 			};
 			
-			function setImgPanelHeight(){			
+			function setImgPanelHeight()
+			    var windowH = $(window).height();
 	            var h1 = getClientHeight()-navigationPanel.height()-statusPanel.height();
 	            imgPanel.height(h1);
 	            var h2 =  h1-markingPanel.height();
 	            pointCompletedPanel.height(h2-2);
 	            
 				if(!__browser.ie){
-					pointDescBody.height(getClientHeight()-markingPanel.height()-pointDescBody.prev().height());
+					pointCompletedBody.height(getClientHeight()-markingPanel.height()-pointCompletedBody.prev().height());
 					logger.log("-----------------------------");
 				}else if(__browser.ie * 1 < 9){
-					pointDescBody.height(pointCompletedPanel.height()-pointDescBody.prev().height()-100);
+					pointCompletedBody.height(pointCompletedPanel.height()-pointCompletedBody.prev().height()-100);
 				}else {
-					pointDescBody.height(getClientHeight()-markingPanel.height()-pointDescBody.prev().height()*2);
+					pointCompletedBody.height(getClientHeight()-markingPanel.height()-pointCompletedBody.prev().height()*2);
 					logger.log("-----------++------------------");
 				}
 	       
-	            logger.log(pointDescBody.height());
+	            logger.log(pointCompletedBody.height());
 			};
 		};
 		_grading = new Grading();
