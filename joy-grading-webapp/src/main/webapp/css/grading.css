@@ -101,7 +101,6 @@
 
 .point-panel .panel-body {
 	max-height: 300px;
-	min-height:200px;
 	overflow: auto;
 }
 
