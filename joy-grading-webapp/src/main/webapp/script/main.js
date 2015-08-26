@@ -57,6 +57,15 @@ var jqueryPath = "lib/jquery/jquery.min";
 if(browser.ie && browser.ie * 1 < 10){
 	jqueryPath = "lib/jquery/jquery-1.11.3.min";
 }
+//IEMobile10 
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+	var msViewportStyle = document.createElement('style')
+	msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'))
+	document.querySelector('head').appendChild(msViewportStyle)
+}
+
+
+
 var config = {
 	contextPath : window.app.rootPath,
 	baseUrl : window.app.rootPath + "static/script/", 
@@ -96,12 +105,17 @@ if(browser.ie && !browser.isMobile()){
 requirejs.config(config);
 
 //两次require,确保公共方法加载完成后才加入模块
-require(['jquery','bootstrap','funcs'], function() {
+require(['jquery','bootstrap','funcs'], function($) {
 	var p = [ 'app/' + window.app.entry ];
 	if(!window.JSON){//如果浏览器不支持JSON，使用JSON2
 		p[1]="util/json2";
 	}
 	require(p, function(module) {
+		//Android4.1 系统默认的浏览器将不会显示侧边栏控件
+		if(browser.android){
+			$('select.form-control').removeClass('form-control').css('width', '100%')
+		}
+		
 		if(module){
 			module.render();
 		}
