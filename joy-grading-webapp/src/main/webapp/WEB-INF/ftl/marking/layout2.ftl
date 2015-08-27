@@ -48,7 +48,11 @@
                                 <li role="separator" class="divider"></li>
                                 <li class="img-tool"><i class=" icon-trash"></i></li>
                                 <li role="separator" class="divider"></li>
-                                <li class="img-tool"><i class="icon-fullscreen"></i></li>                          
+                                <li class="img-tool"><i class="icon-fullscreen"></i></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="img-tool"><i class="icon-zoom-in"></i></li>  
+                                <li role="separator" class="divider"></li>
+                                <li class="img-tool"><i class="icon-zoom-out"></i></li>  								
 					       </ul>
                        </div>
                  </div>            

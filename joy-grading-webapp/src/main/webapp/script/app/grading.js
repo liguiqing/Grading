@@ -4,6 +4,7 @@
 	var __browser = getBrowser();
 	define(deps, function($,logger,ImgView,point,ui,ajaxWrapper) {
 		var _grading;
+		var _imgViewer;
 		var _pointModel = {shortKeys:[
 			                  	       {"name":"full","type":"point","keys":["A"]},{"name":"zero","type":"point","keys":["D"]},
 			                  	       {"name":"up","type":"move","keys":["W"]},{"name":"down","type":"move","keys":["S"]}],
@@ -14,7 +15,9 @@
 			                  	        		point.reset();
 			                  	        		break;
 			                  	        	case 13://回车
-			                  	        		_grading.record();
+											    //shortKeyPoint("A");//暂时的实现
+												point.count();
+			                  	        		point.next();
 			                  	        		break;
 			                  	        	case 37://左箭头
 			                  	        		shortKeyPoint("A");//暂时的实现
@@ -65,7 +68,8 @@
 		};
 		
 		function onShortKeys(model){
-			$(document).on('keydown',function(e){
+			console.log(model);
+			$(document).off('keydown').on('keydown',function(e){
 				model.onKey(e.which||e.keyCode);
 			});
 		};
@@ -85,11 +89,14 @@
 				point.reset();
 				this.clear();
 				//ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
-				ImgView.next(app.contextPath + "/static/css/img/sj.jpg");
+				_imgViewer.next(app.contextPath + "/static/css/img/sj.jpg");
 			};
 			
 			this.clear = function(){
-				
+				var thisModel = {};
+				$.extend(true,thisModel,{},_pointModel);
+				onShortKeys(thisModel);
+				point.init(this);
 			};
 			
 			this.record = function(){
@@ -102,7 +109,7 @@
 							}
 						});
 					}else{
-						ui.modal( '计分错误',data.message,'sm', [ {
+						var modal = ui.modal( '计分错误',data.message,'sm', [ {
 									text :  data.confirmText,
 									clazz : 'btn-primary',
 									callback : function() {
@@ -122,6 +129,16 @@
 										$(this).trigger('close');
 									}
 								} ]);
+
+						$(document).off('keydown').on('keydown',function(e){
+							var eventCode = e.which||e.keyCode;
+							if(eventCode == 27){
+								modal.find('button:eq(1)').click();
+							}else if(eventCode == 13){
+								modal.find('button:eq(0)').click();
+							}							
+			            });
+						
 					}
 				});
 			};
@@ -139,9 +156,26 @@
 					_grading.record();
 				});
 				imgToolbox.find('div.panel-body ').on('click','ul .icon-refresh',function(){
-					imgContainer.children().remove();
-					ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
+					//imgContainer.children().remove();
+					//_imgViewer = ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
+					console.log("next img");
+					_imgViewer.next(app.contextPath + "/static/css/img/sj.jpg");
 				});
+				imgToolbox.find('div.panel-body ').on('click','ul .icon-fullscreen',function(){
+					//imgContainer.children().remove();
+					
+					_imgViewer.autoAdaptationWidthAndHeight();
+				});
+				imgToolbox.find('div.panel-body ').on('click','ul .icon-zoom-in',function(){
+					//imgContainer.children().remove();
+					
+					_imgViewer.zoomOut();
+				});
+				imgToolbox.find('div.panel-body ').on('click','ul .icon-zoom-out',function(){
+					//imgContainer.children().remove();
+					
+					_imgViewer.zoomIn();
+				});				
 				imgToolbox.find('i.glyphicon').click(function(){
 					var $this = $(this);
 					$this.toggleClass('icon-double-angle-right');
@@ -155,10 +189,10 @@
 					}
 					
 				});
-				ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
+				_imgViewer = ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
 			};
 			
-			function setImgPanelHeight()
+			function setImgPanelHeight(){
 			    var windowH = $(window).height();
 	            var h1 = getClientHeight()-navigationPanel.height()-statusPanel.height();
 	            imgPanel.height(h1);

@@ -19,9 +19,9 @@
 				_$detailPointValues.val("");
 				_$detailPointValues[0].focus();
 			};
-			
+
 			this.next = function(){
-				logger.log('next');
+				
 				var $curInput = $('aside.point-panel input:focus');
 				if($curInput.parents('.point-panel-total').size()){
 					this.grading.record();
@@ -59,19 +59,19 @@
 			
 			this.validate = function(callback){
 				var data = {success:true,message:"",item:{name:'item 5'},confirmText:"按总分计"};
-				var detailToal = "";
+				var detailToal = 0;
 				_$detailPointValues.each(function(){
 					if(this.value === "")
 						return true;
-					detailToal += this.value * 1;
+					detailToal += (this.value * 1);
 				});
-				if(detailToal === "" &&  _$totalPointValue.val() === ""){
+				if(detailToal === 0 &&  _$totalPointValue.val() === ""){
 					data.success = false;
 					data.confirmText = "按零分计";
 					data.message = "该题还没有批改！";
 				}
 				
-				if(detailToal != _$totalPointValue.val() * 1){
+				if((detailToal * 1) != (_$totalPointValue.val() * 1)){
 					data.success = false;
 					data.message = "该题得分点合计分(<b style='color:#c83025'>"+detailToal+"</b>)与总分(<b style='color:#c83025'>"+ _$totalPointValue.val()+"</b>)不一致";
 				}

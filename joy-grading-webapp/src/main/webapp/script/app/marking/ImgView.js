@@ -29,7 +29,9 @@
 
 			next : function (url) {
 				//调用下一张图片
+				url += "?"+ + new Date;
 				opts.imgSrc = url;
+				console.log(url);
 				$image.attr("src", url);
 			},
 			autoAdaptationHeight : function () {
