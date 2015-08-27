@@ -1,7 +1,26 @@
 (function() {
 	"use strict";
-	var deps = [ 'jquery','logger' ];
-	define(deps, function($,logger) {
+	define([ 'jquery','logger' ], function($,logger) {
+		//得分情况
+		var _score = {name:"",total:0,points:[],eq:function(){
+			var pt = this.pointsTotal();
+			return this.total == pt;
+		},toJson:function(){
+			var json = {};
+			var obj = this;
+			for(var o in obj){
+				if(!$.isFunction(obj[o])){
+					json[o.name] = obj[o];
+				}
+			}
+			return json;
+		},pointsTotal:function(){
+			var pt = 0;
+			$.each(this.points,function(i,n){
+				pt += this.value;
+			});
+			return pt;
+		}}; 
 		var _reg = /\./g;
 		var Point = function() {
 			var _$detailPointValues = $('div.point-panel-detail input.point-input:enabled');
@@ -20,11 +39,15 @@
 				_$detailPointValues[0].focus();
 			};
 
-			this.next = function(){
-				
+			this.next = function(){			
 				var $curInput = $('aside.point-panel input:focus');
+				if($curInput.size() ==0){
+					_$detailPointValues[0].focus();
+					return;
+				}
 				if($curInput.parents('.point-panel-total').size()){
-					this.grading.record();
+					var score = this.validate();
+					this.grading.record(score);
 				}else{
 					_$detailPointValues.each(function(i){
 						if(this.name == $curInput[0].name){
@@ -41,7 +64,6 @@
 			};
 			
 			this.prev = function(){
-				logger.log('prev');
 				var $curInput = $('aside.point-panel input:focus');
 				if($curInput.parents('.point-panel-total').size()){
 					_$detailPointValues.last().focus().select();;
@@ -57,25 +79,18 @@
 				}
 			};
 			
-			this.validate = function(callback){
-				var data = {success:true,message:"",item:{name:'item 5'},confirmText:"按总分计"};
-				var detailToal = 0;
-				_$detailPointValues.each(function(){
-					if(this.value === "")
-						return true;
-					detailToal += (this.value * 1);
+			this.validate = function(){
+				var score = {};
+				$.extend(true,score,{},_score);
+				_$detailPointValues.each(function(i) {
+					score.points[i] = {};
+					score.points[i]["value"]= this.value * 1;
+					score.points[i]["name"]= this.name1;
 				});
-				if(detailToal === 0 &&  _$totalPointValue.val() === ""){
-					data.success = false;
-					data.confirmText = "按零分计";
-					data.message = "该题还没有批改！";
-				}
-				
-				if((detailToal * 1) != (_$totalPointValue.val() * 1)){
-					data.success = false;
-					data.message = "该题得分点合计分(<b style='color:#c83025'>"+detailToal+"</b>)与总分(<b style='color:#c83025'>"+ _$totalPointValue.val()+"</b>)不一致";
-				}
-				callback(data);
+				score.total = _$totalPointValue[0].value == ""?0:_$totalPointValue[0].value *1;
+				score.name = _$totalPointValue.attr("name");
+				score.title = "第五题";
+				return score;
 			};
 			
 			this.givePoint = function($input,valueAttr){

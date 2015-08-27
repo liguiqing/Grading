@@ -1,59 +1,59 @@
 (function() {
 	"use strict";
-	var deps = [ 'jquery','logger','app/marking/ImgView','app/marking/point','ui','ajaxwrapper'];
 	var __browser = getBrowser();
-	define(deps, function($,logger,ImgView,point,ui,ajaxWrapper) {
+	define([ 'jquery','logger','app/marking/ImgToolbox','app/marking/point','ui','ajaxwrapper'],
+			function($,logger,imgToolbox,point,ui,ajaxWrapper) {
 		var _grading;
 		var _imgViewer;
 		var _pointModel = {shortKeys:[
-			                  	       {"name":"full","type":"point","keys":["A"]},{"name":"zero","type":"point","keys":["D"]},
-			                  	       {"name":"up","type":"move","keys":["W"]},{"name":"down","type":"move","keys":["S"]}],
-			                  	       onKey:function(eventCode){
-			                  	        	switch(eventCode){
-			                  	        	case 27://退出
-			                  	        	case 46://删除
-			                  	        		point.reset();
-			                  	        		break;
-			                  	        	case 13://回车
-											    //shortKeyPoint("A");//暂时的实现
-												point.count();
-			                  	        		point.next();
-			                  	        		break;
-			                  	        	case 37://左箭头
-			                  	        		shortKeyPoint("A");//暂时的实现
-			                  	        		break;
-			                  	        	case 38://上箭头
-			                  	        		point.prev();
-			                  	        		break;
-			                  	        	case 39://右箭头
-			                  	        		shortKeyPoint("D");//暂时的实现
-			                  	        		break;
-			                  	        	case 40://下箭头
-			                  	        		point.next();
-			                  	        		break;
-			                  	        	default:
-			                  	        	    //转换按键值为字母
-			                					var char  = String.fromCharCode(eventCode);
-			                  	                //循环所有快捷键定义
-				                				$.each(this.shortKeys,function(i,key){
-				                					//如果按键值在快捷键定义中
-				                					if($.inArray(char,key.keys)){
-				                						if(key.type == 'move'){
-				                							if(this.name == 'up'){
-				                								point.prev();
-				                							}else{
-				                								point.next();
-				                							}
-				                						}else{
-				                							
-				                						}
-				                						shortKeyPoint(char);
-				                						return false;
-				                					}					
-				                				});			                  	        	  
-			                  	        	}
-			                  	        }          
-			                  	};
+          	       {"name":"full","type":"point","keys":["A"]},{"name":"zero","type":"point","keys":["D"]},
+          	       {"name":"up","type":"move","keys":["W"]},{"name":"down","type":"move","keys":["S"]}],
+          	       onKey:function(eventCode){
+          	        	switch(eventCode){
+          	        	case 27://退出
+          	        	case 46://删除
+          	        		point.reset();
+          	        		break;
+          	        	case 13://回车
+						    //shortKeyPoint("A");//暂时的实现
+							point.count();
+          	        		point.next();
+          	        		break;
+          	        	case 37://左箭头
+          	        		shortKeyPoint("A");//暂时的实现
+          	        		break;
+          	        	case 38://上箭头
+          	        		point.prev();
+          	        		break;
+          	        	case 39://右箭头
+          	        		shortKeyPoint("D");//暂时的实现
+          	        		break;
+          	        	case 40://下箭头
+          	        		point.next();
+          	        		break;
+          	        	default:
+          	        	    //转换按键值为字母
+        					var char  = String.fromCharCode(eventCode);
+          	                //循环所有快捷键定义
+            				$.each(this.shortKeys,function(i,key){
+            					//如果按键值在快捷键定义中
+            					if($.inArray(char,key.keys)){
+            						if(key.type == 'move'){
+            							if(this.name == 'up'){
+            								point.prev();
+            							}else{
+            								point.next();
+            							}
+            						}else{
+            							
+            						}
+            						shortKeyPoint(char);
+            						return false;
+            					}					
+            				});			                  	        	  
+          	        	}
+          	        }          
+          	};
 		
 		function shortKeyPoint(key){
 			var $curInput = $('aside.point-panel input:focus');//得到当得聚焦状态的打分输入框
@@ -74,6 +74,15 @@
 			});
 		};
 		
+		function save(data){
+			ajaxWrapper.postJson('marking',data,{beforeMsg:{tipText:"系统正在计分...."},successMsg:{tipText:"计分成功"}},
+					function(m){
+				if(m.status.success){
+					_grading.nextPaper();
+				}
+			});
+		};
+		
 		var Grading = function() {
 			var imgPanel = $('aside.img-panel');
 			var markingPanel = $('div.point-panel-marking');
@@ -83,13 +92,11 @@
 			var statusPanel = $('.navbar-fixed-bottom');
 			var navigationPanel = $('#navigation');
 			var imgContainer = $('#imgContainer');
-			var imgToolbox = $('div.img-panel-toolbox');
-			
+
 			this.nextPaper = function(){
 				point.reset();
 				this.clear();
-				//ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
-				_imgViewer.next(app.contextPath + "/static/css/img/sj.jpg");
+				imgToolbox.switchTo(app.contextPath + "/static/css/img/sj.jpg");
 			};
 			
 			this.clear = function(){
@@ -99,48 +106,36 @@
 				point.init(this);
 			};
 			
-			this.record = function(){
-				point.validate(function(data){
-					if(data.success){
-						ajaxWrapper.postJson('marking',data.item,{beforeMsg:{tipText:"系统正在计分...."},successMsg:{tipText:"第五题计分成功"}},
-								function(m){
-							if(m.status.success){
-								_grading.nextPaper();
-							}
-						});
-					}else{
-						var modal = ui.modal( '计分错误',data.message,'sm', [ {
-									text :  data.confirmText,
-									clazz : 'btn-primary',
-									callback : function() {
-										var $this = $(this);
-										ajaxWrapper.postJson('marking',data.item,{beforeMsg:{tipText:"系统正在计分...."},successMsg:{tipText:"第五题计分成功"}},
-												function(m){
-											if(m.status.success){
-												_grading.nextPaper();
-												$this.trigger('close');
-											}
-											
-										});
-									}
-								}, {
-									text : "重改",
-									callback : function() {
-										$(this).trigger('close');
-									}
-								} ]);
-
-						$(document).off('keydown').on('keydown',function(e){
-							var eventCode = e.which||e.keyCode;
-							if(eventCode == 27){
-								modal.find('button:eq(1)').click();
-							}else if(eventCode == 13){
-								modal.find('button:eq(0)').click();
-							}							
-			            });
-						
-					}
-				});
+			this.record = function(score){
+				var btns = [{text:'确认',clazz : 'btn-primary',callback:function(){
+					save(score.toJson());
+					$(this).trigger('close');
+				}},{text:'重改',callback:function(){
+					point.next();
+					$(this).trigger('close');
+				}}];
+				var message =  "总分：<b style='color:#c83025'>"+ score.total +"</b>";
+				if(!score.eq()){
+					btns = [{text:'重改',callback:function(){
+						point.next();
+						$(this).trigger('close');
+					}}];
+					message = "<p>各得分点合计：<b style='color:#c83025'>" + score.pointsTotal() 
+					                   + "</b>分</p><p>总分：<b style='color:#c83025'>" + score.total+"</b>分</p>";
+				}
+				var modal = ui.modal( score.title+'得分情况',message,'sm',btns);
+				$(document).off('keydown').on('keydown',function(e){
+					var eventCode = e.which||e.keyCode;
+					if(eventCode == 27){
+						modal.close();
+						point.next();
+					}else if(eventCode == 13){
+						if(score.eq()){
+							save(score.toJson());
+							modal.close();
+						}
+					}							
+	            });	
 			};
 			
 			this.render = function(model) {
@@ -153,43 +148,10 @@
 				point.init(this);
 				$(window).resize(setImgPanelHeight);
 				markingPanel.on('click','div.point-record button',function(){
-					_grading.record();
+					var score = point.validate();
+					_grading.record(score);
 				});
-				imgToolbox.find('div.panel-body ').on('click','ul .icon-refresh',function(){
-					//imgContainer.children().remove();
-					//_imgViewer = ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
-					console.log("next img");
-					_imgViewer.next(app.contextPath + "/static/css/img/sj.jpg");
-				});
-				imgToolbox.find('div.panel-body ').on('click','ul .icon-fullscreen',function(){
-					//imgContainer.children().remove();
-					
-					_imgViewer.autoAdaptationWidthAndHeight();
-				});
-				imgToolbox.find('div.panel-body ').on('click','ul .icon-zoom-in',function(){
-					//imgContainer.children().remove();
-					
-					_imgViewer.zoomOut();
-				});
-				imgToolbox.find('div.panel-body ').on('click','ul .icon-zoom-out',function(){
-					//imgContainer.children().remove();
-					
-					_imgViewer.zoomIn();
-				});				
-				imgToolbox.find('i.glyphicon').click(function(){
-					var $this = $(this);
-					$this.toggleClass('icon-double-angle-right');
-					imgToolbox.toggleClass('transparent-25');
-					if(imgToolbox.hasClass('transparent-25')){
-						$this.parent().parent().css({'padding-left':'2px'});
-						imgToolbox.css({width:'10px'}).find('div.panel-body').hide();
-					}else{
-						imgToolbox.css({width:'60px'}).find('div.panel-body').show();
-						$this.parent().parent().css({'padding-left':'15px'});
-					}
-					
-				});
-				_imgViewer = ImgView.init({containerId:"imgContainer",imgSrc:app.contextPath + "/static/css/img/sj.jpg"});
+				imgToolbox.init("imgContainer",app.contextPath + "/static/css/img/sj.jpg");
 			};
 			
 			function setImgPanelHeight(){
@@ -201,15 +163,11 @@
 	            
 				if(!__browser.ie){
 					pointCompletedBody.height(getClientHeight()-markingPanel.height()-pointCompletedBody.prev().height());
-					logger.log("-----------------------------");
 				}else if(__browser.ie * 1 < 9){
 					pointCompletedBody.height(pointCompletedPanel.height()-pointCompletedBody.prev().height()-100);
 				}else {
 					pointCompletedBody.height(getClientHeight()-markingPanel.height()-pointCompletedBody.prev().height()*2);
-					logger.log("-----------++------------------");
 				}
-	       
-	            logger.log(pointCompletedBody.height());
 			};
 		};
 		_grading = new Grading();

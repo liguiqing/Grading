@@ -157,6 +157,9 @@
 				return this;				
 			};
 			
+			$dialogBox.close = function(){
+				removemodal();
+			};
 
 			return $dialogBox;
 		}
