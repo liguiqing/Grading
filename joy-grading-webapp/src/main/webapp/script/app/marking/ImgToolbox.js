@@ -6,22 +6,21 @@
 			var $toolbox;
 			var _imgViewer;
 			var _imgSrc;
-			_init();
 			function _init() {
 				$toolbox = $('div.img-panel-toolbox');
 				$toolbox.find('i.glyphicon').click(function() {
 					var $this = $(this);
 					$this.toggleClass('icon-double-angle-right');
-					imgToolbox.toggleClass('transparent-25');
-					if (imgToolbox.hasClass('transparent-25')) {
+					$toolbox.toggleClass('transparent-25');
+					if ($toolbox.hasClass('transparent-25')) {
 						$this.parent().parent().css({
 							'padding-left' : '2px'
 						});
-						imgToolbox.css({
+						$toolbox.css({
 							width : '10px'
 						}).find('div.panel-body').hide();
 					} else {
-						imgToolbox.css({
+						$toolbox.css({
 							width : '60px'
 						}).find('div.panel-body').show();
 						$this.parent().parent().css({
