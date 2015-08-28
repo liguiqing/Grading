@@ -71,7 +71,10 @@
 .img-panel-toolbox .panel-body{
 	padding:5px 0px;
 }
-
+.img-panel-toolbox .panel-body .img-tool a{
+	text-decoration: none;
+	color:#333;
+}
 .point-panel {
 	color: #000;
 	padding-left: 1px;
@@ -104,6 +107,11 @@
 	overflow: auto;
 }
 
+.point-panel .panel-body .point-desc,.point-panel .panel-footer  .point-desc{
+	margin-top: -15px;
+    margin-bottom: 10px;
+}
+
 .point-panel .point-input {
 	padding-right: 0px;
 	border-right-width: 0px;
@@ -125,6 +133,7 @@
 .point-panel-detail {
 	max-height: 300px;
 	overflow: auto;
+	padding-bottom: 0px;
 }
 
 .point-panel-detail .dropdown-menu li>a i,.point-panel-total .dropdown-menu li>a i{

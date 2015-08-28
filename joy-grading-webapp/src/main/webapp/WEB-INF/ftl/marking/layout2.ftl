@@ -44,15 +44,15 @@
                        </div>
                        <div class="panel-body ">
                             <ul>
-                                <li class="img-tool"><i class="icon-refresh"></i></li>
+                                <li class="img-tool"><a class="icon-refresh" href="javascript:void(0);"></a></li>
                                 <li role="separator" class="divider"></li>
-                                <li class="img-tool"><i class=" icon-trash"></i></li>
+                                <li class="img-tool"><a class=" icon-trash" href="javascript:void(0);"></a></li>
                                 <li role="separator" class="divider"></li>
-                                <li class="img-tool"><i class="icon-fullscreen"></i></li>
+                                <li class="img-tool"><a class="icon-fullscreen" href="javascript:void(0);"></a></li>
                                 <li role="separator" class="divider"></li>
-                                <li class="img-tool"><i class="icon-zoom-in"></i></li>  
+                                <li class="img-tool"><a class="icon-zoom-in" href="javascript:void(0);"></a></li>  
                                 <li role="separator" class="divider"></li>
-                                <li class="img-tool"><i class="icon-zoom-out"></i></li>  								
+                                <li class="img-tool"><a class="icon-zoom-out" href="javascript:void(0);"></a></li>  								
 					       </ul>
                        </div>
                  </div>            
@@ -79,7 +79,7 @@
                         </div>
                         
                         <div class="panel-footer point-panel-total">
-                            <#assign point ={"label":"本题得分","name":"point","from":"0","to":"10","interval":"0.5"} >
+                            <#assign point ={"label":"本题得分","name":"point","from":"0","to":"10","interval":"0.5","disabled":"disabled"} >
                             <@pig.pointInputGroup dataToggle="inputSuccess" recommend=true point=point />
                    
                             <div class="row">

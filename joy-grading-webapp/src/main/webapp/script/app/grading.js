@@ -128,7 +128,7 @@
 					var eventCode = e.which||e.keyCode;
 					if(eventCode == 27){
 						modal.close();
-						point.next();
+						//point.next();
 					}else if(eventCode == 13){
 						if(score.eq()){
 							save(score.toJson());

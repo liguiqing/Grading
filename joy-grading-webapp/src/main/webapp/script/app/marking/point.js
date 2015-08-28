@@ -49,14 +49,21 @@
 					var score = this.validate();
 					this.grading.record(score);
 				}else{
+					var _this = this;
 					_$detailPointValues.each(function(i){
 						if(this.name == $curInput[0].name){
 							if(i <  _$detailPointValues.size()-1 ){
 								_$detailPointValues[i+1].focus();
 								return false;
 							}else{
-								_$totalPointValue.focus();
-								_$totalPointValue.select();
+								if(_$totalPointValue.attr('disabled')){
+									var score = _this.validate();
+									_this.grading.record(score);
+								}else{
+									_$totalPointValue.focus();
+									_$totalPointValue.select();									
+								}
+
 							}
 						}
 					});
@@ -85,7 +92,7 @@
 				_$detailPointValues.each(function(i) {
 					score.points[i] = {};
 					score.points[i]["value"]= this.value * 1;
-					score.points[i]["name"]= this.name1;
+					score.points[i]["name"]= this.name;
 				});
 				score.total = _$totalPointValue[0].value == ""?0:_$totalPointValue[0].value *1;
 				score.name = _$totalPointValue.attr("name");
@@ -106,6 +113,9 @@
 				//点击打分
 				$('aside.point-panel').on('click', '.point-btn', function() {
 					var $btn = $(this);
+					if($btn.attr("disabled")){
+						return true;
+					}
 					var dataToggle = $btn.attr('data-toggle');
 					var $input = $('#' + dataToggle);
 					self.givePoint($input,$btn.attr('data-value'))
@@ -145,8 +155,17 @@
 					//失焦时如果值包含有小数点，将小数点去掉
 					if(_reg.test(this.value)){
 					    this.value = this.value.substring(0,this.value.indexOf('.'));
+				    }else{
+				    	removeFirstZero(this);
 				    }
 				});
+				
+				function removeFirstZero(obj){
+					if(obj.value.indexOf("0") == 0 && obj.value.indexOf(".") != 1){
+						obj.value = obj.value.substring(1,obj.value.length);
+						removeFirstZero(obj);
+					}
+				};
 			};
 		};
 		 
