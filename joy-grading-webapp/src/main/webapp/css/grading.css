@@ -135,20 +135,28 @@
 	padding: 0 15px 0 0;
 }
 
-.point-panel-total .col-sm-6{
-	padding-left:30px;
+.point-record,.point-reset{
+	padding-left: 15px;
 }
-.point-reset .col-sm-6{
-	padding-right:20px;
+.point-record {
+	text-align: left;
 }
+.point-record button{
+	margin-left: 25px;
+	padding:0 10px;
+	width:80%;
+}
+
+.point-reset button{
+	margin-left: 15px;
+	padding:0 10px;
+	width:80%;
+}
+
 .point-panel .form-control-feedback {
 	color: #000;
 }
 
-.point-panel .point-desc {
-	margin-top: -15px;
-	margin-bottom: 10px;
-}
 
 .point-panel-completed {
 	padding: 0px 0px 1px 1px;
@@ -156,6 +164,7 @@
 
 .point-panel-completed .panel-body{
 	overflow: auto;
+	padding:10px 15px 5px 15px;
 }
 
 .point-panel-completed i {

@@ -140,7 +140,7 @@
 			
 			this.render = function(model) {
 				setImgPanelHeight();
-				
+				//imgPanel.hide();
 				var thisModel = {};
 				$.extend(true,thisModel,model,_pointModel);
 				onShortKeys(thisModel);
@@ -158,16 +158,12 @@
 			    var windowH = $(window).height();
 	            var h1 = getClientHeight()-navigationPanel.height()-statusPanel.height();
 	            imgPanel.height(h1);
+	            
 	            var h2 =  h1-markingPanel.height();
 	            pointCompletedPanel.height(h2-2);
-	            
-				if(!__browser.ie){
-					pointCompletedBody.height(getClientHeight()-markingPanel.height()-pointCompletedBody.prev().height());
-				}else if(__browser.ie * 1 < 9){
-					pointCompletedBody.height(pointCompletedPanel.height()-pointCompletedBody.prev().height()-100);
-				}else {
-					pointCompletedBody.height(getClientHeight()-markingPanel.height()-pointCompletedBody.prev().height()*2);
-				}
+
+				pointCompletedBody.height(getClientHeight()-navigationPanel.height()-statusPanel.height()-markingPanel.height()-pointCompletedBody.prev().height()-45-2);
+				
 			};
 		};
 		_grading = new Grading();

@@ -1,6 +1,13 @@
 .img-panel-toolbox .glyphicon {
 	left:6px;
 }
+.point-desc{
+	margin-top:-15px;
+}
+.point-panel-completed .panel-body{
+	overflow: auto;
+	padding:10px 15px 0px 15px;
+}
 
 @-ms-viewport       { width: device-width; }
 
