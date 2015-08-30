@@ -28,7 +28,7 @@ public class PortletViewController {
 	@RenderMapping
 	public String question(Model model) {
 		model.addAttribute("releaseInfo", ReleaseInfo.getReleaseInfo());
-
+        System.out.println("---------------------------------------------------------------------");
 		return "grading-portalet/view";
 	}
 
