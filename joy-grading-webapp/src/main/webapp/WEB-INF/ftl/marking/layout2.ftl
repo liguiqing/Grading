@@ -123,5 +123,7 @@
 		</div>
 		<div class="clearfix"></div>
     </footer>
+    <div class="bottom-arrow"><i class="icon-caret-down"></i></div>
+    <div class="top-arrow"><i class=" icon-caret-up"></i></div>
 </@doc.html>
 </#compress>

@@ -52,7 +52,7 @@
             					}					
             				});			                  	        	  
           	        	}
-          	        }          
+          	        }
           	};
 		
 		function shortKeyPoint(key){
