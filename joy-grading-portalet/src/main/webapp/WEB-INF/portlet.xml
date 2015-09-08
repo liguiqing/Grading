@@ -12,6 +12,9 @@
 		<expiration-cache>0</expiration-cache>
 		<supports>
 			<mime-type>text/html</mime-type>
+			<portlet-mode>edit</portlet-mode>
+			<portlet-mode>view</portlet-mode>
+			<portlet-mode>help</portlet-mode>
 		</supports>
 		<portlet-info>
 			<title>grading-portalet</title>

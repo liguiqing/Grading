@@ -14,22 +14,27 @@
 
 package com.joy.portalet;
 
+import com.joy.commons.web.view.ModelAndViewFactory;
 import com.liferay.portal.kernel.util.ReleaseInfo;
+
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("VIEW")
 public class PortletViewController {
 
-	@RenderMapping
-	public String question(Model model) {
-		model.addAttribute("releaseInfo", ReleaseInfo.getReleaseInfo());
+	@RequestMapping("VIEW")
+	public ModelAndView onView(RenderRequest request,RenderResponse response) throws Exception{
         System.out.println("---------------------------------------------------------------------");
-		return "grading-portalet/view";
+        
+        return ModelAndViewFactory.newModelAndViewFor("/grading-portalet/view").build();
+		//return "grading-portalet/view";
 	}
 
 }

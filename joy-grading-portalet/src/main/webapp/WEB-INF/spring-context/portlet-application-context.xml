@@ -13,11 +13,11 @@
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
 >
 	<context:annotation-config />
-   
-   <!--  
+   	<context:component-scan base-package="com.joy.portalet.**" />
+  
    <bean id="defaultAnnotationHandlerMapping" class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
    <bean id="defaultAnnotationHandlerAdapter" class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
-   -->
+
    <bean id="freemarkerConfiguration" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		 <property name="location" value="classpath:freemarker.properties" />
 	</bean>

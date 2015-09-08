@@ -18,9 +18,9 @@
 
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<File>${logger.path.dir}/ebd.log</File>
+		<File>${logger.path.dir}/${logger.fileName}.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>${logger.path.dir}/grading-%d{yyyyMMdd}.log
+			<FileNamePattern>${logger.path.dir}/${logger.fileName}-%d{yyyyMMdd}.log
 			</FileNamePattern>
 			<TimeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
