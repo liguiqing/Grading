@@ -28,7 +28,7 @@ public class BlockViewController {
 	public ModelAndView onShowImg(@PathVariable String blockuuid)
 					throws Exception {
 		logger.debug("URL /block/img/{} Method Get ", blockuuid);
-
+      
 		return ModelAndViewFactory.newModelAndViewFor("/block/imgPanel").build();
 	}
 }

@@ -19,9 +19,7 @@
     <mvc:resources location="/script/" mapping="/static/script/**" />
 	
     <context:annotation-config />
-    <!-- 开启controller注解支持 -->
-	<context:component-scan base-package="com.joy.grading.controller.**" />
-	
+
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 
     <bean id="defaultAnnotationHandlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
