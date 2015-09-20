@@ -6,6 +6,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.joy.grading.domain.paper.Item;
+import com.joy.grading.domain.paper.Paper;
+
 public class Block {
 
 	private Set<Item> items;
