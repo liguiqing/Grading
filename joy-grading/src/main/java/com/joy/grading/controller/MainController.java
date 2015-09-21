@@ -34,9 +34,9 @@ import com.joy.commons.web.view.ModelAndViewFactory;
 public class MainController {
     private static Logger logger = LoggerFactory.getLogger(MainController.class);
 	
-	@RequestMapping(value="/index")
+	@RequestMapping(value="/index",method=RequestMethod.GET)
 	public ModelAndView onIndex()throws Exception{
-		logger.debug("URL / Method Get");
+		logger.debug("URL /index Method Get");
 		
 		return ModelAndViewFactory.newModelAndViewFor("/index").build();
 	}

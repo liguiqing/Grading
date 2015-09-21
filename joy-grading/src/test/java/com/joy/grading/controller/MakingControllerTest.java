@@ -2,7 +2,7 @@ package com.joy.grading.controller;
 
 import static org.mockito.Mockito.isA;
 import static org.mockito.Mockito.when;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

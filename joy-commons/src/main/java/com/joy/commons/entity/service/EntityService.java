@@ -1,5 +1,5 @@
 /**
- * <p><b>© 1997-2013 深圳市海云天教育测评有限公司 TEL: (86)755 - 86024188</b></p>
+ * <p></p>
  * 
  **/
 
@@ -18,8 +18,6 @@ import java.util.List;
  **/
 public interface EntityService<T,PK extends Serializable> {
 
-	T get(PK pk);
-	
 	T load(PK pk);
 	
 	void create(T t);

@@ -28,7 +28,7 @@ public class MakingController {
 	private ExamService examService;
 	
 	@Autowired(required=false)
-	private PaperService PaperService;
+	private PaperService paperService;
 	
 	@RequestMapping(value = "/{examId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView onView(@PathVariable Long examId, @PathVariable Long paperId)
@@ -36,7 +36,7 @@ public class MakingController {
 		logger.debug("URL /marking/{}/{} Method Get ", examId, paperId);
 		List<Menu> menus = new ArrayList<Menu>();
 		Exam exam = examService.load(examId);
-		Paper paper = PaperService.load(paperId);
+		Paper paper = paperService.load(paperId);
 		
 		String title = exam.getName() + paper.getName() + "评分";
 		return ModelAndViewFactory.newModelAndViewFor("/marking/index").with("title", "试卷评分").with("menus", menus)
