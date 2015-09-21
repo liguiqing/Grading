@@ -26,4 +26,12 @@ public class BlockViewControllerTest extends AbstractControllerTest {
 						.andExpect(view().name("/block/pointsPanel"))
 						.andExpect(content().string(startsWith(" <div class='form-group  has-success has-feedback'>")));
 	}
+	
+	@Test
+	public void testOnShowImg() throws Exception {
+		assertNotNull(controller);
+		this.mvc.perform(get("/block/img/blockuuid"))
+						.andExpect(view().name("/block/imgPanel"))
+						.andExpect(content().string(startsWith("<div class=\"img-panel\">")));
+	}
 }

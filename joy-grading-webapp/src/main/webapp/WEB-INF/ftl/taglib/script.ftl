@@ -1,5 +1,4 @@
 <#macro script entry="">
-  
   <#if entry != "">  	
   <script type="text/javascript">
 	window["app"]={contextPath:'${request.contextPath}',rootPath:'${request.contextPath}/',entry:'${entry}'};

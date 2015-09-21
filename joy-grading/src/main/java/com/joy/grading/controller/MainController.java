@@ -34,26 +34,26 @@ import com.joy.commons.web.view.ModelAndViewFactory;
 public class MainController {
     private static Logger logger = LoggerFactory.getLogger(MainController.class);
 	
-	@RequestMapping(value="/")
+	@RequestMapping(value="/index")
 	public ModelAndView onIndex()throws Exception{
 		logger.debug("URL / Method Get");
 		
 		return ModelAndViewFactory.newModelAndViewFor("/index").build();
 	}
-	
-	@RequestMapping(value="/marking/{l}")
-	public ModelAndView onMark(@PathVariable String l)throws Exception{
-		logger.debug("URL /mark Method Get");
-		if("0".equals(l))
-			l="";
-		return ModelAndViewFactory.newModelAndViewFor("marking/layout"+l).build();
-	}
-	
-	@RequestMapping(value="/marking",method=RequestMethod.POST)
-	public ModelAndView onPostMark(@RequestBody Map model)throws Exception{
-		logger.debug("URL /mark Method POST");
-		logger.debug("model {}" ,model);
-		return ModelAndViewFactory.newModelAndViewFor("marking/layout2").build();
-	}
+//	
+//	@RequestMapping(value="/marking/{l}")
+//	public ModelAndView onMark(@PathVariable String l)throws Exception{
+//		logger.debug("URL /mark Method Get");
+//		if("0".equals(l))
+//			l="";
+//		return ModelAndViewFactory.newModelAndViewFor("marking/layout"+l).build();
+//	}
+//	
+//	@RequestMapping(value="/marking",method=RequestMethod.POST)
+//	public ModelAndView onPostMark(@RequestBody Map model)throws Exception{
+//		logger.debug("URL /mark Method POST");
+//		logger.debug("model {}" ,model);
+//		return ModelAndViewFactory.newModelAndViewFor("marking/layout2").build();
+//	}
 }
 

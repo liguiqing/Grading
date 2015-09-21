@@ -20,7 +20,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<scope>compile</scope>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<scope>compile</scope>
+		</dependency>					
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -31,6 +36,10 @@
 			<artifactId>freemarker</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+		   <groupId>org.apache.commons</groupId>
+		   <artifactId>commons-lang3</artifactId>
+		</dependency>			
 	</dependencies>
 	<build>
 		<finalName>joy-commons</finalName>
