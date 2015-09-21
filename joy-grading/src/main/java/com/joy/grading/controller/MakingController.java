@@ -24,10 +24,10 @@ import com.joy.grading.service.PaperService;;
 public class MakingController {
 	private static Logger logger = LoggerFactory.getLogger(MakingController.class);
 
-	@Autowired
+	@Autowired(required=false)
 	private ExamService examService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private PaperService PaperService;
 	
 	@RequestMapping(value = "/{examId}/{paperId}", method = RequestMethod.GET)

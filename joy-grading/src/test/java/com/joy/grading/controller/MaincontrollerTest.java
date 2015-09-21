@@ -27,7 +27,7 @@ import com.joy.test.controller.AbstractControllerTest;
  * @version 1.0
  **/ 
 
-@ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:servlet-context.xml","main.xml"})
+@ContextConfiguration(locations = {"classpath:servlet-context.xml","main.xml"})
 public class MaincontrollerTest extends AbstractControllerTest{
 	private static Logger logger = LoggerFactory.getLogger(MaincontrollerTest.class);
 	@Autowired

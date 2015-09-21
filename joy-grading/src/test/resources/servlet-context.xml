@@ -14,10 +14,6 @@
 	http://www.springframework.org/schema/context 
 	http://www.springframework.org/schema/context/spring-context-3.1.xsd">
     
-
-    <mvc:resources location="/css/" mapping="/static/css/**" />
-    <mvc:resources location="/script/" mapping="/static/script/**" />
-	
     <context:annotation-config />
 
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
@@ -54,7 +50,7 @@
 	</bean>
 	
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="file:${servlet.view.template.freemarker.path}" />
+        <property name="templateLoaderPath" value="file:D:/github/Grading/joy-grading-webapp/src/main/webapp/WEB-INF/ftl" />
         <property name="freemarkerSettings" ref="freemarkerConfiguration" />
         <property name="freemarkerVariables">
             <map>

@@ -12,8 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import com.joy.test.controller.AbstractControllerTest;
 
-@ContextConfiguration(locations = { "classpath:applicationContext.xml", "classpath:servlet-context.xml",
-				"BlockViewControllerTest.xml" })
+@ContextConfiguration(locations = { "classpath:servlet-context.xml","BlockViewControllerTest.xml" })
 public class BlockViewControllerTest extends AbstractControllerTest {
 
 	@Autowired

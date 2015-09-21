@@ -1,7 +1,8 @@
 package com.joy.grading.controller;
 
-import static org.mockito.Mockito.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.mockito.Mockito.isA;
+import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -21,7 +22,7 @@ import com.joy.grading.service.ExamService;
 import com.joy.grading.service.PaperService;
 import com.joy.test.controller.AbstractControllerTest;
 
-@ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:servlet-context.xml","MakingControllerTest.xml"})
+@ContextConfiguration(locations = {"classpath:servlet-context.xml","MakingControllerTest.xml"})
 public class MakingControllerTest  extends AbstractControllerTest{
 	private static Logger logger = LoggerFactory.getLogger(MakingControllerTest.class);
 	
