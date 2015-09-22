@@ -4,4 +4,4 @@
 .idea/
 target/
 .springBeans/
-src/test/resource
+src/test/resources
