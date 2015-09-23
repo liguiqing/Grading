@@ -190,7 +190,11 @@
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.core.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-ehcache</artifactId>
+				<version>${hibernate.core.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
@@ -363,6 +367,11 @@
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${druid.version}</version>
+			</dependency>			
 		</dependencies>
 	</dependencyManagement>
 
@@ -502,6 +511,7 @@
 		<powermock.version>1.6.2</powermock.version>
 		<ehcache.version>2.6.6</ehcache.version>
 		<mysql.version>5.1.34</mysql.version>
+		<druid.version>1.0.15</druid.version>
 		<project.build.sourceVersion>1.7</project.build.sourceVersion>
 		<project.build.targetVersion>1.7</project.build.targetVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

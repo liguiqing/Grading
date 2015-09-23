@@ -1,4 +1,4 @@
-package com.joy.grading.domain;
+package com.joy.grading.domain.block;
 
 import java.util.Set;
 
