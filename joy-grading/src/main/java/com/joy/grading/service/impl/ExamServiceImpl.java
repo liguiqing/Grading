@@ -1,7 +1,5 @@
 package com.joy.grading.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +17,17 @@ public class ExamServiceImpl extends AbstractEntityService<Exam, Long>implements
 		
 	}
 	
-	@Autowired
+	@Autowired(required=false)
 	public void setRepository(ExamRepository  repository) {
 		this.examRepository = repository;
 		super.setRepository(repository);
+	}
+	
+	@Override
+	public Exam load(Long pk) {
+		Exam exam =  new Exam();
+		exam.setName("Exam");
+		return exam;
 	}
 
 }

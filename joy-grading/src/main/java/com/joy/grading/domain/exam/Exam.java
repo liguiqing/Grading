@@ -1,9 +1,20 @@
 package com.joy.grading.domain.exam;
 
-public class Exam {
+import java.util.Date;
+
+import com.joy.commons.entity.share.Entity;
+
+
+public class Exam implements Entity<Exam>{
 
 	private String name;
+	
+	private Date examDate;
 
+	@Override
+	public boolean sameIdentityAs(Exam other) {
+		return false;
+	}
 	
 	public static class Builder{
 		private Exam exam;
@@ -25,4 +36,16 @@ public class Exam {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+    private Long id;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+    
+    
 }

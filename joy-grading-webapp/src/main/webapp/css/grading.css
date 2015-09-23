@@ -75,6 +75,11 @@
 	text-decoration: none;
 	color:#333;
 }
+
+#markingPanel aside:last{
+	
+}
+
 .point-panel {
 	color: #000;
 	padding-left: 1px;
@@ -103,8 +108,27 @@
 }
 
 .point-panel .panel-body {
-	max-height: 300px;
+	min-height: 200px;
 	overflow: auto;
+}
+
+.point-panel .panel-body .form-group {
+	margin-right:0px;
+}
+
+.point-panel .panel-body .form-group .input-group-btn .row {
+	margin-right:5px;
+	margin-left:-5px;
+	margin-top: 10px;
+	text-align: center;
+}
+.point-panel .panel-body .form-group .input-group-btn .divider{
+	background-color:#fff;
+}
+
+.nine-grid  {
+	padding: 10px 15px;
+
 }
 
 .point-panel .panel-body .point-desc,.point-panel .panel-footer  .point-desc{
