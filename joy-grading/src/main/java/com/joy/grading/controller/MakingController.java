@@ -35,6 +35,11 @@ public class MakingController {
 					throws Exception {
 		logger.debug("URL /marking/{}/{} Method Get ", examId, paperId);
 		List<Menu> menus = new ArrayList<Menu>();
+		menus.add( new Menu("个人中心",""));
+		menus.add( new Menu("参考答案",""));
+		menus.add( new Menu("统计信息",""));
+		menus.add( new Menu("锁定屏幕",""));
+		menus.add( new Menu("退出",""));
 		Exam exam = examService.load(examId);
 		Paper paper = paperService.load(paperId);
 		

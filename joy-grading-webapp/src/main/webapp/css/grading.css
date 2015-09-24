@@ -1,10 +1,23 @@
 
 
 .tool-bar{
-	background: url('img/header_bg.gif' ) repeat;
+	background: #9b9b9b;
+	height:60px;
+
 }
+
+.navbar-inverse .navbar-nav>li>a{
+	color: #fff;
+	font-size:16pt;
+	font-weight: bold;
+}
+
+.navbar-inverse .navbar-nav>li :FIRST-CHILD{
+	padding-left:10px;
+}
+
 .workspace {
-	padding: 50px 15px 0 0;
+	padding: 60px 15px 0 0;
 	height:100%;
 }
 
@@ -17,35 +30,53 @@
 .img-panel {
 	padding-right: 0px;
 	height:100%;
+	
 }
 
 .img-panel,.point-panel-detail {
 	min-height: 100px;
 }
 
-
-
 .img-panel-toolbox {
 	position: absolute;
-	top:1px;
-	left:20px;
-	width:60px;
+	top:10px;
+	width:80px;
+	left: 17px;
+	background-color:transparent;
+}
+.img-panel  .panel-success{
+	border:0px;
+}
+
+.img-panel .panel-heading{
+    background: url("img/grid-bg.png" ) repeat;
+    border-bottom:0px;
+}
+
+.img-panel .panel-body{
+	background: #727272;
+	border-radius: 2px;
+}
+
+.img-panel .panel-body .row{
+	margin: 0px;
 }
 
 .img-panel-toolbox .divider{
     height: 1px;
     margin: 9px 0;
     overflow: hidden;
-    background-color: #e5e5e5;
+    background-color: #727272;
 }
 
-.img-panel-toolbox .pull-right {
-	margin: -10px 0 0 15px;
+.img-panel-toolbox .pull-left {
+	margin: -10px 0 0 -15px;
+	color:#fff;
 }
 
 .img-panel-toolbox .glyphicon {
 	top:0px;
-	left:10px;
+	left:1px;
 	cursor: pointer;
 }
 
@@ -54,18 +85,8 @@
 	font-size: 20px;
 }
 
-.img-panel-toolbox ul>li {
-	padding:0 20px ;
-	cursor: pointer;
-}
-.img-panel-toolbox ul>li.img-tool {
-	height:24px;
-	width:24px;
-}
-
-.img-panel-toolbox ul>li:HOVER {
-	font-size: 24px;
-	
+.img-panel-toolbox ul:FIRST-CHILD {
+	padding-top:10px ;
 }
 
 .img-panel-toolbox .panel-body{
@@ -85,10 +106,15 @@
 	padding-left: 1px;
 	padding-right: 2px;
 	height:100%;
+	padding-top:15px;
 }
 
+.point-panel-marking,.point-panel-marking>.panel-heading,.point-panel-marking> .panel-footer{
+	background: #727272;
+	border: 0px;
+}
 .point-panel-marking{
-	margin-bottom:1px;
+	
 }
 
 .point-panel-toolbar {
@@ -108,7 +134,7 @@
 }
 
 .point-panel .panel-body {
-	min-height: 200px;
+	min-height: 400px;
 	overflow: auto;
 }
 
@@ -221,11 +247,14 @@
 	width: 100%;
 	color: #fff;
 	padding: 5px 0;
+	background: #9b9b9b;
+	height: :120px;
 }
 
 .status-bar li {
 	float: left;
-	padding-right: 15px
+	padding-right: 15px;
+	
 }
 
 .top-arrow{

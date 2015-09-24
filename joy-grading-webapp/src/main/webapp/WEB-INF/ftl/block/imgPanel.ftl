@@ -3,21 +3,53 @@
  <div id="imgContainer" style="height: 100%;"></div>
  <div class="panel panel-success  img-panel-toolbox">
   <div class="panel-heading">
-   <div class="pull-right">
-    <i class=" glyphicon  icon-double-angle-left"></i>
+   <div class="pull-left">
+    <i class=" glyphicon   icon-remove"></i>
    </div>
   </div>
   <div class="panel-body ">
    <ul>
-    <li class="img-tool"><a class="icon-refresh" href="javascript:void(0);"></a></li>
+    <li class="row" >
+      <div class="col-md-12">
+        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+      </div>
+    </li>
     <li role="separator" class="divider"></li>
-    <li class="img-tool"><a class=" icon-trash" href="javascript:void(0);"></a></li>
+    <li class="row" >
+      <div class="col-md-12">
+        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+      </div>
+    </li>
     <li role="separator" class="divider"></li>
-    <li class="img-tool"><a class="icon-fullscreen" href="javascript:void(0);"></a></li>
+    <li class="row" >
+      <div class="col-md-12">
+        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+      </div>
+    </li>
     <li role="separator" class="divider"></li>
-    <li class="img-tool"><a class="icon-zoom-in" href="javascript:void(0);"></a></li>
+    <li class="row" >
+      <div class="col-md-12">
+        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+      </div>
+    </li>
     <li role="separator" class="divider"></li>
-    <li class="img-tool"><a class="icon-zoom-out" href="javascript:void(0);"></a></li>
+    <li class="row" >
+      <div class="col-md-12">
+        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+      </div>
+    </li>
+    <li role="separator" class="divider"></li>
+    <li class="row" >
+      <div class="col-md-12">
+        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+      </div>
+    </li>
+    <li role="separator" class="divider"></li>
+    <li class="row" >
+      <div class="col-md-12">
+        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+      </div>
+    </li>        
    </ul>
   </div>
  </div>

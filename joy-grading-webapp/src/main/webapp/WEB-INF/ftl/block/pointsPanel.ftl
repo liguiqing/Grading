@@ -9,15 +9,31 @@
     </div>
 
     <div class="panel-body point-panel-detail">
-    <@pointInputGroup />
+     <div class="form-group ">
+       <label class="col-sm-3 col-md-3 col-lg-3 control-label " > 第五题</label>
+     </div>
+      <@pointInputGroup />
+      <@pointInputGroup />
+      <@pointInputGroup />
+     <div class="form-group ">
+       <label class="col-sm-3 col-md-3 col-lg-3 control-label " > 第六题</label>
+     </div>
+      <@pointInputGroup />
+      <@pointInputGroup />
     </div>
     <div class="panel-footer ">
      <div class="row">
-      <div class="col-sm-6 point-record">
-       <button type="button" class=" button button-action button-rounded ">记分</button>
+      <div class="col-sm-3 ">
+       <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
       </div>
-      <div class="col-sm-6 point-reset">
-       <button type="button" class="  button button-action button-rounded " disabled="disabled">重改</button>
+      <div class="col-sm-3 ">
+       <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+      </div>
+      <div class="col-sm-3 ">
+       <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+      </div>            
+      <div class="col-sm-3 ">
+       <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
       </div>
      </div>
      <div class="clearfix"></div>
@@ -29,8 +45,8 @@
 
 <#macro pointInputGroup inputId="inputSuccess"   point={"name":"point1","label":"给分点","disabled":"","from":0,"to":1,"interval":"0.5"}>
  <div class="form-group ">
-  <label class="col-sm-5 col-md-5 col-lg-5 control-label " for="${inputId}"> ${point.label}</label>
-   <div class="col-sm-7 col-md-7 col-lg-7 input-group">
+  <label class="col-sm-4 col-md-4 col-lg-4 control-label " for="${inputId}"> ${point.label}</label>
+   <div class="col-sm-8 col-md-8 col-lg-8 input-group">
       <input type="text" class="form-control" aria-label="..." id="${inputId}" placeholder="请输入${point.from!"0"}到${point.to!""}">
       <div class="input-group-btn">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
