@@ -17,8 +17,8 @@
       </div>
   </div>
       <footer class="navbar-fixed-bottom navbar-inverse status-bar">
-        <div class="pull-left status-bar">
-			<ul><li>科目</li><li>语文</li><li>试卷总数</li><li>112</li></ul>
+        <div class="pull-right status-bar">
+			<ul class="navbar-right"><li>阅卷员：</li><li>张无忌</li><li>科目：</li><li>语文</li><li>任务量：</li><li>1122/2309</li></ul>
 		</div>
 		<div class="clearfix"></div>
     </footer>

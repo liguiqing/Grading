@@ -1,23 +1,30 @@
-
-
 .tool-bar{
 	background: #9b9b9b;
-	height:60px;
+	height:50px;
+}
 
+.tool-bar .container{
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .navbar-inverse .navbar-nav>li>a{
 	color: #fff;
-	font-size:16pt;
-	font-weight: bold;
+	font-size:14pt;
+}
+
+@media screen and (max-width:768px){
+	.tool-bar .navbar-collapse{
+		background:#727272;
+	}
 }
 
 .navbar-inverse .navbar-nav>li :FIRST-CHILD{
-	padding-left:10px;
+	padding-left:0px;
 }
 
 .workspace {
-	padding: 60px 15px 0 0;
+	padding: 50px 15px 0 0;
 	height:100%;
 }
 
@@ -40,10 +47,15 @@
 .img-panel-toolbox {
 	position: absolute;
 	top:10px;
-	width:80px;
+	width:50px;
 	left: 17px;
 	background-color:transparent;
 }
+
+.img-panel-toolbox .panel-body  .row .col-md-12{
+	padding-left:5px;
+}
+
 .img-panel  .panel-success{
 	border:0px;
 }
@@ -102,19 +114,39 @@
 }
 
 .point-panel {
-	color: #000;
+	color: #fff;
 	padding-left: 1px;
 	padding-right: 2px;
 	height:100%;
 	padding-top:15px;
 }
 
+.point-panel{
+	
+}
+
+.point-panel .section-title .control-label {
+	text-align: left;
+}
+
+.point-panel-marking .panel-title{
+	height: 1px;
+	border-bottom: 1px dashed #fff;
+}
+
 .point-panel-marking,.point-panel-marking>.panel-heading,.point-panel-marking> .panel-footer{
 	background: #727272;
 	border: 0px;
 }
+
 .point-panel-marking{
 	
+}
+
+.point-panel-marking .point-to{
+	color:#FF4351;
+	font-weight: bold;
+	margin-left: 2px;
 }
 
 .point-panel-toolbar {
@@ -184,6 +216,7 @@
 	max-height: 300px;
 	overflow: auto;
 	padding-bottom: 0px;
+	padding-top:0px;
 }
 
 .point-panel-detail .dropdown-menu li>a i,.point-panel-total .dropdown-menu li>a i{
@@ -246,15 +279,13 @@
 .status-bar {
 	width: 100%;
 	color: #fff;
-	padding: 5px 0;
 	background: #9b9b9b;
-	height: :120px;
+	margin-right:15px;
 }
 
 .status-bar li {
 	float: left;
 	padding-right: 15px;
-	
 }
 
 .top-arrow{

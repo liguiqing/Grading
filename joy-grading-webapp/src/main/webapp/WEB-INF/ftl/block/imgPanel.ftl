@@ -11,43 +11,43 @@
    <ul>
     <li class="row" >
       <div class="col-md-12">
-        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+        <button type="button" class=" button   button-plain button-border button-square" >样</button>
       </div>
     </li>
     <li role="separator" class="divider"></li>
     <li class="row" >
       <div class="col-md-12">
-        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+        <button type="button" class=" button   button-plain button-border button-square" >样</button>
       </div>
     </li>
     <li role="separator" class="divider"></li>
     <li class="row" >
       <div class="col-md-12">
-        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+        <button type="button" class=" button   button-plain button-border button-square" >样</button>
       </div>
     </li>
     <li role="separator" class="divider"></li>
     <li class="row" >
       <div class="col-md-12">
-        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+        <button type="button" class=" button   button-plain button-border button-square" >样</button>
       </div>
     </li>
     <li role="separator" class="divider"></li>
     <li class="row" >
       <div class="col-md-12">
-        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+        <button type="button" class=" button   button-plain button-border button-square" >样</button>
       </div>
     </li>
     <li role="separator" class="divider"></li>
     <li class="row" >
       <div class="col-md-12">
-        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+        <button type="button" class=" button   button-plain button-border button-square" >样</button>
       </div>
     </li>
     <li role="separator" class="divider"></li>
     <li class="row" >
       <div class="col-md-12">
-        <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+        <button type="button" class=" button   button-plain button-border button-square" >样</button>
       </div>
     </li>        
    </ul>

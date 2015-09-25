@@ -3,20 +3,18 @@
   <form class="form-horizontal">
    <div class="panel panel-success point-panel-marking">
     <div class="panel-heading">
-     <h3 class="panel-title">
-      <span>${block.name!}</span>
-     </h3>
+     <h6 class="panel-title"></h6>
     </div>
 
     <div class="panel-body point-panel-detail">
-     <div class="form-group ">
-       <label class="col-sm-3 col-md-3 col-lg-3 control-label " > 第五题</label>
+     <div class="form-group section-title">
+       <label class="col-sm-6 col-md-6 col-lg-6 control-label " > 第五题</label>
      </div>
       <@pointInputGroup />
       <@pointInputGroup />
       <@pointInputGroup />
-     <div class="form-group ">
-       <label class="col-sm-3 col-md-3 col-lg-3 control-label " > 第六题</label>
+     <div class="form-group section-title">
+       <label class="col-sm-6 col-md-6 col-lg-6 control-label " > 第六题</label>
      </div>
       <@pointInputGroup />
       <@pointInputGroup />
@@ -24,16 +22,16 @@
     <div class="panel-footer ">
      <div class="row">
       <div class="col-sm-3 ">
-       <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+       <button type="button" class=" button  button-plain button-border button-square" >满</button>
       </div>
       <div class="col-sm-3 ">
-       <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+       <button type="button" class=" button  button-plain button-border button-square" >零</button>
       </div>
       <div class="col-sm-3 ">
-       <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+       <button type="button" class=" button  button-plain button-border button-square" >优</button>
       </div>            
       <div class="col-sm-3 ">
-       <button type="button" class=" button button-large button-plain button-border button-square" >样</button>
+       <button type="button" class=" button  button-plain button-border button-square" >样</button>
       </div>
      </div>
      <div class="clearfix"></div>
@@ -43,9 +41,9 @@
  </div>
 </#macro>
 
-<#macro pointInputGroup inputId="inputSuccess"   point={"name":"point1","label":"给分点","disabled":"","from":0,"to":1,"interval":"0.5"}>
+<#macro pointInputGroup inputId="inputSuccess"   point={"name":"point1","label":"(1)","disabled":"","from":0,"to":1,"interval":"0.5"}>
  <div class="form-group ">
-  <label class="col-sm-4 col-md-4 col-lg-4 control-label " for="${inputId}"> ${point.label}</label>
+  <label class="col-sm-4 col-md-4 col-lg-4 control-label " for="${inputId}"> ${point.label}<span class="point-to">${point.to}</span>分</label>
    <div class="col-sm-8 col-md-8 col-lg-8 input-group">
       <input type="text" class="form-control" aria-label="..." id="${inputId}" placeholder="请输入${point.from!"0"}到${point.to!""}">
       <div class="input-group-btn">
