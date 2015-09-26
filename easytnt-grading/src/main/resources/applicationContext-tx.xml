@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/aop 
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/task
+            http://www.springframework.org/schema/task/spring-task.xsd
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/jee 
+            http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+	<context:component-scan base-package="com.easytnt.grading.service.**" />
+	
+	<bean id="jdbcTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="ds" />
+		</property>
+	</bean>    
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+		
+	<!-- 扫描aop bean -->
+	<context:component-scan base-package="com.easytnt.grading.service">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	<!-- AOP支持 -->
+	<aop:aspectj-autoproxy/>
+	<!-- 异步支持 -->
+	<task:annotation-driven/>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*insert*" read-only="false" propagation="REQUIRED"
+				rollback-for="Exception" />
+			<tx:method name="*create*" read-only="false" propagation="REQUIRED"
+				rollback-for="Exception" />
+			<tx:method name="*save*" read-only="false" propagation="REQUIRED"
+				rollback-for="Exception" />
+			<tx:method name="*add*" read-only="false" propagation="REQUIRED"
+				rollback-for="Exception" />
+			<tx:method name="*update*" read-only="false" propagation="REQUIRED"
+				rollback-for="Exception" />
+			<tx:method name="*delete*" read-only="false" propagation="REQUIRED"
+				rollback-for="Exception" />
+			<tx:method name="*" read-only="true" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="servicePoint"
+			expression="execution(* com.easytnt.grading.service..*.*(..))" />
+		<aop:advisor pointcut-ref="servicePoint" advice-ref="txAdvice" />
+	</aop:config>
+</beans>

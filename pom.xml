@@ -12,13 +12,13 @@
 	~ under the License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.joy</groupId>
-	<artifactId>joy-parent</artifactId>
+	<groupId>com.easytnt</groupId>
+	<artifactId>easytnt-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>JoyAnything</name>
+	<name>Easytnt</name>
 	<description/>
 	<version>1.0.0.SNAPSHOT</version>
-	<url>http://www.joyanything.com</url>
+	<url>http://www.easytnt.com</url>
 	<inceptionYear>2015</inceptionYear>
 
 	<licenses>
@@ -43,32 +43,34 @@
 
 	<issueManagement>
 		<system>Jira</system>
-		<url>http://www.joyanything.com/jira</url>
+		<url>http://www.easetnt.com/jira</url>
 	</issueManagement>
-
+	<modules>
+	    <module>easytnt-test</module>
+		<module>easytnt-commons</module>
+		<module>easytnt-grading</module>
+		<module>easytnt-grading-webapp</module>
+        <!--<module>grading-portalet</module>-->
+	</modules>
 	<scm>
 		<connection>scm:git:git@github.com:liguiqing/Grading.git</connection>
 		<developerConnection>scm:git:git@github.com:liguiqing/Grading.git</developerConnection>
 		<url>https://github.com/liguiqing/Grading</url>
 		<tag>v1.0.0</tag>
 	</scm>
-	<!-- <distributionManagement> <repository> <id>private-nexus-library-releases</id> 
-		<name>private-nexus-library-releases</name> <url>http://localhost:8001/nexus/content/groups/public/releases/</url> 
-		</repository> <snapshotRepository> <id>private-nexus-library-snapshots</id> 
-		<name>private-nexus-library-snapshots</name> <url>http://localhost:8001/nexus/content/groups/public/snapshots/</url> 
-		</snapshotRepository> </distributionManagement> <distributionManagement> 
-		<site> <id>cas-site</id> <name>CAS Staging Site Documentation</name> <url>file:${project.site.deployDirectory}</url> 
-		</site> </distributionManagement> -->
-	
-	<modules>
-	    <module>joy-test</module>
-		<module>joy-commons</module>
-		<module>joy-grading</module>
-		<module>joy-grading-webapp</module>
-        <module>joy-grading-portalet</module>
-  </modules>
-	
-	
+	<distributionManagement>
+		<repository>
+			<id>nexus-releases</id>
+			<name>nexus-releases</name>
+			<url>http://localhost:8000/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<name>nexus-snapshots</name>
+			<url>http://localhost:8000/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<build>
 		<testResources>
 			<testResource>
@@ -516,6 +518,6 @@
 		<project.build.targetVersion>1.7</project.build.targetVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<project.site.deployDirectory>/tmp/anyassess-site</project.site.deployDirectory>
+		<project.site.deployDirectory>/tmp/easytnt-site</project.site.deployDirectory>
 	</properties>
 </project>
