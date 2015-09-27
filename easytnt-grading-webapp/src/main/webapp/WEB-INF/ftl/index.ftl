@@ -32,18 +32,15 @@
 
      <div class="workspace ">
 	   <div class="container-fluid">
-           <div class="col-md-9 img-panel">
+           <div class="col-sm-9 col-md-9 col-lg-8 img-panel">
 		       <img src="${request.contextPath}/static/css/img/sj1.jpg"  >
            </div>
-           <div class="col-md-3 point-panel">
-               
+           <div class="col-sm-3 col-md-3 col-lg-4 point-panel">             
                <form class="form-horizontal">
-
 			        <div class="panel panel-success">
 			            <div class="panel-heading">
 			                <h3 class="panel-title">第五题<div class="pull-right point-panel-toolbar"><i class="icon icon-cog"></i><i class="icon icon-caret-down"></i></div></h3>			                
-			            </div>
-			            
+			            </div>			            
 			            <div class="panel-body">
 						  <div class="form-group  has-success has-feedback">						    
 						    <label class="control-label col-sm-4" for="inputSuccess3">1</label>
@@ -58,13 +55,11 @@
 							          <li><a href="#">零分</a></li>
 							          <li role="separator" class="divider"></li>
 							          <li><a href="#">a</a></li>
-							        </ul>
-							        
+							        </ul>							        
 							      </div><!-- /btn-group -->
 							    </div>		      
 						    </div>
-						  </div>			            
-			            
+						  </div>
 						  <div class="form-group  has-success has-feedback">						    
 						    <label class="control-label col-sm-4" for="inputSuccess3">1</label>
 						    <div class="col-sm-6">

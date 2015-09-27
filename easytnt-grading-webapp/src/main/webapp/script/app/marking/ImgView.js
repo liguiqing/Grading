@@ -26,7 +26,18 @@
 					self.initView();
 				});
 			},
-
+			hilightArea:function(offset,content){
+				var $area = getHilightArea();
+				$area.width(offset.width);
+				$area.height(offset.height);
+				var position = $image.position();
+				var areaPosition = {top:offset.top+position.top,left:offset.left+position.left};
+				//$area.offset(areaPosition);
+				$area[0].style.position = "relative";
+				$area[0].style.top = offset.top+position.top + "px";
+				$area[0].style.left = offset.left+position.left + "px";
+				$area.text(content);
+			},
 			next : function (url) {
 				//调用下一张图片
 				url += "?"+ + new Date;
@@ -414,7 +425,7 @@
 				var top = cH - eH;
 				$eagleEyeContainer.css({
 					"left" : left - opts.mode-1,
-					"top" : top - opts.mode - 2
+					"top" : top - opts.mode - 12
 				});
 			},
 			createImage : function () {
@@ -453,6 +464,7 @@
 				$positionFrame.on("mousedown", this.startMove);
 
 			},
+
 			zooming : function () {
 				var ratio = opts.eagleEyeRatio; //缩放比例
 				var cW = opts.viewContainerWidth; //显示的宽度
@@ -570,6 +582,20 @@
 			result.WTimes = iWTimes;
 			result.HTimes = iHTimes;
 			return result;
+		};
+		
+		function getHilightArea(){
+			var $area = $viewContainer.find('div.img-hilight-area');
+			if($area.size() == 0){
+				$area = $('<div>');
+				$area.addClass('img-hilight-area');
+				//$area.css({"-webkit-animation":"twinkling 1s infinite ease-in-out"});
+				//$area.append('<div class="img-hilight-area-content"></div>');
+				$viewContainer.append($area);
+				return $area;
+			}else{
+				return $area;
+			}
 		};
 
 		var result = {

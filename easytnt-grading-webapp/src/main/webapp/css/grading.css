@@ -43,6 +43,14 @@
 	min-height: 100px;
 }
 
+.img-hilight-area{
+	border:2px dashed #FF4351;
+	text-align: right;
+	color: #FF4351;
+	font-size: 14pt;
+	font-weight: bold;
+}
+
 .img-panel-toolbox {
 	position: absolute;
 	top:10px;

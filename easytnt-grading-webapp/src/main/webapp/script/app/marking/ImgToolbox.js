@@ -56,6 +56,10 @@
 				_imgViewer.next(_imgSrc);
 			};
 			
+			this.hilight = function(area,content){
+				_imgViewer.hilightArea(area,content);
+			};
+			
 			this.shift = function() {
 				$toolbox.find('i.glyphicon').click();
 			};
