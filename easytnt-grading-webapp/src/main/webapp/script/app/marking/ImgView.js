@@ -22,8 +22,12 @@
 						id : "myImage",
 						src : opts.imgSrc
 					});
+				var mine = this;
 				$image.load(function () {
 					self.initView();
+					if(opts.imgLoaded){
+						opts.imgLoaded.call(mine);
+					}
 				});
 			},
 			hilightArea:function(offset,content){

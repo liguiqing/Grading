@@ -1,12 +1,13 @@
 (function() {
 	"use strict";
-	define([ 'jquery', 'logger', 'app/marking/ImgView' ], function($, logger,ImgView) {
+	define([ 'jquery', 'logger'], function($, logger) {
 
 		var imgToolbox = function() {
 			var $toolbox;
 			var _imgViewer;
-			var _imgSrc;
 			function _init() {
+				
+				return;
 				$toolbox = $('div.img-panel-toolbox');
 				$toolbox.find('i.glyphicon').click(function() {
 					var $this = $(this);
@@ -29,7 +30,7 @@
 					}
 				});
 				$toolbox.find('div.panel-body ').on('click','ul .icon-refresh',function(){
-					_imgViewer.next(_imgSrc);
+					//_imgViewer.next(_imgSrc);
 				}).on('click','ul .icon-fullscreen',function(){
 					_imgViewer.autoAdaptationWidthAndHeight();
 				}).on('click','ul .icon-zoom-in',function(){
@@ -42,43 +43,11 @@
 			/**
 			 * 首次使用时，必须调用
 			 */
-			this.init = function(imgContainerId,imgSrc) {
-				_imgSrc = imgSrc;
-				_imgViewer = ImgView.init({containerId:imgContainerId,imgSrc:_imgSrc});
+			this.init = function(imgViewer) {
+				_imgViewer = imgViewer;
 				_init();
 			};
 			
-			/**
-			 * 切到新图
-			 */
-			this.switchTo = function(imgSrc){
-				_imgSrc = imgSrc;
-				_imgViewer.next(_imgSrc);
-			};
-			
-			this.hilight = function(area,content){
-				_imgViewer.hilightArea(area,content);
-			};
-			
-			this.shift = function() {
-				$toolbox.find('i.glyphicon').click();
-			};
-			
-			this.refresh = function(){
-				$toolbox.find('div.panel-body ul.icon-refresh ').click();
-			};
-
-			this.zoomIn = function() {
-				$toolbox.find('div.panel-body ul.icon-zoom-in ').click();
-			};
-
-			this.zoomOut = function() {
-				$toolbox.find('div.panel-body ul.icon-zoom-out ').click();
-			};
-
-			this.fullscreen = function() {
-				$toolbox.find('div.panel-body ul.icon-fullscreen ').click();
-			};
 		};
 		return new imgToolbox();
 	});

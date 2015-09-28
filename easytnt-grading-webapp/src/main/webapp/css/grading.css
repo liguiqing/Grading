@@ -33,13 +33,16 @@
 	width: 100%;
 }
 
-.img-panel {
+.img-panel-container{
 	padding-right: 0px;
-	height:100%;
 	
 }
 
-.img-panel,.point-panel-detail {
+.img-panel {
+    height:100%;
+}
+
+.point-panel-detail {
 	min-height: 100px;
 }
 
@@ -120,17 +123,17 @@
 	
 }
 
+.point-panel-container{
+    padding-left: 1px;
+	padding-right: 2px;
+}
+
 .point-panel {
 	color: #fff;
-	padding-left: 1px;
-	padding-right: 2px;
 	height:100%;
 	padding-top:15px;
 }
 
-.point-panel{
-	
-}
 
 .point-panel .section-title .control-label {
 	text-align: left;
@@ -139,6 +142,7 @@
 .point-panel-marking .panel-title{
 	height: 1px;
 	border-bottom: 1px dashed #fff;
+	height:100%;
 }
 
 .point-panel-marking,.point-panel-marking>.panel-heading,.point-panel-marking> .panel-footer{
@@ -150,35 +154,19 @@
 	
 }
 
-.point-panel-marking .point-to{
+.point-input{
 	color:#FF4351;
 	font-weight: bold;
 	margin-left: 2px;
 }
 
-.point-panel-toolbar {
-	
-}
-
-.point-input {
-
-}
-
-.point-btn {
-	color: #c83025;
-}
-
-.point-panel-toolbar .icon {
-	padding-left: 10px;
-}
-
-.point-panel .panel-body {
-	min-height: 400px;
-	overflow: auto;
-}
-
 .point-panel .panel-body .form-group {
 	margin-right:0px;
+}
+
+.point-panel .panel-body .form-group .button-small{
+	padding:0 10px;
+	font-size:14px;
 }
 
 .point-panel .panel-body .form-group .input-group-btn .row {
@@ -187,100 +175,15 @@
 	margin-top: 10px;
 	text-align: center;
 }
+
 .point-panel .panel-body .form-group .input-group-btn .divider{
 	background-color:#fff;
 }
 
 .nine-grid  {
 	padding: 10px 15px;
-
 }
 
-.point-panel .panel-body .point-desc,.point-panel .panel-footer  .point-desc{
-	margin-top: -15px;
-    margin-bottom: 10px;
-}
-
-.point-panel .point-input {
-	padding-right: 0px;
-	border-right-width: 0px;
-	font-size: 15pt;
-	color: #c83025;
-	border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;	
-}
-
-.point-panel .point-mark {
-	border-left-width: 0px;
-	border-color: #3c763d;
-}
-
-.point-panel .point-mark-select-right {
-	border-color: #3c763d;
-}
-
-.point-panel-detail {
-	max-height: 300px;
-	overflow: auto;
-	padding-bottom: 0px;
-	padding-top:0px;
-}
-
-.point-panel-detail .dropdown-menu li>a i,.point-panel-total .dropdown-menu li>a i{
-	padding: 0 10px 0 0;
-}
-
-.point-panel-detail .dropdown-menu li>a span,.point-panel-total .dropdown-menu li>a span{
-	padding: 0 15px 0 0;
-}
-
-.point-record,.point-reset{
-	padding-left: 15px;
-}
-.point-record {
-	text-align: left;
-}
-.point-record button{
-	margin-left: 25px;
-	padding:0 10px;
-	width:80%;
-}
-
-.point-reset button{
-	margin-left: 15px;
-	padding:0 10px;
-	width:80%;
-}
-
-.point-panel .form-control-feedback {
-	color: #000;
-}
-
-.point-panel-completed {
-	padding: 0px 0px 1px 1px;
-}
-
-.point-panel-completed .panel-body{
-	overflow: auto;
-	padding:10px 15px 5px 15px;
-}
-
-.point-panel-completed i {
-	margin: 0px 5px 0px 0px;
-	font-size:14px;
-}
-.point-panel-completed i.icon-star {
-	color: #A5DE37;
-}
-
-.point-panel-completed i.icon-star-empty {
-	color: #FEAE1B;
-}
-
-.point-panel-completed i.icon-star-half {
-	color: #ff7680;
-	padding: 0px 5px 0px 0px;
-}
 
 .status-bar {
 	width: 100%;

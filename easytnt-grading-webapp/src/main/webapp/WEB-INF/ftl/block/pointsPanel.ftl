@@ -1,12 +1,11 @@
 <#macro pointsPanel block={}>
-<div class="">
+<div class="point-panel">
   <form class="form-horizontal">
    <div class="panel panel-success point-panel-marking">
     <div class="panel-heading">
      <h6 class="panel-title"></h6>
     </div>
-
-    <div class="panel-body point-panel-detail">
+    <div class="panel-body">
      <div class="form-group section-title">
        <label class="col-sm-6 col-md-6 col-lg-6 control-label " > 第五题</label>
      </div>
@@ -19,12 +18,14 @@
       <@pointInputGroup />
       <@pointInputGroup />
       <div class="form-group ">
-         <div class="col-sm-1 col-md-1 col-lg-2"></div>
-         <div class="col-sm-10 col-md-10 col-lg-8">
-           <button type="button" class="button button-highlight button-rounded button-small" >记分</button>
-           <button type="button" class=" button button-highlight button-rounded button-small" >重改</button>
+         <div class="col-sm-1 col-md-1 col-lg-1"></div>
+         <div class="col-sm-5 col-md-5 col-lg-5" style="text-align:center;">
+           <button type="button" class="button button-highlight button-rounded button-small " ><i class="icon-save"></i>记分</button>
+         </div>
+         <div class="col-sm-5 col-md-5 col-lg-5" style="text-align:center;">  
+           <button type="button" class=" button button-highlight button-rounded button-small" ><i class="icon-repeat"></i>重改</button>
         </div>
-         <div class="col-sm-1 col-md-1 col-lg-2"></div>
+         <div class="col-sm-1 col-md-1 col-lg-1"></div>
       </div>
     </div>
     <div class="panel-footer ">
@@ -72,8 +73,8 @@ position={"top":10,"left":10,"height":30,"width":100}>
              <div class="row" >
                <div class="col-md-3"><a href="#." class="nine-grid button button-primary button-square button-tiny">0</a></div>
                <div class="col-md-3"><a href="#0" class="nine-grid button button-primary button-square button-tiny"> . </a></div>
-               <div class="col-md-3"><a href="##" class="nine-grid button button-action button-square button-tiny">完成</a></div>
-               <div class="col-md-3"><a href="#0" class="nine-grid button btn-success button-square button-tiny">清除</a></div>               
+               <div class="col-md-3"><a href="##" alt ="清除 " class="nine-grid button button-action button-square button-tiny"><i class=" icon-ok"></i></a></div>
+               <div class="col-md-3"><a href="#0" class="nine-grid button btn-success button-square button-tiny"><i class=" icon-undo"></i></a></div>               
              </div>
           </li>
           <li role="separator" class="divider"></li> 
