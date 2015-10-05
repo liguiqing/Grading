@@ -6,6 +6,7 @@
 .tool-bar .container{
     padding-left: 0px;
     padding-right: 0px;
+    margin-left: 35px;
 }
 
 .navbar-inverse .navbar-nav>li>a{
@@ -57,7 +58,7 @@
 .img-panel-toolbox {
 	position: absolute;
 	top:10px;
-	width:50px;
+	width:35px;
 	left: 17px;
 	background-color:transparent;
 }
@@ -86,7 +87,7 @@
 
 .img-panel-toolbox .divider{
     height: 1px;
-    margin: 9px 0;
+    margin: 2px 0;
     overflow: hidden;
     background-color: #727272;
 }
@@ -108,15 +109,56 @@
 }
 
 .img-panel-toolbox ul:FIRST-CHILD {
-	padding-top:10px ;
+	padding-top:0px ;
 }
 
 .img-panel-toolbox .panel-body{
 	padding:5px 0px;
 }
+
+.img-panel-toolbox .panel-body b{
+	font-size:16px;
+}
+
+.img-panel-toolbox .panel-body b.left{
+	margin-left: -3px;
+}
+
+.img-panel-toolbox .panel-body b.right{
+	margin-left: -5px;
+}
+
+.img-panel-toolbox .panel-body b.bottom{
+	margin: 5px 0px 0px -3px;
+    left: 16px;
+    top: 2px;
+    position: absolute;
+}
+
+.img-panel-toolbox .panel-body b.top{
+    position: absolute;
+    top: -4px;
+    left: 13px;
+}
+
+.img-panel-toolbox .panel-body b.colorful{
+    background-image: url("img/colorful.png");
+    padding: 0px 10px 1px 9px;
+}
+
+
 .img-panel-toolbox .panel-body .img-tool a{
 	text-decoration: none;
 	color:#333;
+}
+
+.img-panel-toolbox .logv{
+	background-image: url("img/logv.png");
+	width: 25px;
+	height:153px;
+	bottom:5px;
+	margin-left: 4px;
+    position: absolute;
 }
 
 #markingPanel aside:last{
@@ -167,6 +209,7 @@
 .point-panel .panel-body .form-group .button-small{
 	padding:0 10px;
 	font-size:14px;
+	background-color: #489da0;
 }
 
 .point-panel .panel-body .form-group .input-group-btn .row {

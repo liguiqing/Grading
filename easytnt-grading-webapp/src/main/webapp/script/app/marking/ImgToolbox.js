@@ -6,9 +6,20 @@
 			var $toolbox;
 			var _imgViewer;
 			function _init() {
-				
-				return;
 				$toolbox = $('div.img-panel-toolbox');
+				$toolbox.on('click','div.pull-left i',function(){
+					var $this = $(this);
+					if($this.hasClass('icon-check-empty')){
+						$this.addClass('icon-remove').removeClass('icon-check-empty');
+						$toolbox.find('div.panel-body ').show();
+					}else{
+						$this.addClass('icon-check-empty').removeClass('icon-remove');
+						$toolbox.find('div.panel-body ').hide();
+					}
+					
+				});
+				return;
+				
 				$toolbox.find('i.glyphicon').click(function() {
 					var $this = $(this);
 					$this.toggleClass('icon-double-angle-right');

@@ -43,6 +43,7 @@
 
 		var Grading = function() {
 			var imgPanel = $('aside.img-panel-container');
+			var imgToolboxPanel = $('div.img-panel-toolbox');
 			var pointPanel = $('aside.point-panel-container .point-panel-marking');
 			var navigationPanel = $('#navigation .container');
 			var statusPanel = $('footer.status-bar');
@@ -104,6 +105,7 @@
 	            var h1 = getClientHeight()-navigationPanel.height()-statusPanel.height();
 	            imgPanel.height(h1);
 	            pointPanel.find('.panel-body').height(h1-150);
+	            imgToolboxPanel.find('.panel-body ').height(h1-65);
 			};		
 					
 		};
