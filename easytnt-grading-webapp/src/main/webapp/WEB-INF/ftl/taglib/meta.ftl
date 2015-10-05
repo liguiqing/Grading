@@ -3,6 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 	<meta name="renderer" content="webkit">
     <link href="${request.contextPath}/static/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/font-awesome.min.css" />

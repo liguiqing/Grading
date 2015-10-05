@@ -74,6 +74,7 @@ var config = {
 	paths : {
 		"jquery" : jqueryPath,
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
+		"chart" : "lib/highcharts/highcharts",
 		"dialog":"commons/dialog",
 		"ui":"commons/uiwrapper", 
 		"ajax":"commons/ajax",
@@ -84,7 +85,8 @@ var config = {
 		"Map":"ext/Map"
 	},
 	shim : {
-		'bootstrap' : {deps:['jquery']}
+		'bootstrap' : {deps:['jquery']},
+		'chart' : {deps:['jquery']}
 	}
 };
 if(browser.isMobile()){

@@ -30,10 +30,10 @@ public class MakingController {
 	@Autowired(required=false)
 	private PaperService paperService;
 	
-	@RequestMapping(value = "/{examId}/{paperId}", method = RequestMethod.GET)
-	public ModelAndView onView(@PathVariable Long examId, @PathVariable Long paperId)
+	@RequestMapping(value = "/{examId}/{paperId}/{blockuuid}", method = RequestMethod.GET)
+	public ModelAndView onView(@PathVariable Long examId, @PathVariable Long paperId,@PathVariable String blockuuid)
 					throws Exception {
-		logger.debug("URL /marking/{}/{} Method Get ", examId, paperId);
+		logger.debug("URL /marking/{}/{}/{} Method Get ", examId, paperId,blockuuid);
 		List<Menu> menus = new ArrayList<Menu>();
 		menus.add( new Menu("个人中心",""));
 		menus.add( new Menu("参考答案",""));
@@ -45,6 +45,20 @@ public class MakingController {
 		
 		String title = exam.getName() + paper.getName() + "评分";
 		return ModelAndViewFactory.newModelAndViewFor("/marking/index").with("title", "试卷评分").with("menus", menus)
+						.build();
+	}
+	
+	@RequestMapping(value = "/monitor/{examId}/{paperId}/{blockuuid}", method = RequestMethod.GET)
+	public ModelAndView onMonitor(@PathVariable Long examId, @PathVariable Long paperId,@PathVariable String blockuuid)
+					throws Exception {
+		logger.debug("URL /marking/monitor/{}/{}/{} Method Get ", examId, paperId,blockuuid);
+		List<Menu> menus = new ArrayList<Menu>();
+		menus.add( new Menu("退出",""));
+		Exam exam = examService.load(examId);
+		Paper paper = paperService.load(paperId);
+		
+		String title = exam.getName() + paper.getName() + "监控";
+		return ModelAndViewFactory.newModelAndViewFor("/marking/monitorIndex").with("title", "试卷评分").with("menus2", menus)
 						.build();
 	}
 }

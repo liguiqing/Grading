@@ -45,8 +45,24 @@ public class MakingControllerTest  extends AbstractControllerTest{
 		when(examService.load(isA(Long.class))).thenReturn(exam);
 		when(paperService.load(isA(Long.class))).thenReturn(paper);
 
-		this.mvc.perform(get("/marking/1/1"))
+		this.mvc.perform(get("/marking/1/1/blockuuid"))
 		.andExpect(view().name("/marking/index"))
+		.andExpect(content().string(startsWith("<!DOCTYPE html>")))
+		.andExpect(content().string(containsString("</html>")))
+		.andExpect(content().string(endsWith("")));
+	}
+	
+	@Test
+	public void testOnMonitor()throws Exception{
+		assertNotNull(controller);
+		Paper paper  = new Paper.Builder("Test Paper").create();
+		Exam exam = new Exam.Builder("test exam").create();
+		//examService.load(1l);
+		when(examService.load(isA(Long.class))).thenReturn(exam);
+		when(paperService.load(isA(Long.class))).thenReturn(paper);
+
+		this.mvc.perform(get("/marking/monitor/1/1/blockuuid"))
+		.andExpect(view().name("/marking/monitorIndex"))
 		.andExpect(content().string(startsWith("<!DOCTYPE html>")))
 		.andExpect(content().string(containsString("</html>")))
 		.andExpect(content().string(endsWith("")));
