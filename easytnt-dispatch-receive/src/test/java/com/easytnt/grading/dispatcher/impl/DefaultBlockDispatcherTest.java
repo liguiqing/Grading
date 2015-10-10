@@ -1,0 +1,22 @@
+/**
+ * 
+ * 
+ **/
+
+package com.easytnt.grading.dispatcher.impl;
+/** 
+ * <pre>
+ * 
+ * </pre>
+ *  
+ * @author 李贵庆2015年10月10日
+ * @version 1.0
+ **/
+public class DefaultBlockDispatcherTest {
+
+	
+	public void testGet()throws Exception{
+		
+	}
+}
+

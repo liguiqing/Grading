@@ -9,10 +9,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
 
 import com.easytnt.test.controller.AbstractControllerTest;
 
-@ContextConfiguration(locations = { "classpath:servlet-context.xml","BlockViewControllerTest.xml" })
+@ContextHierarchy({
+	@ContextConfiguration(locations = {"classpath:servlet-context.xml"}),
+	@ContextConfiguration(classes= {BlockViewController.class})
+})
 public class BlockViewControllerTest extends AbstractControllerTest {
 
 	@Autowired
