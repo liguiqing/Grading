@@ -19,5 +19,7 @@ public interface Block {
 	 * @return
 	 */
 	int getCurrentPinci();
+
+	void nextPinci();
 }
 

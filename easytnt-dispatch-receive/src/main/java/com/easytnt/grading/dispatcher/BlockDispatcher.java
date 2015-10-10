@@ -15,5 +15,7 @@ package com.easytnt.grading.dispatcher;
 public interface BlockDispatcher {
 
 	Block get();
+	
+	void stop();
 }
 
