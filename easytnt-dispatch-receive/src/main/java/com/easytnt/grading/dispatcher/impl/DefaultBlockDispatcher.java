@@ -41,12 +41,19 @@ public class DefaultBlockDispatcher implements BlockDispatcher {
 	
 	private  QueueListener queueListener;
 	
+	private BlockDispatcher topPatcher;
+	
 	public DefaultBlockDispatcher() {
 		this(new SinglePaperPriorDispatcherStrategy(1));
 	}
 	
 	public DefaultBlockDispatcher(DispatcherStrategy dispatcherStrategy) {
 		this(dispatcherStrategy,new JdbcBlockFetcher());
+	}
+	
+	public DefaultBlockDispatcher(BlockDispatcher topPatcher,DispatcherStrategy dispatcherStrategy,BlockFetcher blockFetcher) {
+		this(dispatcherStrategy,blockFetcher);
+		this.topPatcher = topPatcher;
 	}
 	
 	public DefaultBlockDispatcher(DispatcherStrategy dispatcherStrategy,BlockFetcher blockFetcher) {
@@ -61,8 +68,12 @@ public class DefaultBlockDispatcher implements BlockDispatcher {
 
 	@Override
 	public Block get() {
+		Block block = getBlockFromTop();
+		if(block != null)
+			return block;
+			
 		Queue<Block> queue = getPinciQueue();
-		Block block =  queue.poll();
+		block =  queue.poll();
 		if(block == null)
 			return null;
 		moveToNext(block);
@@ -79,6 +90,13 @@ public class DefaultBlockDispatcher implements BlockDispatcher {
 		this.queueListener.stop();
 	}
 
+	private Block getBlockFromTop() {
+		if(this.topPatcher != null) {
+			return this.topPatcher.get();
+		}
+		return null;
+	}
+	
 	/**
 	 * 移动到下一评
 	 * @param block
