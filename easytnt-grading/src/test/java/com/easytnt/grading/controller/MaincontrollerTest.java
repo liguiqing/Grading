@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 
+import org.springframework.test.context.ContextHierarchy;
+
 import com.easytnt.test.controller.AbstractControllerTest;
 
 /** 
@@ -28,7 +30,10 @@ import com.easytnt.test.controller.AbstractControllerTest;
  * @version 1.0
  **/ 
 
-@ContextConfiguration(locations = {"classpath:servlet-context.xml","main.xml"})
+@ContextHierarchy({
+	@ContextConfiguration(locations = {"classpath:servlet-context.xml"}),
+	@ContextConfiguration(classes= {MainController.class})
+})
 public class MaincontrollerTest extends AbstractControllerTest{
 	private static Logger logger = LoggerFactory.getLogger(MaincontrollerTest.class);
 	@Autowired
