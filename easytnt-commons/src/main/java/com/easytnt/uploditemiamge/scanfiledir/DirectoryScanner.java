@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  */
 public interface DirectoryScanner {
-	public ItemImageFileContainer scan() throws IOException;
+	public FileInfoContainer scan() throws IOException;
 
 	public void scan(VisitorFile visitorFile) throws IOException;
 }

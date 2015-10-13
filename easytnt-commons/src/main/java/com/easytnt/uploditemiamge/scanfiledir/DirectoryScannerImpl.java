@@ -17,23 +17,23 @@ import java.nio.file.attribute.BasicFileAttributes;
  */
 public class DirectoryScannerImpl implements DirectoryScanner {
 	private Path rootPath;
-	private ItemImageFileBulidor buildor;
+	private FileInfoBulidor buildor;
 
 	public DirectoryScannerImpl(String rootDir) {
 		this.rootPath = Paths.get(rootDir);
-		buildor = new ItemImageFileBulidor(rootDir);
+		buildor = new FileInfoBulidor(rootDir);
 	}
 
 	@Override
-	public ItemImageFileContainer scan() throws IOException {
+	public FileInfoContainer scan() throws IOException {
 
-		final ItemImageFileContainer itemImageFileContainer = new ItemImageFileContainer();
+		final FileInfoContainer itemImageFileContainer = new FileInfoContainer();
 
 		SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
 
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				ItemImageFile itemImageFile = buildor.building(file);
+				FileInfo itemImageFile = buildor.building(file);
 				itemImageFileContainer.add(itemImageFile);
 				return super.visitFile(file, attrs);
 			}
@@ -50,7 +50,7 @@ public class DirectoryScannerImpl implements DirectoryScanner {
 
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				ItemImageFile itemImageFile = buildor.building(file);
+				FileInfo itemImageFile = buildor.building(file);
 				visitorFile.visit(itemImageFile);
 				return super.visitFile(file, attrs);
 			}

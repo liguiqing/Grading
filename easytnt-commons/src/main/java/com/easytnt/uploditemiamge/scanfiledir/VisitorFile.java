@@ -8,5 +8,5 @@ package com.easytnt.uploditemiamge.scanfiledir;
  *
  */
 public interface VisitorFile {
-	public void visit(ItemImageFile itemImageFile);
+	public void visit(FileInfo fileInfo);
 }

@@ -9,11 +9,11 @@ import java.util.ArrayList;
  * @author liuyu
  *
  */
-public class ItemImageFileContainer {
-	private ArrayList<ItemImageFile> container = new ArrayList<>();
+public class FileInfoContainer {
+	private ArrayList<FileInfo> container = new ArrayList<>();
 	private int fileNumber = 0;
 
-	public void add(ItemImageFile itemImageFile) {
+	public void add(FileInfo itemImageFile) {
 		container.add(itemImageFile);
 		count();
 	}

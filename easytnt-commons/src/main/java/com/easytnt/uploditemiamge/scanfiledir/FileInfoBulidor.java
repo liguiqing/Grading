@@ -10,24 +10,24 @@ import java.nio.file.Paths;
  * @author liuyu
  *
  */
-public class ItemImageFileBulidor {
+public class FileInfoBulidor {
 	private Path rootDir;
 	private int dirDepth;
 
-	public ItemImageFileBulidor(String rootDir) {
+	public FileInfoBulidor(String rootDir) {
 		this.rootDir = Paths.get(rootDir);
 		this.dirDepth = this.rootDir.getNameCount();
 	}
 
-	public ItemImageFile building(String path) {
+	public FileInfo building(String path) {
 		return building(Paths.get(path));
 	}
 
-	public ItemImageFile building(Path path) {
+	public FileInfo building(Path path) {
 		int pathDepath = path.getNameCount();
 		String relativelyPath = path.subpath(dirDepth, pathDepath).toString();
 
-		ItemImageFile itemImageFile = new ItemImageFile();
+		FileInfo itemImageFile = new FileInfo();
 		itemImageFile.setRootDir(rootDir.toString()).setRelativelyPath(relativelyPath);
 		return itemImageFile;
 	}
