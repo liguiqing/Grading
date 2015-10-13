@@ -19,7 +19,6 @@ function browserCheck() {
 }
 
 function changeCSS(theClass,element,value,target) {
-	return;
 	var cssRules;
 	target = eval(target+'.document.styleSheets');
 	if (browser=='ie6'||browser=='ie7') {
