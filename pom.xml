@@ -48,6 +48,7 @@
 	<modules>
 	    <module>easytnt-test</module>
 		<module>easytnt-commons</module>
+		<module>easytnt-core</module>
 		<module>easytnt-grading</module>
 		<module>easytnt-grading-webapp</module>
 		<module>easytnt-dispatch-receive</module>
