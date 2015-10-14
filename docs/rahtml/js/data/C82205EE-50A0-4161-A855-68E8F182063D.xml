@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 tocTab[tocTab.length] = new Array("5.3:1", "", "领域层", "EARoot/EA5/EA3/EA173.html", "175.png", "13", "0", "", "Logical diagram0","{EC89C61A-D5E0-45a3-9E21-25C8621D5EE0}");
+=======
+tocTab[tocTab.length] = new Array("5.3:1", "", "领域层", "EARoot/EA5/EA3/EA173.html", "175.png", "13", "0", "", "Logical diagram0","{EC89C61A-D5E0-45a3-9E21-25C8621D5EE0}");
+>>>>>>> origin/HEAD

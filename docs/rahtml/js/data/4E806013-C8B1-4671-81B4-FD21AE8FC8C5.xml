@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 tocTab[tocTab.length] = new Array("5.1", "1", "表示层", "EARoot/EA5/EA165.html", "4.png", "", "", "{DC54328F-7870-436f-8318-B142AB546E4D}", "Package");
 tocTab[tocTab.length] = new Array("5.2", "1", "应用层", "EARoot/EA5/EA166.html", "4.png", "", "", "{9AAA0402-6FB3-4cc2-B8AB-08F154405462}", "Package");
 tocTab[tocTab.length] = new Array("5.3", "1", "领域层", "EARoot/EA5/EA167.html", "4.png", "", "", "{C82205EE-50A0-4161-A855-68E8F182063D}", "Package");
 tocTab[tocTab.length] = new Array("5.4", "1", "基础设施层", "EARoot/EA5/EA168.html", "4.png", "", "", "{763C991E-1864-43ba-B58D-C5E1C9E5559B}", "Package");
+=======
+tocTab[tocTab.length] = new Array("5.1", "1", "表示层", "EARoot/EA5/EA165.html", "4.png", "", "", "{DC54328F-7870-436f-8318-B142AB546E4D}", "Package");
+tocTab[tocTab.length] = new Array("5.2", "1", "应用层", "EARoot/EA5/EA166.html", "4.png", "", "", "{9AAA0402-6FB3-4cc2-B8AB-08F154405462}", "Package");
+tocTab[tocTab.length] = new Array("5.3", "1", "领域层", "EARoot/EA5/EA167.html", "4.png", "", "", "{C82205EE-50A0-4161-A855-68E8F182063D}", "Package");
+tocTab[tocTab.length] = new Array("5.4", "1", "基础设施层", "EARoot/EA5/EA168.html", "4.png", "", "", "{763C991E-1864-43ba-B58D-C5E1C9E5559B}", "Package");
+>>>>>>> origin/HEAD

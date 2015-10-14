@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 tocTab[tocTab.length] = new Array("4.1", "1", "实体类", "EARoot/EA4/EA123.html", "4.png", "", "", "{D3564BDA-F2B3-4904-BFFB-A70EE51E5D88}", "Package");
 tocTab[tocTab.length] = new Array("4.2", "1", "控制类", "EARoot/EA4/EA124.html", "4.png", "", "", "{ED41CA1B-14D4-4b2d-92B6-727E6913FBF8}", "Package");
 tocTab[tocTab.length] = new Array("4.3", "1", "边界类", "EARoot/EA4/EA125.html", "4.png", "", "", "{61831238-4EF4-4acc-9CB8-08A2B39F1E19}", "Package");
 tocTab[tocTab.length] = new Array("4.4", "1", "实体类_作废", "EARoot/EA4/EA126.html", "4.png", "", "", "{64A53B61-E0A7-4b88-B3B0-28316602BBB9}", "Package");
+=======
+tocTab[tocTab.length] = new Array("4.1", "1", "实体类", "EARoot/EA4/EA123.html", "4.png", "", "", "{D3564BDA-F2B3-4904-BFFB-A70EE51E5D88}", "Package");
+tocTab[tocTab.length] = new Array("4.2", "1", "控制类", "EARoot/EA4/EA124.html", "4.png", "", "", "{ED41CA1B-14D4-4b2d-92B6-727E6913FBF8}", "Package");
+tocTab[tocTab.length] = new Array("4.3", "1", "边界类", "EARoot/EA4/EA125.html", "4.png", "", "", "{61831238-4EF4-4acc-9CB8-08A2B39F1E19}", "Package");
+tocTab[tocTab.length] = new Array("4.4", "1", "实体类_作废", "EARoot/EA4/EA126.html", "4.png", "", "", "{64A53B61-E0A7-4b88-B3B0-28316602BBB9}", "Package");
+>>>>>>> origin/HEAD

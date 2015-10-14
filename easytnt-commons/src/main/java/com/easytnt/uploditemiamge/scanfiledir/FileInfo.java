@@ -7,7 +7,7 @@ package com.easytnt.uploditemiamge.scanfiledir;
  * @author liuyu
  *
  */
-public class ItemImageFile {
+public class FileInfo {
 
 	private String rootDir;
 	private String relativelyPath;
@@ -16,7 +16,7 @@ public class ItemImageFile {
 		return rootDir;
 	}
 
-	public ItemImageFile setRootDir(String rootDir) {
+	public FileInfo setRootDir(String rootDir) {
 		this.rootDir = rootDir;
 		return this;
 	}
@@ -25,7 +25,7 @@ public class ItemImageFile {
 		return relativelyPath;
 	}
 
-	public ItemImageFile setRelativelyPath(String relativelyPath) {
+	public FileInfo setRelativelyPath(String relativelyPath) {
 		this.relativelyPath = relativelyPath;
 		return this;
 	}

@@ -5,3 +5,7 @@
 target/
 src/resources/conf.properties
 /target/
+<<<<<<< HEAD
+=======
+/target/
+>>>>>>> origin/HEAD

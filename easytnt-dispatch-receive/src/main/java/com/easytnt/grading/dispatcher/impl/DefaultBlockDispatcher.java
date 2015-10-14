@@ -43,6 +43,7 @@ public class DefaultBlockDispatcher implements BlockDispatcher {
 	
 	private BlockDispatcher topPatcher;
 	
+	
 	public DefaultBlockDispatcher() {
 		this(new SinglePaperPriorDispatcherStrategy(1));
 	}
