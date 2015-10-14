@@ -60,7 +60,7 @@ public class DispatcherImplTest {
 		for(int i = 0;i<1000;i++) {
 			ImgCuttings cuttings  = mock(ImgCuttings.class);
 			when(cuttings.getCurrentPinci()).thenReturn(1);
-			when(cuttings.toString()).thenReturn("Cuttins" +i);
+			when(cuttings.toString()).thenReturn("Cuttings" +i);
 			doNothing().when(cuttings).nextPinci();
 			blocks.add(cuttings);
 		}

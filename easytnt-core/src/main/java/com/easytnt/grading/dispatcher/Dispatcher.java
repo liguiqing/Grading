@@ -5,6 +5,8 @@
 
 package com.easytnt.grading.dispatcher;
 
+import java.util.Collection;
+
 import com.easytnt.grading.share.ImgCuttings;
 
 /** 
@@ -18,6 +20,8 @@ import com.easytnt.grading.share.ImgCuttings;
 public interface Dispatcher {
 
 	ImgCuttings get();
+	
+	void put(Collection<ImgCuttings> cuttingses);
 	
 	void stop();
 }

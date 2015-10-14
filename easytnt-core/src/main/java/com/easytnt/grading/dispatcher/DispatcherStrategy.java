@@ -26,6 +26,6 @@ public interface DispatcherStrategy {
 	 * @return
 	 * @throws 当pince为null时 throws 
 	 */
-	Queue<ImgCuttings> getDispatcherQueue(List<Queue<ImgCuttings>> pinci);
+	PinciQueue getDispatcherQueue(List<PinciQueue> pincis);
 }
 

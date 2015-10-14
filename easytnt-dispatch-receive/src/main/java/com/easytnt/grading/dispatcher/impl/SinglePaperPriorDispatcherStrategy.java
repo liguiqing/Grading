@@ -10,7 +10,9 @@ import java.util.Queue;
 
 
 
+
 import com.easytnt.grading.dispatcher.DispatcherStrategy;
+import com.easytnt.grading.dispatcher.PinciQueue;
 import com.easytnt.grading.share.ImgCuttings;
 
 /** 
@@ -35,17 +37,17 @@ public class SinglePaperPriorDispatcherStrategy implements DispatcherStrategy {
 	}
 	
 	@Override
-	public Queue<ImgCuttings> getDispatcherQueue(List<Queue<ImgCuttings>> pinci) {
-		if(pinci == null)
+	public PinciQueue getDispatcherQueue(List<PinciQueue> pincis) {
+		if(pincis == null)
 			throw new IllegalArgumentException("评卷队列为空！");
 		//从最高评次开始取
 		for(int index = this.maxPinci-1; index >= 0; index--) {
-			Queue<ImgCuttings> queue = pinci.get(index);
+			PinciQueue queue = pincis.get(index);
 			if(!queue.isEmpty()) {
 				return queue;
 			}
 		}
-		return pinci.get(maxPinci-1);
+		return pincis.get(maxPinci-1);
 	}
 
 }
