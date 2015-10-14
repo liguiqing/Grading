@@ -1,7 +1,0 @@
-<<<<<<< HEAD
-tocTab[tocTab.length] = new Array("2.1", "1", "业务对象", "EARoot/EA2/EA10.html", "4.png", "", "", "{BE7FE5DF-EF35-4b72-BEFC-2A991AA7B8D1}", "Package");
-tocTab[tocTab.length] = new Array("2.2", "1", "业务用例", "EARoot/EA2/EA11.html", "4.png", "", "", "{7CC40547-DBB5-4c6c-B8E0-3C9BA57C05EF}", "Package");
-=======
-tocTab[tocTab.length] = new Array("2.1", "1", "业务对象", "EARoot/EA2/EA10.html", "4.png", "", "", "{BE7FE5DF-EF35-4b72-BEFC-2A991AA7B8D1}", "Package");
-tocTab[tocTab.length] = new Array("2.2", "1", "业务用例", "EARoot/EA2/EA11.html", "4.png", "", "", "{7CC40547-DBB5-4c6c-B8E0-3C9BA57C05EF}", "Package");
->>>>>>> origin/HEAD
