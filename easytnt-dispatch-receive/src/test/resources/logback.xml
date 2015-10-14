@@ -102,5 +102,4 @@
 		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>
-
 </configuration>

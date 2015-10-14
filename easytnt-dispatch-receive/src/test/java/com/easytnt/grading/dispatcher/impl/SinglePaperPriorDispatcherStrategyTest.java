@@ -16,7 +16,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.easytnt.grading.dispatcher.Block;
+
+import com.easytnt.grading.share.ImgCuttings;
 
 /** 
  * <pre>
@@ -44,30 +45,30 @@ public class SinglePaperPriorDispatcherStrategyTest {
 	@Test
 	public void testetDispatcherQueue()throws Exception{
 		SinglePaperPriorDispatcherStrategy spds = new SinglePaperPriorDispatcherStrategy(1);
-		ArrayList pinci1 = new ArrayList<Queue<Block>>();
-		Queue<Block> q1 = createQueue(2);
+		ArrayList pinci1 = new ArrayList<Queue<ImgCuttings>>();
+		Queue<ImgCuttings> q1 = createQueue(2);
 		pinci1.add(q1);
 		assertEquals(spds.getDispatcherQueue(pinci1),q1);
-		assertNotEquals(spds.getDispatcherQueue(pinci1),new ArrayDeque<Block>());
+		assertNotEquals(spds.getDispatcherQueue(pinci1),new ArrayDeque<ImgCuttings>());
 		
-		Queue<Block> q2 = createQueue(2);
+		Queue<ImgCuttings> q2 = createQueue(2);
 		
 		pinci1.add(q2);
 		assertEquals(spds.getDispatcherQueue(pinci1),q1);
-		assertNotEquals(spds.getDispatcherQueue(pinci1),new ArrayDeque<Block>());
+		assertNotEquals(spds.getDispatcherQueue(pinci1),new ArrayDeque<ImgCuttings>());
 		assertNotEquals(spds.getDispatcherQueue(pinci1),q2);
 		
 		spds = new SinglePaperPriorDispatcherStrategy(2);
 		assertEquals(spds.getDispatcherQueue(pinci1),q2);
-		assertNotEquals(spds.getDispatcherQueue(pinci1),new ArrayDeque<Block>());
+		assertNotEquals(spds.getDispatcherQueue(pinci1),new ArrayDeque<ImgCuttings>());
 		assertNotEquals(spds.getDispatcherQueue(pinci1),q1);
 	}
 	
-	private Queue<Block> createQueue(int size){
-		Queue<Block> q = new ArrayDeque<Block>();
+	private Queue<ImgCuttings> createQueue(int size){
+		Queue<ImgCuttings> q = new ArrayDeque<ImgCuttings>();
 		for(int i = 0;i<size;i++) {
-			Block block = mock(Block.class);
-			q.add(block);
+			ImgCuttings cuttings = mock(ImgCuttings.class);
+			q.add(cuttings);
 		}
 		return q;
 	}

@@ -31,8 +31,8 @@ import com.easytnt.test.controller.AbstractControllerTest;
  **/ 
 
 @ContextHierarchy({
-	@ContextConfiguration(locations = {"classpath:servlet-context.xml"}),
-	@ContextConfiguration(classes= {MainController.class})
+	@ContextConfiguration(classes= {MainController.class}),
+	@ContextConfiguration(locations = {"classpath:servlet-context.xml"})
 })
 public class MaincontrollerTest extends AbstractControllerTest{
 	private static Logger logger = LoggerFactory.getLogger(MaincontrollerTest.class);

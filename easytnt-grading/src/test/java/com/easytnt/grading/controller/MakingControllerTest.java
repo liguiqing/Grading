@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
 
 import com.easytnt.grading.domain.exam.Exam;
 import com.easytnt.grading.domain.paper.Paper;
@@ -22,7 +23,10 @@ import com.easytnt.grading.service.ExamService;
 import com.easytnt.grading.service.PaperService;
 import com.easytnt.test.controller.AbstractControllerTest;
 
-@ContextConfiguration(locations = {"classpath:servlet-context.xml","MakingControllerTest.xml"})
+@ContextHierarchy({
+	@ContextConfiguration(classes= {MakingController.class}),
+	@ContextConfiguration(locations = {"classpath:servlet-context.xml"})
+})
 public class MakingControllerTest  extends AbstractControllerTest{
 	private static Logger logger = LoggerFactory.getLogger(MakingControllerTest.class);
 	
