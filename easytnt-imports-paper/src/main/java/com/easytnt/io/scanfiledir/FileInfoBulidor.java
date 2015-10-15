@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.easytnt.uploditemiamge.scanfiledir;
+package com.easytnt.io.scanfiledir;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

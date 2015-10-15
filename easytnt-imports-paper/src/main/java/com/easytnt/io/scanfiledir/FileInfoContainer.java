@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.easytnt.uploditemiamge.scanfiledir;
+package com.easytnt.io.scanfiledir;
 
 import java.util.ArrayList;
 
