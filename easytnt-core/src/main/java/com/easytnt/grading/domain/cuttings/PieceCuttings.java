@@ -51,5 +51,11 @@ public class PieceCuttings implements ImgCuttings{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public int incrementPinciAndGet() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
 
