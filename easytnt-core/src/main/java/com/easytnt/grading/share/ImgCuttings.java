@@ -16,6 +16,8 @@ public interface ImgCuttings {
 
 	int getCurrentPinci();
 	
+	int incrementPinciAndGet();
+	
 	void nextPinci();
 }
 

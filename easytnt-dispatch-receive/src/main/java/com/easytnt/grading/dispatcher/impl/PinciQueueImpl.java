@@ -29,8 +29,7 @@ public class PinciQueueImpl implements PinciQueue {
 	
 	@Override
 	public void put(Collection<ImgCuttings> cuttingses) {
-		int size = this.queueSize.get();
-		this.queueSize.set(size + cuttingses.size());
+		this.queueSize.addAndGet(cuttingses.size());
 		this.queue.addAll(cuttingses);
 	}
 	
