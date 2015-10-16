@@ -96,9 +96,15 @@ public class DispatcherImpl implements Dispatcher {
 		
 		if(cuttings == null)
 			return null;
-		moveToNext(cuttings);
+		try {
+		cuttings.incrementPinciAndGet();
 		logger.debug(cuttings.toString());
+		moveToNext(cuttings);
 		return cuttings;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@Override
@@ -133,10 +139,10 @@ public class DispatcherImpl implements Dispatcher {
 	 */
 	private void moveToNext(ImgCuttings cuttings) {
 		int curPinci = cuttings.getCurrentPinci();
-		if(pinci.size() < curPinci) {
+		if(pinci.size() > curPinci) {
 			PinciQueue next = pinci.get(curPinci);
 			if(next != null) {
-				cuttings.nextPinci();
+				//cuttings.nextPinci();
 				next.add(cuttings);
 			}
 		}

@@ -51,7 +51,7 @@ public class DispatcherImplTest {
 		List<ImgCuttings> blocks = getMockImgCuttings();
 		queue.addAll(blocks);
 		//when(dispatcherStrategy.getDispatcherQueue(isA(List.class))).thenReturn(queue);
-		when(blockFetcher.fetch(isA(Integer.class))).thenReturn(blocks);
+		when(blockFetcher.fetch(isA(Integer.class))).thenReturn(blocks).thenReturn(new ArrayList<ImgCuttings>());
 		DispatcherImpl dispather = new DispatcherImpl(dispatcherStrategy,blockFetcher);
 		//Thread.currentThread().join();
 		for(int i = 0;i<blocks.size();i++) {
@@ -81,78 +81,83 @@ public class DispatcherImplTest {
 	
 	@Test
 	public void testGetAsync()throws Exception{
-		DispatcherStrategy dispatcherStrategy = new SinglePaperPriorDispatcherStrategy(1); //mock(DispatcherStrategy.class);
+		DispatcherStrategy dispatcherStrategy = new SinglePaperPriorDispatcherStrategy(2); //mock(DispatcherStrategy.class);
 		Fetcher blockFetcher = mock(Fetcher.class);
 		ConcurrentLinkedDeque<ImgCuttings> queue = new ConcurrentLinkedDeque<ImgCuttings>();
 		List<ImgCuttings> blocks = getImgCuttings();
 		queue.addAll(blocks);
-		//when(dispatcherStrategy.getDispatcherQueue(isA(List.class))).thenReturn(queue);
+		
 		when(blockFetcher.fetch(isA(Integer.class))).thenReturn(blocks);
 		
 		final DispatcherImpl dispather = new DispatcherImpl(dispatcherStrategy,blockFetcher);
 		
 		try {
-			Thread.sleep(100);
+			Thread.sleep(1000);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		final CountDownLatch countDown = new CountDownLatch(100);
+		final CountDownLatch countDown = new CountDownLatch(200);
 		ArrayList<Runnable> refereeses = new ArrayList<>();
 		
 		final ArrayList<ImgCuttings> pin1 = new ArrayList<>();
 		final ArrayList<ImgCuttings> pin2 = new ArrayList<>();
-		final AtomicInteger countnum=new AtomicInteger();
+
 		for( int i=0;i<100;i++) {
 			final int a = i;
 			refereeses.add(new Runnable() {
-
+				int id = a;
 				@Override
 				public void run() {
 					
-					logger.debug( a + " I am working");
-//					
-					ImgCuttings ic = dispather.get();
-					if(ic != null) {
-						logger.debug(ic.toString());						
+					logger.debug( id + " I am working");
+					
+					try {
+						
+						Thread.sleep(200);
+						doPin();
+					} catch (Exception e) {
+							e.printStackTrace();
 					}
 					
-//					
-//					if(ic.getCurrentPinci() ==1)
-//						pin1.add(ic);
-//					
-//					if(ic.getCurrentPinci() ==2)
-//						pin2.add(ic);
-////					System.out.println("************"+countnum.incrementAndGet());
 					try {
-						Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-			}
+						
+						Thread.sleep(200);
+						doPin();
+					} catch (Exception e) {
+							e.printStackTrace();
+					}
 					
+					logger.debug( id + " I am Stopping");
+				}
+				
+				private void doPin() {
+					ImgCuttings ic = dispather.get();
+					if(ic == null) {
+						logger.debug("NO Task for me {}",id);
+					}else {
+						if(ic.getCurrentPinci() ==1)
+							pin1.add(ic);
+						logger.debug( "pin1 {} ",pin1.size());
+						if(ic.getCurrentPinci() ==2)
+							pin2.add(ic);
+						logger.debug( "pin2 {} ",pin2.size());			
+						
+					}
 					countDown.countDown();
-//					countDown.countDown();
-//					ic = dispather.get();
-//					logger.debug(ic.toString());
-//					if(ic.getCurrentPinci() ==1)
-//						pin1.add(ic);
-//					
-//					if(ic.getCurrentPinci() ==2)
-//						pin2.add(ic);
-//					
-//					logger.debug( a + " I am stop");
-					
 				}
 				
 			});
 		}
-		
+
 		for(int i = 0;i<100;i++) {
-			ThreadExcutor.getInstance().submit(refereeses.get(i));
+			ThreadExcutor.getInstance().submit(refereeses.get(i));	
 		}
-		
-		System.out.println("over.... end");
 		countDown.await();
-		
+		dispather.stop();
+		for(ImgCuttings ic:pin1) {
+			logger.debug(ic.toString());
+		}
+		assertEquals(pin1.size()+pin2.size(),200);
 	}
 	
 	private List<ImgCuttings>  getImgCuttings() {
