@@ -16,7 +16,7 @@ public interface DirectoryScanner {
 	 * @return
 	 * @throws IOException
 	 */
-	public FileInfoContainer scan() throws IOException;
+	public CountContainer scan() throws IOException;
 
 	/**
 	 * 扫描文件路径

@@ -25,21 +25,16 @@ public class DirectoryScannerImpl implements DirectoryScanner {
 	}
 
 	@Override
-	public FileInfoContainer scan() throws IOException {
-
-		final FileInfoContainer itemImageFileContainer = new FileInfoContainer();
-
+	public CountContainer<FileInfo> scan() throws IOException {
+		final CountContainer<FileInfo> itemImageFileContainer = new CountContainer<>(20);
 		SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
-
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 				FileInfo itemImageFile = buildor.building(file);
 				itemImageFileContainer.add(itemImageFile);
 				return super.visitFile(file, attrs);
 			}
-
 		};
-
 		Files.walkFileTree(rootPath, visitor);
 		return itemImageFileContainer;
 	}
