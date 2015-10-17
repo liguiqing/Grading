@@ -9,13 +9,15 @@
 	distributed under the License is distributed on an ~ "AS IS" BASIS, WITHOUT 
 	WARRANTIES OR CONDITIONS OF ANY ~ KIND, either express or implied. See the 
 	License for the ~ specific language governing permissions and limitations 
-	~ under the License. --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	~ under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.easytnt</groupId>
 	<artifactId>easytnt-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Easytnt</name>
-	<description/>
+	<description />
 	<version>1.0.0.SNAPSHOT</version>
 	<url>http://www.easytnt.com</url>
 	<inceptionYear>2015</inceptionYear>
@@ -45,14 +47,14 @@
 		<url>http://www.easetnt.com/jira</url>
 	</issueManagement>
 	<modules>
-	    <module>easytnt-test</module>
+		<module>easytnt-test</module>
 		<module>easytnt-commons</module>
 		<module>easytnt-core</module>
 		<module>easytnt-grading</module>
 		<module>easytnt-grading-webapp</module>
 		<module>easytnt-dispatch-receive</module>
-        <!--<module>grading-portalet</module>-->
-        <module>easytnt-imports-paper</module>
+		<!--<module>grading-portalet</module> -->
+		<module>easytnt-imports-paper</module>
 	</modules>
 	<scm>
 		<connection>scm:git:git@github.com:liguiqing/Grading.git</connection>
@@ -110,7 +112,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -143,14 +145,14 @@
 			</dependency>
 			<dependency>
 				<groupId>org.powermock</groupId>
-				<artifactId>powermock-api-mockito</artifactId> 
+				<artifactId>powermock-api-mockito</artifactId>
 				<version>${powermock.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-all</artifactId>
 				<version>1.10.19</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
@@ -161,12 +163,12 @@
 				<artifactId>powermock-api-mockito</artifactId>
 				<version>${powermock.version}</version>
 			</dependency>
-					
+
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>3.0.1</version>
-			</dependency>		
+			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
@@ -275,11 +277,11 @@
 				<artifactId>spring-oxm</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-	
+
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-mapper-asl</artifactId>
-				<version>1.9.12</version>	
+				<version>1.9.12</version>
 			</dependency>
 			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
@@ -321,7 +323,7 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc-portlet</artifactId>
 				<version>${spring.version}</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
@@ -381,7 +383,12 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>14.0.1</version>
-			</dependency>						
+			</dependency>
+			<dependency>
+				<groupId>com.lmax</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>3.3.2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

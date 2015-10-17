@@ -21,14 +21,14 @@ public class CountContainer<T> {
 	}
 
 	public void add(T itemImageFile) {
-		if (capacity <= fileNumber.intValue()) {
+		if (capacity > fileNumber.intValue()) {
 			container.add(itemImageFile);
 		}
 		count();
 	}
 
 	public void count() {
-		fileNumber.decrementAndGet();
+		fileNumber.incrementAndGet();
 	}
 
 	public int getFileNumber() {
