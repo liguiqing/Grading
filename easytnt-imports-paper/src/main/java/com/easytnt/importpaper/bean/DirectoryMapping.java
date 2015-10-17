@@ -8,21 +8,11 @@ package com.easytnt.importpaper.bean;
  *
  */
 public class DirectoryMapping {
-	private int paperId;
 	private int place;
-	private String mappingName;
+	private MappingName mappingName;
 
 	public int getPlace() {
 		return place;
-	}
-
-	public int getPaperId() {
-		return paperId;
-	}
-
-	public DirectoryMapping setPaperId(int paperId) {
-		this.paperId = paperId;
-		return this;
 	}
 
 	public DirectoryMapping setPlace(int place) {
@@ -30,11 +20,11 @@ public class DirectoryMapping {
 		return this;
 	}
 
-	public String getMappingName() {
+	public MappingName getMappingName() {
 		return mappingName;
 	}
 
-	public DirectoryMapping setMappingName(String mappingName) {
+	public DirectoryMapping setMappingName(MappingName mappingName) {
 		this.mappingName = mappingName;
 		return this;
 	}

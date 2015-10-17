@@ -3,35 +3,49 @@
  */
 package com.easytnt.importpaper.io.scanfiledir;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * @author liuyu
  *
  */
 public class FileInfo {
 
-	private String rootDir;
-	private String relativelyPath;
+	private Path rootDir;
+	private Path relativelyPath;
 
 	public String getRootDir() {
-		return rootDir;
+		return rootDir.toString();
 	}
 
 	public FileInfo setRootDir(String rootDir) {
-		this.rootDir = rootDir;
+		this.rootDir = Paths.get(rootDir);
 		return this;
 	}
 
 	public String getRelativelyPath() {
-		return relativelyPath;
+		return relativelyPath.toString();
 	}
 
 	public String getRelativelyURL() {
-		return relativelyPath.replace("\\", "/");
+		return relativelyPath.toString().replace("\\", "/");
 	}
 
 	public FileInfo setRelativelyPath(String relativelyPath) {
-		this.relativelyPath = relativelyPath;
+		this.relativelyPath = Paths.get(relativelyPath);
 		return this;
+	}
+
+	public String getFileName() {
+		String fileName = relativelyPath.getFileName().toString();
+		int idx = fileName.indexOf(".");
+		fileName = idx != -1 ? fileName.substring(0, idx) : fileName;
+		return fileName;
+	}
+
+	public String getName(int index) {
+		return relativelyPath.getName(index).toString();
 	}
 
 }

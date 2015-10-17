@@ -10,12 +10,22 @@ import java.util.List;
  *
  */
 public class ScannerDirectoryConfig {
+	private int paperId;
 	private String rootUrl;
 	private String fileDir;
 	private List<DirectoryMapping> directoryMappings;
 
 	public String getRootUrl() {
 		return rootUrl;
+	}
+
+	public int getPaperId() {
+		return paperId;
+	}
+
+	public ScannerDirectoryConfig setPaperId(int paperId) {
+		this.paperId = paperId;
+		return this;
 	}
 
 	public ScannerDirectoryConfig setRootUrl(String rootUrl) {
