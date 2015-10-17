@@ -25,6 +25,10 @@ public class FileInfo {
 		return relativelyPath;
 	}
 
+	public String getRelativelyURL() {
+		return relativelyPath.replace("\\", "/");
+	}
+
 	public FileInfo setRelativelyPath(String relativelyPath) {
 		this.relativelyPath = relativelyPath;
 		return this;

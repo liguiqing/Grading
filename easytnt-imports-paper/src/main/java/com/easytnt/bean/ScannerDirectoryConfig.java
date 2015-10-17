@@ -20,6 +20,9 @@ public class ScannerDirectoryConfig {
 
 	public ScannerDirectoryConfig setRootUrl(String rootUrl) {
 		this.rootUrl = rootUrl;
+		if (!this.rootUrl.endsWith("/")) {
+			this.rootUrl += "/";
+		}
 		return this;
 	}
 
