@@ -8,6 +8,8 @@ import java.util.concurrent.CountDownLatch;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author liuyu
@@ -15,8 +17,13 @@ import org.junit.Test;
  */
 public class FileInfoContainerTest {
 
+	private Logger log = LoggerFactory.getLogger(FileInfoContainerTest.class);
+
 	@Test
 	public void testAdd() throws Exception {
+
+		log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
 		final int SIZE = 200;
 		final int capacity = 10;
 		CountContainer<FileInfo> container = new CountContainer<>(capacity);
@@ -37,7 +44,7 @@ public class FileInfoContainerTest {
 		Assert.assertTrue(container.getContainer().size() == capacity);
 		Assert.assertTrue(container.getFileNumber() == SIZE);
 
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>end");
+		log.debug(">>>>>>>>>>>>>>>>>>>>>>>end");
 	}
 
 	class AddThread implements Runnable {
