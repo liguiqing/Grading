@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.easytnt.io.scanfiledir;
+package com.easytnt.importpaper.io.scanfiledir;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

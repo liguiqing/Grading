@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.easytnt.bean;
+package com.easytnt.importpaper.bean;
 
 import java.util.List;
 

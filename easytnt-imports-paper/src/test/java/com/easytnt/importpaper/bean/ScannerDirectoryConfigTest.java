@@ -1,10 +1,12 @@
 /**
  * 
  */
-package com.easytnt.bean;
+package com.easytnt.importpaper.bean;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
 
 /**
  * <pre>

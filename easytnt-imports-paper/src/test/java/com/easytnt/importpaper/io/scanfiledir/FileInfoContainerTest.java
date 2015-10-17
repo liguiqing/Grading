@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.easytnt.io.scanfiledir;
+package com.easytnt.importpaper.io.scanfiledir;
 
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -10,6 +10,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.easytnt.importpaper.io.scanfiledir.CountContainer;
+import com.easytnt.importpaper.io.scanfiledir.FileInfo;
 
 /**
  * @author liuyu

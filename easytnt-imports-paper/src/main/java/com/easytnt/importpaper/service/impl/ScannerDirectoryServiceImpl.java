@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.easytnt.service.impl;
+package com.easytnt.importpaper.service.impl;
 
-import com.easytnt.bean.ScannerDirectoryConfig;
-import com.easytnt.service.ScannerDirectoryService;
+import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
+import com.easytnt.importpaper.service.ScannerDirectoryService;
 
 /**
  * @author liuyu

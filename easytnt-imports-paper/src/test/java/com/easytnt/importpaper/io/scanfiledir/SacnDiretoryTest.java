@@ -1,14 +1,19 @@
 /**
  * 
  */
-package com.easytnt.io.scanfiledir;
+package com.easytnt.importpaper.io.scanfiledir;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.easytnt.bean.ScannerDirectoryConfig;
+import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
+import com.easytnt.importpaper.io.scanfiledir.CountContainer;
+import com.easytnt.importpaper.io.scanfiledir.DirectoryScanner;
+import com.easytnt.importpaper.io.scanfiledir.DirectoryScannerFactory;
+import com.easytnt.importpaper.io.scanfiledir.FileInfo;
+import com.easytnt.importpaper.io.scanfiledir.VisitorFile;
 
 /**
  * <pre>
