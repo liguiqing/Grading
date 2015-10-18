@@ -1,23 +1,33 @@
 package com.easytnt.grading.controller;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.ui.Menu;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
+import com.easytnt.grading.dispatcher.impl.PinciQueueImpl;
+import com.easytnt.grading.domain.cuttings.PieceCuttings;
 import com.easytnt.grading.domain.exam.Exam;
-import com.easytnt.grading.domain.paper.Paper;
+import com.easytnt.grading.domain.grade.Referees;
+import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.service.ExamService;
-import com.easytnt.grading.service.PaperService;;
+import com.easytnt.grading.service.ExamPaperService;;
 
 @Controller
 @RequestMapping(value = "/marking")
@@ -28,7 +38,15 @@ public class MakingController {
 	private ExamService examService;
 	
 	@Autowired(required=false)
-	private PaperService paperService;
+	private ExamPaperService paperService;
+	
+	//演示用实现
+	private ArrayList<String> recoredPapers = new ArrayList<>();
+	PinciQueueImpl  recoredingPapers = new PinciQueueImpl();
+	@Autowired(required=false)
+	private JdbcTemplate jdbcTemplate ;
+	private Referees testReferees = new Referees("test");
+	
 	
 	@RequestMapping(value = "/{examId}/{paperId}/{blockuuid}", method = RequestMethod.GET)
 	public ModelAndView onView(@PathVariable Long examId, @PathVariable Long paperId,@PathVariable String blockuuid)
@@ -41,9 +59,9 @@ public class MakingController {
 		menus.add( new Menu("锁定屏幕",""));
 		menus.add( new Menu("退出",""));
 		Exam exam = examService.load(examId);
-		Paper paper = paperService.load(paperId);
+		ExamPaper paper = paperService.load(paperId);
 		
-		String title = exam.getName() + paper.getName() + "评分";
+		String title = "";//exam.getName() + paper.getName() + "评分";
 		return ModelAndViewFactory.newModelAndViewFor("/marking/index").with("title", "试卷评分").with("menus", menus)
 						.build();
 	}
@@ -55,10 +73,43 @@ public class MakingController {
 		List<Menu> menus = new ArrayList<Menu>();
 		menus.add( new Menu("退出",""));
 		Exam exam = examService.load(examId);
-		Paper paper = paperService.load(paperId);
+		ExamPaper paper = paperService.load(paperId);
 		
-		String title = exam.getName() + paper.getName() + "监控";
+		String title = "";//exam.getName() + paper.getName() + "监控";
 		return ModelAndViewFactory.newModelAndViewFor("/marking/monitorIndex").with("title", "试卷评分").with("menus2", menus)
 						.build();
+	}
+	
+	@RequestMapping(value = "/next",method = RequestMethod.GET)
+	public ModelAndView onNext() 
+					throws Exception {
+		if(recoredingPapers.isEmpty()) {
+			Object[] args = new Object[] {recoredPapers.size(),100};
+			List<PieceCuttings> pcs = jdbcTemplate.query("select * from getpaper limit ?, ? ", args, new RowMapper<PieceCuttings>() {
+
+				@Override
+				public PieceCuttings mapRow(ResultSet rs, int arg1)
+						throws SQLException {
+					String imgPath = rs.getString("imagepath");
+					PieceCuttings cuttings = new PieceCuttings();
+					cuttings.setImgPath(imgPath);
+					
+					return cuttings;
+				}
+				
+			});
+			
+			recoredingPapers.put(pcs);
+		}
+		PieceCuttings cuttings = recoredingPapers.get(testReferees);
+		return ModelAndViewFactory.newModelAndViewFor("/marking/index").with("cuttings",cuttings).build();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ModelAndView onMarking(@RequestBody Map m) 
+					throws Exception {
+		logger.debug("URL /marking/ POST {}", m);
+		recoredPapers.add(m.get("imgpath")+"");
+		return ModelAndViewFactory.newModelAndViewFor("/marking/index").build();
 	}
 }

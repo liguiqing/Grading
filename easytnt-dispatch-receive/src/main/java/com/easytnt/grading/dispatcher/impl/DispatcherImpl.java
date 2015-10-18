@@ -8,9 +8,6 @@ package com.easytnt.grading.dispatcher.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +18,9 @@ import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.dispatcher.DispatcherStrategy;
 import com.easytnt.grading.dispatcher.PinciQueue;
 import com.easytnt.grading.dispatcher.PinciQueueListener;
+import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.fetch.Fetcher;
-import com.easytnt.grading.share.ImgCuttings;
 
 /** 
  * <pre>
@@ -82,53 +80,65 @@ public class DispatcherImpl implements Dispatcher {
 			this.pinci.add(new PinciQueueImpl());
 		}
 		this.fetcher = new LockBlockFetcherProxy(fetcher);
-		this.startListened();
+		
 	}
 
 	@Override
-	public ImgCuttings get() {
-		ImgCuttings cuttings = getCuttingsFromTop();
+	public PieceCuttings get(Referees referees) {
+		PieceCuttings cuttings = getCuttingsFromTop(referees);
 		if(cuttings != null)
 			return cuttings;
 			
 		PinciQueue queue = getPinciQueue();
-		cuttings =  queue.get();
+		cuttings =  queue.get(referees);
 		
 		if(cuttings == null)
 			return null;
-		try {
+
 		cuttings.incrementPinciAndGet();
+		cuttings.recordedBy(referees);
 		logger.debug(cuttings.toString());
+		
 		moveToNext(cuttings);
+		
 		return cuttings;
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+
 	}
 	
 	@Override
-	public void put(Collection<ImgCuttings> cuttingses) {
+	public void put(Collection<PieceCuttings> cuttingses) {
 		this.getFirstQueue().put(cuttingses);
 	}
 	
+
 	@Override
-	public void stop() {
+	public void recover(Collection<PieceCuttings> cuttingses) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void start() {
+		this.startListened();
+	}
+	
+	@Override
+	public void destroy() {
 		queueListener.off();
 		for(PinciQueue queue:this.pinci) {
 			queue.clear();
 		}
-		this.pinci.clear();
-		
+		this.pinci.clear();		
 	}
+	
 	
 	private PinciQueue getFirstQueue() {
 		return this.pinci.get(0);
 	}
 
-	private ImgCuttings getCuttingsFromTop() {
+	private PieceCuttings getCuttingsFromTop(Referees referees) {
 		if(this.topPatcher != null) {
-			return this.topPatcher.get();
+			return this.topPatcher.get(referees);
 		}
 		return null;
 	}
@@ -137,7 +147,7 @@ public class DispatcherImpl implements Dispatcher {
 	 * 移动到下一评
 	 * @param cuttings
 	 */
-	private void moveToNext(ImgCuttings cuttings) {
+	private void moveToNext(PieceCuttings cuttings) {
 		int curPinci = cuttings.getCurrentPinci();
 		if(pinci.size() > curPinci) {
 			PinciQueue next = pinci.get(curPinci);
@@ -160,7 +170,7 @@ public class DispatcherImpl implements Dispatcher {
 	private  class QueueListener implements Runnable,PinciQueueListener{
 		private PinciQueue queue;
 		
-		private volatile boolean stop = Boolean.FALSE;
+		private  boolean stop = Boolean.FALSE;
 		
 		@Override
 		public void run() {
@@ -168,7 +178,7 @@ public class DispatcherImpl implements Dispatcher {
 			while (!stop) {
 				try {
 					if (this.queue.size() < BUFFER_SIZE) {
-						List<ImgCuttings> cuttings = fetcher.fetch(BUFFER_SIZE * 10);
+						List<PieceCuttings> cuttings = fetcher.fetch(BUFFER_SIZE * 10);
 						logger.debug("Add {} cuttings",cuttings.size());
 						this.queue.put(cuttings);
 					}

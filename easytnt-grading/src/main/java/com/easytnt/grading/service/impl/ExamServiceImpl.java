@@ -26,7 +26,7 @@ public class ExamServiceImpl extends AbstractEntityService<Exam, Long>implements
 	@Override
 	public Exam load(Long pk) {
 		Exam exam =  new Exam();
-		exam.setName("Exam");
+		//exam.setName("Exam");
 		return exam;
 	}
 

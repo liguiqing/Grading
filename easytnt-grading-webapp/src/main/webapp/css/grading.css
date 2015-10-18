@@ -121,23 +121,23 @@
 }
 
 .img-panel-toolbox .panel-body b.left{
-	margin-left: -3px;
+	margin-left: -1px;
 }
 
 .img-panel-toolbox .panel-body b.right{
-	margin-left: -5px;
+	margin-left: -10px;
 }
 
 .img-panel-toolbox .panel-body b.bottom{
 	margin: 5px 0px 0px -3px;
     left: 16px;
-    top: 2px;
+    top: 0px;
     position: absolute;
 }
 
 .img-panel-toolbox .panel-body b.top{
     position: absolute;
-    top: -4px;
+    top: -2px;
     left: 13px;
 }
 

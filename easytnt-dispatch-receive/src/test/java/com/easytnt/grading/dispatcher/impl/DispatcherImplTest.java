@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.easytnt.commons.util.ThreadExcutor;
 import com.easytnt.grading.dispatcher.DispatcherStrategy;
+import com.easytnt.grading.domain.cuttings.PieceCuttings;
 import com.easytnt.grading.fetch.Fetcher;
 import com.easytnt.grading.share.ImgCuttings;
 
@@ -51,18 +52,18 @@ public class DispatcherImplTest {
 		List<ImgCuttings> blocks = getMockImgCuttings();
 		queue.addAll(blocks);
 		//when(dispatcherStrategy.getDispatcherQueue(isA(List.class))).thenReturn(queue);
-		when(blockFetcher.fetch(isA(Integer.class))).thenReturn(blocks).thenReturn(new ArrayList<ImgCuttings>());
+		//when(blockFetcher.fetch(isA(Integer.class))).thenReturn(blocks).thenReturn(new ArrayList<ImgCuttings>());
 		DispatcherImpl dispather = new DispatcherImpl(dispatcherStrategy,blockFetcher);
 		//Thread.currentThread().join();
 		for(int i = 0;i<blocks.size();i++) {
-			dispather.get();
+			dispather.get(null);
 			Thread.sleep(10);
 		}
 		Thread.sleep(5000);
 		
-		assertNotNull(dispather.get());
-		assertNotNull(dispather.get());
-		dispather.stop();
+		assertNotNull(dispather.get(null));
+		assertNotNull(dispather.get(null));
+		dispather.destroy();
 		Thread.sleep(1000);
 	}
 	
@@ -87,7 +88,7 @@ public class DispatcherImplTest {
 		List<ImgCuttings> blocks = getImgCuttings();
 		queue.addAll(blocks);
 		
-		when(blockFetcher.fetch(isA(Integer.class))).thenReturn(blocks);
+		//when(blockFetcher.fetch(isA(Integer.class))).thenReturn(blocks);
 		
 		final DispatcherImpl dispather = new DispatcherImpl(dispatcherStrategy,blockFetcher);
 		
@@ -99,8 +100,8 @@ public class DispatcherImplTest {
 		final CountDownLatch countDown = new CountDownLatch(200);
 		ArrayList<Runnable> refereeses = new ArrayList<>();
 		
-		final ArrayList<ImgCuttings> pin1 = new ArrayList<>();
-		final ArrayList<ImgCuttings> pin2 = new ArrayList<>();
+		final ArrayList<PieceCuttings> pin1 = new ArrayList<>();
+		final ArrayList<PieceCuttings> pin2 = new ArrayList<>();
 
 		for( int i=0;i<100;i++) {
 			final int a = i;
@@ -131,7 +132,7 @@ public class DispatcherImplTest {
 				}
 				
 				private void doPin() {
-					ImgCuttings ic = dispather.get();
+					PieceCuttings ic = dispather.get(null);
 					if(ic == null) {
 						logger.debug("NO Task for me {}",id);
 					}else {
@@ -153,8 +154,8 @@ public class DispatcherImplTest {
 			ThreadExcutor.getInstance().submit(refereeses.get(i));	
 		}
 		countDown.await();
-		dispather.stop();
-		for(ImgCuttings ic:pin1) {
+		dispather.destroy();
+		for(PieceCuttings ic:pin1) {
 			logger.debug(ic.toString());
 		}
 		assertEquals(pin1.size()+pin2.size(),200);

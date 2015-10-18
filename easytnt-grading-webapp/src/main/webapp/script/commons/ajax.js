@@ -137,6 +137,8 @@
 										incoInfo : 'error',
 									});
 								} else {
+									if (settings.beforeMsg.show)
+										dialog.fadedialog(settings.beforeMsg);
 									if (settings.successMsg.show)
 										dialog.fadedialog(settings.successMsg);
 									settings.callback(data);

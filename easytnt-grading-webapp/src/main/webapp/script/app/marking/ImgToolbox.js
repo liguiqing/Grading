@@ -59,6 +59,10 @@
 				_init();
 			};
 			
+			this.switchTo = function(imgSrc){
+				_imgViewer.next(imgSrc);
+			};
+			
 		};
 		return new imgToolbox();
 	});

@@ -10,8 +10,8 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.easytnt.commons.util.SpringContextUtil;
+import com.easytnt.grading.domain.cuttings.PieceCuttings;
 import com.easytnt.grading.fetch.Fetcher;
-import com.easytnt.grading.share.ImgCuttings;
 
 
 /** 
@@ -24,6 +24,7 @@ import com.easytnt.grading.share.ImgCuttings;
  **/
 public class JdbcFetcher implements Fetcher {
 
+	
 	private JdbcTemplate jdbcTemplate;
 	
 	public JdbcFetcher() {
@@ -31,12 +32,14 @@ public class JdbcFetcher implements Fetcher {
 	}
 
 	@Override
-	public List<ImgCuttings> fetch(int amount) {
+	public List<PieceCuttings> fetch(int amount) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
 }
 

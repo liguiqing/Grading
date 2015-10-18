@@ -74,11 +74,11 @@
 			            x: -20 //center
 			        },
 			        xAxis: {
-			            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+			            categories: ['9:00', '10:00', '11:00', '12:00', '13:000', '14:00','15:00', '16:00', '17:00']
 			        },
 			        yAxis: {
 			            title: {
-			                text: 'Temperature (°C)'
+			                text: '张'
 			            },
 			            plotLines: [{
 			                value: 0,
@@ -87,7 +87,7 @@
 			            }]
 			        },
 			        tooltip: {
-			            valueSuffix: '°C'
+			            valueSuffix: '张'
 			        },
 			        legend: {
 			            layout: 'vertical',
@@ -97,7 +97,7 @@
 			        },
 			        series: [{
 			            name: '每小时平均评卷速度',
-			            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+			            data: [11000, 11480, 12089, 0, 11890, 12098, 12311, 12511, 12301]
 			        }]
 			    });
 			};
@@ -127,7 +127,7 @@
 			            },
 			            labels: {
 			                formatter: function() {
-			                    return this.value / 1000 +'%';
+			                    return this.value  +'%';
 			                }
 			            }
 			        },
@@ -136,7 +136,7 @@
 			        },
 			        plotOptions: {
 			            area: {
-			                pointStart: 1940,
+			                pointStart: 1,
 			                marker: {
 			                    enabled: false,
 			                    symbol: 'circle',
@@ -152,10 +152,10 @@
 			        series: [{
 			            name: '小题得分分布',
 			            data: [
-			            		20434, 24126,27387, 29459, 31056, 31982,
-			            		32040, 31233, 29224, 27342, 26662,26956, 27912, 28999, 28965, 27826, 25579,
-			            		25722, 24826, 24605,24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344,
-			            		23586,22380, 21004
+			            		80, 82,79, 83, 81, 82,
+			            		87, 76, 80, 81, 84,79, 82, 85, 84, 88, 80,
+			            		87, 77, 72,75, 80, 88, 83, 80, 78, 79, 81,
+			            		82,84, 80
 			            ]
 			        }]
 			    });
@@ -169,19 +169,19 @@
 				        	width:chartW
 				    },
 					title: {
-			            text: 'Monthly Average Temperature',
+			            text: '',
 			            x: -20 //center
 			        },
 			        subtitle: {
-			            text: 'Source: WorldClimate.com',
+			            text: '',
 			            x: -20
 			        },
 			        xAxis: {
-			            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+			        	categories: ['9:00', '10:00', '11:00', '12:00', '13:000', '14:00','15:00', '16:00', '17:00']
 			        },
 			        yAxis: {
 			            title: {
-			                text: 'Temperature (°C)'
+			                text: '得分'
 			            },
 			            plotLines: [{
 			                value: 0,
@@ -200,7 +200,7 @@
 			        },
 			        series: [{
 			            name: '每小时平均评卷平均得分',
-			            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+			            data: [1.78, 1.75, 1.80, 0, 1.80, 1.83, 1.80, 1.81, 1.79]
 			        }]
 			    });
 			};

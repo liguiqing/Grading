@@ -6,21 +6,13 @@
 package com.easytnt.grading.domain.cuttings;
 /** 
  * <pre>
- * 小题在试卷中的答题区域
+ * 切割方案，即一个考卷切割成多少份
  * </pre>
  *  
  * @author 李贵庆2015年10月14日
  * @version 1.0
  **/
-public class AnswerArea {
-
-	private int left;
-	
-	private int top;
-	
-	private int width;
-	
-	private int height;
+public class CuttingsSolution {
 
 	public int hashCode() {
 		//TODO 

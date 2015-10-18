@@ -1,4 +1,4 @@
-<#macro pointsPanel block={}>
+<#macro pointsPanel sections=[]>
 <div class="point-panel">
   <form class="form-horizontal">
    <div class="panel panel-success point-panel-marking">
@@ -6,21 +6,23 @@
      <h6 class="panel-title"></h6>
     </div>
     <div class="panel-body">
-     <div class="form-group section-title">
-       <label class="col-sm-6 col-md-6 col-lg-6 control-label " >二、选择题</label>
-     </div>
-      <@pointInputGroup point={"name":"point13","label":"13","disabled":"","from":0,"to":2,"interval":"1"} position={"top":10,"left":10,"height":30,"width":100}/>
-      <@pointInputGroup point={"name":"point14","label":"14","disabled":"","from":0,"to":2,"interval":"1"} position={"top":10,"left":10,"height":30,"width":100}/>
-      <@pointInputGroup point={"name":"point15","label":"15","disabled":"","from":0,"to":2,"interval":"1"} position={"top":10,"left":10,"height":30,"width":100}/>
-      <@pointInputGroup point={"name":"point16","label":"16","disabled":"","from":0,"to":2,"interval":"1"} position={"top":10,"left":10,"height":30,"width":100}/>
-      
+    <#list sections as section>  
+      <div class="form-group section-title">
+        <label class="col-sm-6 col-md-6 col-lg-6 control-label " >${section.caption!}</label>
+      </div>
+      <#if section.items??>
+        <#list section.items as item>
+          <@pointInputGroup point={"name":item.caption,"label":item.caption,"disabled":"","from":0,"to":2,"interval":"1"} position=item.area/>
+        </#list>
+      </#if>
+    </#list>  
       <div class="form-group ">
          <div class="col-sm-1 col-md-1 col-lg-1"></div>
          <div class="col-sm-5 col-md-5 col-lg-5" style="text-align:center;">
-           <button type="button" class="button button-highlight button-rounded button-small " ><i class="icon-save"></i>&nbsp;&nbsp;&nbsp;记分</button>
+           <button type="button" class="button button-highlight button-rounded button-small " ><i class="icon-save"></i>&nbsp;&nbsp;记分</button>
          </div> 
          <div class="col-sm-5 col-md-5 col-lg-5" style="text-align:center;">  
-           <button type="button" class=" button button-highlight button-rounded button-small" ><i class="icon-repeat"></i>&nbsp;&nbsp;&nbsp;重改</button>
+           <button type="button" class=" button button-highlight button-rounded button-small" ><i class="icon-repeat"></i>&nbsp;&nbsp;重改</button>
         </div>
          <div class="col-sm-1 col-md-1 col-lg-1"></div>
       </div>

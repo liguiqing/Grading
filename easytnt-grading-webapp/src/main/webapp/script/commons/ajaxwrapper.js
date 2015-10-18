@@ -6,12 +6,12 @@
 		function doAjax(opts) {
 
 			var beforeMsg = {
-					show : true
+					show : false
 			};			
 			$.extend(true, beforeMsg, opts.messages.beforeMsg);
 			
 			var successMsg = {
-					show : true,
+					show : false,
 					header : {
 						show : false
 					}
@@ -29,7 +29,7 @@
 			$.extend(true, warningMsg, opts.messages.warningMsg);
 			
 			if (!opts.messages.successMsg)
-				showMsg = false;
+				successMsg.show=false;
 
 			var ajaxOpts = {
 				url : opts.url,

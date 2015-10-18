@@ -122,6 +122,7 @@
 					$.each(this.points,function(){
 						this.reset();
 					});
+					this.point = this.points[0];
 					this.actived();
 				}
 		};

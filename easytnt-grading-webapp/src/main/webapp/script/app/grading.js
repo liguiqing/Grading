@@ -7,10 +7,11 @@
 		var _imgViewer;
 		
 		function save(data){
-			ajaxWrapper.postJson('marking',data,{beforeMsg:{tipText:"系统正在计分...."},successMsg:{tipText:"计分成功"}},
+			ajaxWrapper.postJson('marking',data,{beforeMsg:{tipText:"系统正在计分....",show:false},successMsg:{tipText:"计分成功",show:true}},
 					function(m){
 				if(m.status.success){
 					_grading.nextPaper();
+					_grading.incrementTask();
 				}
 			});
 		};
@@ -50,7 +51,16 @@
 			this.nextPaper = function(){
 				point.reset();
 				pointPanelKeyShort();
-				imgToolbox.switchTo(app.contextPath + "/static/css/img/sj.jpg");
+				ajaxWrapper.getJson('marking/next',{show:false},function(data){					
+					imgToolbox.switchTo(data.cuttings.imgPath);
+				});
+				
+			};
+			
+			this.incrementTask = function(){
+				var $task = statusPanel.find('li:last b:first');
+				var task = $task.text();
+				$task.text(task*1 + 1);
 			};
 			
 			this.clear = function(){
@@ -87,9 +97,8 @@
 
 			this.render = function(model) {
 				setImgPanelHeight();
-				var imgSrc = app.contextPath + "/static/css/img/sj.jpg";
 				point.newInstance();
-				_imgViewer = imgViewer.init({containerId:"imgContainer",imgSrc:imgSrc,eagleEyeRatio:0.2,
+				_imgViewer = imgViewer.init({containerId:"imgContainer",imgSrc:"",eagleEyeRatio:0.2,
 					imgLoaded:function(){
 						point.addFocusListener(function(){
 							_imgViewer.hilightArea(this.position,this.dataTo);
@@ -97,7 +106,21 @@
 						point.actived();
 				}});
 				imgToolbox.init(_imgViewer);
-				pointPanelKeyShort();
+				//pointPanelKeyShort();
+				this.nextPaper();
+				bindEvent();
+			};
+
+			function bindEvent(){
+				$('div.point-panel-marking div.panel-body .form-group:last').on('click','button:first',function(){
+					if(point.hasNext()){
+						point.next(true);
+					}else{
+						_grading.record();
+					}
+				}).on('click','button:last',function(){
+					point.reset();
+				});
 			};
 			
 			function setImgPanelHeight(){

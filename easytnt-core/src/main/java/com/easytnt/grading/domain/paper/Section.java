@@ -5,6 +5,7 @@
 
 package com.easytnt.grading.domain.paper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** 
@@ -38,6 +39,21 @@ public class Section {
 	
 	private List<Section> subSection ;
 	
+	private String title;
+	
+	private String caption;
+	
+	
+	private List<Item> items;
+	
+	public void addItem(Item item) {
+		if(this.items == null) {
+			this.items = new ArrayList<>();
+		}
+		
+		this.items.add(item);
+	}
+	
 	public int hashCode() {
 		//TODO 
 		return 0;
@@ -52,5 +68,47 @@ public class Section {
 		//TODO  
 		return this.getClass().getName();
 	}
+
+	public ExamPaper getPaper() {
+		return paper;
+	}
+
+	public void setPaper(ExamPaper paper) {
+		this.paper = paper;
+	}
+
+	public Section getParentSection() {
+		return parentSection;
+	}
+
+	public void setParentSection(Section parentSection) {
+		this.parentSection = parentSection;
+	}
+
+	public List<Section> getSubSection() {
+		return subSection;
+	}
+
+	public void setSubSection(List<Section> subSection) {
+		this.subSection = subSection;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
+	
+	
 }
 

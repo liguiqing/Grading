@@ -18,9 +18,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 
 import com.easytnt.grading.domain.exam.Exam;
-import com.easytnt.grading.domain.paper.Paper;
+import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.service.ExamService;
-import com.easytnt.grading.service.PaperService;
+import com.easytnt.grading.service.ExamPaperService;
 import com.easytnt.test.controller.AbstractControllerTest;
 
 @ContextHierarchy({
@@ -38,16 +38,16 @@ public class MakingControllerTest  extends AbstractControllerTest{
 	private ExamService examService;
 	
 	@Mock
-	private PaperService paperService;
+	private ExamPaperService paperService;
 	
 	@Test
 	public void testOnView()throws Exception{
 		assertNotNull(controller);
-		Paper paper  = new Paper.Builder("Test Paper").create();
-		Exam exam = new Exam.Builder("test exam").create();
-		//examService.load(1l);
-		when(examService.load(isA(Long.class))).thenReturn(exam);
-		when(paperService.load(isA(Long.class))).thenReturn(paper);
+//		ExamPaper paper  = new Paper.Builder("Test Paper").create();
+//		Exam exam = new Exam.Builder("test exam").create();
+//		//examService.load(1l);
+//		when(examService.load(isA(Long.class))).thenReturn(exam);
+//		when(paperService.load(isA(Long.class))).thenReturn(paper);
 
 		this.mvc.perform(get("/marking/1/1/blockuuid"))
 		.andExpect(view().name("/marking/index"))
@@ -59,11 +59,11 @@ public class MakingControllerTest  extends AbstractControllerTest{
 	@Test
 	public void testOnMonitor()throws Exception{
 		assertNotNull(controller);
-		Paper paper  = new Paper.Builder("Test Paper").create();
-		Exam exam = new Exam.Builder("test exam").create();
+//		Paper paper  = new Paper.Builder("Test Paper").create();
+//		Exam exam = new Exam.Builder("test exam").create();
 		//examService.load(1l);
-		when(examService.load(isA(Long.class))).thenReturn(exam);
-		when(paperService.load(isA(Long.class))).thenReturn(paper);
+//		when(examService.load(isA(Long.class))).thenReturn(exam);
+//		when(paperService.load(isA(Long.class))).thenReturn(paper);
 
 		this.mvc.perform(get("/marking/monitor/1/1/blockuuid"))
 		.andExpect(view().name("/marking/monitorIndex"))

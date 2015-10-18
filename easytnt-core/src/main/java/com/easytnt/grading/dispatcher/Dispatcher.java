@@ -7,7 +7,8 @@ package com.easytnt.grading.dispatcher;
 
 import java.util.Collection;
 
-import com.easytnt.grading.share.ImgCuttings;
+import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.grade.Referees;
 
 /** 
  * <pre>
@@ -19,10 +20,15 @@ import com.easytnt.grading.share.ImgCuttings;
  **/
 public interface Dispatcher {
 
-	ImgCuttings get();
+	PieceCuttings get(Referees referees);
 	
-	void put(Collection<ImgCuttings> cuttingses);
+	void put(Collection<PieceCuttings> cuttingses);
 	
-	void stop();
+	void recover(Collection<PieceCuttings> cuttingses);
+	
+	void start();
+	
+	void destroy();
+
 }
 

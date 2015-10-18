@@ -14,20 +14,35 @@ package com.easytnt.grading.domain.grade;
  **/
 public class Referees {
 
-
+	private String name;
+	
+	public Referees(String name) {
+		this.name = name;
+	}
+	
+	public Referees(){
+		
+	}
+	@Override
 	public int hashCode() {
 		//TODO 
-		return 0;
+		return this.name.hashCode();
 	}
 	
-	public boolean equals() {
+	@Override
+	public boolean equals(Object o) {
 		//TODO 
-		return false;
+		if(!(o instanceof Referees)) {
+			return false;
+		}
+		Referees other = (Referees)o;
+		return this.name.equals(other.name);
 	}
 	
+	@Override
 	public String toString() {
 		//TODO  
-		return this.getClass().getName();
+		return this.name;
 	}
 }
 

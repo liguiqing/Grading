@@ -6,7 +6,8 @@ package com.easytnt.grading.dispatcher;
 
 import java.util.Collection;
 
-import com.easytnt.grading.share.ImgCuttings;
+import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.grade.Referees;
 
 /** 
  * <pre>
@@ -18,11 +19,11 @@ import com.easytnt.grading.share.ImgCuttings;
  **/
 public interface PinciQueue {
 	
-	void put(Collection<ImgCuttings> cuttingses);
+	void put(Collection<PieceCuttings> cuttingses);
 	
-	void add(ImgCuttings cuttings);
+	void add(PieceCuttings cuttings);
 	
-	ImgCuttings get();
+	PieceCuttings get(Referees referees);
 	
 	int size();
 	
