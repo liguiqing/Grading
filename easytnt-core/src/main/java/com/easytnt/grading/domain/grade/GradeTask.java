@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.paper.AnswerArea;
 import com.easytnt.grading.domain.paper.Section;
@@ -30,6 +31,10 @@ public class GradeTask {
 	public List<Section> getSections(){
 		return this.area.getSections();
 	}
+	
+	public void useDispatcher(Dispatcher dispatcher) {
+		this.referees.useDispatcher(dispatcher);
+	}
 
 	public String getSubjectName() {
 		//TODO
@@ -50,7 +55,7 @@ public class GradeTask {
 		return 0;
 	}
 	
-	public boolean equals() {
+	public boolean equals(Object o) {
 		//TODO 
 		return false;
 	}

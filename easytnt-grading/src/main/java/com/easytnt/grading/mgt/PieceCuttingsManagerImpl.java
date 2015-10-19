@@ -35,7 +35,7 @@ public class PieceCuttingsManagerImpl implements PieceCuttingsManager {
 	}
 	
 	@Override
-	public void registerDispatcher(CuttingsArea area,Dispatcher dispathcer) {
+	public void registerDispatcher(CuttingsArea area,Dispatcher dispathcer) throws Exception{
 		//TODO
 		//DispatcherStrategy dispatcherStrategy = SpringContextUtil.getBean("singlePaperPriorDispatcherStrategy2pin");
 		//Fetcher fetcher = SpringContextUtil.getBean("jdbcFetcher");
@@ -45,7 +45,7 @@ public class PieceCuttingsManagerImpl implements PieceCuttingsManager {
 	}
 	
 	@Override
-	public void removeDispatcher(CuttingsArea area) {
+	public void removeDispatcher(CuttingsArea area) throws Exception{
 		Dispatcher dispatcher = dispatchers.get(area);
 		dispatcher.destroy();
 		dispatchers.remove(area);

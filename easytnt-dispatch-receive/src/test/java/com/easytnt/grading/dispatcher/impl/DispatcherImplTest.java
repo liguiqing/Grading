@@ -131,7 +131,7 @@ public class DispatcherImplTest {
 					logger.debug( id + " I am Stopping");
 				}
 				
-				private void doPin() {
+				private void doPin() throws Exception{
 					PieceCuttings ic = dispather.get(null);
 					if(ic == null) {
 						logger.debug("NO Task for me {}",id);

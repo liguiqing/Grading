@@ -36,14 +36,6 @@ public class GradingManagerImpl implements GradingManager {
 		return null;
 	}
 
-	@Override
-	public PieceCuttings getPieceCuttingsFor(CuttingsArea area) {
-		Dispatcher dispatcher =  pieceCuttingsManager.getDispatcherFor(area);
-		Referees referees = refereesService.getCurrentReferees();
-		PieceCuttings cuttings = dispatcher.get(referees);
-		return cuttings;
-	}
-
 }
 
 

@@ -35,9 +35,10 @@ public class PieceGradeRecord {
 		this.startTime = Calendar.getInstance().getTime();
 	}
 	
-	public PieceGradeRecord() {
+	public ItemGradeRecord grading() {
 		
-	}
+		return null;
+	} 
 
 	public void finish() {
 		this.finishTime = Calendar.getInstance().getTime();
@@ -61,5 +62,39 @@ public class PieceGradeRecord {
 		//TODO  
 		return this.getClass().getName();
 	}
+
+	public Referees getReferees() {
+		return referees;
+	}
+
+	public void setReferees(Referees referees) {
+		this.referees = referees;
+	}
+
+	public PieceCuttings getRecordFor() {
+		return recordFor;
+	}
+
+	public void setRecordFor(PieceCuttings recordFor) {
+		this.recordFor = recordFor;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getFinishTime() {
+		return finishTime;
+	}
+
+	public void setFinishTime(Date finishTime) {
+		this.finishTime = finishTime;
+	}
+	
+	
 }
 

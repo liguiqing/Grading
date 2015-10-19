@@ -29,16 +29,19 @@ public class CuttingsArea {
 		this.sections = sections;
 	}
 	
+	@Override
 	public int hashCode() {
 		//TODO 
 		return 0;
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		//TODO 
 		return false;
 	}
 	
+	@Override
 	public String toString() {
 		//TODO  
 		return this.getClass().getName();

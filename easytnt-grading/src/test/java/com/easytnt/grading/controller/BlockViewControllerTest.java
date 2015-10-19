@@ -14,8 +14,8 @@ import org.springframework.test.context.ContextHierarchy;
 import com.easytnt.test.controller.AbstractControllerTest;
 
 @ContextHierarchy({
-	@ContextConfiguration(locations = {"classpath:servlet-context.xml"}),
-	@ContextConfiguration(classes= {BlockViewController.class})
+	@ContextConfiguration(classes= {BlockViewController.class}),
+	@ContextConfiguration(locations = {"classpath:servlet-context.xml"})
 })
 public class BlockViewControllerTest extends AbstractControllerTest {
 

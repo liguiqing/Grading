@@ -34,12 +34,13 @@ public class PieceCuttings{
 	
 	private String imgPath;
 	
-	public void addRecord(Referees referees) {
+	public PieceGradeRecord addRecord(Referees referees) {
 		if(this.records == null) {
 			this.records = new HashSet<>();
 		}
-		
-		this.records.add(new PieceGradeRecord(referees,this));
+		PieceGradeRecord record = new PieceGradeRecord(referees,this);
+		this.records.add(record);
+		return record;
 	}
 	
 	public boolean recordedBy(Referees referees) {

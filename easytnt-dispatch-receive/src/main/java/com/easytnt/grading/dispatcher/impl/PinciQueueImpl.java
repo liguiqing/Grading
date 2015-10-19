@@ -42,12 +42,14 @@ public class PinciQueueImpl implements PinciQueue {
 	@Override
 	public PieceCuttings get(Referees referees) {
 		PieceCuttings cuttings = this.queue.poll();
+		if(cuttings == null)
+			return null;
+		
 		if(cuttings.recordedBy(referees)) {
 			this.queue.offerLast(cuttings);
 			return this.get(referees);
 		}else {
-			if(cuttings != null)
-				this.queueSize.decrementAndGet();
+			this.queueSize.decrementAndGet();
 			return cuttings;
 		}
 		

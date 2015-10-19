@@ -19,9 +19,9 @@ public interface PieceCuttingsManager {
 
 	public Dispatcher getDispatcherFor(CuttingsArea area);
 
-	void registerDispatcher(CuttingsArea area, Dispatcher dispathcer);
+	void registerDispatcher(CuttingsArea area, Dispatcher dispathcer) throws Exception;
 
-	void removeDispatcher(CuttingsArea area);
+	void removeDispatcher(CuttingsArea area)throws Exception;
 }
 
 

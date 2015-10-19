@@ -4,6 +4,15 @@
  **/
 
 package com.easytnt.grading.domain.grade;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import com.easytnt.grading.dispatcher.Dispatcher;
+import com.easytnt.grading.domain.cuttings.PieceCuttings;
+
+
 /** 
  * <pre>
  * 评卷员
@@ -16,33 +25,50 @@ public class Referees {
 
 	private String name;
 	
+	private Dispatcher dispatcher;
+	
+	private PieceGradeRecord recordingNow;
+	
 	public Referees(String name) {
 		this.name = name;
 	}
 	
-	public Referees(){
-		
+	public void useDispatcher(Dispatcher dispatcher) {
+		this.dispatcher = dispatcher;
 	}
+	
+	public PieceGradeRecord fetchCuttings() throws Exception {
+		if(this.dispatcher != null) {
+			PieceCuttings cuttings = this.dispatcher.get(this);
+			this.recordingNow = cuttings.addRecord(this);
+		}
+		return recordingNow;
+	}
+
+	
+	
+	
 	@Override
 	public int hashCode() {
-		//TODO 
-		return this.name.hashCode();
+		return new HashCodeBuilder().append(this.name).toHashCode();
 	}
 	
-	@Override
+    @Override
 	public boolean equals(Object o) {
-		//TODO 
-		if(!(o instanceof Referees)) {
+		if(!(o instanceof Referees))
 			return false;
-		}
 		Referees other = (Referees)o;
-		return this.name.equals(other.name);
+		
+		return new EqualsBuilder().append(this.name,other.name).isEquals();
 	}
 	
-	@Override
+    @Override
 	public String toString() {
-		//TODO  
-		return this.name;
+		return new ToStringBuilder(this).append(this.name).build();
+	}
+    
+	public Referees(){
+		
 	}
 }
 

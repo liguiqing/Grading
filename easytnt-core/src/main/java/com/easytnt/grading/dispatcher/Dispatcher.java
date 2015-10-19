@@ -20,15 +20,17 @@ import com.easytnt.grading.domain.grade.Referees;
  **/
 public interface Dispatcher {
 
-	PieceCuttings get(Referees referees);
+	PieceCuttings get(Referees referees)throws Exception;
 	
-	void put(Collection<PieceCuttings> cuttingses);
+	void put(Collection<PieceCuttings> cuttingses) throws Exception;
 	
-	void recover(Collection<PieceCuttings> cuttingses);
+	void recover(Collection<PieceCuttings> cuttingses)throws Exception;
 	
-	void start();
+	void start()throws Exception;
 	
-	void destroy();
+	void destroy()throws Exception;
+	
+	boolean isWorking();
 
 }
 

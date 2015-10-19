@@ -6,16 +6,19 @@ package com.easytnt.grading.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easytnt.commons.entity.service.AbstractEntityService;
+import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.paper.AnswerArea;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Section;
+import com.easytnt.grading.mgt.PieceCuttingsManager;
 import com.easytnt.grading.service.GradeTaskService;
 
 /** 
@@ -29,6 +32,9 @@ import com.easytnt.grading.service.GradeTaskService;
 @Service
 public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask,Long> implements GradeTaskService {
 
+	@Autowired
+	private PieceCuttingsManager pieceCuttingsManager;
+	
 	@Override
 	@Transactional(readOnly=true)
 	public GradeTask load(Long pk) {
@@ -73,7 +79,9 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask,Long> 
 	public GradeTask getRefereesTaskOf(Referees referees, Long taskId) {
 		//TODO
 		GradeTask task =  this.load(taskId);
-		task.setReferees(referees);
+		//task.setReferees(referees);
+		Dispatcher dispatcher = pieceCuttingsManager.getDispatcherFor(task.getArea());
+		referees.useDispatcher(dispatcher);
 		return task;
 	}
 

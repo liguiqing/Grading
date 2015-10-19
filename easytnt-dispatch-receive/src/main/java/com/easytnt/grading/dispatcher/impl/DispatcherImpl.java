@@ -45,6 +45,8 @@ public class DispatcherImpl implements Dispatcher {
 	
 	private  QueueListener queueListener;
 	
+	private boolean working = Boolean.FALSE;
+	
 	public DispatcherImpl() {
 		this(new SinglePaperPriorDispatcherStrategy(1));
 	}
@@ -84,7 +86,7 @@ public class DispatcherImpl implements Dispatcher {
 	}
 
 	@Override
-	public PieceCuttings get(Referees referees) {
+	public PieceCuttings get(Referees referees) throws Exception{
 		PieceCuttings cuttings = getCuttingsFromTop(referees);
 		if(cuttings != null)
 			return cuttings;
@@ -96,7 +98,7 @@ public class DispatcherImpl implements Dispatcher {
 			return null;
 
 		cuttings.incrementPinciAndGet();
-		cuttings.recordedBy(referees);
+		//cuttings.recordedBy(referees);
 		logger.debug(cuttings.toString());
 		
 		moveToNext(cuttings);
@@ -106,24 +108,31 @@ public class DispatcherImpl implements Dispatcher {
 	}
 	
 	@Override
-	public void put(Collection<PieceCuttings> cuttingses) {
+	public void put(Collection<PieceCuttings> cuttingses) throws Exception{
+		checkCanUse();
 		this.getFirstQueue().put(cuttingses);
 	}
 	
 
 	@Override
-	public void recover(Collection<PieceCuttings> cuttingses) {
+	public void recover(Collection<PieceCuttings> cuttingses) throws Exception{
 		// TODO Auto-generated method stub
 		
 	}
 	
+	public boolean isWorking() {
+		return this.working;
+	}
+	
 	@Override
-	public void start() {
+	public void start() throws Exception{
+		this.working = Boolean.TRUE;
 		this.startListened();
 	}
 	
 	@Override
-	public void destroy() {
+	public void destroy() throws Exception{
+		this.working = Boolean.FALSE;
 		queueListener.off();
 		for(PinciQueue queue:this.pinci) {
 			queue.clear();
@@ -131,12 +140,16 @@ public class DispatcherImpl implements Dispatcher {
 		this.pinci.clear();		
 	}
 	
+	private void checkCanUse() throws Exception {
+		if(!this.isWorking())
+			throw new IllegalAccessException("发卷器尚未启动!");
+	}
 	
 	private PinciQueue getFirstQueue() {
 		return this.pinci.get(0);
 	}
 
-	private PieceCuttings getCuttingsFromTop(Referees referees) {
+	private PieceCuttings getCuttingsFromTop(Referees referees) throws Exception{
 		if(this.topPatcher != null) {
 			return this.topPatcher.get(referees);
 		}

@@ -20,7 +20,6 @@ public interface GradingManager {
 
 	PieceCuttings getPieceCuttingsFor(Referees referees);
 	
-	PieceCuttings getPieceCuttingsFor(CuttingsArea area);
 	
 }
 
