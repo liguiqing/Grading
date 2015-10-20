@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.easytnt.importpaper.io.scanfiledir.CountContainer;
+import com.easytnt.importpaper.bean.CountContainer;
 import com.easytnt.importpaper.io.scanfiledir.FileInfo;
 
 /**

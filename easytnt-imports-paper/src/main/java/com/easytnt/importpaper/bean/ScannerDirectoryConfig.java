@@ -10,7 +10,8 @@ import java.util.List;
  *
  */
 public class ScannerDirectoryConfig {
-	private int paperId;
+	private String uuId;
+	private int testId;
 	private String rootUrl;
 	private String fileDir;
 	private List<DirectoryMapping> directoryMappings;
@@ -19,12 +20,12 @@ public class ScannerDirectoryConfig {
 		return rootUrl;
 	}
 
-	public int getPaperId() {
-		return paperId;
+	public int getTestId() {
+		return testId;
 	}
 
-	public ScannerDirectoryConfig setPaperId(int paperId) {
-		this.paperId = paperId;
+	public ScannerDirectoryConfig setTestId(int testId) {
+		this.testId = testId;
 		return this;
 	}
 
@@ -51,6 +52,15 @@ public class ScannerDirectoryConfig {
 
 	public ScannerDirectoryConfig setDirectoryMappings(List<DirectoryMapping> directoryMappings) {
 		this.directoryMappings = directoryMappings;
+		return this;
+	}
+
+	public String getUuId() {
+		return uuId;
+	}
+
+	public ScannerDirectoryConfig setUuId(String uuId) {
+		this.uuId = uuId;
 		return this;
 	}
 

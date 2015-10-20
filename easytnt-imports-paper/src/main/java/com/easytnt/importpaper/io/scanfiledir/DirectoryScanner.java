@@ -5,6 +5,8 @@ package com.easytnt.importpaper.io.scanfiledir;
 
 import java.io.IOException;
 
+import com.easytnt.importpaper.bean.CountContainer;
+
 /**
  * @author T440P
  *

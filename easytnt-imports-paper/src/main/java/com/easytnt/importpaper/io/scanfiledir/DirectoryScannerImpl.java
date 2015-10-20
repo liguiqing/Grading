@@ -11,6 +11,8 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import com.easytnt.importpaper.bean.CountContainer;
+
 /**
  * @author liuyu
  *

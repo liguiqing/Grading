@@ -11,11 +11,15 @@ package com.easytnt.importpaper.bean;
  *
  */
 public class CutImageInfo {
+	private int testId;
 	private int paperId;
 	private int kemuId;
+	private long roomId;
 	private long virtualroomId;
+	private int roomType;
 	private long studentId;
 	private int itemId;
+	private int diquId;
 	private String imagePath;
 
 	public int getPaperId() {
@@ -69,6 +73,42 @@ public class CutImageInfo {
 
 	public CutImageInfo setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+		return this;
+	}
+
+	public int getTestId() {
+		return testId;
+	}
+
+	public CutImageInfo setTestId(int testId) {
+		this.testId = testId;
+		return this;
+	}
+
+	public long getRoomId() {
+		return roomId;
+	}
+
+	public CutImageInfo setRoomId(long roomId) {
+		this.roomId = roomId;
+		return this;
+	}
+
+	public int getRoomType() {
+		return roomType;
+	}
+
+	public CutImageInfo setRoomType(int roomType) {
+		this.roomType = roomType;
+		return this;
+	}
+
+	public int getDiquId() {
+		return diquId;
+	}
+
+	public CutImageInfo setDiquId(int diquId) {
+		this.diquId = diquId;
 		return this;
 	}
 

@@ -25,10 +25,11 @@ public class FileInfoBulidor {
 
 	public FileInfo building(Path path) {
 		int pathDepath = path.getNameCount();
-		String relativelyPath = path.subpath(dirDepth, pathDepath).toString();
+		String relativelyPath = path.subpath(dirDepth - 1, pathDepath).toString();
+		String rootDir = path.subpath(0, dirDepth - 1).toString();
 
 		FileInfo itemImageFile = new FileInfo();
-		itemImageFile.setRootDir(rootDir.toString()).setRelativelyPath(relativelyPath);
+		itemImageFile.setRootDir(rootDir).setRelativelyPath(relativelyPath);
 		return itemImageFile;
 	}
 

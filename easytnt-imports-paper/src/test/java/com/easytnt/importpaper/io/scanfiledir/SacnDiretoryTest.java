@@ -12,11 +12,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.easytnt.importpaper.bean.CountContainer;
 import com.easytnt.importpaper.bean.CutImageInfo;
 import com.easytnt.importpaper.bean.DirectoryMapping;
 import com.easytnt.importpaper.bean.MappingName;
 import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
-import com.easytnt.importpaper.util.CutImageUtil;
+import com.easytnt.importpaper.service.ConvertFileInfoToCutImageInfoService;
+import com.easytnt.importpaper.service.impl.ConvertFileInfoToCutImageInfoServiceImpl;
 
 /**
  * <pre>
@@ -73,6 +75,7 @@ public class SacnDiretoryTest {
 	@Test
 	public void createCutImageSQL() throws Exception {
 
+		final ConvertFileInfoToCutImageInfoService convertFileInfoToCutImageInfoService = new ConvertFileInfoToCutImageInfoServiceImpl();
 		ArrayList<DirectoryMapping> directoryMappings = new ArrayList<>();
 
 		directoryMappings.add(new DirectoryMapping().setPlace(0).setMappingName(MappingName.KM));
@@ -81,7 +84,7 @@ public class SacnDiretoryTest {
 		directoryMappings.add(new DirectoryMapping().setPlace(3).setMappingName(MappingName.TH));
 
 		final ScannerDirectoryConfig config = new ScannerDirectoryConfig();
-		config.setRootUrl("http://127.0.0.1:8888").setFileDir("D:/sj").setPaperId(10000010)
+		config.setRootUrl("http://127.0.0.1:8888").setFileDir("D:/sj").setTestId(10000010)
 				.setDirectoryMappings(directoryMappings);
 
 		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(config.getFileDir());
@@ -89,7 +92,7 @@ public class SacnDiretoryTest {
 
 			@Override
 			public void visit(FileInfo fileInfo) {
-				CutImageInfo cutImageInfo = CutImageUtil.convertFileInfo(config, fileInfo);
+				CutImageInfo cutImageInfo = convertFileInfoToCutImageInfoService.convert(config, fileInfo);
 				try {
 					printSQL(null, cutImageInfo);
 				} catch (Exception e) {

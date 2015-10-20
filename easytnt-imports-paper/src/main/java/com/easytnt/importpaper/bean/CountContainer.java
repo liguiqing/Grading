@@ -1,10 +1,11 @@
 /**
  * 
  */
-package com.easytnt.importpaper.io.scanfiledir;
+package com.easytnt.importpaper.bean;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -15,6 +16,7 @@ public class CountContainer<T> {
 	private CopyOnWriteArrayList<T> container = new CopyOnWriteArrayList<>();
 	private AtomicLong fileNumber = new AtomicLong();
 	private final int capacity;
+	private AtomicBoolean isOver = new AtomicBoolean(false);
 
 	public CountContainer(int capacity) {
 		this.capacity = capacity;
@@ -38,4 +40,13 @@ public class CountContainer<T> {
 	public List<T> getContainer() {
 		return container;
 	}
+
+	public boolean getIsOver() {
+		return isOver.get();
+	}
+
+	public void setIsOver(boolean isOver) {
+		this.isOver.set(isOver);
+	}
+
 }
