@@ -51,6 +51,10 @@ public class GradeTask implements ValueObject<GradeTask> {
 		this.status = TaskStatus.Ready;
 	}
 	
+	public boolean taskOf(Referees referees) {
+		return this.referees.equals(referees);
+	}
+	
 	public boolean typeOf(TaskType type) {
 		return this.type.equals(type);
 	}
@@ -131,6 +135,34 @@ public class GradeTask implements ValueObject<GradeTask> {
 
 	public void setArea(CuttingsArea area) {
 		this.area = area;
+	}
+
+	public Referees getReferees() {
+		return referees;
+	}
+
+	public void setReferees(Referees referees) {
+		this.referees = referees;
+	}
+
+	public TaskType getType() {
+		return type;
+	}
+
+	public void setType(TaskType type) {
+		this.type = type;
+	}
+
+	public TaskStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(TaskStatus status) {
+		this.status = status;
+	}
+
+	public void setRefereesTotal(int refereesTotal) {
+		this.refereesTotal = refereesTotal;
 	}
 	
 }

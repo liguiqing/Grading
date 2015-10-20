@@ -28,6 +28,13 @@ public class Area implements ValueObject<ItemGradeRecord> {
 	private int width;
 
 	private int height;
+	
+	public Area(int left,int top,int width,int height) {
+		this.left = left;
+		this.top = top;
+		this.width = width;
+		this.height = height;
+	}
 
 	@Override
 	public int hashCode() {

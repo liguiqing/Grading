@@ -55,8 +55,9 @@ public class Section implements ValueObject<Section>{
 		if (this.items == null) {
 			this.items = new ArrayList<>();
 		}
-
+		
 		this.items.add(item);
+		item.setSection(this);
 	}
 
 	@Override

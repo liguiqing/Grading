@@ -41,6 +41,7 @@
 
 .img-panel {
     height:100%;
+    margin-left:40px;
 }
 
 .point-panel-detail {
@@ -117,7 +118,7 @@
 }
 
 .img-panel-toolbox .panel-body b{
-	font-size:16px;
+	font-size:15px;
 }
 
 .img-panel-toolbox .panel-body b.left{
@@ -131,7 +132,7 @@
 .img-panel-toolbox .panel-body b.bottom{
 	margin: 5px 0px 0px -3px;
     left: 16px;
-    top: 0px;
+    top: -1px;
     position: absolute;
 }
 

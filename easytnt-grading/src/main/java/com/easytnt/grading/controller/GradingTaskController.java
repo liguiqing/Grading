@@ -4,6 +4,7 @@
  **/
 package com.easytnt.grading.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.easytnt.commons.ui.Menu;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.PieceCuttings;
@@ -47,25 +49,35 @@ public class GradingTaskController {
 	private GradeTaskService taskService;
 
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)
-	public ModelAndView onGetTask(@PathVariable Long taskId, @PathVariable Long areaId) throws Exception {
+	public ModelAndView onGetTask(@PathVariable Long taskId) throws Exception {
 		logger.debug("URL /task/{} Method Get", taskId);
+		List<Menu> menus = new ArrayList<Menu>();
+		menus.add( new Menu("个人中心",""));
+		menus.add( new Menu("参考答案",""));
+		menus.add( new Menu("统计信息",""));
+		menus.add( new Menu("锁定屏幕",""));
+		menus.add( new Menu("退出",""));
+		
 		Referees referees = refereesService.getCurrentReferees();
 		GradeTask task = taskService.getTaskOf(taskId, referees);
-
+		referees = task.getReferees();
 		CuttingsArea area = task.getArea();
 		List<Section> sections = area.getSections();
 
-		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask").with("referees", referees).with("task", task)
+		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask")
+				.with("menus", menus)
+				.with("referees", referees)
+				.with("task", task)
 				.with("sections", sections).build();
 	}
 
-	@RequestMapping(value = "/{taskId}/getcut", method = RequestMethod.GET)
+	@RequestMapping(value = "/{taskId}/cuttings", method = RequestMethod.GET)
 	public ModelAndView onGetCuttings(@PathVariable Long taskId) throws Exception {
 		logger.debug("URL /task/{}/ Method Get", taskId);
 		Referees referees = refereesService.getCurrentReferees();
 		PieceGradeRecord pieceGradeRecord = taskService.createPieceGradeRecordBy(taskId, referees);
 		PieceCuttings cuttings = pieceGradeRecord.getRecordFor();
-		return ModelAndViewFactory.newModelAndViewFor("/index").with("imgPath", cuttings.getImgPath()).build();
+		return ModelAndViewFactory.newModelAndViewFor("/task/imgPanel").with("imgPath", cuttings.getImgPath()).build();
 	}
 
 	@RequestMapping(value = "/{taskId}/itemscoring", method = RequestMethod.POST)
@@ -74,7 +86,7 @@ public class GradingTaskController {
 
 		Referees referees = refereesService.getCurrentReferees();
 		taskService.itemScoring(taskId, referees, scores);
-		return ModelAndViewFactory.newModelAndViewFor("").build();
+		return ModelAndViewFactory.newModelAndViewFor("/task/imgPanel").build();
 	}
 
 }

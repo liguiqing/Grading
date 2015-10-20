@@ -7,7 +7,7 @@
           </aside>
           <aside class="col-xs-3 col-sm-3 col-md-3 col-lg-3 point-panel-container">
           <#import "pointsPanel.ftl" as points>
-          <@points.pointsPanel />
+          <@points.pointsPanel sections=sections/>
           </aside>
         </div>
       </div>

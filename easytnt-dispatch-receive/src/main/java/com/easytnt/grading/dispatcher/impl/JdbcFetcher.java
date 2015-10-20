@@ -26,10 +26,6 @@ public class JdbcFetcher implements Fetcher {
 
 	
 	private JdbcTemplate jdbcTemplate;
-	
-	public JdbcFetcher() {
-		jdbcTemplate = SpringContextUtil.getBean(JdbcTemplate.class);
-	}
 
 	@Override
 	public List<PieceCuttings> fetch(int amount) {

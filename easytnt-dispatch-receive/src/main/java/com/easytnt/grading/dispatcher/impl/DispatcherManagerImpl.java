@@ -9,9 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.easytnt.commons.util.SpringContextUtil;
 import com.easytnt.grading.dispatcher.Dispatcher;
+import com.easytnt.grading.dispatcher.DispatcherStrategy;
 import com.easytnt.grading.dispatcher.DispathcerManager;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.fetch.Fetcher;
 
 /** 
  * <pre>
@@ -27,14 +30,10 @@ public class DispatcherManagerImpl implements DispathcerManager {
 	private  ConcurrentHashMap<CuttingsArea,Dispatcher> dispatcherPool = new ConcurrentHashMap<>();
 	
 	@Override
-	public void registerDispatcher(CuttingsArea area,Dispatcher dispathcer) throws Exception{
+	public void registerDispatcher(CuttingsArea area,Dispatcher dispatcher) throws Exception{
 		logger.debug("Register Dispatcher For {} ",area.toString());
-		//TODO
-		//DispatcherStrategy dispatcherStrategy = SpringContextUtil.getBean("singlePaperPriorDispatcherStrategy2pin");
-		//Fetcher fetcher = SpringContextUtil.getBean("jdbcFetcher");
-		//DispatcherImpl dispather = new DispatcherImpl(dispatcherStrategy,fetcher);
-		dispatcherPool.put(area,dispathcer);
-		dispathcer.start();
+		dispatcherPool.put(area,dispatcher);
+		dispatcher.start();
 	}
 	
 	@Override

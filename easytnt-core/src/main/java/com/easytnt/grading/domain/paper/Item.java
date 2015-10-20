@@ -33,6 +33,7 @@ public class Item implements ValueObject<Item> {
 	private Area answerArea;
 
 	private Float fullScore;
+	
 
 	public boolean isEffectiveScore(Float score) {
 		return score.compareTo(this.getMinPoint()) >= 0
@@ -80,6 +81,39 @@ public class Item implements ValueObject<Item> {
 	@Override
 	public boolean sameValueAs(Item other) {
 		return this.equals(other);
+	}
+	
+	public static class Builder{
+		private Item item;
+		
+		public Builder(String title) {
+			this.item = new Item();
+			this.item.title = title;
+		}
+		
+		public Builder caption(String caption) {
+			this.item.caption = caption;
+			return this;
+		}
+		
+		public Builder scoreDot(String scoreDot) {
+			this.item.scoreDot = scoreDot;
+			return this;
+		}
+		
+		public Builder fullScore(Float fullScore) {
+			this.item.fullScore = fullScore;
+			return this;
+		}
+		
+		public Builder answerArea(Area answerArea) {
+			this.item.answerArea = answerArea;
+			return this;
+		}
+		
+		public Item create() {
+			return this.item;
+		}
 	}
 
 	//以下功能为ORM或者自动构造使用，非此慎用

@@ -51,7 +51,8 @@
 			this.nextPaper = function(){
 				point.reset();
 				pointPanelKeyShort();
-				ajaxWrapper.getJson('marking/next',{show:false},function(data){					
+				var url = window.location.href;
+				ajaxWrapper.getJson(url.substring(url.indexOf('task'))+'/cuttings',{show:false},function(data){					
 					imgToolbox.switchTo(data.cuttings.imgPath);
 				});
 				
@@ -126,6 +127,7 @@
 			function setImgPanelHeight(){
 			    var windowH = $(window).height();
 	            var h1 = getClientHeight()-navigationPanel.height()-statusPanel.height();
+	            logger.log(navigationPanel.height());
 	            imgPanel.height(h1);
 	            pointPanel.find('.panel-body').height(h1-150);
 	            imgToolboxPanel.find('.panel-body ').height(h1-65);

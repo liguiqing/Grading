@@ -169,6 +169,6 @@
 			};
 		};
 		 
-		return new Point
+		return new Point();
 	});
 })();

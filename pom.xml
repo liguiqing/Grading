@@ -51,10 +51,11 @@
 		<module>easytnt-commons</module>
 		<module>easytnt-core</module>
 		<module>easytnt-grading</module>
-		<module>easytnt-grading-webapp</module>
+		<module>easytnt-grading-mock</module>
 		<module>easytnt-dispatch-receive</module>
 		<!--<module>grading-portalet</module> -->
 		<module>easytnt-imports-paper</module>
+		<module>easytnt-grading-webapp</module>
 	</modules>
 	<scm>
 		<connection>scm:git:git@github.com:liguiqing/Grading.git</connection>

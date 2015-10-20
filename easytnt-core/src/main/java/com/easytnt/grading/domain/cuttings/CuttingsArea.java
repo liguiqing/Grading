@@ -4,6 +4,7 @@
  **/
 package com.easytnt.grading.domain.cuttings;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -34,12 +35,10 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 	
 	private List<Section> sections;
 	
-	public List<Section> getSections() {
-		return sections;
-	}
-
-	public void setSections(List<Section> sections) {
-		this.sections = sections;
+	public void bindSection(Section section) {
+		if(this.sections == null)
+			this.sections = new ArrayList<>();
+		this.sections.add(section);	
 	}
 	
 	@Override
@@ -92,6 +91,14 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 
 	public void setAreaInPaper(Area areaInPaper) {
 		this.areaInPaper = areaInPaper;
+	}
+	
+	public List<Section> getSections() {
+		return sections;
+	}
+
+	public void setSections(List<Section> sections) {
+		this.sections = sections;
 	}
 
 }

@@ -12,7 +12,7 @@
       </div>
       <#if section.items??>
         <#list section.items as item>
-          <@pointInputGroup point={"name":item.caption,"label":item.caption,"disabled":"","from":0,"to":2,"interval":"1"} position=item.area/>
+          <@pointInputGroup point={"name":item.caption,"label":item.caption,"disabled":"","from":item.minPoint,"to":item.maxPoint,"interval":"1"} position=item.area/>
         </#list>
       </#if>
     </#list>  
@@ -49,7 +49,7 @@
  </div>
 </#macro>
 
-<#macro pointInputGroup inputId="inputSuccess"   point={"name":"point1","label":"(1)","disabled":"","from":0,"to":1,"interval":"0.5"} 
+<#macro pointInputGroup inputId="inputSuccess"   point={"name":"point1","label":"(1)","disabled":"","from":0,"to":1,"interval":"1"} 
 position={"top":10,"left":10,"height":30,"width":100}>
  <div class="form-group ">
   <label class="col-sm-4 col-md-4 col-lg-4 control-label " for="${inputId}"> ${point.label} (<span class="point-to">${point.to}</span>分)</label>
