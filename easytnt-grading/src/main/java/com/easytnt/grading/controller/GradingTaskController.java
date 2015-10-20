@@ -11,20 +11,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.web.view.ModelAndViewFactory;
-import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.PieceCuttings;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.PieceGradeRecord;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.paper.Section;
-import com.easytnt.grading.mgt.GradingManager;
-import com.easytnt.grading.mgt.PieceCuttingsManager;
 import com.easytnt.grading.service.GradeTaskService;
 import com.easytnt.grading.service.RefereesService;
 
@@ -46,50 +44,41 @@ public class GradingTaskController {
 	private RefereesService refereesService;
 	
 	@Autowired(required=false)
-	private GradingManager gradingManager;
-	
-	@Autowired(required=false)
 	private GradeTaskService taskService;
-	
-	@Autowired(required=false)
-	private PieceCuttingsManager pieceCuttingsManager;
-	
 	
 	@RequestMapping(value="/{taskId}",method=RequestMethod.GET)
 	public ModelAndView onGetTask(@PathVariable Long taskId,@PathVariable Long areaId)throws Exception{
 		logger.debug("URL /task/{} Method Get",taskId);
-		GradeTask task = getMyTask(taskId);
+		Referees referees = refereesService.getCurrentReferees();
+		GradeTask task = taskService.getTaskOf(taskId,referees);
+		
 		CuttingsArea area =  task.getArea();
-		Dispatcher dispatcher = pieceCuttingsManager.getDispatcherFor(area);
-		task.useDispatcher(dispatcher);
 		List<Section> sections = area.getSections();
+		
 		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask")
-				.with("referees", task.getReferees())
+				.with("referees", referees)
 				.with("task", task)
 				.with("sections", sections).build();
 	}
 	
-	@RequestMapping(value="/{taskId}/{areaId}",method=RequestMethod.GET)
-	public ModelAndView onGetCuttings(@PathVariable Long taskId,@PathVariable Long areaId)throws Exception{
-		logger.debug("URL /task/{}/{} Method Get",taskId,areaId);		
-		//GradeTask task = getMyTask(taskId);
-		//PieceCuttings cuttings = gradingManager.getPieceCuttingsFor(task.getArea());
+	@RequestMapping(value="/{taskId}",method=RequestMethod.GET)
+	public ModelAndView onGetCuttings(@PathVariable Long taskId)throws Exception{
+		logger.debug("URL /task/{}/ Method Get",taskId);		
 		Referees referees = refereesService.getCurrentReferees();
-		PieceGradeRecord pieceGradeRecord = referees.fetchCuttings();
+		PieceGradeRecord pieceGradeRecord = taskService.createPieceGradeRecordBy(taskId, referees);
 		PieceCuttings cuttings = pieceGradeRecord.getRecordFor();
 		return ModelAndViewFactory.newModelAndViewFor("/index").with("imgPath", cuttings.getImgPath()).build();
 	}
 	
-	private GradeTask getMyTask(Long taskId) throws IllegalAccessException{
-		Referees referees = refereesService.getCurrentReferees();
-		GradeTask task = taskService.getRefereesTaskOf(referees,taskId);
-		if(task == null)
-			throw new IllegalAccessException("无权访问此评卷任务");
+	@RequestMapping(value="/{taskId}/itemscoring",method=RequestMethod.POST)
+	public ModelAndView onScoring(@RequestBody Float[] scores,@PathVariable Long taskId)throws Exception{
+		logger.debug("URL /task/{}/itemscoring Method POST",taskId,scores.toString());	
 		
-		if(task.isFinish())
-			throw new IllegalAccessException("评卷任务已经完成");
-		return task;
+		Referees referees = refereesService.getCurrentReferees();
+		taskService.itemScoring(taskId,referees,scores);
+		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
+	
 }
 
 

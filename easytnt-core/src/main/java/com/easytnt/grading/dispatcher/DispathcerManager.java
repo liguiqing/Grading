@@ -4,6 +4,9 @@
  **/
 
 package com.easytnt.grading.dispatcher;
+
+import com.easytnt.grading.domain.cuttings.CuttingsArea;
+
 /** 
  * <pre>
  * 
@@ -13,6 +16,12 @@ package com.easytnt.grading.dispatcher;
  * @version 1.0
  **/
 public interface DispathcerManager {
+	
+	public Dispatcher getDispatcherFor(CuttingsArea area);
 
+	void registerDispatcher(CuttingsArea area, Dispatcher dispathcer) throws Exception;
+
+	void removeDispatcher(CuttingsArea area)throws Exception;
+	
 }
 

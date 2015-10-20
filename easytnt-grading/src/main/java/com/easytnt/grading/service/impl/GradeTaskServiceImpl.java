@@ -4,7 +4,8 @@
  **/
 package com.easytnt.grading.service.impl;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easytnt.commons.entity.service.AbstractEntityService;
 import com.easytnt.grading.dispatcher.Dispatcher;
+import com.easytnt.grading.dispatcher.DispathcerManager;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.grade.GradeTask;
+import com.easytnt.grading.domain.grade.ItemGradeRecord;
+import com.easytnt.grading.domain.grade.PieceGradeRecord;
 import com.easytnt.grading.domain.grade.Referees;
-import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Section;
-import com.easytnt.grading.mgt.PieceCuttingsManager;
 import com.easytnt.grading.service.GradeTaskService;
 
 /** 
@@ -32,56 +34,59 @@ import com.easytnt.grading.service.GradeTaskService;
 public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask,Long> implements GradeTaskService {
 
 	@Autowired
-	private PieceCuttingsManager pieceCuttingsManager;
+	private DispathcerManager dispathcerManager;
 	
 	@Override
 	@Transactional(readOnly=true)
-	public GradeTask load(Long pk) {
+	public GradeTask getTaskOf(Long taskId,Referees referees) throws Exception{
+		logger.debug("Task for {} with {}",referees,taskId);
 		//TODO
-		GradeTask task = new GradeTask();
 		CuttingsArea area = new CuttingsArea();
-		task.setArea(area);
 		Section section = new Section();
 		section.setTitle("二、填空题");
 		section.setCaption("二、填空题");
+		GradeTask task = GradeTask.createOfficialGradeTask(referees, area);
+
+		if(task == null)
+			throw new IllegalAccessException("无权访问此评卷任务");
 		
-		
+		if(task.isFinished())
+			throw new IllegalAccessException("评卷任务已经完成");
+
+		Dispatcher dispatcher = dispathcerManager.getDispatcherFor(task.getArea());
+		task.useDispatcher(dispatcher);
 		return task;
 	}
 
-	@Override
-	public void create(GradeTask t) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
-	public void update(GradeTask t) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(GradeTask t) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<GradeTask> list() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public GradeTask getRefereesTaskOf(Referees referees, Long taskId) {
+	@Transactional
+	public void itemScoring(Long taskId,Referees referees, Float[] scores) throws Exception {
+		GradeTask task = this.load(taskId);
+		Collection<ItemGradeRecord> itemRecords = referees.scoringForItems(scores);
+		logger.debug("Scoring ",itemRecords);
+		task.increment();
+		//数据持久化处理
 		//TODO
-		GradeTask task =  this.load(taskId);
-		//task.setReferees(referees);
-		Dispatcher dispatcher = pieceCuttingsManager.getDispatcherFor(task.getArea());
-		referees.useDispatcher(dispatcher);
-		return task;
+		PieceGradeRecord gradeRecord = null;
+	    Iterator<ItemGradeRecord> it = itemRecords.iterator();
+	    while(it.hasNext()) {
+	    	if(gradeRecord == null)
+	    		gradeRecord = it.next().getSource();
+	    }
+	}
+
+
+	@Override
+	public PieceGradeRecord createPieceGradeRecordBy(Long taskId,Referees referees)
+			throws Exception {
+		GradeTask task = this.load(taskId);
+		
+		PieceGradeRecord pieceGradeRecord = referees.fetchCuttings();
+		//数据持久化处理
+		//TODO
+		
+		return pieceGradeRecord;
 	}
 
 }

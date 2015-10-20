@@ -86,7 +86,9 @@ public class DispatcherImpl implements Dispatcher {
 	}
 
 	@Override
-	public PieceCuttings get(Referees referees) throws Exception{
+	public PieceCuttings getFor(Referees referees) throws Exception{
+		checkWorking();
+		
 		PieceCuttings cuttings = getCuttingsFromTop(referees);
 		if(cuttings != null)
 			return cuttings;
@@ -98,10 +100,10 @@ public class DispatcherImpl implements Dispatcher {
 			return null;
 
 		cuttings.incrementPinciAndGet();
-		//cuttings.recordedBy(referees);
-		logger.debug(cuttings.toString());
 		
 		moveToNext(cuttings);
+		
+		logger.debug(cuttings.toString());
 		
 		return cuttings;
 
@@ -109,7 +111,7 @@ public class DispatcherImpl implements Dispatcher {
 	
 	@Override
 	public void put(Collection<PieceCuttings> cuttingses) throws Exception{
-		checkCanUse();
+		checkWorking();
 		this.getFirstQueue().put(cuttingses);
 	}
 	
@@ -117,11 +119,18 @@ public class DispatcherImpl implements Dispatcher {
 	@Override
 	public void recover(Collection<PieceCuttings> cuttingses) throws Exception{
 		// TODO Auto-generated method stub
-		
+		checkWorking();
 	}
 	
-	public boolean isWorking() {
-		return this.working;
+	
+	@Override
+	public void useNewFetcher(Fetcher fetcher,boolean mustCleanData)throws Exception {
+		this.stop();
+		this.fetcher = fetcher;
+		if(mustCleanData) {
+			clearPinciQueue();
+		}
+		this.start();
 	}
 	
 	@Override
@@ -131,20 +140,29 @@ public class DispatcherImpl implements Dispatcher {
 	}
 	
 	@Override
-	public void destroy() throws Exception{
+	public void stop() throws Exception{
 		this.working = Boolean.FALSE;
 		queueListener.off();
-		for(PinciQueue queue:this.pinci) {
-			queue.clear();
-		}
+	}
+	
+	@Override
+	public void destroy() throws Exception{
+		this.stop();
+		clearPinciQueue();
 		this.pinci.clear();	
 		if(this.topPatcher != null)
 			this.topPatcher.destroy();
 	}
 	
-	private void checkCanUse() throws Exception {
-		if(!this.isWorking())
-			throw new IllegalAccessException("发卷器尚未启动!");
+	private void checkWorking() throws IllegalAccessException{
+		if(!this.working)
+		    throw new IllegalAccessException("试卷分发器未启动或者已经被停止");
+	}
+	
+	private void clearPinciQueue() {
+		for(PinciQueue queue:this.pinci) {
+			queue.clear();
+		}
 	}
 	
 	private PinciQueue getFirstQueue() {
@@ -153,7 +171,7 @@ public class DispatcherImpl implements Dispatcher {
 
 	private PieceCuttings getCuttingsFromTop(Referees referees) throws Exception{
 		if(this.topPatcher != null) {
-			return this.topPatcher.get(referees);
+			return this.topPatcher.getFor(referees);
 		}
 		return null;
 	}

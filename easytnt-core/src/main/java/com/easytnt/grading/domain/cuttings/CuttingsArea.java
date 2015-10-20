@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.ValueObject;
-import com.easytnt.grading.domain.grade.ItemGradeRecord;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;

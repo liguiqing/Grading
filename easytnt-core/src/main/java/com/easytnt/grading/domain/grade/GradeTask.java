@@ -34,6 +34,8 @@ public class GradeTask implements ValueObject<GradeTask> {
 	
 	private TaskStatus status;
 	
+	private int refereesTotal = 0;
+	
 	public static GradeTask createOfficialGradeTask(Referees referees,CuttingsArea area) {
 		return new GradeTask(referees,area,TaskType.Official);
 	}
@@ -49,7 +51,11 @@ public class GradeTask implements ValueObject<GradeTask> {
 		this.status = TaskStatus.Ready;
 	}
 	
-	public void read() {
+	public boolean typeOf(TaskType type) {
+		return this.type.equals(type);
+	}
+	
+	public void ready() {
 		this.status = TaskStatus.Ready;
 	}
 	
@@ -61,7 +67,7 @@ public class GradeTask implements ValueObject<GradeTask> {
 		this.status = TaskStatus.Finish;
 	}
 	
-	public boolean isFinish() {
+	public boolean isFinished() {
 		return this.status.equals(TaskStatus.Finish);
 	}
 	
@@ -79,12 +85,17 @@ public class GradeTask implements ValueObject<GradeTask> {
 	}
 	
 	public int getRefereesTotal() {
-		return 4450;
+		return this.refereesTotal;
 	}
 	
 	public int getTotal() {
 		//TODO
 		return 12223;
+	}
+	
+
+	public void increment() {
+		this.refereesTotal++;
 	}
 
 	@Override
@@ -113,14 +124,6 @@ public class GradeTask implements ValueObject<GradeTask> {
 
 	//以下功能为ORM或者自动构造使用，非此慎用
 	public GradeTask() {}
-	
-	public Referees getReferees() {
-		return referees;
-	}
-
-	public void setReferees(Referees referees) {
-		this.referees = referees;
-	}
 
 	public CuttingsArea getArea() {
 		return area;
@@ -129,7 +132,6 @@ public class GradeTask implements ValueObject<GradeTask> {
 	public void setArea(CuttingsArea area) {
 		this.area = area;
 	}
-	
 	
 }
 

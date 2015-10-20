@@ -19,6 +19,7 @@ import com.easytnt.commons.entity.share.ValueObject;
 import com.easytnt.grading.domain.cuttings.PieceCuttings;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
+import com.easytnt.grading.domain.room.Examinee;
 
 /**
  * <pre>
@@ -64,7 +65,7 @@ public class PieceGradeRecord implements ValueObject<PieceGradeRecord> {
 				if( i >scores.length)
 					score = scores[i++];
 				if (item.isEffectiveScore(score)) {
-					ItemGradeRecord igr = new ItemGradeRecord(item,score);
+					ItemGradeRecord igr = new ItemGradeRecord(this,item,score);
 					itemRecords.add(igr);
 				} else {
 					throw new IllegalArgumentException("无效的分值，"
@@ -81,9 +82,17 @@ public class PieceGradeRecord implements ValueObject<PieceGradeRecord> {
 	public void finish() {
 		this.finishTime = Calendar.getInstance().getTime();
 	}
+	
+	public boolean isFinished() {
+		return this.finishTime != null;
+	}
 
-	public boolean recordOf(Referees referees) {
+	public boolean recordBy(Referees referees) {
 		return this.referees.equals(referees);
+	}
+	
+	public Examinee recordOf() {
+		return this.recordFor.getCutFrom().getExaminee();
 	}
 
 	

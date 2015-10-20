@@ -6,6 +6,7 @@ package com.easytnt.grading.service;
 
 import com.easytnt.commons.entity.service.EntityService;
 import com.easytnt.grading.domain.grade.GradeTask;
+import com.easytnt.grading.domain.grade.PieceGradeRecord;
 import com.easytnt.grading.domain.grade.Referees;
 
 /** 
@@ -18,8 +19,11 @@ import com.easytnt.grading.domain.grade.Referees;
  **/
 public interface GradeTaskService extends EntityService<GradeTask, Long> {
 
-	GradeTask getRefereesTaskOf(Referees referees, Long taskId);
+	GradeTask getTaskOf(Long taskId,Referees referees) throws Exception;
+	
+	PieceGradeRecord createPieceGradeRecordBy(Long taskId,Referees referees) throws Exception;
 
+	void itemScoring(Long taskId,Referees referees,Float[] scores) throws Exception;
 }
 
 

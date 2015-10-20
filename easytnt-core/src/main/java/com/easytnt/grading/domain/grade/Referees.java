@@ -44,18 +44,29 @@ public class Referees {
 	}
 	
 	/**
-	 * 取一张切割块，并其进入正在评的状态
+	 * 取一张切割块，并使其进入在评状态
 	 * @return
 	 * @throws Exception 取卷产生异常时抛出 
 	 */
 	public PieceGradeRecord fetchCuttings() throws Exception {
-		if(this.dispatcher != null) {
-			PieceCuttings cuttings = this.dispatcher.get(this);
-			this.recordingNow = cuttings.addRecord(this);
+		if(iAmFree()) {
+			if(this.dispatcher != null) {
+				PieceCuttings cuttings = this.dispatcher.getFor(this);
+				this.recordingNow = cuttings.addRecord(this);
+			}			
 		}
-		return recordingNow;
+		return this.recordingNow;
 	}
 
+	public boolean iAmFree() {
+		return this.recordingNow == null || this.recordingNow.isFinished();
+	}
+	
+	public void done() {
+		this.dispatcher = null;
+		this.recordingNow = null;
+	}
+	
 	/**
 	 * 给正在评的切割块打分
 	 * @param scores
@@ -63,9 +74,10 @@ public class Referees {
 	 * @throws IllegalArgumentException 当小题分值不在有效范围内时抛出
 	 */
 	public Collection<ItemGradeRecord> scoringForItems(Float[] scores) {
-		Collection<ItemGradeRecord> igrs = recordingNow.scoringForItems(scores);
+		Collection<ItemGradeRecord> igrs = this.recordingNow.scoringForItems(scores);
 		for(ItemGradeRecord igr:igrs)
 			igr.recordedBy(this);
+		this.recordingNow.finish();
 		return igrs;
 	}
 	

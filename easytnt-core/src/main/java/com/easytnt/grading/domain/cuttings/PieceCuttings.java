@@ -54,7 +54,7 @@ public class PieceCuttings implements Entity<PieceCuttings>{
 		if(this.records == null)
 			return false;
 		for(PieceGradeRecord record:this.records) {
-			if(record.recordOf(referees)) {
+			if(record.recordBy(referees)) {
 				return true;
 			}
 		}

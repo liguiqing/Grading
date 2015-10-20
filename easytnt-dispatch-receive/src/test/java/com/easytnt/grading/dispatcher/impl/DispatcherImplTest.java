@@ -56,13 +56,13 @@ public class DispatcherImplTest {
 		DispatcherImpl dispather = new DispatcherImpl(dispatcherStrategy,blockFetcher);
 		//Thread.currentThread().join();
 		for(int i = 0;i<blocks.size();i++) {
-			dispather.get(null);
+			dispather.getFor(null);
 			Thread.sleep(10);
 		}
 		Thread.sleep(5000);
 		
-		assertNotNull(dispather.get(null));
-		assertNotNull(dispather.get(null));
+		assertNotNull(dispather.getFor(null));
+		assertNotNull(dispather.getFor(null));
 		dispather.destroy();
 		Thread.sleep(1000);
 	}
@@ -71,7 +71,7 @@ public class DispatcherImplTest {
 		ArrayList<ImgCuttings> blocks= new ArrayList<ImgCuttings>();
 		for(int i = 0;i<1000;i++) {
 			ImgCuttings cuttings  = mock(ImgCuttings.class);
-			when(cuttings.getCurrentPinci()).thenReturn(1);
+//			/when(cuttings.getForCurrentPinci()).thenReturn(1);
 			doNothing().when(cuttings).nextPinci();
 			when(cuttings.toString()).thenReturn("Cuttings" +i);
 			doNothing().when(cuttings).nextPinci();
@@ -132,7 +132,7 @@ public class DispatcherImplTest {
 				}
 				
 				private void doPin() throws Exception{
-					PieceCuttings ic = dispather.get(null);
+					PieceCuttings ic = dispather.getFor(null);
 					if(ic == null) {
 						logger.debug("NO Task for me {}",id);
 					}else {
