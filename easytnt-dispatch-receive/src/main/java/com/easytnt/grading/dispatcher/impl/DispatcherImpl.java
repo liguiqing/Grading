@@ -137,7 +137,9 @@ public class DispatcherImpl implements Dispatcher {
 		for(PinciQueue queue:this.pinci) {
 			queue.clear();
 		}
-		this.pinci.clear();		
+		this.pinci.clear();	
+		if(this.topPatcher != null)
+			this.topPatcher.destroy();
 	}
 	
 	private void checkCanUse() throws Exception {

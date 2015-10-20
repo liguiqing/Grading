@@ -5,16 +5,19 @@
 
 package com.easytnt.grading.domain.cuttings;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import com.easytnt.commons.entity.share.Entity;
 import com.easytnt.grading.domain.grade.PieceGradeRecord;
 import com.easytnt.grading.domain.grade.Referees;
-import com.easytnt.grading.domain.paper.Item;
+import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.room.ExamineePaper;
-import com.easytnt.grading.share.ImgCuttings;
 
 /** 
  * <pre>
@@ -24,8 +27,12 @@ import com.easytnt.grading.share.ImgCuttings;
  * @author 李贵庆2015年10月14日
  * @version 1.0
  **/
-public class PieceCuttings{
+public class PieceCuttings implements Entity<PieceCuttings>{
 
+	private String uuid;
+	
+	private CuttingsArea definedOf;
+	
 	private ExamineePaper cutFrom;
 	
 	private Set<PieceGradeRecord> records;
@@ -54,22 +61,38 @@ public class PieceCuttings{
 		return false;
 	}
 	
+	public List<Section> getSections(){
+		return this.definedOf.getSections();
+	}
+	
+
+	@Override
 	public int hashCode() {
-		//TODO 
-		return 0;
+		return new HashCodeBuilder().append(this.uuid).toHashCode();
 	}
 	
-	public boolean equals() {
-		//TODO 
-		return false;
+    @Override
+	public boolean equals(Object o) {
+		if(!(o instanceof PieceCuttings))
+			return false;
+		PieceCuttings other = (PieceCuttings)o;
+		
+		return new EqualsBuilder().append(this.uuid,other.uuid).isEquals();
 	}
 	
+    @Override
 	public String toString() {
-		//TODO  
-		return this.getClass().getName();
+		return new ToStringBuilder(this).append(this.imgPath).build();
 	}
-
-
+    
+	@Override
+	public boolean sameIdentityAs(PieceCuttings other) {
+		return this.equals(other);
+	}
+	
+	//以下功能为ORM或者自动构造使用，非此慎用
+	public PieceCuttings () {}
+	
 	public int getCurrentPinci() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -117,7 +140,6 @@ public class PieceCuttings{
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
 	}
-	
 	
 }
 

@@ -36,7 +36,7 @@ public class Subject implements ValueObject<Subject>{
 			return false;
 		Subject other = (Subject) o;
 
-		return new EqualsBuilder().append(this.name, other.name).append(this.code, this.code).isEquals();
+		return new EqualsBuilder().append(this.name, other.name).append(this.code, other.code).isEquals();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class Subject implements ValueObject<Subject>{
 		return this.equals(other);
 	}
 
-	//以下功能为ORM或者自动构造使用，非此勿用
+	//以下功能为ORM或者自动构造使用，非此慎用
 	public Subject() {}
 	
 	public String getName() {

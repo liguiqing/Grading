@@ -8,13 +8,8 @@ import java.util.HashMap;
 
 import org.springframework.stereotype.Service;
 
-import com.easytnt.commons.util.SpringContextUtil;
 import com.easytnt.grading.dispatcher.Dispatcher;
-import com.easytnt.grading.dispatcher.DispatcherStrategy;
-import com.easytnt.grading.dispatcher.impl.DispatcherImpl;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
-import com.easytnt.grading.domain.paper.AnswerArea;
-import com.easytnt.grading.fetch.Fetcher;
 
 /** 
  * <pre>
