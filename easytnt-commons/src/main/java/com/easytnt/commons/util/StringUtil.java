@@ -19,4 +19,8 @@ public class StringUtil {
 	public static int toInt(String str) {
 		return Integer.parseInt(str);
 	}
+
+	public static boolean isEmpty(String str) {
+		return str == null || "".equals(str);
+	}
 }

@@ -50,9 +50,9 @@ public class ConvertFileInfoToCutImageInfoServiceImpl implements ConvertFileInfo
 			if (dirMapping.getMappingName().equals(MappingName.KM)) {
 				kemuId = GetSubjectId.get(fileInfo.getName(dirMapping.getPlace()));
 			} else if (dirMapping.getMappingName().equals(MappingName.KC)) {
-				diquId = StringUtil.toInt(fileInfo.getName(dirMapping.getPlace()));
-			} else if (dirMapping.getMappingName().equals(MappingName.DQ)) {
 				roomId = virtualroomId = StringUtil.toLong(fileInfo.getName(dirMapping.getPlace()));
+			} else if (dirMapping.getMappingName().equals(MappingName.DQ)) {
+				diquId = StringUtil.toInt(fileInfo.getName(dirMapping.getPlace()));
 			} else if (dirMapping.getMappingName().equals(MappingName.TH)) {
 				itemId = StringUtil.toInt(fileInfo.getName(dirMapping.getPlace()));
 			}

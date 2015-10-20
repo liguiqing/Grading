@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class GetSubjectId {
 	private static final HashMap<String, Integer> subjectMap = new HashMap<>();
 
-	{
+	static {
 		subjectMap.put("yuwen", 1);
 		subjectMap.put("shuxue", 2);
 		subjectMap.put("lishu", 3);
@@ -32,7 +32,7 @@ public class GetSubjectId {
 		subjectMap.put("dili", 13);
 	}
 
-	public static int get(String subjectCode) {
+	public static Integer get(String subjectCode) {
 		return subjectMap.get(subjectCode);
 	}
 }

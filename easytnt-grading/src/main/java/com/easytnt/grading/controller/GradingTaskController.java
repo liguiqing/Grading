@@ -26,7 +26,7 @@ import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.service.GradeTaskService;
 import com.easytnt.grading.service.RefereesService;
 
-/** 
+/**
  * <pre>
  * 
  * </pre>
@@ -36,49 +36,45 @@ import com.easytnt.grading.service.RefereesService;
  **/
 
 @Controller
-@RequestMapping(value="/task")
+@RequestMapping(value = "/task")
 public class GradingTaskController {
 	private static Logger logger = LoggerFactory.getLogger(GradingTaskController.class);
-	
-	@Autowired(required=false)
+
+	@Autowired(required = false)
 	private RefereesService refereesService;
-	
-	@Autowired(required=false)
+
+	@Autowired(required = false)
 	private GradeTaskService taskService;
-	
-	@RequestMapping(value="/{taskId}",method=RequestMethod.GET)
-	public ModelAndView onGetTask(@PathVariable Long taskId,@PathVariable Long areaId)throws Exception{
-		logger.debug("URL /task/{} Method Get",taskId);
+
+	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)
+	public ModelAndView onGetTask(@PathVariable Long taskId, @PathVariable Long areaId) throws Exception {
+		logger.debug("URL /task/{} Method Get", taskId);
 		Referees referees = refereesService.getCurrentReferees();
-		GradeTask task = taskService.getTaskOf(taskId,referees);
-		
-		CuttingsArea area =  task.getArea();
+		GradeTask task = taskService.getTaskOf(taskId, referees);
+
+		CuttingsArea area = task.getArea();
 		List<Section> sections = area.getSections();
-		
-		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask")
-				.with("referees", referees)
-				.with("task", task)
+
+		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask").with("referees", referees).with("task", task)
 				.with("sections", sections).build();
 	}
-	
-	@RequestMapping(value="/{taskId}",method=RequestMethod.GET)
-	public ModelAndView onGetCuttings(@PathVariable Long taskId)throws Exception{
-		logger.debug("URL /task/{}/ Method Get",taskId);		
+
+	@RequestMapping(value = "/{taskId}/getcut", method = RequestMethod.GET)
+	public ModelAndView onGetCuttings(@PathVariable Long taskId) throws Exception {
+		logger.debug("URL /task/{}/ Method Get", taskId);
 		Referees referees = refereesService.getCurrentReferees();
 		PieceGradeRecord pieceGradeRecord = taskService.createPieceGradeRecordBy(taskId, referees);
 		PieceCuttings cuttings = pieceGradeRecord.getRecordFor();
 		return ModelAndViewFactory.newModelAndViewFor("/index").with("imgPath", cuttings.getImgPath()).build();
 	}
-	
-	@RequestMapping(value="/{taskId}/itemscoring",method=RequestMethod.POST)
-	public ModelAndView onScoring(@RequestBody Float[] scores,@PathVariable Long taskId)throws Exception{
-		logger.debug("URL /task/{}/itemscoring Method POST",taskId,scores.toString());	
-		
+
+	@RequestMapping(value = "/{taskId}/itemscoring", method = RequestMethod.POST)
+	public ModelAndView onScoring(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
+		logger.debug("URL /task/{}/itemscoring Method POST", taskId, scores.toString());
+
 		Referees referees = refereesService.getCurrentReferees();
-		taskService.itemScoring(taskId,referees,scores);
+		taskService.itemScoring(taskId, referees, scores);
 		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
-	
+
 }
-
-

@@ -15,6 +15,7 @@ public class ScannerDirectoryConfig {
 	private String rootUrl;
 	private String fileDir;
 	private List<DirectoryMapping> directoryMappings;
+	private int fileSize = 0;
 
 	public String getRootUrl() {
 		return rootUrl;
@@ -61,6 +62,15 @@ public class ScannerDirectoryConfig {
 
 	public ScannerDirectoryConfig setUuId(String uuId) {
 		this.uuId = uuId;
+		return this;
+	}
+
+	public int getFileSize() {
+		return fileSize;
+	}
+
+	public ScannerDirectoryConfig setFileSize(int fileSize) {
+		this.fileSize = fileSize;
 		return this;
 	}
 

@@ -75,6 +75,7 @@ var config = {
 		"jquery" : jqueryPath,
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
 		"chart" : "lib/highcharts/highcharts",
+		"smartWizard" : "lib/smartWizard/jquery.smartWizard",
 		"dialog":"commons/dialog",
 		"ui":"commons/uiwrapper", 
 		"ajax":"commons/ajax",

@@ -22,7 +22,7 @@ import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.service.GradeTaskService;
 
-/** 
+/**
  * <pre>
  * 
  * </pre>
@@ -31,26 +31,26 @@ import com.easytnt.grading.service.GradeTaskService;
  * @version 1.0
  **/
 @Service
-public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask,Long> implements GradeTaskService {
+public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>implements GradeTaskService {
 
-	@Autowired
+	@Autowired(required = false)
 	private DispathcerManager dispathcerManager;
-	
+
 	@Override
-	@Transactional(readOnly=true)
-	public GradeTask getTaskOf(Long taskId,Referees referees) throws Exception{
-		logger.debug("Task for {} with {}",referees,taskId);
-		//TODO
+	@Transactional(readOnly = true)
+	public GradeTask getTaskOf(Long taskId, Referees referees) throws Exception {
+		logger.debug("Task for {} with {}", referees, taskId);
+		// TODO
 		CuttingsArea area = new CuttingsArea();
 		Section section = new Section();
 		section.setTitle("二、填空题");
 		section.setCaption("二、填空题");
 		GradeTask task = GradeTask.createOfficialGradeTask(referees, area);
 
-		if(task == null)
+		if (task == null)
 			throw new IllegalAccessException("无权访问此评卷任务");
-		
-		if(task.isFinished())
+
+		if (task.isFinished())
 			throw new IllegalAccessException("评卷任务已经完成");
 
 		Dispatcher dispatcher = dispathcerManager.getDispatcherFor(task.getArea());
@@ -58,37 +58,32 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask,Long> 
 		return task;
 	}
 
-
 	@Override
 	@Transactional
-	public void itemScoring(Long taskId,Referees referees, Float[] scores) throws Exception {
+	public void itemScoring(Long taskId, Referees referees, Float[] scores) throws Exception {
 		GradeTask task = this.load(taskId);
 		Collection<ItemGradeRecord> itemRecords = referees.scoringForItems(scores);
-		logger.debug("Scoring ",itemRecords);
+		logger.debug("Scoring ", itemRecords);
 		task.increment();
-		//数据持久化处理
-		//TODO
+		// 数据持久化处理
+		// TODO
 		PieceGradeRecord gradeRecord = null;
-	    Iterator<ItemGradeRecord> it = itemRecords.iterator();
-	    while(it.hasNext()) {
-	    	if(gradeRecord == null)
-	    		gradeRecord = it.next().getSource();
-	    }
+		Iterator<ItemGradeRecord> it = itemRecords.iterator();
+		while (it.hasNext()) {
+			if (gradeRecord == null)
+				gradeRecord = it.next().getSource();
+		}
 	}
 
-
 	@Override
-	public PieceGradeRecord createPieceGradeRecordBy(Long taskId,Referees referees)
-			throws Exception {
+	public PieceGradeRecord createPieceGradeRecordBy(Long taskId, Referees referees) throws Exception {
 		GradeTask task = this.load(taskId);
-		
+
 		PieceGradeRecord pieceGradeRecord = referees.fetchCuttings();
-		//数据持久化处理
-		//TODO
-		
+		// 数据持久化处理
+		// TODO
+
 		return pieceGradeRecord;
 	}
 
 }
-
-

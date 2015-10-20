@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.easytnt.commons.exception.ThrowableParser;
+import com.easytnt.importpaper.bean.CountContainerMgr;
 import com.easytnt.importpaper.bean.CutImageInfo;
 import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
 import com.easytnt.importpaper.disruptor.event.CutImageEvent;
@@ -29,14 +30,14 @@ import com.lmax.disruptor.dsl.Disruptor;
  * @author liuyu
  *
  */
-public class StartScanDir implements Runnable {
-	private final Logger log = LoggerFactory.getLogger(StartScanDir.class);
+public class ScanDirProduce implements Runnable {
+	private final Logger log = LoggerFactory.getLogger(ScanDirProduce.class);
 
 	private Disruptor<CutImageEvent> disruptor;
 	private ScannerDirectoryConfig config;
 	private CountDownLatch countDownLatch = new CountDownLatch(1);
 
-	public StartScanDir(Disruptor<CutImageEvent> disruptor, ScannerDirectoryConfig config) {
+	public ScanDirProduce(Disruptor<CutImageEvent> disruptor, ScannerDirectoryConfig config) {
 		this.disruptor = disruptor;
 		this.config = config;
 	}
@@ -70,6 +71,7 @@ public class StartScanDir implements Runnable {
 			log.error(ThrowableParser.toString(e));
 		}
 		disruptor.shutdown();
+		CountContainerMgr.getInstance().get(config.getUuId()).setIsOver(true);
 		countDownLatch.countDown();
 	}
 
