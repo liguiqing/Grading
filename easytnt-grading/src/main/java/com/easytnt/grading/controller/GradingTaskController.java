@@ -84,7 +84,10 @@ public class GradingTaskController {
 		Referees referees = refereesService.getCurrentReferees();
 		GradeTask task = taskService.getRefereesTaskOf(referees,taskId);
 		if(task == null)
-			throw new IllegalAccessException("无权访问此评卷任务!");
+			throw new IllegalAccessException("无权访问此评卷任务");
+		
+		if(task.isFinish())
+			throw new IllegalAccessException("评卷任务已经完成");
 		return task;
 	}
 }

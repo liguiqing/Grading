@@ -5,13 +5,15 @@
 
 package com.easytnt.grading.domain.grade;
 
+import java.util.Collection;
+import java.util.Set;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.domain.cuttings.PieceCuttings;
-
 
 /** 
  * <pre>
@@ -27,7 +29,11 @@ public class Referees {
 	
 	private Dispatcher dispatcher;
 	
+	//正在进行的评卷
 	private PieceGradeRecord recordingNow;
+	
+	//待进行的评卷
+	private Set<PieceGradeRecord> recordings;
 	
 	public Referees(String name) {
 		this.name = name;
@@ -37,6 +43,11 @@ public class Referees {
 		this.dispatcher = dispatcher;
 	}
 	
+	/**
+	 * 取一张切割块，并其进入正在评的状态
+	 * @return
+	 * @throws Exception 取卷产生异常时抛出 
+	 */
 	public PieceGradeRecord fetchCuttings() throws Exception {
 		if(this.dispatcher != null) {
 			PieceCuttings cuttings = this.dispatcher.get(this);
@@ -45,8 +56,23 @@ public class Referees {
 		return recordingNow;
 	}
 
+	/**
+	 * 给正在评的切割块打分
+	 * @param scores
+	 * @return
+	 * @throws IllegalArgumentException 当小题分值不在有效范围内时抛出
+	 */
+	public Collection<ItemGradeRecord> scoringForItems(Float[] scores) {
+		Collection<ItemGradeRecord> igrs = recordingNow.scoringForItems(scores);
+		for(ItemGradeRecord igr:igrs)
+			igr.recordedBy(this);
+		return igrs;
+	}
 	
-	
+	public Collection<ItemGradeRecord> scoring(Float score) {
+		//TODO
+		return null;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -67,8 +93,19 @@ public class Referees {
 		return new ToStringBuilder(this).append(this.name).build();
 	}
     
+    
+    //以下功能为ORM或者自动构造使用，非此慎用
 	public Referees(){
 		
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }
 

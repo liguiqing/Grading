@@ -15,7 +15,6 @@ import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
-import com.easytnt.grading.domain.paper.AnswerArea;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.mgt.PieceCuttingsManager;

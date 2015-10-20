@@ -66,7 +66,7 @@ public class ExamDesc implements ValueObject<ExamDesc> {
 		return this.equals(other);
 	}
 
-	//以下功能为ORM或者自动构造使用，非此勿用
+	//以下功能为ORM或者自动构造使用，非此慎用
 	public ExamDesc() {}
 	
 	public String getName() {
