@@ -34,7 +34,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 
 	@Autowired
 	private DispathcerManager dispathcerManager;
-	
+
 	@Autowired
 	private GradeTaskRepository taskRepository;
 
@@ -44,13 +44,13 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		logger.debug("Task for {} with {}", referees, taskId);
 
 		GradeTask task = taskRepository.load(taskId);
-		
+
 		if (task == null)
 			throw new IllegalAccessException("无权访问此评卷任务");
 
 		if (task.isFinished())
 			throw new IllegalAccessException("评卷任务已经完成");
-		
+
 		Dispatcher dispatcher = dispathcerManager.getDispatcherFor(task.getArea());
 		task.useDispatcher(dispatcher);
 		return task;
@@ -60,7 +60,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Transactional
 	public void itemScoring(Long taskId, Referees referees, Float[] scores) throws Exception {
 		GradeTask task = this.load(taskId);
-		
+
 		Collection<ItemGradeRecord> itemRecords = referees.scoringForItems(scores);
 		logger.debug("Scoring ", itemRecords);
 		task.increment();
