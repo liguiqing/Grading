@@ -18,7 +18,7 @@ import com.easytnt.grading.domain.paper.Section;
 
 /** 
  * <pre>
- * 
+ * 评卷任务
  * </pre>
  *  
  * @author 李贵庆2015年10月14日

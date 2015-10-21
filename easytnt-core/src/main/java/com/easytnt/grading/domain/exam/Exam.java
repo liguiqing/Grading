@@ -15,7 +15,7 @@ import com.easytnt.commons.entity.share.Entity;
 
 /** 
  * <pre>
- * 
+ * 考试
  * </pre>
  *  
  * @author 李贵庆2015年10月14日

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>:GradingSystem</title>
+<title>:监考老师</title>
 <link href="../../../css/ea.css" rel="stylesheet" type="text/css" />
 <script>
 function initPage(src) {
@@ -16,15 +16,15 @@ function initPage(src) {
 <body onload="initPage(this);" class="Content">
 <div class="pageHeader"></div>
 <div class="PageBody">
-	<span class="ObjectTitle">:<a href="../EA1/EA23.html">«Business Entity» GradingSystem</a>  : public  &lt;&lt;Business Entity&gt;&gt; object instance</span>
+	<span class="ObjectTitle">:<a href="../EA1/EA14.html">«Business Worker» 监考老师</a>  : public  &lt;&lt;Business Worker&gt;&gt; object instance</span>
 	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
 		<tr>
 			<td width="15%" class="ObjectDetailsTopic">Created:</td>
-			<td width="85%" class="ObjectDetailsValue">2015/7/26 14:24:23</td>
+			<td width="85%" class="ObjectDetailsValue">2015-7-26 12:35:05</td>
 		</tr>
 		<tr>
 			<td class="ObjectDetailsTopic">Modified:</td>
-			<td class="ObjectDetailsValue">2015/7/26 14:24:23</td>
+			<td class="ObjectDetailsValue">2015-7-26 12:35:05</td>
 		</tr>
 		<tr style="height: 10px"><td colspan="2"></td></tr>
 		<tr>
@@ -57,7 +57,7 @@ function initPage(src) {
 		</tr>
 		<tr id="adv00" style="display: none;">
 			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
-			<td class="ObjectDetailsValue">{F5CCD12F-F0FF-4a37-A1CB-8D4EEB167150}</td>
+			<td class="ObjectDetailsValue">{0F8F818C-0DAB-4706-A77C-6DBDEE30D4AF}</td>
 		</tr>
 		<tr id="adv01" style="display: none;">
 			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
@@ -77,13 +77,41 @@ function initPage(src) {
 					<td width="50%" class="TableHeading">Message</td>
 				</tr>
 				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA38.html">«Business Entity» : 试卷图片存储服务器</a></td>
-					<td width="50%" class="TableRow" valign="top">读取试题图片()</td>
+					<td width="50%" class="TableRow" valign="top"><a href="EA35.html">«Business Worker» : 监考老师</a></td>
+					<td width="50%" class="TableRow" valign="top">检查试卷()</td>
 				</tr>
 		   		<tr>
 					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage74" onclick="parent.toggleDiv('detailsDIVMessage74', 'DetailsImageMessage74')" />Details:
-							<div id="detailsDIVMessage74" class="DetailsDiv" >
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage92" onclick="parent.toggleDiv('detailsDIVMessage92', 'DetailsImageMessage92')" />Details:
+							<div id="detailsDIVMessage92" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA35.html">«Business Worker» : 监考老师</a></td>
+					<td width="50%" class="TableRow" valign="top">登记考场试卷情况()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage93" onclick="parent.toggleDiv('detailsDIVMessage93', 'DetailsImageMessage93')" />Details:
+							<div id="detailsDIVMessage93" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 管理评卷老师</a></td>
+					<td width="50%" class="TableRow" valign="top">接收试卷()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage94" onclick="parent.toggleDiv('detailsDIVMessage94', 'DetailsImageMessage94')" />Details:
+							<div id="detailsDIVMessage94" class="DetailsDiv" >
 							<strong>Type:</strong> Sequence Synchronous Call<br />
 							&nbsp;
 							</div>
@@ -100,288 +128,8 @@ function initPage(src) {
 					<td width="50%" class="TableHeading">Message</td>
 				</tr>
 				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA39.html">«Business Worker» : 管理评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">安排评卷任务()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage75" onclick="parent.toggleDiv('detailsDIVMessage75', 'DetailsImageMessage75')" />Details:
-							<div id="detailsDIVMessage75" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">查看评卷任务()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage76" onclick="parent.toggleDiv('detailsDIVMessage76', 'DetailsImageMessage76')" />Details:
-							<div id="detailsDIVMessage76" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">查看试题()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage77" onclick="parent.toggleDiv('detailsDIVMessage77', 'DetailsImageMessage77')" />Details:
-							<div id="detailsDIVMessage77" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA39.html">«Business Worker» : 管理评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">安排试评任务()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage78" onclick="parent.toggleDiv('detailsDIVMessage78', 'DetailsImageMessage78')" />Details:
-							<div id="detailsDIVMessage78" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">结束试评任务()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage79" onclick="parent.toggleDiv('detailsDIVMessage79', 'DetailsImageMessage79')" />Details:
-							<div id="detailsDIVMessage79" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">结束评卷任务()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage80" onclick="parent.toggleDiv('detailsDIVMessage80', 'DetailsImageMessage80')" />Details:
-							<div id="detailsDIVMessage80" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA39.html">«Business Worker» : 管理评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">查看评卷情况()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage81" onclick="parent.toggleDiv('detailsDIVMessage81', 'DetailsImageMessage81')" />Details:
-							<div id="detailsDIVMessage81" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA39.html">«Business Worker» : 管理评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">调整评卷任务()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage82" onclick="parent.toggleDiv('detailsDIVMessage82', 'DetailsImageMessage82')" />Details:
-							<div id="detailsDIVMessage82" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA39.html">«Business Worker» : 管理评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">结束评卷()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage83" onclick="parent.toggleDiv('detailsDIVMessage83', 'DetailsImageMessage83')" />Details:
-							<div id="detailsDIVMessage83" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">查看试评任务()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage84" onclick="parent.toggleDiv('detailsDIVMessage84', 'DetailsImageMessage84')" />Details:
-							<div id="detailsDIVMessage84" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">查看试题()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage85" onclick="parent.toggleDiv('detailsDIVMessage85', 'DetailsImageMessage85')" />Details:
-							<div id="detailsDIVMessage85" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA40.html">«Business Worker» : 评卷组长老师</a></td>
-					<td width="50%" class="TableRow" valign="top">查看小组评卷情况()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage86" onclick="parent.toggleDiv('detailsDIVMessage86', 'DetailsImageMessage86')" />Details:
-							<div id="detailsDIVMessage86" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA40.html">«Business Worker» : 评卷组长老师</a></td>
-					<td width="50%" class="TableRow" valign="top">结束小组评卷()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage87" onclick="parent.toggleDiv('detailsDIVMessage87', 'DetailsImageMessage87')" />Details:
-							<div id="detailsDIVMessage87" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">记录试题评分情况()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage88" onclick="parent.toggleDiv('detailsDIVMessage88', 'DetailsImageMessage88')" />Details:
-							<div id="detailsDIVMessage88" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA39.html">«Business Worker» : 管理评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">统计得分情况()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage89" onclick="parent.toggleDiv('detailsDIVMessage89', 'DetailsImageMessage89')" />Details:
-							<div id="detailsDIVMessage89" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA39.html">«Business Worker» : 管理评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">公布考试成绩()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage90" onclick="parent.toggleDiv('detailsDIVMessage90', 'DetailsImageMessage90')" />Details:
-							<div id="detailsDIVMessage90" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA37.html">: 学生</a></td>
-					<td width="50%" class="TableRow" valign="top">查询考试成绩()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage91" onclick="parent.toggleDiv('detailsDIVMessage91', 'DetailsImageMessage91')" />Details:
-							<div id="detailsDIVMessage91" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">记录试评试题评分情况()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage92" onclick="parent.toggleDiv('detailsDIVMessage92', 'DetailsImageMessage92')" />Details:
-							<div id="detailsDIVMessage92" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA39.html">«Business Worker» : 管理评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">评估试评情况()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage93" onclick="parent.toggleDiv('detailsDIVMessage93', 'DetailsImageMessage93')" />Details:
-							<div id="detailsDIVMessage93" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA40.html">«Business Worker» : 评卷组长老师</a></td>
-					<td width="50%" class="TableRow" valign="top">安排小组重评任务()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage94" onclick="parent.toggleDiv('detailsDIVMessage94', 'DetailsImageMessage94')" />Details:
-							<div id="detailsDIVMessage94" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">查看重评任务()</td>
+					<td width="50%" class="TableRow" valign="top"><a href="EA38.html">: 学生</a></td>
+					<td width="50%" class="TableRow" valign="top">收卷()</td>
 				</tr>
 		   		<tr>
 					<td class="TableRowBottomDashed"  colspan="2">
@@ -394,8 +142,8 @@ function initPage(src) {
 					</td>
 				</tr>
 				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">查看试题()</td>
+					<td width="50%" class="TableRow" valign="top"><a href="EA35.html">«Business Worker» : 监考老师</a></td>
+					<td width="50%" class="TableRow" valign="top">检查试卷()</td>
 				</tr>
 		   		<tr>
 					<td class="TableRowBottomDashed"  colspan="2">
@@ -408,27 +156,13 @@ function initPage(src) {
 					</td>
 				</tr>
 				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">记录试题重评情况()</td>
+					<td width="50%" class="TableRow" valign="top"><a href="EA35.html">«Business Worker» : 监考老师</a></td>
+					<td width="50%" class="TableRow" valign="top">登记考场试卷情况()</td>
 				</tr>
 		   		<tr>
 					<td class="TableRowBottomDashed"  colspan="2">
 						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage97" onclick="parent.toggleDiv('detailsDIVMessage97', 'DetailsImageMessage97')" />Details:
 							<div id="detailsDIVMessage97" class="DetailsDiv" >
-							<strong>Type:</strong> Sequence Synchronous Call<br />
-							&nbsp;
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA34.html">«Business Worker» : 评卷老师</a></td>
-					<td width="50%" class="TableRow" valign="top">结束重评任务()</td>
-				</tr>
-		   		<tr>
-					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage98" onclick="parent.toggleDiv('detailsDIVMessage98', 'DetailsImageMessage98')" />Details:
-							<div id="detailsDIVMessage98" class="DetailsDiv" >
 							<strong>Type:</strong> Sequence Synchronous Call<br />
 							&nbsp;
 							</div>

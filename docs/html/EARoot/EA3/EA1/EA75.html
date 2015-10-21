@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>:评卷配置</title>
+<title>:切割块分发器工厂</title>
 <link href="../../../css/ea.css" rel="stylesheet" type="text/css" />
 <script>
 function initPage(src) {
@@ -16,15 +16,15 @@ function initPage(src) {
 <body onload="initPage(this);" class="Content">
 <div class="pageHeader"></div>
 <div class="PageBody">
-	<span class="ObjectTitle">:<a href="../../EA4/EA1/EA144.html">评卷配置</a>  : public   object instance</span>
+	<span class="ObjectTitle">:<a href="../../EA4/EA2/EA166.html">切割块分发器工厂</a>  : public   object instance</span>
 	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
 		<tr>
 			<td width="15%" class="ObjectDetailsTopic">Created:</td>
-			<td width="85%" class="ObjectDetailsValue">2015/10/13 14:42:22</td>
+			<td width="85%" class="ObjectDetailsValue">2015-10-13 14:50:55</td>
 		</tr>
 		<tr>
 			<td class="ObjectDetailsTopic">Modified:</td>
-			<td class="ObjectDetailsValue">2015/10/13 14:42:22</td>
+			<td class="ObjectDetailsValue">2015-10-13 14:50:55</td>
 		</tr>
 		<tr style="height: 10px"><td colspan="2"></td></tr>
 		<tr>
@@ -57,7 +57,7 @@ function initPage(src) {
 		</tr>
 		<tr id="adv00" style="display: none;">
 			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
-			<td class="ObjectDetailsValue">{6017B665-E09B-4b44-B6FD-8D5F3C2B6D9A}</td>
+			<td class="ObjectDetailsValue">{07461BE5-9E61-4123-A3FB-F3301787A4CF}</td>
 		</tr>
 		<tr id="adv01" style="display: none;">
 			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
@@ -67,16 +67,17 @@ function initPage(src) {
 	
 	<div class="TableGroup" id="TableGroup">
 		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('MessagesTo');" id="MessagesToTitle">Messages To</li>
 			<li onClick="parent.toggleItem('MessagesFrom');" id="MessagesFromTitle">Messages From</li>
 		</ul>
-		<div class="ItemBody" id="MessagesFromTable">
+		<div class="ItemBody" id="MessagesToTable">
 			<table border="0" cellspacing="0" cellpadding="0" class="Table">
 				<tr>
 					<td width="50%" class="TableHeading">Element</td>
 					<td width="50%" class="TableHeading">Message</td>
 				</tr>
 				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA76.html">: 切割块分发器工厂</a></td>
+					<td width="50%" class="TableRow" valign="top"><a href="EA74.html">: 评卷配置</a></td>
 					<td width="50%" class="TableRow" valign="top">读取评卷规则()</td>
 				</tr>
 		   		<tr>
@@ -90,7 +91,7 @@ function initPage(src) {
 					</td>
 				</tr>
 				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA76.html">: 切割块分发器工厂</a></td>
+					<td width="50%" class="TableRow" valign="top"><a href="EA74.html">: 评卷配置</a></td>
 					<td width="50%" class="TableRow" valign="top">读取分发策略()</td>
 				</tr>
 		   		<tr>
@@ -104,13 +105,64 @@ function initPage(src) {
 					</td>
 				</tr>
 				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA76.html">: 切割块分发器工厂</a></td>
-					<td width="50%" class="TableRow" valign="top">读取切割块读取规则</td>
+					<td width="50%" class="TableRow" valign="top"><a href="EA75.html">: 切割块分发器工厂</a></td>
+					<td width="50%" class="TableRow" valign="top">创建分发器()</td>
 				</tr>
 		   		<tr>
 					<td class="TableRowBottomDashed"  colspan="2">
 						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage200" onclick="parent.toggleDiv('detailsDIVMessage200', 'DetailsImageMessage200')" />Details:
 							<div id="detailsDIVMessage200" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA74.html">: 评卷配置</a></td>
+					<td width="50%" class="TableRow" valign="top">读取切割块读取规则</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage201" onclick="parent.toggleDiv('detailsDIVMessage201', 'DetailsImageMessage201')" />Details:
+							<div id="detailsDIVMessage201" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+
+			</table>
+		</div>
+		<div class="ItemBody" id="MessagesFromTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="50%" class="TableHeading">Element</td>
+					<td width="50%" class="TableHeading">Message</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA62.html">«control» : 切割块管理器</a></td>
+					<td width="50%" class="TableRow" valign="top">提供分发器()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage202" onclick="parent.toggleDiv('detailsDIVMessage202', 'DetailsImageMessage202')" />Details:
+							<div id="detailsDIVMessage202" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA75.html">: 切割块分发器工厂</a></td>
+					<td width="50%" class="TableRow" valign="top">创建分发器()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage203" onclick="parent.toggleDiv('detailsDIVMessage203', 'DetailsImageMessage203')" />Details:
+							<div id="detailsDIVMessage203" class="DetailsDiv" >
 							<strong>Type:</strong> Sequence Synchronous Call<br />
 							&nbsp;
 							</div>
