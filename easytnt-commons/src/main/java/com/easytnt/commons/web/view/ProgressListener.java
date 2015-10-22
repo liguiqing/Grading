@@ -6,8 +6,8 @@ package com.easytnt.commons.web.view;
 import java.util.Map;
 
 /**
- *<Pre>
- *</Pre>
+ * <Pre>
+ * </Pre>
  *
  * @author liuyu
  * @data 2015年10月22日 下午2:44:04
