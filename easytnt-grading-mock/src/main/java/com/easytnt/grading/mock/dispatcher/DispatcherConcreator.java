@@ -26,7 +26,7 @@ import com.easytnt.grading.fetch.Fetcher;
  * @author 李贵庆 2015年10月20日
  * @version 1.0
  **/
-public class DispatcherConcreator implements ApplicationListener<ContextRefreshedEvent>{
+public class DispatcherConcreator {
 	private static Logger logger = LoggerFactory.getLogger(DispatcherConcreator.class);
 	
 	private DispathcerManager dispathcerManager;
@@ -34,8 +34,12 @@ public class DispatcherConcreator implements ApplicationListener<ContextRefreshe
 	public DispatcherConcreator() {
 		
 	}
+	
+	public void initMethod()throws Exception {
+		creatorMockDispatcher();
+	}
 
-	public void creatorMockDispatcher() throws Exception {
+	private void creatorMockDispatcher() throws Exception {
 		logger.debug("Mock Dispatcher Concreat");
 		DispatcherStrategy dispatcherStrategy = SpringContextUtil.getBean("mockDispatcherStrategy");
 		Fetcher fetcher = SpringContextUtil.getBean("mockFetcher");
@@ -50,16 +54,6 @@ public class DispatcherConcreator implements ApplicationListener<ContextRefreshe
 		this.dispathcerManager = dispathcerManager;
 	}
 
-	@Override
-	public void onApplicationEvent(ContextRefreshedEvent event) {
-		if(event.getApplicationContext().getParent() == null){
-			try {
-				creatorMockDispatcher();
-			} catch (Exception e) {
-				logger.debug(ThrowableParser.toString(e));
-			}
-	      }
-	}
 }
 
 

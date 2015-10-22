@@ -59,8 +59,8 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Override
 	@Transactional
 	public void itemScoring(Long taskId, Referees referees, Float[] scores) throws Exception {
-		GradeTask task = this.load(taskId);
-
+		GradeTask task = taskRepository.load(taskId);
+		referees = task.getReferees();
 		Collection<ItemGradeRecord> itemRecords = referees.scoringForItems(scores);
 		logger.debug("Scoring ", itemRecords);
 		task.increment();
