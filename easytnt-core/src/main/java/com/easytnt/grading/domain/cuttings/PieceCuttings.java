@@ -65,6 +65,24 @@ public class PieceCuttings implements Entity<PieceCuttings>{
 		return this.definedOf.getSections();
 	}
 	
+	
+
+	public int getCurrentPinci() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	public void nextPinci() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int incrementPinciAndGet() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 
 	@Override
 	public int hashCode() {
@@ -93,22 +111,6 @@ public class PieceCuttings implements Entity<PieceCuttings>{
 	//以下功能为ORM或者自动构造使用，非此慎用
 	public PieceCuttings () {}
 	
-	public int getCurrentPinci() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	public void nextPinci() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public int incrementPinciAndGet() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public ExamineePaper getCutFrom() {
 		return cutFrom;
 	}

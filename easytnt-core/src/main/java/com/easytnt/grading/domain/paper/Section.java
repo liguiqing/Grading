@@ -57,7 +57,6 @@ public class Section implements ValueObject<Section>{
 		}
 		
 		this.items.add(item);
-		item.setSection(this);
 	}
 
 	@Override
