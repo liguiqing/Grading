@@ -32,10 +32,10 @@ import com.easytnt.grading.service.GradeTaskService;
 @Service
 public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>implements GradeTaskService {
 
-	@Autowired
+	@Autowired(required = false)
 	private DispathcerManager dispathcerManager;
 
-	@Autowired
+	@Autowired(required = false)
 	private GradeTaskRepository taskRepository;
 
 	@Override
