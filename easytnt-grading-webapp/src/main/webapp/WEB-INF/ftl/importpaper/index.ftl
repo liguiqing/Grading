@@ -3,6 +3,7 @@
  <#import "/taglib/commons/navigation.ftl" as nav> 
   <@nav.navigation menus2=menus2/>
   
+  <#include "./importPaperUI.ftl">
  <#import "/taglib/commons/status.ftl" as footer> 
   <@footer.status>
     <ul class="pull-right "></ul>
