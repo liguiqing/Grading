@@ -3,11 +3,13 @@
  */
 package com.easytnt.importpaper.io.scanfiledir;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +36,20 @@ public class SacnDiretoryTest {
 	@Test
 	public void scanDir() throws Exception {
 		ScannerDirectoryConfig config = new ScannerDirectoryConfig();
-		config.setRootUrl("http://127.0.0.1:8080").setFileDir("D:/sj");
+		
+		config.setRootUrl("http://127.0.0.1:8888").setFileDir(rootPath());
 
 		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(config.getFileDir());
 		CountContainer<FileInfo> fileInfos = directoryScanner.scan();
 
 		log.debug(">>>>>>>>>>>>>>>>>>end");
+	}
+	
+	private String rootPath() {
+		File root = new File(this.getClass().getResource("/").getPath());
+		log.debug(root.getAbsolutePath());
+		log.debug(System.getProperty("user.dir"));
+		return root.getAbsolutePath();
 	}
 
 	@Test
@@ -48,12 +58,12 @@ public class SacnDiretoryTest {
 		CountContainer<FileInfo> container = new CountContainer<>(20);
 
 		ScannerDirectoryConfig config = new ScannerDirectoryConfig();
-		config.setRootUrl("http://127.0.0.1:8080").setFileDir("D:/sj");
+		config.setRootUrl("http://127.0.0.1:8888").setFileDir(rootPath());
 		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(config.getFileDir());
 
 		directoryScanner.scan(new MyVisitorFile(container));
 
-		Assert.assertTrue(container.getFileNumber() == 22148);
+		assertEquals(container.getFileNumber(), 39);
 
 		log.debug("end>>>>" + this.getClass().getName() + ".scanDir2()");
 	}
@@ -84,7 +94,7 @@ public class SacnDiretoryTest {
 		directoryMappings.add(new DirectoryMapping().setPlace(3).setMappingName(MappingName.TH));
 
 		final ScannerDirectoryConfig config = new ScannerDirectoryConfig();
-		config.setRootUrl("http://127.0.0.1:8888").setFileDir("D:/sj").setTestId(10000010)
+		config.setRootUrl("http://127.0.0.1:8888").setFileDir(rootPath() +File.separator+"lishu").setTestId(10000010)
 				.setDirectoryMappings(directoryMappings);
 
 		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(config.getFileDir());

@@ -3,4 +3,4 @@
 .project
 .settings/
 target/
-src/resources/
+src/test/resources/
