@@ -399,7 +399,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+    <!--
 	<reporting>
 		<plugins>
 			<plugin>
@@ -458,7 +458,7 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
+    -->
 	<profiles>
 		<profile>
 			<id>nocheck</id>
