@@ -47,6 +47,8 @@
 				ajaxOpts["data"] = JSON.stringify(opts.data);
 			}
 			
+			//ajaxOpts["data"]=opts.data;
+			
 			if(!$.isEmptyObject(opts["contentType"])){
 				ajaxOpts["contentType"] = opts["contentType"];
 			}
@@ -82,17 +84,17 @@
 		};
 		
 		var  wrapper = {
-			post:function(url,dataType,messages,callback){
-				doSend(url,undefined,dataType,messages,Method.POST,callback);
+			post:function(url,data,dataType,messages,callback){
+				doSend(url,data,dataType,messages,Method.POST,callback);
 			},
-			put:function(url,dataType,messages,callback){
-				doSend(url,undefined,dataType,messages,Method.PUT,callback);
+			put:function(url,data,dataType,messages,callback){
+				doSend(url,data,dataType,messages,Method.PUT,callback);
 			},
-			get:function(url,dataType,messages,callback){
-				doSend(url,undefined,dataType,messages,Method.GET,callback);
+			get:function(url,data,dataType,messages,callback){
+				doSend(url,data,dataType,messages,Method.GET,callback);
 			},
-			remove:function(url,dataType,messages,callback){
-				doSend(url,undefined,dataType,messages,Method.DELETE,callback);
+			remove:function(url,data,dataType,messages,callback){
+				doSend(url,data,dataType,messages,Method.DELETE,callback);
 			},
 			postJson : function(url,data,messages,callback){
 				doSend(url,data,DataType.JSON,messages,Method.POST,callback);				
@@ -103,11 +105,11 @@
 			removeJson:function(url,data,messages,callback){
 				doSend(url,data,DataType.JSON,messages,Method.PUT,callback);
 			},
-			getJson:function(url,messages,callback){
-				doSend(url,undefined,DataType.JSON,messages,Method.GET,callback);
+			getJson:function(url,data,messages,callback){
+				doSend(url,data,DataType.JSON,messages,Method.GET,callback);
 			},
-			getHtml:function(url,messages,callback){
-				doSend(url,undefined,DataType.HTML,messages,Method.GET,callback);
+			getHtml:function(url,data,messages,callback){
+				doSend(url,data,DataType.HTML,messages,Method.GET,callback);
 			},
 			send:function(url,data,dataType,contentType,messages,callback){
 				doAjax({

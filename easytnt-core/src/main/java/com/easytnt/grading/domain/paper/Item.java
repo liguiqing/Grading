@@ -22,8 +22,6 @@ import com.easytnt.grading.domain.share.Area;
  **/
 public class Item implements ValueObject<Item> {
 
-	private Section section;
-
 	private String title;
 
 	private String caption;
@@ -57,7 +55,6 @@ public class Item implements ValueObject<Item> {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(this.section)
 				.append(this.title).append(this.fullScore).toHashCode();
 	}
 
@@ -67,14 +64,13 @@ public class Item implements ValueObject<Item> {
 			return false;
 		
 		Item other = (Item) o;
-		return new EqualsBuilder().append(this.section, other.section)
-				.append(this.title, other.title)
+		return new EqualsBuilder().append(this.title, other.title)
 				.append(this.fullScore, other.fullScore).isEquals();
 	}
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append(this.section)
+		return new ToStringBuilder(this)
 				.append(this.title).append(this.fullScore).build();
 	}
 
@@ -121,14 +117,6 @@ public class Item implements ValueObject<Item> {
 		
 	}
 	
-	public Section getSection() {
-		return section;
-	}
-
-	public void setSection(Section section) {
-		this.section = section;
-	}
-
 	public String getTitle() {
 		return title;
 	}
