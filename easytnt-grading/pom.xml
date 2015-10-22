@@ -124,6 +124,7 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>

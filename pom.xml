@@ -77,6 +77,13 @@
 	</distributionManagement>
 
 	<build>
+	    <sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>	    
+	    <testSourceDirectory>src/test/java</testSourceDirectory>
 		<testResources>
 			<testResource>
 				<directory>${basedir}/src/test/resources</directory>
@@ -92,7 +99,7 @@
 					<configuration>
 						<forkMode>once</forkMode>
 						<includes>
-							<include>**/*Tests.java</include>
+							<include>**/*Test.java</include>
 						</includes>
 						<excludes>
 							<exclude>**/Abstract*.java</exclude>
