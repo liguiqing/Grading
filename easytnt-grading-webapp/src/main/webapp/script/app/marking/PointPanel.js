@@ -171,7 +171,13 @@
 				PointGroup.reset();
 			};
 			this.total = function(){
-				var total = {value:0,points:[]};
+				var total = {value:0,points:[],onlyValues:function(){
+					var values= [];
+					$.each(this.points,function(i,p){
+						values[i] = p.value;
+					});
+					return values;
+				}};
 				$.each(PointGroup.points,function(i){
 					total.value += this.valueOf();
 					total.points[i] = {name:this.name,value:this.valueOf()};

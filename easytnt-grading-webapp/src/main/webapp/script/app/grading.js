@@ -7,7 +7,7 @@
 		var _imgViewer;
 		
 		function save(data){
-			ajaxWrapper.postJson('marking',data,{beforeMsg:{tipText:"系统正在计分....",show:false},successMsg:{tipText:"计分成功",show:true}},
+			ajaxWrapper.postJson(getTaskUrl()+"/itemscoring",data.onlyValues(),{beforeMsg:{tipText:"系统正在计分....",show:false},successMsg:{tipText:"计分成功",show:true}},
 					function(m){
 				if(m.status.success){
 					_grading.nextPaper();
@@ -41,6 +41,11 @@
 				}
 			});				
 		};
+		
+		function getTaskUrl(){
+			var url = window.location.href;
+			return url.substring(url.indexOf('task'));
+		};
 
 		var Grading = function() {
 			var imgPanel = $('aside.img-panel-container');
@@ -51,9 +56,8 @@
 			this.nextPaper = function(){
 				point.reset();
 				pointPanelKeyShort();
-				var url = window.location.href;
-				ajaxWrapper.getJson(url.substring(url.indexOf('task'))+'/cuttings',{show:false},function(data){					
-					imgToolbox.switchTo(data.cuttings.imgPath);
+				ajaxWrapper.getJson(getTaskUrl()+'/cuttings',{show:false},function(data){					
+					imgToolbox.switchTo(data.imgPath);
 				});
 				
 			};
