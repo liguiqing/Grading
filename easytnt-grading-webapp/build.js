@@ -5,7 +5,7 @@
 	modules:[{
 		name:'main'
 	}],
-	fileExclusionRegExp:/^\.git$/,
+	fileExclusionRegExp:/^\.git$|^lib|^require\.js/,
 	optimizeCss:'standard',
 	removeCombined:true,
 	paths:{
