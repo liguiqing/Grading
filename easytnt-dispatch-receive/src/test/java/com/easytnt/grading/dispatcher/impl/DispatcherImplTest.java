@@ -43,7 +43,7 @@ import com.easytnt.grading.share.ImgCuttings;
  **/
 public class DispatcherImplTest {
 	private static Logger logger = LoggerFactory.getLogger(DispatcherImplTest.class);
-	@Test
+	
 	public void testGet()throws Exception{
 		
 		DispatcherStrategy dispatcherStrategy = new SinglePaperPriorDispatcherStrategy(1); //mock(DispatcherStrategy.class);
@@ -80,7 +80,7 @@ public class DispatcherImplTest {
 		return blocks;
 	}
 	
-	@Test
+	
 	public void testGetAsync()throws Exception{
 		DispatcherStrategy dispatcherStrategy = new SinglePaperPriorDispatcherStrategy(2); //mock(DispatcherStrategy.class);
 		Fetcher blockFetcher = mock(Fetcher.class);
