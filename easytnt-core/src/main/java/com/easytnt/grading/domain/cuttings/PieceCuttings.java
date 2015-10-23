@@ -41,6 +41,11 @@ public class PieceCuttings implements Entity<PieceCuttings>{
 	
 	private String imgPath;
 	
+	public PieceCuttings(ExamineePaper cutFrom,CuttingsArea definedOf) {
+		this.cutFrom = cutFrom;
+		this.definedOf = definedOf;
+	}
+	
 	public PieceGradeRecord addRecord(Referees referees) {
 		if(this.records == null) {
 			this.records = new HashSet<>();
