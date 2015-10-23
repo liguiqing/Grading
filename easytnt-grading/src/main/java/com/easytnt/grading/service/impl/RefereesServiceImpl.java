@@ -25,7 +25,7 @@ import com.easytnt.grading.service.RefereesService;
 public class RefereesServiceImpl extends AbstractEntityService<Referees, Long> implements
 		RefereesService {
 
-	@Autowired
+	
 	private RefereesRepository refereesRepository;
 	
 	@Override

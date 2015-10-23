@@ -24,7 +24,7 @@ import com.easytnt.commons.util.SpringContextUtil;
  * @author 李贵庆2015年9月23日
  * @version 1.0
  **/
-@ContextConfiguration(locations= {"classpath:applicationContext.xml","classpath:applicationContext-ds.xml","classpath:applicationContext-tx.xml","classpath:applicationContext-app.xml"})
+@ContextConfiguration(locations= {"classpath:applicationContext.xml","classpath*:applicationContext-*.xml"})
 public class ConfigurationTest extends AbstractJUnit4SpringContextTests {
 
 	@Test
