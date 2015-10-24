@@ -16,8 +16,8 @@ import com.easytnt.importpaper.bean.DirectoryMapping;
 import com.easytnt.importpaper.bean.MappingName;
 import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
 import com.easytnt.importpaper.disruptor.produce.ScanDirProduce;
-import com.easytnt.importpaper.service.impl.StartScanDirServiceImpl;
 import com.easytnt.importpaper.util.GetSubjectId;
+import com.easytnt.importpaper.util.StartScanDirectoryUtil;
 import com.easytnt.thread.EasytntExecutor;
 
 /**
@@ -41,8 +41,8 @@ public class StartScanDirServiceTest {
 		config.setRootUrl("http://127.0.0.1:8888").setFileDir("D:/sj/lishu").setTestId(10000010)
 				.setDirectoryMappings(directoryMappings);
 
-		StartScanDirServiceImpl service = new StartScanDirServiceImpl();
-		service.start(config, null);
+		
+		StartScanDirectoryUtil.start(config, null);
 
 		CountContainer<CutImageInfo> container = CountContainerMgr.getInstance().get(config.getUuId());
 

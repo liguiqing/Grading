@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.easytnt.importpaper.service.impl;
+package com.easytnt.importpaper.util;
 
 import java.util.UUID;
 
@@ -12,7 +12,8 @@ import com.easytnt.importpaper.bean.CountContainer;
 import com.easytnt.importpaper.bean.CountContainerMgr;
 import com.easytnt.importpaper.bean.CutImageInfo;
 import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
-import com.easytnt.importpaper.service.StartScanDirService;
+import com.easytnt.importpaper.service.impl.StartScanDirNoSaveToDatabase;
+import com.easytnt.importpaper.service.impl.StartScanDirSaveToDatabase;
 import com.easytnt.thread.EasytntExecutor;
 
 /**
@@ -22,7 +23,7 @@ import com.easytnt.thread.EasytntExecutor;
  * @author liuyu
  *
  */
-public class StartScanDirServiceImpl implements StartScanDirService {
+public class StartScanDirectoryUtil {
 
 	/*
 	 * (non-Javadoc)
@@ -30,8 +31,7 @@ public class StartScanDirServiceImpl implements StartScanDirService {
 	 * @see com.easytnt.importpaper.service.StartScanDirService#start(javax.sql.
 	 * DataSource)
 	 */
-	@Override
-	public void start(ScannerDirectoryConfig config, DataSource ds) {
+	public static void start(ScannerDirectoryConfig config, DataSource ds) {
 		if (StringUtil.isEmpty(config.getUuId())) {
 			String uuId = UUID.randomUUID().toString();
 			config.setUuId(uuId);

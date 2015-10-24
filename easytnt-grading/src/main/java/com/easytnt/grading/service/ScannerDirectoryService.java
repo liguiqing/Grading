@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.easytnt.importpaper.service;
+package com.easytnt.grading.service;
 
 import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
 

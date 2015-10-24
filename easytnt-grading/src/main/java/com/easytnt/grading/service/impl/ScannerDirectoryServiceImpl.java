@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.easytnt.importpaper.service.impl;
+package com.easytnt.grading.service.impl;
 
+import com.easytnt.grading.service.ScannerDirectoryService;
 import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
-import com.easytnt.importpaper.service.ScannerDirectoryService;
 
 /**
  * @author liuyu
