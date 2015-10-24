@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.easytnt.grading.dispatcher.PinciQueue;
 import com.easytnt.grading.dispatcher.PinciQueueListener;
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.grade.Referees;
 
 /** 
@@ -23,25 +23,25 @@ import com.easytnt.grading.domain.grade.Referees;
  **/
 public class PinciQueueImpl implements PinciQueue {
 	
-	private ConcurrentLinkedDeque<PieceCuttings> queue = new ConcurrentLinkedDeque<>();
+	private ConcurrentLinkedDeque<CuttingsImage> queue = new ConcurrentLinkedDeque<>();
 	
 	private AtomicInteger queueSize = new AtomicInteger(0);
 	
 	@Override
-	public void put(Collection<PieceCuttings> cuttingses) {
+	public void put(Collection<CuttingsImage> cuttingses) {
 		this.queueSize.addAndGet(cuttingses.size());
 		this.queue.addAll(cuttingses);
 	}
 	
 	@Override
-	public void add(PieceCuttings cuttings) {
+	public void add(CuttingsImage cuttings) {
 		this.queue.add(cuttings);
 		this.queueSize.incrementAndGet();
 	}
 	
 	@Override
-	public PieceCuttings get(Referees referees) {
-		PieceCuttings cuttings = this.queue.poll();
+	public CuttingsImage get(Referees referees) {
+		CuttingsImage cuttings = this.queue.poll();
 		if(cuttings == null)
 			return null;
 		

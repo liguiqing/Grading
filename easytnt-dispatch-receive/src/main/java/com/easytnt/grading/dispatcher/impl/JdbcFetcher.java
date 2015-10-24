@@ -12,7 +12,7 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.fetch.Fetcher;
 
 
@@ -30,15 +30,15 @@ public class JdbcFetcher implements Fetcher {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public List<PieceCuttings> fetch(int amount) {
+	public List<CuttingsImage> fetch(int amount) {
 		Object[] args = new Object[] {1,amount};
-		List<PieceCuttings> pcs = jdbcTemplate.query("select * from getpaper limit ?, ? ", args, new RowMapper<PieceCuttings>() {
+		List<CuttingsImage> pcs = jdbcTemplate.query("select * from getpaper limit ?, ? ", args, new RowMapper<CuttingsImage>() {
 
 			@Override
-			public PieceCuttings mapRow(ResultSet rs, int arg1)
+			public CuttingsImage mapRow(ResultSet rs, int arg1)
 					throws SQLException {
 				String imgPath = rs.getString("imagepath");
-				PieceCuttings cuttings = new PieceCuttings();
+				CuttingsImage cuttings = new CuttingsImage();
 				cuttings.setImgPath(imgPath);
 				
 				return cuttings;

@@ -7,7 +7,7 @@ package com.easytnt.grading.fetch;
 
 import java.util.List;
 
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 
 
 /** 
@@ -20,6 +20,6 @@ import com.easytnt.grading.domain.cuttings.PieceCuttings;
  **/
 public interface Fetcher {
 
-	List<PieceCuttings> fetch(int amount);
+	List<CuttingsImage> fetch(int amount);
 }
 

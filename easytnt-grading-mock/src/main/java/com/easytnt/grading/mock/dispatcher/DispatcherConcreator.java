@@ -23,7 +23,7 @@ import com.easytnt.grading.dispatcher.DispatcherStrategy;
 import com.easytnt.grading.dispatcher.DispathcerManager;
 import com.easytnt.grading.dispatcher.impl.DispatcherImpl;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.room.ExamineePaper;
@@ -85,15 +85,15 @@ public class DispatcherConcreator {
 		return new Fetcher() {
 
 			@Override
-			public List<PieceCuttings> fetch(int amount) {
+			public List<CuttingsImage> fetch(int amount) {
 				Object[] args = new Object[] {1,amount};
-				List<PieceCuttings> pcs = jdbcTemplate.query("select * from getpaper limit ?, ? ", args, new RowMapper<PieceCuttings>() {
+				List<CuttingsImage> pcs = jdbcTemplate.query("select * from getpaper limit ?, ? ", args, new RowMapper<CuttingsImage>() {
 
 					@Override
-					public PieceCuttings mapRow(ResultSet rs, int arg1)
+					public CuttingsImage mapRow(ResultSet rs, int arg1)
 							throws SQLException {
 						String imgPath = rs.getString("imagepath");
-						PieceCuttings cuttings = new PieceCuttings(cutFrom,area);
+						CuttingsImage cuttings = new CuttingsImage(cutFrom,area);
 						cuttings.setImgPath(imgPath);
 						
 						return cuttings;

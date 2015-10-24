@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.grading.dispatcher.Dispatcher;
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 
 /** 
  * <pre>
@@ -30,10 +30,10 @@ public class Referees {
 	private Dispatcher dispatcher;
 	
 	//正在进行的评卷
-	private PieceGradeRecord recordingNow;
+	private CuttingsImageGradeRecord recordingNow;
 	
 	//待进行的评卷
-	private Set<PieceGradeRecord> recordings;
+	private Set<CuttingsImageGradeRecord> recordings;
 	
 	public Referees(String name) {
 		this.name = name;
@@ -48,10 +48,10 @@ public class Referees {
 	 * @return
 	 * @throws Exception 取卷产生异常时抛出 
 	 */
-	public PieceGradeRecord fetchCuttings() throws Exception {
+	public CuttingsImageGradeRecord fetchCuttings() throws Exception {
 		if(iAmFree()) {
 			if(this.dispatcher != null) {
-				PieceCuttings cuttings = this.dispatcher.getFor(this);
+				CuttingsImage cuttings = this.dispatcher.getFor(this);
 				this.recordingNow = cuttings.addRecord(this);
 			}			
 		}
@@ -73,12 +73,10 @@ public class Referees {
 	 * @return
 	 * @throws IllegalArgumentException 当小题分值不在有效范围内时抛出
 	 */
-	public Collection<ItemGradeRecord> scoringForItems(Float[] scores) {
-		Collection<ItemGradeRecord> igrs = this.recordingNow.scoringForItems(scores);
-		for(ItemGradeRecord igr:igrs)
-			igr.recordedBy(this);
+	public CuttingsImageGradeRecord scoringForItems(Float[] scores) {
+		this.recordingNow.scoringForItems(scores);
 		this.recordingNow.finish();
-		return igrs;
+		return this.recordingNow;
 	}
 	
 	public Collection<ItemGradeRecord> scoring(Float score) {

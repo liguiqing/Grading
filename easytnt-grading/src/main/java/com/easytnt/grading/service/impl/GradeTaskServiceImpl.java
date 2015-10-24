@@ -16,7 +16,7 @@ import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.dispatcher.DispathcerManager;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.ItemGradeRecord;
-import com.easytnt.grading.domain.grade.PieceGradeRecord;
+import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.repository.GradeTaskRepository;
 import com.easytnt.grading.service.GradeTaskService;
@@ -60,27 +60,20 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Transactional
 	public void itemScoring(Long taskId, Referees referees, Float[] scores) throws Exception {
 		GradeTask task = taskRepository.load(taskId);
-		referees = task.getReferees();
-		Collection<ItemGradeRecord> itemRecords = referees.scoringForItems(scores);
-		logger.debug("Scoring ", itemRecords);
+		referees = task.getAssignedTo();
+		CuttingsImageGradeRecord gradeRecord  = referees.scoringForItems(scores);
+		logger.debug("Scoring ", gradeRecord);
 		task.increment();
 		// 数据持久化处理
 		// TODO
-		PieceGradeRecord gradeRecord = null;
-		Iterator<ItemGradeRecord> it = itemRecords.iterator();
-		while (it.hasNext()) {
-			if (gradeRecord == null) {
-				gradeRecord = it.next().getSource();
-				break;
-			}
-		}
+		//CuttingsImageGradeRecord gradeRecord = null;
 	}
 
 	@Override
-	public PieceGradeRecord createPieceGradeRecordBy(Long taskId, Referees referees) throws Exception {
+	public CuttingsImageGradeRecord createPieceGradeRecordBy(Long taskId, Referees referees) throws Exception {
 		GradeTask task = taskRepository.load(taskId);
 
-		PieceGradeRecord pieceGradeRecord = task.getReferees().fetchCuttings();
+		CuttingsImageGradeRecord pieceGradeRecord = task.getAssignedTo().fetchCuttings();
 		// 数据持久化处理
 		// TODO
 

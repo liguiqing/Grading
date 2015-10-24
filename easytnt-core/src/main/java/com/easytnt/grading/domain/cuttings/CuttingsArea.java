@@ -19,7 +19,7 @@ import com.easytnt.grading.domain.share.Area;
 
 /** 
  * <pre>
- * 切割块定义，一个切割块至少有一个大题
+ * 切割块定义
  * </pre>
  * 
  * @author 李贵庆 2015年10月18日

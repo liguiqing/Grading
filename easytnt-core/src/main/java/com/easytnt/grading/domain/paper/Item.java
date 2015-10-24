@@ -14,7 +14,7 @@ import com.easytnt.grading.domain.share.Area;
 
 /**
  * <pre>
- * 试卷中的小题，可以进行作答的题目
+ * 给分点
  * </pre>
  * 
  * @author 李贵庆2015年10月14日
@@ -26,11 +26,11 @@ public class Item implements ValueObject<Item> {
 
 	private String caption;
 
-	private String scoreDot;
-
 	private Area answerArea;
 
 	private Float fullScore;
+	
+	private Float[] validValues;
 	
 	public Item(String title,Float fullScore) {
 		this.title = title;
@@ -97,8 +97,8 @@ public class Item implements ValueObject<Item> {
 			return this;
 		}
 		
-		public Builder scoreDot(String scoreDot) {
-			this.item.scoreDot = scoreDot;
+		public Builder validValues(Float[] validValues) {
+			this.item.validValues = validValues;
 			return this;
 		}
 		
@@ -137,14 +137,15 @@ public class Item implements ValueObject<Item> {
 	public void setCaption(String caption) {
 		this.caption = caption;
 	}
-
-	public String getScoreDot() {
-		return scoreDot;
+	
+	public Float[] getValidValues() {
+		return validValues;
 	}
 
-	public void setScoreDot(String scoreDot) {
-		this.scoreDot = scoreDot;
+	public void setValidValues(Float[] validValues) {
+		this.validValues = validValues;
 	}
+
 
 	public Area getAnswerArea() {
 		return answerArea;

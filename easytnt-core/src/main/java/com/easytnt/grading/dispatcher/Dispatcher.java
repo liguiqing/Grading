@@ -7,7 +7,7 @@ package com.easytnt.grading.dispatcher;
 
 import java.util.Collection;
 
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.fetch.Fetcher;
 
@@ -27,11 +27,11 @@ public interface Dispatcher {
 	 * @return
 	 * @throws Exception
 	 */
-	PieceCuttings getFor(Referees referees)throws Exception;
+	CuttingsImage getFor(Referees referees)throws Exception;
 	
-	void put(Collection<PieceCuttings> cuttingses) throws Exception;
+	void put(Collection<CuttingsImage> cuttingses) throws Exception;
 	
-	void recover(Collection<PieceCuttings> cuttingses)throws Exception;
+	void recover(Collection<CuttingsImage> cuttingses)throws Exception;
 	
 	void start()throws Exception;
 	

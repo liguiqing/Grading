@@ -20,9 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.easytnt.commons.ui.Menu;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.grade.GradeTask;
-import com.easytnt.grading.domain.grade.PieceGradeRecord;
+import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.service.GradeTaskService;
@@ -60,7 +60,7 @@ public class GradingTaskController {
 		
 		Referees referees = refereesService.getCurrentReferees();
 		GradeTask task = taskService.getTaskOf(taskId, referees);
-		referees = task.getReferees();
+		referees = task.getAssignedTo();
 		CuttingsArea area = task.getArea();
 		List<Section> sections = area.getSections();
 
@@ -75,8 +75,8 @@ public class GradingTaskController {
 	public ModelAndView onGetCuttings(@PathVariable Long taskId) throws Exception {
 		logger.debug("URL /task/{}/ Method Get", taskId);
 		Referees referees = refereesService.getCurrentReferees();
-		PieceGradeRecord pieceGradeRecord = taskService.createPieceGradeRecordBy(taskId, referees);
-		PieceCuttings cuttings = pieceGradeRecord.getRecordFor();
+		CuttingsImageGradeRecord pieceGradeRecord = taskService.createPieceGradeRecordBy(taskId, referees);
+		CuttingsImage cuttings = pieceGradeRecord.getRecordFor();
 		return ModelAndViewFactory.newModelAndViewFor("/task/imgPanel").with("imgPath", cuttings.getImgPath()).build();
 	}
 

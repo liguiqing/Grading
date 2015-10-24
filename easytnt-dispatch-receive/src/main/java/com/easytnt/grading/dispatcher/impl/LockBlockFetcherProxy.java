@@ -8,7 +8,7 @@ package com.easytnt.grading.dispatcher.impl;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.fetch.Fetcher;
 
 /** 
@@ -30,7 +30,7 @@ public class LockBlockFetcherProxy implements Fetcher {
 	}
 	
 	@Override
-	public List<PieceCuttings> fetch(int amount) {
+	public List<CuttingsImage> fetch(int amount) {
 		lock.lock();
 		try {
 			return this.principal.fetch(amount);

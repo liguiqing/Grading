@@ -27,7 +27,6 @@ public class Exam implements Entity<Exam> {
     
     private ExamDesc desc;
     
-	private List<SubjectExam> subjectExams;
 	
 	public Exam(ExamDesc desc,Long oid) {
 		this.desc = desc;
@@ -79,13 +78,6 @@ public class Exam implements Entity<Exam> {
 		this.desc = desc;
 	}
 
-	public List<SubjectExam> getSubjectExams() {
-		return subjectExams;
-	}
-
-	public void setSubjectExams(List<SubjectExam> subjectExams) {
-		this.subjectExams = subjectExams;
-	}
 	
 }
 
