@@ -48,7 +48,7 @@ public class ImportPaperController {
 			HttpServletResponse response) throws Exception {
 		// saveToDb 0 不保存数据库 1保存数据
 		log.debug("begin /{type}/stat...");
-		
+
 		log.debug("end /{type}/stat...");
 		return ModelAndViewFactory.newModelAndViewFor("importpaper/index").build();
 	}

@@ -32,6 +32,11 @@ public class Item implements ValueObject<Item> {
 
 	private Float fullScore;
 	
+	public Item(String title,Float fullScore) {
+		this.title = title;
+		this.fullScore = fullScore;
+	}
+	
 
 	public boolean isEffectiveScore(Float score) {
 		return score.compareTo(this.getMinPoint()) >= 0

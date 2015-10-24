@@ -56,7 +56,7 @@
 			this.nextPaper = function(){
 				point.reset();
 				pointPanelKeyShort();
-				ajaxWrapper.getJson(getTaskUrl()+'/cuttings',{show:false},function(data){					
+				ajaxWrapper.getJson(getTaskUrl()+'/cuttings',{},{show:false},function(data){					
 					imgToolbox.switchTo(data.imgPath);
 				});
 				

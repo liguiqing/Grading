@@ -3,6 +3,7 @@
  */
 package com.easytnt.importpaper.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
@@ -38,7 +39,7 @@ public class StartScanDirServiceTest {
 		directoryMappings.add(new DirectoryMapping().setPlace(3).setMappingName(MappingName.TH));
 
 		final ScannerDirectoryConfig config = new ScannerDirectoryConfig();
-		config.setRootUrl("http://127.0.0.1:8888").setFileDir("D:/sj/lishu").setTestId(10000010)
+		config.setRootUrl("http://127.0.0.1:8888").setFileDir(rootPath() +File.separator+"lishu").setTestId(10000010)
 				.setDirectoryMappings(directoryMappings);
 
 		
@@ -49,7 +50,11 @@ public class StartScanDirServiceTest {
 		System.out.println("");
 
 	}
-
+	private String rootPath() {
+		File root = new File(this.getClass().getResource("/").getPath());
+		return root.getAbsolutePath();
+	}
+	
 	@Test
 	public void testGetSubjectId() throws Exception {
 		int subjectId = GetSubjectId.get("lishu");
@@ -58,11 +63,11 @@ public class StartScanDirServiceTest {
 
 	@Test
 	public void ScanDirProduceTest() throws Exception {
-		ScanDirProduce scanDirProduce = new ScanDirProduce(null, null);
-		CountDownLatch countDownLatch = new CountDownLatch(1);
-		EasytntExecutor.instance().getExecutorService().submit(scanDirProduce);
+		//ScanDirProduce scanDirProduce = new ScanDirProduce(null, null);
+		//CountDownLatch countDownLatch = new CountDownLatch(1);
+		//EasytntExecutor.instance().getExecutorService().submit(scanDirProduce);
 
-		countDownLatch.await();
+		//countDownLatch.await();
 
 	}
 }
