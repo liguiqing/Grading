@@ -44,7 +44,12 @@
 				}
 			};
 			if(!$.isEmptyObject(opts["data"])){
-				ajaxOpts["data"] = JSON.stringify(opts.data);
+				if(opts.method === Method.GET){
+					ajaxOpts["data"]=opts.data;
+				}else{
+					ajaxOpts["data"] = JSON.stringify(opts.data);
+				}
+				
 			}
 			
 			//ajaxOpts["data"]=opts.data;

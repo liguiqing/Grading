@@ -69,8 +69,10 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		PieceGradeRecord gradeRecord = null;
 		Iterator<ItemGradeRecord> it = itemRecords.iterator();
 		while (it.hasNext()) {
-			if (gradeRecord == null)
+			if (gradeRecord == null) {
 				gradeRecord = it.next().getSource();
+				break;
+			}
 		}
 	}
 
