@@ -1,6 +1,12 @@
 <div class="workspace" >
 <div class="container-fluid">
+<div style="display:none;">
+<input type="hidden" name="uuId" id="uuId" value="">
+<input type="hidden" name="step2Finished" id="step2Finished" value="false">
+<input type="hidden" name="step3Finished" id="step3Finished" value="false">
 
+<input type="hidden" name="fileSize" id="fileSize" value="0">
+</div>
 <aside class="col-xs-12 col-sm-12 col-md-12 col-lg-12 monitor-panel-container">
 <div id="importPaperWizard" class="swMain ">
 	<ul>
@@ -19,7 +25,7 @@
 				<div class="form-group">
 					<label for="inputEmail3" class="col-sm-3 control-label">考试：</label>
 					<div class="col-sm-9">
-						<select class="form-control">
+						<select id="testId" class="form-control">
 								<option selected value="1">语文考试</option>
 								<option value="2">理数考试</option>
 								<option value="3">理综考试</option>
@@ -29,15 +35,15 @@
 				<div class="form-group">
 					<label for="inputEmail3" class="col-sm-3 control-label">网络根目录地址：</label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" id="internetRootDir"
+						<input type="text" class="form-control" id="rootUrl"
 							placeholder="网络根目录地址" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="inputPassword3" class="col-sm-3 control-label">科目图片根目录地址：</label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" id="imageRootDir"
-							placeholder="图片根目录地址" />
+						<input type="text" class="form-control" id="fileDir"
+							placeholder="科目图片根目录地址" />
 					</div>
 				</div>
 			</form>
@@ -46,7 +52,6 @@
 	<div id="step-2">
 		<h2 class="StepTitle">配置地址预览图片</h2>
 		<div class="container-fluid">
-			
 			<div class="row">
 				<div id="step2_container" class="col-sm-12">
 					
@@ -59,7 +64,7 @@
 		<h2 class="StepTitle">完成</h2>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-12">
+				<div id="step3_container" class="col-sm-12">
 					<p class="text-muted">导入成功！<br/>导入图片总数：80590张</p>
 				</div>
 			</div>

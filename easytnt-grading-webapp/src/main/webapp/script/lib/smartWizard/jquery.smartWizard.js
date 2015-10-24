@@ -108,17 +108,20 @@ function SmartWizard(target, options) {
             return false;
         });
 
-        $($this.steps).bind("click", function(e){
-            if($this.steps.index(this) == $this.curStepIdx){
+        if($this.options.stepClick){
+        	$($this.steps).bind("click", function(e){
+                if($this.steps.index(this) == $this.curStepIdx){
+                    return false;
+                }
+                var nextStepIdx = $this.steps.index(this);
+                var isDone = $this.steps.eq(nextStepIdx).attr("isDone") - 0;
+                if(isDone == 1){
+                    _loadContent($this, nextStepIdx);
+                }
                 return false;
-            }
-            var nextStepIdx = $this.steps.index(this);
-            var isDone = $this.steps.eq(nextStepIdx).attr("isDone") - 0;
-            if(isDone == 1){
-                _loadContent($this, nextStepIdx);
-            }
-            return false;
-        });
+            });
+        }
+        
 
         // Enable keyboard navigation
         if($this.options.keyNavigation){
@@ -465,6 +468,7 @@ function SmartWizard(target, options) {
 
 // Default Properties and Events
     $.fn.smartWizard.defaults = {
+    	stepClick:false,
         selected: 0,  // Selected Step, 0 = first step
         keyNavigation: true, // Enable/Disable key navigation(left and right keys are used if enabled)
         enableAllSteps: false,

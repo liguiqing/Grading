@@ -11,13 +11,13 @@ package com.easytnt.commons.web.view;
  * @data 2015年10月22日 下午2:44:49
  */
 public class Progress {
-	private Long total;
-	private Long completed;
+	private int total;
+	private int completed;
 	private int percent;
 	private String text;
 	private boolean finished;
 
-	public Progress(Long total, Long completed, String text) {
+	public Progress(int total, int completed, String text) {
 		this.total = total;
 		this.completed = completed;
 		this.text = text;
@@ -25,20 +25,20 @@ public class Progress {
 		this.percent = percent.intValue();
 	}
 
-	public Long getTotal() {
+	public int getTotal() {
 		return total;
 	}
 
-	public Progress setTotal(Long total) {
+	public Progress setTotal(int total) {
 		this.total = total;
 		return this;
 	}
 
-	public Long getCompleted() {
+	public int getCompleted() {
 		return completed;
 	}
 
-	public Progress setCompleted(Long completed) {
+	public Progress setCompleted(int completed) {
 		this.completed = completed;
 		return this;
 	}

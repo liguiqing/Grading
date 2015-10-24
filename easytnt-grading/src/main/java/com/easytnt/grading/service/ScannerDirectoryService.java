@@ -20,5 +20,5 @@ public interface ScannerDirectoryService {
 	 * @datatime 2015年10月17日 上午10:57:07
 	 * @param scannerDirectoryConfig
 	 */
-	public void scanDirectory(ScannerDirectoryConfig scannerDirectoryConfig);
+	public void scanDirectory(ScannerDirectoryConfig scannerDirectoryConfig, boolean saveToDb);
 }

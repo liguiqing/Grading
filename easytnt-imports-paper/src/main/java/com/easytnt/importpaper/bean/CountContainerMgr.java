@@ -29,6 +29,10 @@ public class CountContainerMgr {
 		return containerMgr.get(key);
 	}
 
+	public void remove(String key) {
+		containerMgr.remove(key);
+	}
+
 	public static CountContainerMgr getInstance() {
 		lock.lock();
 		try {

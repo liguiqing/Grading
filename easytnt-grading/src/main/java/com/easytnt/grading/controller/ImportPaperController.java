@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.web.view.ModelAndViewFactory;
+import com.easytnt.grading.service.ScannerDirectoryService;
+import com.easytnt.importpaper.bean.ScannerDirectoryConfig;
 
 /**
  * <pre>
@@ -29,27 +32,38 @@ import com.easytnt.commons.web.view.ModelAndViewFactory;
 public class ImportPaperController {
 	private static Logger log = LoggerFactory.getLogger(ImportPaperController.class);
 
+	@Autowired(required = false)
+	private ScannerDirectoryService ScannerDirectoryService;
+
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return ModelAndViewFactory.newModelAndViewFor("importpaper/index").build();
 	}
 
-	@RequestMapping(value = "/{saveToDb}/scan", method = RequestMethod.GET)
-	public ModelAndView scan(@PathVariable int saveToDb, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	@RequestMapping(value = "/{saveToDb}/scan", method = RequestMethod.POST)
+	public ModelAndView scan(@PathVariable int saveToDb, @RequestBody ScannerDirectoryConfig config,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// saveToDb 0 不保存数据库 1保存数据
 		log.debug("begin /{target}/scan...");
+		
 		log.debug("end /{target}/scan...");
-		return ModelAndViewFactory.newModelAndViewFor("importpaper/index").build();
+		return ModelAndViewFactory.newModelAndViewFor().with("config", config).build();
 	}
 
-	@RequestMapping(value = "/{type}/stat", method = RequestMethod.GET)
-	public ModelAndView getScanStatisticInfo(@PathVariable int type, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		// saveToDb 0 不保存数据库 1保存数据
+	@RequestMapping(value = "/{type}/stat/{uuId}", method = RequestMethod.GET)
+	public ModelAndView getScanStatisticInfo(@PathVariable int type, @PathVariable String uuId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
 		log.debug("begin /{type}/stat...");
 
+		
+		String template = "";
+		if (type == 1) {
+			template = "importpaper/configTable";
+		} else {
+			template = "importpaper/resultStat";
+		}
 		log.debug("end /{type}/stat...");
-		return ModelAndViewFactory.newModelAndViewFor("importpaper/index").build();
+		return ModelAndViewFactory.newModelAndViewFor(template).build();
 	}
 }

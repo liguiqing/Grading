@@ -33,7 +33,7 @@ public class ProgressController {
 		// ProgressListener progressListener = SpringContextUtil.getBean(entry);
 		// Progress p =
 		// progressListener.on(ServletUtil.getRequestParamsMap(request));
-		Progress p = new Progress(100L, 80L, "80%");
+		Progress p = new Progress(100, 80, "80%");
 		return ModelAndViewFactory.newModelAndViewFor("/share/progressbar").with("progress", p).build();
 	}
 }
