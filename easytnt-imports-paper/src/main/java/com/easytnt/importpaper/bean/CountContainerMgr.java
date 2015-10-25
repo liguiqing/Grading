@@ -33,6 +33,14 @@ public class CountContainerMgr {
 		containerMgr.remove(key);
 	}
 
+	public void removeAll() {
+		containerMgr.clear();
+	}
+
+	public boolean isEmpty() {
+		return containerMgr.isEmpty();
+	}
+
 	public static CountContainerMgr getInstance() {
 		lock.lock();
 		try {

@@ -8,12 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.easytnt.commons.util.SpringContextUtil;
+import com.easytnt.commons.web.util.ServletUtil;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.commons.web.view.Progress;
+import com.easytnt.commons.web.view.ProgressListener;
 
 /**
  * <Pre>
@@ -28,12 +31,11 @@ import com.easytnt.commons.web.view.Progress;
 public class ProgressController {
 
 	@RequestMapping("/{entry}")
-	public ModelAndView progress(@PathVariable String entry, @RequestBody String uuid, HttpServletRequest request,
+	public ModelAndView progress(@PathVariable String entry, @RequestParam String uuId, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		// ProgressListener progressListener = SpringContextUtil.getBean(entry);
-		// Progress p =
-		// progressListener.on(ServletUtil.getRequestParamsMap(request));
-		Progress p = new Progress(100, 80, "80%");
+		ProgressListener progressListener = SpringContextUtil.getBean(entry);
+		Progress p = progressListener.on(ServletUtil.getRequestParamsMap(request));
+		// Progress p = new Progress(100, 80, "80%");
 		return ModelAndViewFactory.newModelAndViewFor("/share/progressbar").with("progress", p).build();
 	}
 }
