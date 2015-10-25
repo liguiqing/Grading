@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.ValueObject;
+import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;
@@ -49,6 +50,14 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 			this.sections = new ArrayList<>();
 		this.sections.add(section);	
 	}
+	
+	public Subject subjectOf() {
+		if(this.sections != null && this.sections.size() > 0)
+			return this.sections.get(0).getSubject();
+		return null;
+	}
+	
+	
 	
 	@Override
 	public int hashCode() {
@@ -125,8 +134,6 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 	public void setMaxerror(Float maxerror) {
 		this.maxerror = maxerror;
 	}
-	
-	
 
 }
 

@@ -3,6 +3,7 @@
  */
 package com.easytnt.importpaper.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +49,9 @@ public class ScannerDirectoryConfig {
 	}
 
 	public List<DirectoryMapping> getDirectoryMappings() {
+		if (directoryMappings == null) {
+			directoryMappings = new ArrayList<>();
+		}
 		return directoryMappings;
 	}
 

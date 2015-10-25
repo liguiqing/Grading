@@ -75,7 +75,7 @@ public class GradingTaskController {
 	public ModelAndView onGetCuttings(@PathVariable Long taskId) throws Exception {
 		logger.debug("URL /task/{}/ Method Get", taskId);
 		Referees referees = refereesService.getCurrentReferees();
-		CuttingsImageGradeRecord pieceGradeRecord = taskService.createPieceGradeRecordBy(taskId, referees);
+		CuttingsImageGradeRecord pieceGradeRecord = taskService.createImageGradeRecordBy(taskId, referees);
 		CuttingsImage cuttings = pieceGradeRecord.getRecordFor();
 		return ModelAndViewFactory.newModelAndViewFor("/task/imgPanel").with("imgPath", cuttings.getImgPath()).build();
 	}

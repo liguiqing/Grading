@@ -1,11 +1,11 @@
 <div class="workspace" >
+<button id="myBotton" value="test">tttttttt</button>
+
 <div class="container-fluid">
 <div style="display:none;">
 <input type="hidden" name="uuId" id="uuId" value="">
 <input type="hidden" name="step2Finished" id="step2Finished" value="false">
 <input type="hidden" name="step3Finished" id="step3Finished" value="false">
-
-<input type="hidden" name="fileSize" id="fileSize" value="0">
 </div>
 <aside class="col-xs-12 col-sm-12 col-md-12 col-lg-12 monitor-panel-container">
 <div id="importPaperWizard" class="swMain ">
@@ -36,14 +36,14 @@
 					<label for="inputEmail3" class="col-sm-3 control-label">网络根目录地址：</label>
 					<div class="col-sm-9">
 						<input type="text" class="form-control" id="rootUrl"
-							placeholder="网络根目录地址" />
+							placeholder="网络根目录地址" value="http://127.0.0.1:8080" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="inputPassword3" class="col-sm-3 control-label">科目图片根目录地址：</label>
 					<div class="col-sm-9">
 						<input type="text" class="form-control" id="fileDir"
-							placeholder="科目图片根目录地址" />
+							placeholder="科目图片根目录地址" value="D:\sj\lishu" />
 					</div>
 				</div>
 			</form>
@@ -65,7 +65,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div id="step3_container" class="col-sm-12">
-					<p class="text-muted">导入成功！<br/>导入图片总数：80590张</p>
+					
 				</div>
 			</div>
 		</div>

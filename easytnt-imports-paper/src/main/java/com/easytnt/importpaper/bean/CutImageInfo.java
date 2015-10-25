@@ -3,6 +3,9 @@
  */
 package com.easytnt.importpaper.bean;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * <pre>
  * </pre>
@@ -110,6 +113,11 @@ public class CutImageInfo {
 	public CutImageInfo setDiquId(int diquId) {
 		this.diquId = diquId;
 		return this;
+	}
+
+	public String getName(int idx) {
+		Path path = Paths.get(imagePath);
+		return path.getName(idx).toString();
 	}
 
 }

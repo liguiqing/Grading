@@ -57,6 +57,8 @@ public class Subject implements ValueObject<Subject> {
 	// 以下功能为ORM或者自动构造使用，非此慎用
 	public Subject() {
 	}
+	
+	private Long id;
 
 	public String getName() {
 		return name;
@@ -80,6 +82,14 @@ public class Subject implements ValueObject<Subject> {
 
 	public void setComposings(Set<Subject> composings) {
 		this.composings = composings;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

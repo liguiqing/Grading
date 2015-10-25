@@ -59,8 +59,9 @@ public class ConvertFileInfoToCutImageInfoServiceImpl implements ConvertFileInfo
 		}
 
 		CutImageInfo cutImageInfo = new CutImageInfo();
-		cutImageInfo.setTestId(config.getTestId()).setPaperId(1).setRoomType(1).setKemuId(kemuId).setRoomId(roomId)
-				.setVirtualroomId(virtualroomId).setItemId(itemId).setDiquId(diquId).setImagePath(imagePath);
+		cutImageInfo.setTestId(testId).setStudentId(studentId).setPaperId(paperId).setRoomType(roomType)
+				.setKemuId(kemuId).setRoomId(roomId).setVirtualroomId(virtualroomId).setItemId(itemId).setDiquId(diquId)
+				.setImagePath(imagePath);
 
 		return cutImageInfo;
 	}

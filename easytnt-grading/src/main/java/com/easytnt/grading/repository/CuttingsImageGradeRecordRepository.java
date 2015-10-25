@@ -18,6 +18,9 @@ import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 public interface CuttingsImageGradeRecordRepository extends
 		Repository<CuttingsImageGradeRecord, Long> {
 
+	void saveForFetching(CuttingsImageGradeRecord record);
+	
+	void saveForScoring(CuttingsImageGradeRecord record);
 }
 
 

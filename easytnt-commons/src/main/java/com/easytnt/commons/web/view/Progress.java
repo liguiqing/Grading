@@ -17,12 +17,13 @@ public class Progress {
 	private String text;
 	private boolean finished;
 
-	public Progress(int total, int completed, String text) {
+	public Progress(int completed, int total, String text) {
 		this.total = total;
 		this.completed = completed;
 		this.text = text;
 		Double percent = completed * 1.0 / total * 100;
 		this.percent = percent.intValue();
+		this.finished = total == completed;
 	}
 
 	public int getTotal() {

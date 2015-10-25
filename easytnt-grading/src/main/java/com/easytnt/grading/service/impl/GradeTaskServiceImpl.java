@@ -18,6 +18,7 @@ import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.ItemGradeRecord;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.Referees;
+import com.easytnt.grading.repository.CuttingsImageGradeRecordRepository;
 import com.easytnt.grading.repository.GradeTaskRepository;
 import com.easytnt.grading.service.GradeTaskService;
 
@@ -37,6 +38,9 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 
 	@Autowired(required = false)
 	private GradeTaskRepository taskRepository;
+	
+	@Autowired
+	private CuttingsImageGradeRecordRepository gradeRecordRepository;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -61,23 +65,23 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	public void itemScoring(Long taskId, Referees referees, Float[] scores) throws Exception {
 		GradeTask task = taskRepository.load(taskId);
 		referees = task.getAssignedTo();
-		CuttingsImageGradeRecord gradeRecord  = referees.scoringForItems(scores);
-		logger.debug("Scoring ", gradeRecord);
+		CuttingsImageGradeRecord imageGradeRecord  = referees.scoringForItems(scores);
+		logger.debug("Scoring ", imageGradeRecord);
 		task.increment();
 		// 数据持久化处理
-		// TODO
-		//CuttingsImageGradeRecord gradeRecord = null;
+		gradeRecordRepository.saveForScoring(imageGradeRecord);
 	}
 
 	@Override
-	public CuttingsImageGradeRecord createPieceGradeRecordBy(Long taskId, Referees referees) throws Exception {
+	@Transactional
+	public CuttingsImageGradeRecord createImageGradeRecordBy(Long taskId, Referees referees) throws Exception {
 		GradeTask task = taskRepository.load(taskId);
 
-		CuttingsImageGradeRecord pieceGradeRecord = task.getAssignedTo().fetchCuttings();
+		CuttingsImageGradeRecord imageGradeRecord = task.getAssignedTo().fetchCuttings();
 		// 数据持久化处理
-		// TODO
-
-		return pieceGradeRecord;
+		gradeRecordRepository.saveForFetching(imageGradeRecord);
+		
+		return imageGradeRecord;
 	}
 
 }
