@@ -73,9 +73,10 @@ public class SaveCutImageInfoToDatabaseServiceImpl implements SaveCutImageInfoTo
 
 	private void save(List<String> sqls) {
 		Connection con = null;
+		Statement statement = null;
 		try {
 			con = ds.getConnection();
-			Statement statement = con.createStatement();
+			statement = con.createStatement();
 			for (String sql : sqls) {
 				statement.addBatch(sql);
 			}
@@ -85,6 +86,9 @@ public class SaveCutImageInfoToDatabaseServiceImpl implements SaveCutImageInfoTo
 			log.error(ThrowableParser.toString(e));
 		} finally {
 			try {
+				if (statement != null) {
+					statement.close();
+				}
 				if (con != null) {
 					con.close();
 				}
@@ -94,11 +98,14 @@ public class SaveCutImageInfoToDatabaseServiceImpl implements SaveCutImageInfoTo
 			}
 
 		}
+		// for (String sql : sqls) {
+		// System.out.println(sql);
+		// }
 	}
 
 	private String createSQL(CutImageInfo cutImageInfo) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("INSERT INTO paperimport ( testid, kemuoid, paperid,")
+		sql.append("INSERT INTO paperimport( testid, kemuoid, paperid,")
 				.append("studentoid, itemid, roomid, virtualroomid,roomtype, pingci,")
 				.append(" getmark,diquId,imagepath) VALUES(");
 		sql.append(cutImageInfo.getTestId()).append(",");
@@ -112,7 +119,7 @@ public class SaveCutImageInfoToDatabaseServiceImpl implements SaveCutImageInfoTo
 		sql.append("0,0,");
 		sql.append(cutImageInfo.getDiquId()).append(",");
 		sql.append("'").append(cutImageInfo.getImagePath()).append("'");
-		sql.append(");");
+		sql.append(")");
 		return sql.toString();
 	}
 

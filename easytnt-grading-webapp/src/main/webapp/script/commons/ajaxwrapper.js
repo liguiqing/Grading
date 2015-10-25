@@ -104,6 +104,9 @@
 			postJson : function(url,data,messages,callback){
 				doSend(url,data,DataType.JSON,messages,Method.POST,callback);				
 			},
+			postHtml : function(url,data,messages,callback){
+				doSend(url,data,DataType.HTML,messages,Method.POST,callback);				
+			},
 			putJson:function(url,data,messages,callback){
 				doSend(url,data,DataType.JSON,messages,Method.PUT,callback);
 			},

@@ -1,4 +1,12 @@
-<table class="table">
+<div class="row">
+	<div class=".col-sm-12">
+		<h3 class="text-success" style="padding-left:50px;">总共扫描：${totalFielSize}张图片</h3>
+		<div style="display:none;">
+			<input type="hidden" name="fileSize" id="fileSize" value="${totalFielSize}">
+		</div>
+	</div>
+</div>
+<table id="viewImageTable" class="table">
 	<thead>
 		<tr>
 			<th>地址</th>
@@ -29,20 +37,14 @@
 		</tr>
 	</thead>
 	<tbody>
+	<#list cutImageInfos as ci>
 		<tr>
-			<td><a href="#" class="viewImage" title="点击预览" iamgePath=""></a></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td><a href="#" class="viewImage" title="点击预览" imagePath="${url}${ci.imagePath}">${url}${ci.imagePath}</a></td>
+			<td>${ci.getName(0)}</td>
+			<td>${ci.getName(1)}</td>
+			<td>${ci.getName(2)}</td>
+			<td>${ci.getName(3)}</td>
 		</tr>
+	</#list>
 	</tbody>
 </table>
-<div class="row">
-	<div class=".col-sm-12">
-		<p class="text-muted">文件总数：80590张</p>
-		<div style="display:none;">
-			<input type="hidden" name="fileSize" id="fileSize" value="0">
-		</div>
-	</div>
-</div>

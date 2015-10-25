@@ -39,8 +39,8 @@ public class StartScanDirSaveToDatabase implements Runnable {
 	public StartScanDirSaveToDatabase(ScannerDirectoryConfig config, DataSource ds) {
 		this.config = config;
 		SaveCutImageInfoToDatabaseServiceImpl saveService = new SaveCutImageInfoToDatabaseServiceImpl();
-		this.saveService = saveService;
 		saveService.setDatasource(ds);
+		this.saveService = saveService;
 	}
 
 	/*
