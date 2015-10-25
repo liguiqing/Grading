@@ -21,5 +21,7 @@ import com.easytnt.grading.domain.cuttings.CuttingsImage;
 public interface Fetcher {
 
 	List<CuttingsImage> fetch(int amount);
+	
+	void destroy();
 }
 

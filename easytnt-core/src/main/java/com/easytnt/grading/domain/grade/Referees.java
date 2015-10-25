@@ -49,6 +49,7 @@ public class Referees {
 	 * @throws Exception 取卷产生异常时抛出 
 	 */
 	public CuttingsImageGradeRecord fetchCuttings() throws Exception {
+
 		if(iAmFree()) {
 			if(this.dispatcher != null) {
 				CuttingsImage cuttings = this.dispatcher.getFor(this);

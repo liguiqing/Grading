@@ -38,6 +38,10 @@ public class LockBlockFetcherProxy implements Fetcher {
 			lock.unlock();
 		}
 	}
+	
+	public void destroy() {
+		principal.destroy();
+	}
 
 }
 

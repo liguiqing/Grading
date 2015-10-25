@@ -47,14 +47,6 @@ public class DispatcherImpl implements Dispatcher {
 	
 	private boolean working = Boolean.FALSE;
 	
-	public DispatcherImpl() {
-		this(new SinglePaperPriorDispatcherStrategy(1));
-	}
-	
-	public DispatcherImpl(DispatcherStrategy dispatcherStrategy) {
-		this(dispatcherStrategy,new JdbcFetcher());
-	}
-	
 	
 	public DispatcherImpl(DispatcherStrategy dispatcherStrategy,Fetcher fetcher) {
 		this(null,dispatcherStrategy,fetcher);

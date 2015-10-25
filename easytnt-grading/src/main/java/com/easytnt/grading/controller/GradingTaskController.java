@@ -61,9 +61,9 @@ public class GradingTaskController {
 		Referees referees = refereesService.getCurrentReferees();
 		GradeTask task = taskService.getTaskOf(taskId, referees);
 		referees = task.getAssignedTo();
-		CuttingsArea area = task.getArea();
-		List<Section> sections = area.getSections();
 
+		CuttingsImageGradeRecord pieceGradeRecord = task.getAssignedTo().fetchCuttings();
+		List<Section> sections = pieceGradeRecord.getRecordFor().getSections();
 		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask")
 				.with("menus", menus)
 				.with("referees", referees)

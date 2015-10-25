@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration>
 	<property name="logger.path.dir" value="/home/liguiqing/logs"/>
-	<property name="logger.filename" value="joy-grading"/>
+	<property name="logger.filename" value="easytnt-grading"/>
 	<property name="logger.out" value="CONSOLE"/>
 	<appender name='CONSOLE' class='ch.qos.logback.core.ConsoleAppender'>
 		<encoder>
@@ -58,6 +58,11 @@
 		<level value="info" />
 		<appender-ref ref="ASYNC" />
 	</logger>
+	
+	<logger name="org.springframework.jdbc" additivity="false">
+		<level value="info" />
+		<appender-ref ref="ASYNC" />
+	</logger>
 
 	<logger name="org.hibernate" additivity="false">
 		<level value="info" />
@@ -96,11 +101,11 @@
 		<level value="ERROR" />
 		<appender-ref ref="ASYNC" />
 	</logger>
-	<logger name="com.joy">
+	<logger name="com.easytnt">
 		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>
-	<logger name="com.joy.exception">
+	<logger name="com.easytnt.exception">
 		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>

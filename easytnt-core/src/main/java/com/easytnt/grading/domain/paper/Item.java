@@ -8,6 +8,7 @@ package com.easytnt.grading.domain.paper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.util.NumberUtils;
 
 import com.easytnt.commons.entity.share.ValueObject;
 import com.easytnt.grading.domain.share.Area;
@@ -36,11 +37,27 @@ public class Item implements ValueObject<Item> {
 		this.title = title;
 		this.fullScore = fullScore;
 	}
-	
 
 	public boolean isEffectiveScore(Float score) {
 		return score.compareTo(this.getMinPoint()) >= 0
 				&& score.compareTo(getMaxPoint()) <= 0;
+	}
+	
+	public void genValidValues(String validscoredot) {
+		String[] values = validscoredot.split(",");
+		if(values.length > 0) {
+			Float[] scores = new Float[values.length];
+			int i = 0;
+			for(String value:values) {
+				scores[i++] = NumberUtils.parseNumber(value, Float.class);
+			}
+			if(!this.isEffectiveScore(scores[scores.length-1])) {
+				throw new IllegalArgumentException(validscoredot + "不在有效分范围内");
+			}
+			
+			this.validValues = scores;
+		}
+		
 	}
 
 	public Float getMinPoint() {
@@ -122,6 +139,18 @@ public class Item implements ValueObject<Item> {
 		
 	}
 	
+	private Long itemId;
+	
+	public Long getItemId() {
+		return itemId;
+	}
+
+
+	public void setItemId(Long itemId) {
+		this.itemId = itemId;
+	}
+
+
 	public String getTitle() {
 		return title;
 	}

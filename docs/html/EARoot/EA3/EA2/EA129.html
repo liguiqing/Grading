@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>:试卷图片管理系统</title>
+<title>:评卷系统</title>
 <link href="../../../css/ea.css" rel="stylesheet" type="text/css" />
 <script>
 function initPage(src) {
@@ -16,15 +16,15 @@ function initPage(src) {
 <body onload="initPage(this);" class="Content">
 <div class="pageHeader"></div>
 <div class="PageBody">
-	<span class="ObjectTitle">:<a href="../../EA2/EA1/EA22.html">«Business Entity» 试卷图片管理系统</a>  : public  &lt;&lt;Business Entity&gt;&gt; object instance</span>
+	<span class="ObjectTitle">:<a href="../../EA2/EA1/EA18.html">«Business Entity» 评卷系统</a>  : public  &lt;&lt;Business Entity&gt;&gt; object instance</span>
 	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
 		<tr>
 			<td width="15%" class="ObjectDetailsTopic">Created:</td>
-			<td width="85%" class="ObjectDetailsValue">2015-9-13 19:50:53</td>
+			<td width="85%" class="ObjectDetailsValue">2015/9/13 19:25:23</td>
 		</tr>
 		<tr>
 			<td class="ObjectDetailsTopic">Modified:</td>
-			<td class="ObjectDetailsValue">2015-9-13 19:50:53</td>
+			<td class="ObjectDetailsValue">2015/9/13 19:25:23</td>
 		</tr>
 		<tr style="height: 10px"><td colspan="2"></td></tr>
 		<tr>
@@ -57,7 +57,7 @@ function initPage(src) {
 		</tr>
 		<tr id="adv00" style="display: none;">
 			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
-			<td class="ObjectDetailsValue">{A2136A4B-6D0C-46f8-9350-763A6615A6A9}</td>
+			<td class="ObjectDetailsValue">{DA14CB95-11B2-454d-A7D2-92E8F123EBF4}</td>
 		</tr>
 		<tr id="adv01" style="display: none;">
 			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
@@ -67,8 +67,88 @@ function initPage(src) {
 	
 	<div class="TableGroup" id="TableGroup">
 		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('MessagesTo');" id="MessagesToTitle">Messages To</li>
 			<li onClick="parent.toggleItem('MessagesFrom');" id="MessagesFromTitle">Messages From</li>
 		</ul>
+		<div class="ItemBody" id="MessagesToTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="50%" class="TableHeading">Element</td>
+					<td width="50%" class="TableHeading">Message</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA129.html">«Business Entity» : 评卷系统</a></td>
+					<td width="50%" class="TableRow" valign="top">读取评题定义()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage336" onclick="parent.toggleDiv('detailsDIVMessage336', 'DetailsImageMessage336')" />Details:
+							<div id="detailsDIVMessage336" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA129.html">«Business Entity» : 评卷系统</a></td>
+					<td width="50%" class="TableRow" valign="top">读取试题图片定义()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage337" onclick="parent.toggleDiv('detailsDIVMessage337', 'DetailsImageMessage337')" />Details:
+							<div id="detailsDIVMessage337" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA130.html">«Business Entity» : 试卷图片管理系统</a></td>
+					<td width="50%" class="TableRow" valign="top">读取图片()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage338" onclick="parent.toggleDiv('detailsDIVMessage338', 'DetailsImageMessage338')" />Details:
+							<div id="detailsDIVMessage338" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA129.html">«Business Entity» : 评卷系统</a></td>
+					<td width="50%" class="TableRow" valign="top">显示评分控制面板()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage339" onclick="parent.toggleDiv('detailsDIVMessage339', 'DetailsImageMessage339')" />Details:
+							<div id="detailsDIVMessage339" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA129.html">«Business Entity» : 评卷系统</a></td>
+					<td width="50%" class="TableRow" valign="top">显示试题图片()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage340" onclick="parent.toggleDiv('detailsDIVMessage340', 'DetailsImageMessage340')" />Details:
+							<div id="detailsDIVMessage340" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+
+			</table>
+		</div>
 		<div class="ItemBody" id="MessagesFromTable">
 			<table border="0" cellspacing="0" cellpadding="0" class="Table">
 				<tr>
@@ -76,8 +156,64 @@ function initPage(src) {
 					<td width="50%" class="TableHeading">Message</td>
 				</tr>
 				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA128.html">«Business Entity» : 评卷系统</a></td>
-					<td width="50%" class="TableRow" valign="top">读取图片()</td>
+					<td width="50%" class="TableRow" valign="top"><a href="EA128.html">«Business Worker» : 评卷老师</a></td>
+					<td width="50%" class="TableRow" valign="top">查看待评试题()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage341" onclick="parent.toggleDiv('detailsDIVMessage341', 'DetailsImageMessage341')" />Details:
+							<div id="detailsDIVMessage341" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA129.html">«Business Entity» : 评卷系统</a></td>
+					<td width="50%" class="TableRow" valign="top">读取评题定义()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage342" onclick="parent.toggleDiv('detailsDIVMessage342', 'DetailsImageMessage342')" />Details:
+							<div id="detailsDIVMessage342" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA129.html">«Business Entity» : 评卷系统</a></td>
+					<td width="50%" class="TableRow" valign="top">读取试题图片定义()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage343" onclick="parent.toggleDiv('detailsDIVMessage343', 'DetailsImageMessage343')" />Details:
+							<div id="detailsDIVMessage343" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA129.html">«Business Entity» : 评卷系统</a></td>
+					<td width="50%" class="TableRow" valign="top">显示评分控制面板()</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage344" onclick="parent.toggleDiv('detailsDIVMessage344', 'DetailsImageMessage344')" />Details:
+							<div id="detailsDIVMessage344" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA129.html">«Business Entity» : 评卷系统</a></td>
+					<td width="50%" class="TableRow" valign="top">显示试题图片()</td>
 				</tr>
 		   		<tr>
 					<td class="TableRowBottomDashed"  colspan="2">

@@ -41,8 +41,7 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 	
 	private String imgPath;
 	
-	public CuttingsImage(ExamineePaper cutFrom,CuttingsArea definedOf) {
-		this.cutFrom = cutFrom;
+	public CuttingsImage(CuttingsArea definedOf) {
 		this.definedOf = definedOf;
 	}
 	
