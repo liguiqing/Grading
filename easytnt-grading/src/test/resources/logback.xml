@@ -45,7 +45,7 @@
 		<appender-ref ref="${logger.out}" />
 	</appender>
 	<logger name="org.springframework.context" additivity="false">
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="com.lmax.disruptor" additivity="false">
