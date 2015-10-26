@@ -42,7 +42,7 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 		section.setCaption("二、填空题");
 		area.bindSection(section);
 		for(int i=13;i<=16;i++) {
-			section.addItem(new Item.Builder(i+"").caption(i+"").scoreDot("0,1,2")
+			section.addItem(new Item.Builder(i+"").caption(i+"").validValues(new Float[] {0f,1f,2f})
 					.fullScore(2f).answerArea(new Area(10,20,100,50)).create());
 		}
 		

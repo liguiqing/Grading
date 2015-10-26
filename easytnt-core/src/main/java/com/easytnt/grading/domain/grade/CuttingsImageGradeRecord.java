@@ -5,18 +5,18 @@
 
 package com.easytnt.grading.domain.grade;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.ValueObject;
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.room.Examinee;
@@ -29,34 +29,58 @@ import com.easytnt.grading.domain.room.Examinee;
  * @author 李贵庆2015年10月14日
  * @version 1.0
  **/
-public class PieceGradeRecord implements ValueObject<PieceGradeRecord> {
+public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeRecord> {
 
 	private Referees referees;
 
-	private PieceCuttings recordFor;
+	private CuttingsImage recordFor;
+	
+	private Set<ItemGradeRecord> itemRecords;
 
 	private Date startTime;
 
 	private Date finishTime;
 
-	private String pinci;
+	private int pinci;
+	
+	private boolean valid = Boolean.TRUE;
 
-	public PieceGradeRecord(Referees referees, PieceCuttings recordFor) {
+	public CuttingsImageGradeRecord(Referees referees, CuttingsImage recordFor) {
 		this.referees = referees;
 		this.recordFor = recordFor;
 		this.startTime = Calendar.getInstance().getTime();
 	}
 
+	public void invalid() {
+		this.valid = Boolean.FALSE;
+	}
+	
 	/**
-	 * 给切割块中的小题目打分
+	 * 计算得分
+	 * @return
+	 */
+	public Float calScore() {
+		Float score = 0f;
+		if(this.isFinished()) {
+			for(ItemGradeRecord itemRecord:itemRecords) {
+				score += itemRecord.getScored();
+			}
+		}
+		return score;
+	}
+	
+	/**
+	 * 给切割块中的给分点打分
 	 * 
 	 * @param scores
 	 * @return Collection<ItemGradeRecord>
 	 * @throws IllegalArgumentException 当小题分值不在有效范围内时抛出
 	 */
-	public Collection<ItemGradeRecord> scoringForItems(Float[] scores) {
+	public void scoringForItems(Float[] scores) {
+		if(this.isFinished())
+			throw new UnsupportedOperationException(this.toString() + "已经完结");
 		List<Section> sections = recordFor.getSections();
-		ArrayList<ItemGradeRecord> itemRecords = new ArrayList<>();
+		this.itemRecords = new HashSet<>();
 		int i = 0;
 		for (Section section : sections) {
 			List<Item> items = section.getItems();
@@ -65,7 +89,7 @@ public class PieceGradeRecord implements ValueObject<PieceGradeRecord> {
 				if( i >scores.length)
 					score = scores[i++];
 				if (item.isEffectiveScore(score)) {
-					ItemGradeRecord igr = new ItemGradeRecord(this,item,score);
+					ItemGradeRecord igr = new ItemGradeRecord(item,score);
 					itemRecords.add(igr);
 				} else {
 					throw new IllegalArgumentException("无效的分值，"
@@ -76,7 +100,6 @@ public class PieceGradeRecord implements ValueObject<PieceGradeRecord> {
 			}
 
 		}
-		return itemRecords;
 	}
 
 	public void finish() {
@@ -103,9 +126,9 @@ public class PieceGradeRecord implements ValueObject<PieceGradeRecord> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof PieceGradeRecord))
+		if (!(o instanceof CuttingsImageGradeRecord))
 			return false;
-		PieceGradeRecord other = (PieceGradeRecord) o;
+		CuttingsImageGradeRecord other = (CuttingsImageGradeRecord) o;
 
 		return new EqualsBuilder().append(this.referees, other.referees)
 				.isEquals();
@@ -118,12 +141,12 @@ public class PieceGradeRecord implements ValueObject<PieceGradeRecord> {
 	}
 
 	@Override
-	public boolean sameValueAs(PieceGradeRecord other) {
+	public boolean sameValueAs(CuttingsImageGradeRecord other) {
 		return this.equals(other);
 	}
 
 	// 以下功能为ORM或者自动构造使用，非此慎用
-	public PieceGradeRecord() {
+	public CuttingsImageGradeRecord() {
 
 	}
 
@@ -135,11 +158,11 @@ public class PieceGradeRecord implements ValueObject<PieceGradeRecord> {
 		this.referees = referees;
 	}
 
-	public PieceCuttings getRecordFor() {
+	public CuttingsImage getRecordFor() {
 		return recordFor;
 	}
 
-	public void setRecordFor(PieceCuttings recordFor) {
+	public void setRecordFor(CuttingsImage recordFor) {
 		this.recordFor = recordFor;
 	}
 
@@ -157,6 +180,30 @@ public class PieceGradeRecord implements ValueObject<PieceGradeRecord> {
 
 	public void setFinishTime(Date finishTime) {
 		this.finishTime = finishTime;
+	}
+
+	public Set<ItemGradeRecord> getItemRecords() {
+		return itemRecords;
+	}
+
+	public void setItemRecords(Set<ItemGradeRecord> itemRecords) {
+		this.itemRecords = itemRecords;
+	}
+
+	public int getPinci() {
+		return pinci;
+	}
+
+	public void setPinci(int pinci) {
+		this.pinci = pinci;
+	}
+
+	public boolean isValid() {
+		return valid;
+	}
+
+	public void setValid(boolean valid) {
+		this.valid = valid;
 	}
 
 }

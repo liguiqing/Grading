@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>:图片服务器</title>
+<title>:切割块分发器</title>
 <link href="../../../css/ea.css" rel="stylesheet" type="text/css" />
 <script>
 function initPage(src) {
@@ -16,15 +16,15 @@ function initPage(src) {
 <body onload="initPage(this);" class="Content">
 <div class="pageHeader"></div>
 <div class="PageBody">
-	<span class="ObjectTitle">:<a href="../../EA4/EA1/EA155.html">图片服务器</a>  : public   object instance</span>
+	<span class="ObjectTitle">:<a href="../../EA4/EA2/EA166.html">«interface» 切割块分发器</a>  : public  &lt;&lt;control&gt;&gt; object instance</span>
 	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
 		<tr>
 			<td width="15%" class="ObjectDetailsTopic">Created:</td>
-			<td width="85%" class="ObjectDetailsValue">2015-10-13 15:15:25</td>
+			<td width="85%" class="ObjectDetailsValue">2015/10/13 9:57:25</td>
 		</tr>
 		<tr>
 			<td class="ObjectDetailsTopic">Modified:</td>
-			<td class="ObjectDetailsValue">2015-10-13 15:15:25</td>
+			<td class="ObjectDetailsValue">2015/10/13 9:57:25</td>
 		</tr>
 		<tr style="height: 10px"><td colspan="2"></td></tr>
 		<tr>
@@ -57,7 +57,7 @@ function initPage(src) {
 		</tr>
 		<tr id="adv00" style="display: none;">
 			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
-			<td class="ObjectDetailsValue">{AB7A2199-8CA2-4af3-ABE6-4081DC959CF2}</td>
+			<td class="ObjectDetailsValue">{801BC6FB-05DB-4c49-833B-CBA7838CAF58}</td>
 		</tr>
 		<tr id="adv01" style="display: none;">
 			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
@@ -67,8 +67,46 @@ function initPage(src) {
 	
 	<div class="TableGroup" id="TableGroup">
 		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('MessagesTo');" id="MessagesToTitle">Messages To</li>
 			<li onClick="parent.toggleItem('MessagesFrom');" id="MessagesFromTitle">Messages From</li>
 		</ul>
+		<div class="ItemBody" id="MessagesToTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="50%" class="TableHeading">Element</td>
+					<td width="50%" class="TableHeading">Message</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA63.html">«control» : 切割块分发器</a></td>
+					<td width="50%" class="TableRow" valign="top">分发切割块</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage158" onclick="parent.toggleDiv('detailsDIVMessage158', 'DetailsImageMessage158')" />Details:
+							<div id="detailsDIVMessage158" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA67.html">«control» : 评卷控制器</a></td>
+					<td width="50%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage159" onclick="parent.toggleDiv('detailsDIVMessage159', 'DetailsImageMessage159')" />Details:
+							<div id="detailsDIVMessage159" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+
+			</table>
+		</div>
 		<div class="ItemBody" id="MessagesFromTable">
 			<table border="0" cellspacing="0" cellpadding="0" class="Table">
 				<tr>
@@ -76,13 +114,27 @@ function initPage(src) {
 					<td width="50%" class="TableHeading">Message</td>
 				</tr>
 				<tr>
-					<td width="50%" class="TableRow" valign="top"><a href="EA66.html">«boundary» : 评卷界面</a></td>
-					<td width="50%" class="TableRow" valign="top">&nbsp;</td>
+					<td width="50%" class="TableRow" valign="top"><a href="EA67.html">«control» : 评卷控制器</a></td>
+					<td width="50%" class="TableRow" valign="top">读取切割块()</td>
 				</tr>
 		   		<tr>
 					<td class="TableRowBottomDashed"  colspan="2">
-						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage166" onclick="parent.toggleDiv('detailsDIVMessage166', 'DetailsImageMessage166')" />Details:
-							<div id="detailsDIVMessage166" class="DetailsDiv" >
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage160" onclick="parent.toggleDiv('detailsDIVMessage160', 'DetailsImageMessage160')" />Details:
+							<div id="detailsDIVMessage160" class="DetailsDiv" >
+							<strong>Type:</strong> Sequence Synchronous Call<br />
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top"><a href="EA63.html">«control» : 切割块分发器</a></td>
+					<td width="50%" class="TableRow" valign="top">分发切割块</td>
+				</tr>
+		   		<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageMessage161" onclick="parent.toggleDiv('detailsDIVMessage161', 'DetailsImageMessage161')" />Details:
+							<div id="detailsDIVMessage161" class="DetailsDiv" >
 							<strong>Type:</strong> Sequence Synchronous Call<br />
 							&nbsp;
 							</div>

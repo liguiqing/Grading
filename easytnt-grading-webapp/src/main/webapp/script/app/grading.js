@@ -5,6 +5,7 @@
 			function($,logger,imgToolbox,point,imgViewer,ui,ajaxWrapper) {
 		var _grading;
 		var _imgViewer;
+
 		var _imgServer ="http://easytnt.6655.la:10263/";
 		
 		function save(data){

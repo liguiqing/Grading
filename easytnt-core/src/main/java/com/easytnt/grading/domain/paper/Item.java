@@ -8,13 +8,14 @@ package com.easytnt.grading.domain.paper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.util.NumberUtils;
 
 import com.easytnt.commons.entity.share.ValueObject;
 import com.easytnt.grading.domain.share.Area;
 
 /**
  * <pre>
- * 试卷中的小题，可以进行作答的题目
+ * 给分点
  * </pre>
  * 
  * @author 李贵庆2015年10月14日
@@ -26,21 +27,37 @@ public class Item implements ValueObject<Item> {
 
 	private String caption;
 
-	private String scoreDot;
-
 	private Area answerArea;
 
 	private Float fullScore;
+	
+	private Float[] validValues;
 	
 	public Item(String title,Float fullScore) {
 		this.title = title;
 		this.fullScore = fullScore;
 	}
-	
 
 	public boolean isEffectiveScore(Float score) {
 		return score.compareTo(this.getMinPoint()) >= 0
 				&& score.compareTo(getMaxPoint()) <= 0;
+	}
+	
+	public void genValidValues(String validscoredot) {
+		String[] values = validscoredot.split(",");
+		if(values.length > 0) {
+			Float[] scores = new Float[values.length];
+			int i = 0;
+			for(String value:values) {
+				scores[i++] = NumberUtils.parseNumber(value, Float.class);
+			}
+			if(!this.isEffectiveScore(scores[scores.length-1])) {
+				throw new IllegalArgumentException(validscoredot + "不在有效分范围内");
+			}
+			
+			this.validValues = scores;
+		}
+		
 	}
 
 	public Float getMinPoint() {
@@ -97,8 +114,8 @@ public class Item implements ValueObject<Item> {
 			return this;
 		}
 		
-		public Builder scoreDot(String scoreDot) {
-			this.item.scoreDot = scoreDot;
+		public Builder validValues(Float[] validValues) {
+			this.item.validValues = validValues;
 			return this;
 		}
 		
@@ -122,6 +139,18 @@ public class Item implements ValueObject<Item> {
 		
 	}
 	
+	private Long itemId;
+	
+	public Long getItemId() {
+		return itemId;
+	}
+
+
+	public void setItemId(Long itemId) {
+		this.itemId = itemId;
+	}
+
+
 	public String getTitle() {
 		return title;
 	}
@@ -137,14 +166,15 @@ public class Item implements ValueObject<Item> {
 	public void setCaption(String caption) {
 		this.caption = caption;
 	}
-
-	public String getScoreDot() {
-		return scoreDot;
+	
+	public Float[] getValidValues() {
+		return validValues;
 	}
 
-	public void setScoreDot(String scoreDot) {
-		this.scoreDot = scoreDot;
+	public void setValidValues(Float[] validValues) {
+		this.validValues = validValues;
 	}
+
 
 	public Area getAnswerArea() {
 		return answerArea;

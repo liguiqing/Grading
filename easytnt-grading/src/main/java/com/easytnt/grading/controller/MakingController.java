@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.easytnt.commons.ui.Menu;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.dispatcher.impl.PinciQueueImpl;
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.exam.Exam;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.paper.ExamPaper;
@@ -85,13 +85,13 @@ public class MakingController {
 					throws Exception {
 		if(recoredingPapers.isEmpty()) {
 			Object[] args = new Object[] {recoredPapers.size(),100};
-			List<PieceCuttings> pcs = jdbcTemplate.query("select * from getpaper limit ?, ? ", args, new RowMapper<PieceCuttings>() {
+			List<CuttingsImage> pcs = jdbcTemplate.query("select * from getpaper limit ?, ? ", args, new RowMapper<CuttingsImage>() {
 
 				@Override
-				public PieceCuttings mapRow(ResultSet rs, int arg1)
+				public CuttingsImage mapRow(ResultSet rs, int arg1)
 						throws SQLException {
 					String imgPath = rs.getString("imagepath");
-					PieceCuttings cuttings = new PieceCuttings();
+					CuttingsImage cuttings = new CuttingsImage();
 					cuttings.setImgPath(imgPath);
 					
 					return cuttings;
@@ -101,7 +101,7 @@ public class MakingController {
 			
 			recoredingPapers.put(pcs);
 		}
-		PieceCuttings cuttings = recoredingPapers.get(testReferees);
+		CuttingsImage cuttings = recoredingPapers.get(testReferees);
 		return ModelAndViewFactory.newModelAndViewFor("/marking/index").with("cuttings",cuttings).build();
 	}
 	

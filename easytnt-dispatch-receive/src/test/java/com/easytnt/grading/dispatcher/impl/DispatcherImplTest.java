@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.easytnt.commons.util.ThreadExcutor;
 import com.easytnt.grading.dispatcher.DispatcherStrategy;
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.fetch.Fetcher;
 import com.easytnt.grading.share.ImgCuttings;
 
@@ -100,8 +100,8 @@ public class DispatcherImplTest {
 		final CountDownLatch countDown = new CountDownLatch(200);
 		ArrayList<Runnable> refereeses = new ArrayList<>();
 		
-		final ArrayList<PieceCuttings> pin1 = new ArrayList<>();
-		final ArrayList<PieceCuttings> pin2 = new ArrayList<>();
+		final ArrayList<CuttingsImage> pin1 = new ArrayList<>();
+		final ArrayList<CuttingsImage> pin2 = new ArrayList<>();
 
 		for( int i=0;i<100;i++) {
 			final int a = i;
@@ -132,7 +132,7 @@ public class DispatcherImplTest {
 				}
 				
 				private void doPin() throws Exception{
-					PieceCuttings ic = dispather.getFor(null);
+					CuttingsImage ic = dispather.getFor(null);
 					if(ic == null) {
 						logger.debug("NO Task for me {}",id);
 					}else {
@@ -155,7 +155,7 @@ public class DispatcherImplTest {
 		}
 		countDown.await();
 		dispather.destroy();
-		for(PieceCuttings ic:pin1) {
+		for(CuttingsImage ic:pin1) {
 			logger.debug(ic.toString());
 		}
 		assertEquals(pin1.size()+pin2.size(),200);

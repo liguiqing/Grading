@@ -18,7 +18,7 @@ import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.dispatcher.DispatcherStrategy;
 import com.easytnt.grading.dispatcher.PinciQueue;
 import com.easytnt.grading.dispatcher.PinciQueueListener;
-import com.easytnt.grading.domain.cuttings.PieceCuttings;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.fetch.Fetcher;
 
@@ -46,14 +46,6 @@ public class DispatcherImpl implements Dispatcher {
 	private  QueueListener queueListener;
 	
 	private boolean working = Boolean.FALSE;
-	
-	public DispatcherImpl() {
-		this(new SinglePaperPriorDispatcherStrategy(1));
-	}
-	
-	public DispatcherImpl(DispatcherStrategy dispatcherStrategy) {
-		this(dispatcherStrategy,new JdbcFetcher());
-	}
 	
 	
 	public DispatcherImpl(DispatcherStrategy dispatcherStrategy,Fetcher fetcher) {
@@ -86,10 +78,10 @@ public class DispatcherImpl implements Dispatcher {
 	}
 
 	@Override
-	public PieceCuttings getFor(Referees referees) throws Exception{
+	public CuttingsImage getFor(Referees referees) throws Exception{
 		checkWorking();
 		
-		PieceCuttings cuttings = getCuttingsFromTop(referees);
+		CuttingsImage cuttings = getCuttingsFromTop(referees);
 		if(cuttings != null)
 			return cuttings;
 			
@@ -110,14 +102,14 @@ public class DispatcherImpl implements Dispatcher {
 	}
 	
 	@Override
-	public void put(Collection<PieceCuttings> cuttingses) throws Exception{
+	public void put(Collection<CuttingsImage> cuttingses) throws Exception{
 		checkWorking();
 		this.getFirstQueue().put(cuttingses);
 	}
 	
 
 	@Override
-	public void recover(Collection<PieceCuttings> cuttingses) throws Exception{
+	public void recover(Collection<CuttingsImage> cuttingses) throws Exception{
 		// TODO Auto-generated method stub
 		checkWorking();
 	}
@@ -169,7 +161,7 @@ public class DispatcherImpl implements Dispatcher {
 		return this.pinci.get(0);
 	}
 
-	private PieceCuttings getCuttingsFromTop(Referees referees) throws Exception{
+	private CuttingsImage getCuttingsFromTop(Referees referees) throws Exception{
 		if(this.topPatcher != null) {
 			return this.topPatcher.getFor(referees);
 		}
@@ -180,7 +172,7 @@ public class DispatcherImpl implements Dispatcher {
 	 * 移动到下一评
 	 * @param cuttings
 	 */
-	private void moveToNext(PieceCuttings cuttings) {
+	private void moveToNext(CuttingsImage cuttings) {
 		int curPinci = cuttings.getCurrentPinci();
 		if(pinci.size() > curPinci) {
 			PinciQueue next = pinci.get(curPinci);
@@ -211,7 +203,7 @@ public class DispatcherImpl implements Dispatcher {
 			while (!stop) {
 				try {
 					if (this.queue.size() < BUFFER_SIZE) {
-						List<PieceCuttings> cuttings = fetcher.fetch(BUFFER_SIZE * 10);
+						List<CuttingsImage> cuttings = fetcher.fetch(BUFFER_SIZE * 10);
 						logger.debug("Add {} cuttings",cuttings.size());
 						this.queue.put(cuttings);
 					}

@@ -19,7 +19,7 @@ import com.easytnt.grading.domain.share.Area;
 
 /** 
  * <pre>
- * 切割块定义，一个切割块至少有一个大题
+ * 切割块定义
  * </pre>
  * 
  * @author 李贵庆 2015年10月18日
@@ -34,6 +34,15 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 	private Area areaInPaper;
 	
 	private List<Section> sections;
+	
+	private int requiredPinci = 1; //必须执行的评判次数
+	
+	private Float maxerror; //最大误差值
+	
+	public CuttingsArea(ExamPaper paper,Area areaInPaper) {
+		this.paper = paper;
+		this.areaInPaper = areaInPaper;
+	}
 	
 	public void bindSection(Section section) {
 		if(this.sections == null)
@@ -57,7 +66,7 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append(this.id).build();
+		return new ToStringBuilder(this).append(this.paper).append(this.areaInPaper).build();
 	}
 	
 	@Override
@@ -100,6 +109,24 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 	public void setSections(List<Section> sections) {
 		this.sections = sections;
 	}
+
+	public int getRequiredPinci() {
+		return requiredPinci;
+	}
+
+	public void setRequiredPinci(int requiredPinci) {
+		this.requiredPinci = requiredPinci;
+	}
+
+	public Float getMaxerror() {
+		return maxerror;
+	}
+
+	public void setMaxerror(Float maxerror) {
+		this.maxerror = maxerror;
+	}
+	
+	
 
 }
 

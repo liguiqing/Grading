@@ -26,33 +26,33 @@ import com.easytnt.grading.domain.paper.Section;
  **/
 public class GradeTask implements ValueObject<GradeTask> {
 	
-	private Referees referees;
+	private Referees assignedTo;
 	
-	private CuttingsArea area;
+	private CuttingsArea genBy;
 	
 	private TaskType type;
 	
 	private TaskStatus status;
 	
-	private int refereesTotal = 0;
+	private int assignedToTotal = 0;
 	
-	public static GradeTask createOfficialGradeTask(Referees referees,CuttingsArea area) {
-		return new GradeTask(referees,area,TaskType.Official);
+	public static GradeTask createOfficialGradeTask(Referees referees,CuttingsArea genBy) {
+		return new GradeTask(referees,genBy,TaskType.Official);
 	}
 	
-	public static GradeTask createTryGradeTask(Referees referees,CuttingsArea area) {
-		return new GradeTask(referees,area,TaskType.TryTask);
+	public static GradeTask createTryGradeTask(Referees referees,CuttingsArea genBy) {
+		return new GradeTask(referees,genBy,TaskType.TryTask);
 	}
 	
-	public GradeTask(Referees referees,CuttingsArea area,TaskType taskType) {
-		this.referees = referees;
-		this.area = area;
+	public GradeTask(Referees referees,CuttingsArea genBy,TaskType taskType) {
+		this.assignedTo = referees;
+		this.genBy = genBy;
 		this.type = taskType;
 		this.status = TaskStatus.Ready;
 	}
 	
 	public boolean taskOf(Referees referees) {
-		return this.referees.equals(referees);
+		return this.assignedTo.equals(referees);
 	}
 	
 	public boolean typeOf(TaskType type) {
@@ -76,11 +76,11 @@ public class GradeTask implements ValueObject<GradeTask> {
 	}
 	
 	public List<Section> getSections(){
-		return this.area.getSections();
+		return this.genBy.getSections();
 	}
 	
 	public void useDispatcher(Dispatcher dispatcher) {
-		this.referees.useDispatcher(dispatcher);
+		this.assignedTo.useDispatcher(dispatcher);
 	}
 
 	public String getSubjectName() {
@@ -88,8 +88,8 @@ public class GradeTask implements ValueObject<GradeTask> {
 		return "数学";
 	}
 	
-	public int getRefereesTotal() {
-		return this.refereesTotal;
+	public int getAssignedToTotal() {
+		return this.assignedToTotal;
 	}
 	
 	public int getTotal() {
@@ -99,12 +99,12 @@ public class GradeTask implements ValueObject<GradeTask> {
 	
 
 	public void increment() {
-		this.refereesTotal++;
+		this.assignedToTotal++;
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(this.referees).append(this.area).append(this.type).toHashCode();
+		return new HashCodeBuilder().append(this.assignedTo).append(this.genBy).append(this.type).toHashCode();
 	}
 
 	@Override
@@ -113,12 +113,12 @@ public class GradeTask implements ValueObject<GradeTask> {
 			return false;
 		GradeTask other = (GradeTask) o;
 
-		return new EqualsBuilder().append(this.referees, other.referees).append(this.type, other.type).isEquals();
+		return new EqualsBuilder().append(this.assignedTo, other.assignedTo).append(this.type, other.type).isEquals();
 	}
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append(this.referees).append(this.area).append(this.type).build();
+		return new ToStringBuilder(this).append(this.assignedTo).append(this.genBy).append(this.type).build();
 	}
 	
 	@Override
@@ -130,19 +130,27 @@ public class GradeTask implements ValueObject<GradeTask> {
 	public GradeTask() {}
 
 	public CuttingsArea getArea() {
-		return area;
+		return genBy;
 	}
 
 	public void setArea(CuttingsArea area) {
-		this.area = area;
+		this.genBy = area;
 	}
 
-	public Referees getReferees() {
-		return referees;
+	public Referees getAssignedTo() {
+		return assignedTo;
 	}
 
-	public void setReferees(Referees referees) {
-		this.referees = referees;
+	public void setAssignedTo(Referees assignedTo) {
+		this.assignedTo = assignedTo;
+	}
+
+	public CuttingsArea getGenBy() {
+		return genBy;
+	}
+
+	public void setGenBy(CuttingsArea genBy) {
+		this.genBy = genBy;
 	}
 
 	public TaskType getType() {
@@ -162,7 +170,7 @@ public class GradeTask implements ValueObject<GradeTask> {
 	}
 
 	public void setRefereesTotal(int refereesTotal) {
-		this.refereesTotal = refereesTotal;
+		this.assignedToTotal = refereesTotal;
 	}
 	
 }

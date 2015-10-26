@@ -25,28 +25,17 @@ public class ItemGradeRecord implements ValueObject<ItemGradeRecord>{
 	
 	private Referees referees;
 	
-	private PieceGradeRecord source;
-	
 	private Item gradeFor;
 	
 	private Float scored;
 	
-	public ItemGradeRecord(PieceGradeRecord source,Item gradeFor,Float scored) {
-		this.source = source;
+	public ItemGradeRecord(Item gradeFor,Float scored) {
 		this.gradeFor = gradeFor;
 		this.scored = scored;
 	}
 
 	public void recordedBy(Referees referees) {
 		this.referees = referees;
-	}
-	
-	/**
-	 * 答此小题的考生
-	 * @return
-	 */
-	public Examinee whos() {
-		return source.recordOf();
 	}
 	
 	@Override
@@ -102,14 +91,6 @@ public class ItemGradeRecord implements ValueObject<ItemGradeRecord>{
 
 	public void setScored(Float scored) {
 		this.scored = scored;
-	}
-
-	public PieceGradeRecord getSource() {
-		return source;
-	}
-
-	public void setSource(PieceGradeRecord source) {
-		this.source = source;
 	}
 		
 }

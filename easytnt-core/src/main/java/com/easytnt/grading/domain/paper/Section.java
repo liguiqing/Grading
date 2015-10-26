@@ -6,6 +6,7 @@
 package com.easytnt.grading.domain.paper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -48,15 +49,25 @@ public class Section implements ValueObject<Section>{
 	private String title;
 
 	private String caption;
+	
+	private Float fullScore;
 
 	private List<Item> items;
 
 	public void addItem(Item item) {
+		init();
+		this.items.add(item);
+	}
+	
+	public void addAllItems(Collection<Item> items) {
+		init();
+		this.items.addAll(items);
+	}
+	
+	private void init() {
 		if (this.items == null) {
 			this.items = new ArrayList<>();
 		}
-		
-		this.items.add(item);
 	}
 
 	@Override
@@ -95,6 +106,16 @@ public class Section implements ValueObject<Section>{
 		
 	}
 	
+	private Long sectionId;
+	
+	public Long getSectionId() {
+		return sectionId;
+	}
+
+	public void setSectionId(Long sectionId) {
+		this.sectionId = sectionId;
+	}
+
 	public ExamPaper getPaper() {
 		return paper;
 	}
@@ -142,4 +163,13 @@ public class Section implements ValueObject<Section>{
 	public void setItems(List<Item> items) {
 		this.items = items;
 	}
+
+	public Float getFullScore() {
+		return fullScore;
+	}
+
+	public void setFullScore(Float fullScore) {
+		this.fullScore = fullScore;
+	}
+	
 }

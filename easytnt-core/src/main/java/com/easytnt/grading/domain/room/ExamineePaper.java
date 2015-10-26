@@ -5,11 +5,16 @@
 
 package com.easytnt.grading.domain.room;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.Entity;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
+import com.easytnt.grading.domain.cuttings.CuttingsSolution;
 import com.easytnt.grading.domain.paper.ExamPaper;
 
 /**
@@ -27,6 +32,20 @@ public class ExamineePaper implements Entity<ExamineePaper> {
 	private Examinee examinee;
 
 	private ExamPaper examPaper;
+	
+	private List<CuttingsImage> cutings;
+	
+	public  List<CuttingsImage> cutBy(CuttingsSolution solution) {
+		this.initCutings();
+		//TODO
+		
+		return cutings;		
+	}
+	
+	private void initCutings() {
+		if(this.cutings == null)
+			this.cutings = new ArrayList<>();
+	}
 
 	@Override
 	public int hashCode() {
@@ -81,6 +100,13 @@ public class ExamineePaper implements Entity<ExamineePaper> {
 	public void setExamPaper(ExamPaper examPaper) {
 		this.examPaper = examPaper;
 	}
-	
+
+	public List<CuttingsImage> getCutings() {
+		return cutings;
+	}
+
+	public void setCutings(List<CuttingsImage> cutings) {
+		this.cutings = cutings;
+	}
 	
 }
