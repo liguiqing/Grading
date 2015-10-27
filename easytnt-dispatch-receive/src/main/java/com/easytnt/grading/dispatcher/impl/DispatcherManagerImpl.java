@@ -4,17 +4,16 @@
  **/
 package com.easytnt.grading.dispatcher.impl;
 
+import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.easytnt.commons.util.SpringContextUtil;
+import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.grading.dispatcher.Dispatcher;
-import com.easytnt.grading.dispatcher.DispatcherStrategy;
 import com.easytnt.grading.dispatcher.DispathcerManager;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
-import com.easytnt.grading.fetch.Fetcher;
 
 /** 
  * <pre>
@@ -41,6 +40,22 @@ public class DispatcherManagerImpl implements DispathcerManager {
 		Dispatcher dispatcher = dispatcherPool.get(area);
 		dispatcher.destroy();
 		dispatcherPool.remove(area);
+	}
+	
+	@Override
+	public void destroy() {
+		Enumeration<CuttingsArea> keys = dispatcherPool.keys();
+		while(keys.hasMoreElements()) {
+			CuttingsArea key = keys.nextElement();
+			Dispatcher dispatcher = dispatcherPool.get(key);
+			try {
+				dispatcher.destroy();
+				
+			} catch (Exception e) {
+				logger.error(ThrowableParser.toString(e));
+			}
+		}
+		dispatcherPool.clear();
 	}
 	
 	public Dispatcher getDispatcherFor(CuttingsArea area) {

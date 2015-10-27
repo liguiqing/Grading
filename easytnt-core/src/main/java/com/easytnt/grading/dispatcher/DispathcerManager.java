@@ -22,6 +22,8 @@ public interface DispathcerManager {
 	void registerDispatcher(CuttingsArea area, Dispatcher dispathcer) throws Exception;
 
 	void removeDispatcher(CuttingsArea area)throws Exception;
+
+	void destroy();
 	
 }
 
