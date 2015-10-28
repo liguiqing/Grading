@@ -73,11 +73,11 @@ public class GradingTaskController {
 
 	@RequestMapping(value = "/{taskId}/cuttings", method = RequestMethod.GET)
 	public ModelAndView onGetCuttings(@PathVariable Long taskId) throws Exception {
-		logger.debug("URL /task/{}/ Method Get", taskId);
+		logger.debug("URL /task/{}/cuttings Method Get", taskId);
 		Referees referees = refereesService.getCurrentReferees();
 		CuttingsImageGradeRecord pieceGradeRecord = taskService.createImageGradeRecordBy(taskId, referees);
 		CuttingsImage cuttings = pieceGradeRecord.getRecordFor();
-		return ModelAndViewFactory.newModelAndViewFor("/task/imgPanel").with("imgPath", cuttings.getImgPath()).build();
+		return ModelAndViewFactory.newModelAndViewFor().with("imgPath", cuttings.getImgPath()).with("imageId", cuttings.getImageId()).build();
 	}
 
 	@RequestMapping(value = "/{taskId}/itemscoring", method = RequestMethod.POST)
@@ -86,7 +86,7 @@ public class GradingTaskController {
 
 		Referees referees = refereesService.getCurrentReferees();
 		taskService.itemScoring(taskId, referees, scores);
-		return ModelAndViewFactory.newModelAndViewFor("/task/imgPanel").build();
+		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 
 }
