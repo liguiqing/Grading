@@ -15,18 +15,172 @@
             http://www.springframework.org/schema/context/spring-context.xsd
             http://www.springframework.org/schema/jee 
             http://www.springframework.org/schema/jee/spring-jee.xsd">
+	<aop:aspectj-autoproxy proxy-target-class="true">
 
-
-	<bean id="mockDispatcherStrategy" class="com.easytnt.grading.dispatcher.impl.SinglePaperPriorDispatcherStrategy">
-		<constructor-arg type="int" value="1"></constructor-arg>
+	<bean id="shiroCacheMgr" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager" ref="cacheManager"/>
 	</bean>
-
-	<bean id="mockDispatcherConcreator" class="com.easytnt.grading.mock.dispatcher.DispatcherConcreator" init-method="initMethod">
-	    <property name="dispathcerManager" ref="dispathcerManager"></property>
-	    <property name="dispatcherStrategy" ref="mockDispatcherStrategy"></property>
-	</bean>
-	<bean id="mockGradeTaskRepository" class="com.easytnt.grading.mock.respository.GradeTaskRepositoryMocker" init-method="initMethod"></bean>
-	<bean id="mockRefereesRepository" class="com.easytnt.grading.mock.respository.RefereesRepositoryMocker" init-method="initMethod"></bean>
 	
+	<!-- 带重试次数的密码用户名凭证匹配器   -->
+	<bean id="credentialsMatcher" class="com.easytnt.security.shiro.authc.RetryLimitedCredentialsMatcher">
+		<constructor-arg ref="shiroCacheManager" index="0"/>
+		<constructor-arg value="passwordRtryCache" index="1"/>
+	</bean>
+	<!-- 数据库查询登录实现 -->
+	<bean id="dbRealm" class="com.easytnt.security.shiro.realm.ComefromDbRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
+		<property name="cachingEnabled" value="true" />
+		<property name="authenticationCachingEnabled" value="true" />
+		<property name="authenticationCacheName" value="authenticationCache" />
+		<property name="authorizationCachingEnabled" value="true" />
+		<property name="authorizationCacheName" value="authorizationCache" />
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<!-- 请修改sql属性值 -->
+		<!-- <property name="Sql" value="select name as user_name,code as user_pwd,1 as enabled from survey_users where name=?"/>-->
+	</bean>
+	
+	<!-- cas 登录实现 -->
+	<bean id="casRealm" class="org.apache.shiro.cas.CasRealm">
+		<property name="casServerUrlPrefix" value="${shiro.sso.server.url}"/>
+		<property name="casService" value="${shiro.sso.service.url}"/>
+	</bean>	
+	
+	<!-- 会话ID生成器 -->
+	<bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator" />	
 
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="rememberMe" />
+		<property name="httpOnly" value="true" />
+		<property name="maxAge" value="2592000" /><!-- 30天 -->
+		<property name="domain" value="" />
+		<property name="path" value="/" />
+	</bean>
+
+	<!-- rememberMe管理器 -->
+	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<!-- rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）  -->
+		<property 	name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4BvVhmFLUs0KTA3Kprsdag==')}"/>
+		<property name="cookie" ref="rememberMeCookie" />
+	</bean>
+
+	<!-- 会话DAO -->
+	<bean id="sessionDAO"
+		class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+		<property name="activeSessionsCacheName" value="shiro-activeSessionCache" />
+		<property name="sessionIdGenerator" ref="sessionIdGenerator" />
+	</bean>
+
+	<!-- 会话验证调度器 -->
+	<bean id="sessionValidationScheduler"
+		class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+		<property name="sessionValidationInterval" value="1800000" />
+		<property name="sessionManager" ref="sessionManager" />
+	</bean>
+
+	<!-- 会话管理器 -->
+	<bean id="sessionManager"
+		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="globalSessionTimeout" value="1800000" />
+		<property name="deleteInvalidSessions" value="true" />
+		<property name="sessionValidationSchedulerEnabled" value="true" />
+		<property name="sessionValidationScheduler" ref="sessionValidationScheduler" />
+		<property name="sessionDAO" ref="sessionDAO" />
+		<property name="sessionIdCookieEnabled" value="true" />
+		<property name="sessionIdCookie" ref="sessionIdCookie" />
+	</bean>
+
+	<bean id="authenticationStrategy" class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy"></bean>
+	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+		<property name="authenticationStrategy" ref="authenticationStrategy"></property>
+	</bean>
+
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="casRealm" />
+		<property name="sessionManager" ref="sessionManager" />
+		<property name="cacheManager" ref="shiroCacheManager" />
+		<!-- <property name="rememberMeManager" ref="rememberMeManager"/> -->
+		<property name="authenticator" ref="authenticator"></property>
+		<property name="realms">
+			<list>
+			    <ref bean="casRealm" />
+				<ref bean="writerRealm" />
+			</list>
+		</property>
+	</bean>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	
+	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager" />
+		<property name="arguments" ref="securityManager" />
+	</bean>
+
+	<bean id="sessionTimeout" class="com.easytnt.security.shiro.web.servlet.SessionTimeoutFilter">
+		<property name="defaultRedirectUrl" value="/login" />
+	</bean>	
+	
+	<bean id="authcFilter" class="com.easytnt.security.shiro.web.filter.authc.GoogleKapthcaFormAuthenticationFilter">
+		<property name="usernameParam" value="username" />
+		<property name="passwordParam" value="password" />
+		<property name="rememberMeParam" value="rememberMe" />
+		<property name="loginUrl" value="/login"></property>
+		<property name="failureKeyAttribute" value="${shiro.failure.key}" />
+	</bean>
+
+	<bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
+		<property name="failureUrl" value="${shiro.sso.login.url}" />
+	</bean>	
+
+	<bean id="kaptchaFilter" class="com.easytnt.security.shiro.web.filter.authc.GoogleKapthcaFormAuthenticationFilter">
+		<property name="captchaEbabled" value="${shiro.login.captcha}" />
+		<property name="captchaParam" value="kaptcha" />
+		<property name="loginUrl" value="/login"></property>
+		<property name="failureKeyAttribute" value="${shiro.failure.key}" />
+	</bean>
+
+	<bean id="myLogoutFilter" class="com.cntest.security.shiro.filter.CntestLogoutFilter"></bean>
+
+	<!-- Shiro的Web过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="successUrl" value="/loginSuccess" />
+		<property name="loginUrl" value="/login" />
+		<property name="unauthorizedUrl" value="/unauthorized" />
+		<property name="filters">
+			<util:map>
+				<entry key="authc" value-ref="authcFilter" />
+				<entry key="cas" value-ref="casFilter" />			
+				<entry key="kaptchaFilter" value-ref="kaptchaFilter" />
+				<entry key="myLogoutFilter" value-ref="myLogoutFilter" />
+				<entry key="mySessionTimeout" value-ref="mySessionTimeout" />
+			</util:map>
+		</property>
+		<property name="filterChainDefinitions">
+			<value>
+				/static/** = anon
+				/images/** = anon
+				/500 = anon
+				/401 = anon
+				/403= anon
+				/404 = anon
+				/405 = anon
+				/sso/login = cas
+				/login = kaptchaFilter,authc
+				/logout = myLogoutFilter
+				/** = mySessionTimeout,user
+			</value>
+		</property>
+	</bean>
+
+	<!-- Shiro生命周期处理器 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true"></property>
+	</bean>
+	
 </beans>
