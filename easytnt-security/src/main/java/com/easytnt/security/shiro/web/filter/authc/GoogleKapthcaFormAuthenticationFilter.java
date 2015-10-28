@@ -13,7 +13,6 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
-import org.apache.shiro.web.servlet.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
