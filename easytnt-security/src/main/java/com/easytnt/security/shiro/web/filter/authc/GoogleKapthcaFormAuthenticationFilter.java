@@ -32,6 +32,8 @@ public class GoogleKapthcaFormAuthenticationFilter extends FormAuthenticationFil
 	
 	private String usernameParam = "username";
 	
+	private String passwordParam = "password";
+	
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
 		if(!enabled)
@@ -65,5 +67,14 @@ public class GoogleKapthcaFormAuthenticationFilter extends FormAuthenticationFil
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	public void setUsernameParam(String usernameParam) {
+		this.usernameParam = usernameParam;
+	}
+
+	public void setPasswordParam(String passwordParam) {
+		this.passwordParam = passwordParam;
+	}
+	
 }
 

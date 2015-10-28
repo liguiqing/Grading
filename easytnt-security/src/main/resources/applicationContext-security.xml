@@ -5,6 +5,7 @@
 	xmlns:tx="http://www.springframework.org/schema/tx" 
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
             http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/aop 
@@ -14,8 +15,9 @@
             http://www.springframework.org/schema/context 
             http://www.springframework.org/schema/context/spring-context.xsd
             http://www.springframework.org/schema/jee 
-            http://www.springframework.org/schema/jee/spring-jee.xsd">
-	<aop:aspectj-autoproxy proxy-target-class="true">
+            http://www.springframework.org/schema/jee/spring-jee.xsd
+            http://www.springframework.org/schema/util
+       		http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<bean id="shiroCacheMgr" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManager" ref="cacheManager"/>
@@ -23,7 +25,7 @@
 	
 	<!-- 带重试次数的密码用户名凭证匹配器   -->
 	<bean id="credentialsMatcher" class="com.easytnt.security.shiro.authc.RetryLimitedCredentialsMatcher">
-		<constructor-arg ref="shiroCacheManager" index="0"/>
+		<constructor-arg ref="shiroCacheMgr" index="0"/>
 		<constructor-arg value="passwordRtryCache" index="1"/>
 	</bean>
 	<!-- 数据库查询登录实现 -->
@@ -47,7 +49,13 @@
 	
 	<!-- 会话ID生成器 -->
 	<bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator" />	
-
+	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="${shiro.session.id}" />
+		<property name="httpOnly" value="true" />
+		<property name="maxAge" value="-1" />
+		<property name="domain" value="" />
+		<property name="path" value="/" />
+	</bean>
     <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 		<constructor-arg value="rememberMe" />
 		<property name="httpOnly" value="true" />
@@ -98,13 +106,13 @@
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="casRealm" />
 		<property name="sessionManager" ref="sessionManager" />
-		<property name="cacheManager" ref="shiroCacheManager" />
+		<property name="cacheManager" ref="shiroCacheMgr" />
 		<!-- <property name="rememberMeManager" ref="rememberMeManager"/> -->
 		<property name="authenticator" ref="authenticator"></property>
 		<property name="realms">
 			<list>
 			    <ref bean="casRealm" />
-				<ref bean="writerRealm" />
+				<ref bean="dbRealm" />
 			</list>
 		</property>
 	</bean>
@@ -135,13 +143,10 @@
 	</bean>	
 
 	<bean id="kaptchaFilter" class="com.easytnt.security.shiro.web.filter.authc.GoogleKapthcaFormAuthenticationFilter">
-		<property name="captchaEbabled" value="${shiro.login.captcha}" />
-		<property name="captchaParam" value="kaptcha" />
+		<property name="enabled" value="${shiro.login.captcha}" />
 		<property name="loginUrl" value="/login"></property>
 		<property name="failureKeyAttribute" value="${shiro.failure.key}" />
 	</bean>
-
-	<bean id="myLogoutFilter" class="com.cntest.security.shiro.filter.CntestLogoutFilter"></bean>
 
 	<!-- Shiro的Web过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -153,24 +158,22 @@
 			<util:map>
 				<entry key="authc" value-ref="authcFilter" />
 				<entry key="cas" value-ref="casFilter" />			
-				<entry key="kaptchaFilter" value-ref="kaptchaFilter" />
-				<entry key="myLogoutFilter" value-ref="myLogoutFilter" />
-				<entry key="mySessionTimeout" value-ref="mySessionTimeout" />
+				<entry key="kaptchar" value-ref="kaptchaFilter" />
+				<entry key="sessionTimeout" value-ref="sessionTimeout" />
 			</util:map>
 		</property>
 		<property name="filterChainDefinitions">
 			<value>
-				/static/** = anon
-				/images/** = anon
+				/css/** = anon
+				/script/** = anon
 				/500 = anon
 				/401 = anon
 				/403= anon
 				/404 = anon
 				/405 = anon
 				/sso/login = cas
-				/login = kaptchaFilter,authc
-				/logout = myLogoutFilter
-				/** = mySessionTimeout,user
+				/login = kaptchar,authc
+				/** = sessionTimeout,user
 			</value>
 		</property>
 	</bean>
