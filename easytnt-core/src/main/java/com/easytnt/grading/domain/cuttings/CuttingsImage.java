@@ -123,6 +123,8 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 	//以下功能为ORM或者自动构造使用，非此慎用
 	public CuttingsImage () {}
 	
+	private Long imageId;
+	
 	public ExamineePaper getCutFrom() {
 		return cutFrom;
 	}
@@ -153,6 +155,22 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public Long getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(Long imageId) {
+		this.imageId = imageId;
 	}
 	
 }
