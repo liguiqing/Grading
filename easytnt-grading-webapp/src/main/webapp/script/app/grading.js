@@ -46,7 +46,11 @@
 		
 		function getTaskUrl(){
 			var url = window.location.href;
-			return url.substring(url.indexOf('task'));
+			url =  url.substring(url.indexOf('task'));
+			if(url.indexOf("#") >0)
+				return url.substring(0,url.indexOf("#"));
+			else
+				return url;
 		};
 
 		var Grading = function() {
@@ -59,7 +63,8 @@
 				point.reset();
 				pointPanelKeyShort();
 				ajaxWrapper.getJson(getTaskUrl()+'/cuttings',{},{show:false},function(data){					
-					imgToolbox.switchTo(_imgServer + data.imgPath);
+					if(data.imgPath)
+						imgToolbox.switchTo(_imgServer + data.imgPath);
 				});
 				
 			};
