@@ -20,7 +20,7 @@
 								name:$poinInput.attr('name'),
 								dataFrom : $poinInput.attr('data-pointfrom') * 1,
 								dataTo : $poinInput.attr('data-pointto') * 1,
-								interval : 1,
+								validValues : [],
 								focus:false,
 								position:{
 									top:$poinInput.attr('data-positiontop')  * 1 ,
@@ -29,12 +29,22 @@
 									height:$poinInput.attr('data-positionheight')  * 1
 								},
 								validate : function(){
-									onlyNumber(this._input);
-									this._input.value = this._input.value.replace(/^(\-)*(\d+)\.(\d).*$/,'$1$2.$3'); // 打分框只能输入一个小数点
-									if( this._input.value * 1 > this.dataTo){
-										this._input.value = this._input.value.substr(0,this._input.value.length-1);
-										this.validate();
+									if(this.validValues.length == 0){
+										var validValuesStr = $poinInput.attr('data-validScores').split(",");
+										for(var j=0;j<validValuesStr.length;j++){
+											if($.isNumeric(validValuesStr[j])){
+												this.validValues[this.validValues.length] = validValuesStr[j] *1;
+											}
+										}																				
 									}
+									onlyNumber(this._input);
+									// 打分框只能输入一个小数点
+									this._input.value = this._input.value.replace(/^(\-)*(\d+)\.(\d).*$/,'$1$2.$3'); 
+									//是否在有效值范围内
+									if(!this.validValues.contains(this._input.value * 1)){
+										this._input.value = this._input.value.substr(0,this._input.value.length-1);
+									}
+									
 								},
 								clean:function(){
 									this._input.value = "";
@@ -54,7 +64,7 @@
 								},
 								filled:function(){
 									this.validate();
-									return this._input.value != ''
+									return this._input.value != '';
 								},
 								reset:function(){
 									this._input.value = "";
@@ -63,7 +73,10 @@
 									return this._input.value  * 1;
 								}
 						};
-						
+						$apoint.on('hidden.bs.dropdown', function () {
+							point._input.value = point._input.value *1;
+							point.validate();
+						});
 						if(i == 0){
 							self.point = point;
 						}else if(i == 1){
@@ -111,7 +124,7 @@
 					$.each(this.points,function(i,point){
 						point.input.on('focus',function(){
 							event.call(point);
-						})
+						});
 					});
 					return this;
 				},
@@ -183,7 +196,7 @@
 					total.points[i] = {name:this.name,value:this.valueOf()};
 				});
 				return total;
-			}
+			};
 		};
 
 		return new PointPanel();
