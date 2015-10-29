@@ -9,7 +9,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.ValueObject;
-import com.easytnt.grading.domain.grade.ItemGradeRecord;
 
 /**
  * <pre>
@@ -19,7 +18,7 @@ import com.easytnt.grading.domain.grade.ItemGradeRecord;
  * @author 李贵庆 2015年10月20日
  * @version 1.0
  **/
-public class Area implements ValueObject<ItemGradeRecord> {
+public class Area implements ValueObject<Area> {
 
 	private int left;
 
@@ -61,7 +60,7 @@ public class Area implements ValueObject<ItemGradeRecord> {
 	}
 
 	@Override
-	public boolean sameValueAs(ItemGradeRecord other) {
+	public boolean sameValueAs(Area other) {
 		return this.equals(other);
 	}
 

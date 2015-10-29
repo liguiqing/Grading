@@ -8,6 +8,8 @@ package com.easytnt.commons.entity.service;
 import java.io.Serializable;
 import java.util.List;
 
+import com.easytnt.commons.entity.cqrs.Query;
+
 /** 
  * <pre>
  * 
@@ -27,5 +29,7 @@ public interface EntityService<T,PK extends Serializable> {
 	void delete(T t);
 	
 	List<T> list();
+	
+	void query(Query<T> query);
 }
 
