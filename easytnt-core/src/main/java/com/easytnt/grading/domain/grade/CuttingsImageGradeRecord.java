@@ -44,11 +44,14 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 	private int pinci;
 	
 	private boolean valid = Boolean.TRUE;
+	
+	private String scorestr;
 
 	public CuttingsImageGradeRecord(Referees referees, CuttingsImage recordFor) {
 		this.referees = referees;
 		this.recordFor = recordFor;
 		this.startTime = Calendar.getInstance().getTime();
+		this.pinci = recordFor.getCurrentPinci();
 	}
 
 	public void invalid() {
@@ -69,6 +72,13 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 		return score;
 	}
 	
+	public int spendTime() {
+		if(this.finishTime == null)
+			return -1;
+		return new Long(this.getFinishTime().getTime() - this.getStartTime().getTime()).intValue();
+	}
+
+	
 	/**
 	 * 给切割块中的给分点打分
 	 * 
@@ -77,29 +87,34 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 	 * @throws IllegalArgumentException 当小题分值不在有效范围内时抛出
 	 */
 	public void scoringForItems(Float[] scores) {
-		if(this.isFinished())
-			throw new UnsupportedOperationException(this.toString() + "已经完结");
+		//if(this.isFinished())
+		//	throw new UnsupportedOperationException(this.toString() + "已经完结");
 		List<Section> sections = recordFor.getSections();
 		this.itemRecords = new HashSet<>();
 		int i = 0;
+		StringBuilder sb = new StringBuilder();
 		for (Section section : sections) {
 			List<Item> items = section.getItems();
 			for (Item item : items) {
 				Float score = 0f;
-				if( i >scores.length)
+				if( i < scores.length)
 					score = scores[i++];
 				if (item.isEffectiveScore(score)) {
 					ItemGradeRecord igr = new ItemGradeRecord(item,score);
 					itemRecords.add(igr);
+					
 				} else {
 					throw new IllegalArgumentException("无效的分值，"
 							+ section.getTitle() + " " + item.getTitle()
 							+ " 的有效分范围是[" + item.getMinPoint() + ","
 							+ item.getMaxPoint() + "]");
 				}
+				sb.append(score<=score.intValue() ? score.intValue():score).append(",");
 			}
 
 		}
+		sb.deleteCharAt(sb.length()-1);
+		this.scorestr = sb.toString();
 	}
 
 	public void finish() {
@@ -118,6 +133,10 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 		return this.recordFor.getCutFrom().getExaminee();
 	}
 
+	public Long genId() {
+		this.id = new Double(Math.random()).longValue();
+		return this.id;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -150,6 +169,8 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 
 	}
 
+	private Long id;
+	
 	public Referees getReferees() {
 		return referees;
 	}
@@ -204,6 +225,14 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 
 	public void setValid(boolean valid) {
 		this.valid = valid;
+	}
+
+	public String getScorestr() {
+		return scorestr;
+	}
+
+	public void setScorestr(String scorestr) {
+		this.scorestr = scorestr;
 	}
 
 }

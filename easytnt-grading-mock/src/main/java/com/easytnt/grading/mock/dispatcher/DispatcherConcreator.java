@@ -20,6 +20,7 @@ import com.easytnt.grading.dispatcher.DispathcerManager;
 import com.easytnt.grading.dispatcher.impl.DispatcherImpl;
 import com.easytnt.grading.dispatcher.impl.JdbcFetcher;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
@@ -88,6 +89,8 @@ public class DispatcherConcreator {
 	
 	private List<CuttingsArea> getCuttingsArea(){
 		Object[] args = new Object[] {this.cutFrom.getPaperId()};
+		final Subject subject  = new Subject();
+		subject.setId(100l);
 		return jdbcTemplate.query("select * from paperiteminfo where paperid=?", args, new RowMapper<CuttingsArea>() {
 
 			@Override
@@ -99,6 +102,7 @@ public class DispatcherConcreator {
 				area.setId(rs.getLong("itemid"));
 				area.setMaxerror(rs.getFloat("maxerror"));
 				Section section = new Section();
+				section.setSubject(subject);
 				section.setSectionId(rs.getLong("itemid"));
 				section.setPaper(cutFrom);
 				section.setTitle(rs.getString("itemname"));

@@ -14,6 +14,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.ValueObject;
+import com.easytnt.grading.domain.exam.Subject;
 
 /**
  * <pre>
@@ -45,6 +46,8 @@ public class Section implements ValueObject<Section>{
 	private Section parentSection;
 
 	private List<Section> subSection;
+	
+	private Subject subject;
 
 	private String title;
 
@@ -170,6 +173,14 @@ public class Section implements ValueObject<Section>{
 
 	public void setFullScore(Float fullScore) {
 		this.fullScore = fullScore;
+	}
+
+	public Subject getSubject() {
+		return subject;
+	}
+
+	public void setSubject(Subject subject) {
+		this.subject = subject;
 	}
 	
 }

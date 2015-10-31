@@ -21,7 +21,7 @@ public interface GradeTaskService extends EntityService<GradeTask, Long> {
 
 	GradeTask getTaskOf(Long taskId,Referees referees) throws Exception;
 	
-	CuttingsImageGradeRecord createPieceGradeRecordBy(Long taskId,Referees referees) throws Exception;
+	CuttingsImageGradeRecord createImageGradeRecordBy(Long taskId,Referees referees) throws Exception;
 
 	void itemScoring(Long taskId,Referees referees,Float[] scores) throws Exception;
 }

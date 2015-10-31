@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.commons.entity.repository.Repository;
 
 public abstract class AbstractEntityService <T,PK extends Serializable> {
@@ -67,6 +68,11 @@ public abstract class AbstractEntityService <T,PK extends Serializable> {
 	@Transactional(readOnly=true)
 	public List<T> list(){
 		return repository.list();
+	}
+	
+	@Transactional(readOnly=true)
+	public void query(Query<T> query){
+		//TODO in SubClass
 	}
 	
 	

@@ -47,7 +47,7 @@
 		<appender-ref ref="${logger.out}" />
 	</appender>
 	<logger name="org.springframework.context" additivity="false">
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="com.lmax.disruptor" additivity="false">
@@ -80,16 +80,16 @@
 		<appender-ref ref='ASYNC' />
 	</logger>
 	<logger name="org.hibernate.SQL" additivity="false">
-		<level value="error" />
+		<level value="info" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="org.hibernate.engine.QueryParameters" additivity="false">
-		<level value="ERROR" />
+		<level value="info" />
 		<appender-ref ref='ASYNC' />
 	</logger>
 	<logger name="org.hibernate.engine.query.HQLQueryPlan"
 		additivity="false">
-		<level value="ERROR" />
+		<level value="info" />
 		<appender-ref ref='ASYNC' />
 	</logger>
 	

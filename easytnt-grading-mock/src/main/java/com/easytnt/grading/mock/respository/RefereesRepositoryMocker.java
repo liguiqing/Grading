@@ -27,8 +27,12 @@ public class RefereesRepositoryMocker implements RefereesRepository {
 	}
 	
 	private void refereesConcreate() {
-		for(Long id=1l;id<=10;id++)
-			RefereesRepositoryMocker.refereeses.put(id, new Referees("Test"+id));
+		for(Long id=1l;id<=10;id++) {
+			Referees r = new Referees("Test"+id);
+			r.setId(id);
+			RefereesRepositoryMocker.refereeses.put(id, r);
+		}
+			
 	}
 	
 	@Override

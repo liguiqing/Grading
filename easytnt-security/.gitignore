@@ -1,0 +1,8 @@
+.idea/
+.classpath
+.project
+.settings/
+target/
+src/resources/
+/target/
+.externalToolBuilders/

@@ -14,6 +14,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.Entity;
+import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.paper.Section;
@@ -37,7 +38,7 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 	
 	private Set<CuttingsImageGradeRecord> records;
 	
-	private String pinci = "0000";
+	private int pinci = 0;
 	
 	private String imgPath;
 	
@@ -52,6 +53,14 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 		CuttingsImageGradeRecord record = new CuttingsImageGradeRecord(referees,this);
 		this.records.add(record);
 		return record;
+	}
+	
+	public CuttingsArea definedOf() {
+		return this.definedOf;
+	}
+	
+	public Subject subjectOf() {
+		return this.definedOf.subjectOf();
 	}
 	
 	public boolean recordedBy(Referees referees) {
@@ -72,19 +81,18 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 	
 
 	public int getCurrentPinci() {
-		// TODO Auto-generated method stub
-		return 0;
+	
+		return this.pinci;
 	}
 
 
 	public void nextPinci() {
-		// TODO Auto-generated method stub
-		
+		this.pinci++;
 	}
 
 	public int incrementPinciAndGet() {
-		// TODO Auto-generated method stub
-		return 0;
+		this.pinci++;
+		return this.pinci;
 	}
 	
 
@@ -115,6 +123,8 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 	//以下功能为ORM或者自动构造使用，非此慎用
 	public CuttingsImage () {}
 	
+	private Long imageId;
+	
 	public ExamineePaper getCutFrom() {
 		return cutFrom;
 	}
@@ -131,11 +141,11 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 		this.records = records;
 	}
 
-	public String getPinci() {
+	public int getPinci() {
 		return pinci;
 	}
 
-	public void setPinci(String pinci) {
+	public void setPinci(int pinci) {
 		this.pinci = pinci;
 	}
 
@@ -145,6 +155,22 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public Long getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(Long imageId) {
+		this.imageId = imageId;
 	}
 	
 }
