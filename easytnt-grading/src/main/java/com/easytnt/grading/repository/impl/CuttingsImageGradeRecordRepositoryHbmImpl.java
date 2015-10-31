@@ -75,7 +75,7 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 		query.setString(index++, record.getRecordFor().getImgPath());
 		query.executeUpdate();
 		
-		String updatePaperimport = "update paperimport set pingci=? and getmark='Y' where  itemid=? and paperid=? and imagepath = ?";
+		String updatePaperimport = "update paperimport set pingci=?, getmark=1 where  itemid=? and paperid=? and imagepath = ?";
 		query =  getCurrentSession().createSQLQuery(updatePaperimport);
 		index = 0;
 		query.setInteger(index++, record.getPinci());
