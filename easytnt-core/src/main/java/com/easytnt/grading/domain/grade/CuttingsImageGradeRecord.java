@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.easytnt.commons.entity.share.Entity;
 import com.easytnt.commons.entity.share.ValueObject;
 import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.paper.Item;
@@ -29,7 +30,7 @@ import com.easytnt.grading.domain.room.Examinee;
  * @author 李贵庆2015年10月14日
  * @version 1.0
  **/
-public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeRecord> {
+public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord> {
 
 	private Referees referees;
 
@@ -65,7 +66,7 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 	public Float calScore() {
 		Float score = 0f;
 		if(this.isFinished()) {
-			for(ItemGradeRecord itemRecord:itemRecords) {
+			for(ItemGradeRecord itemRecord:this.itemRecords) {
 				score += itemRecord.getScored();
 			}
 		}
@@ -87,8 +88,6 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 	 * @throws IllegalArgumentException 当小题分值不在有效范围内时抛出
 	 */
 	public void scoringForItems(Float[] scores) {
-		//if(this.isFinished())
-		//	throw new UnsupportedOperationException(this.toString() + "已经完结");
 		List<Section> sections = recordFor.getSections();
 		this.itemRecords = new HashSet<>();
 		int i = 0;
@@ -109,7 +108,12 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 							+ " 的有效分范围是[" + item.getMinPoint() + ","
 							+ item.getMaxPoint() + "]");
 				}
-				sb.append(score<=score.intValue() ? score.intValue():score).append(",");
+				if(score <= score.intValue()) {
+					sb.append(score.intValue());
+				}else {
+					sb.append(score);
+				}
+				sb.append(",");
 			}
 
 		}
@@ -140,7 +144,7 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(this.referees).toHashCode();
+		return new HashCodeBuilder().append(this.referees).append(this.recordFor).toHashCode();
 	}
 
 	@Override
@@ -150,7 +154,7 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 		CuttingsImageGradeRecord other = (CuttingsImageGradeRecord) o;
 
 		return new EqualsBuilder().append(this.referees, other.referees)
-				.isEquals();
+				.append(this.recordFor,other.recordFor).isEquals();
 	}
 
 	@Override
@@ -160,7 +164,7 @@ public class CuttingsImageGradeRecord implements ValueObject<CuttingsImageGradeR
 	}
 
 	@Override
-	public boolean sameValueAs(CuttingsImageGradeRecord other) {
+	public boolean sameIdentityAs(CuttingsImageGradeRecord other) {
 		return this.equals(other);
 	}
 

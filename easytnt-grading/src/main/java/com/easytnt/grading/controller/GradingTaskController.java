@@ -19,10 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.ui.Menu;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
-import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingsImage;
-import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
+import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.service.GradeTaskService;
@@ -82,6 +81,15 @@ public class GradingTaskController {
 
 	@RequestMapping(value = "/{taskId}/itemscoring", method = RequestMethod.POST)
 	public ModelAndView onScoring(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
+		logger.debug("URL /task/{}/itemscoring Method POST", taskId, scores.toString());
+
+		Referees referees = refereesService.getCurrentReferees();
+		taskService.itemScoring(taskId, referees, scores);
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
+	
+	@RequestMapping(value = "/{taskId}/error", method = RequestMethod.POST)
+	public ModelAndView onError(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
 		logger.debug("URL /task/{}/itemscoring Method POST", taskId, scores.toString());
 
 		Referees referees = refereesService.getCurrentReferees();
