@@ -55,8 +55,13 @@
       <div class="col-md-12">
         <button type="button" class=" button   button-plain button-border button-square button-tiny" ><i class="icon-stop" style="font-size:8px;    position: absolute;"></i></button>
       </div>
-    </li>    
-    <div class="logv"></div>       
+    </li>
+    <li role="separator" class="divider"></li>
+    <li class="row" > 
+      <div class="col-md-12">   
+        <div class="logv"></div>
+      </div>
+    </li>       
    </ul>
   </div>
  </div>
