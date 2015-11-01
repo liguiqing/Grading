@@ -24,6 +24,14 @@ public interface GradeTaskService extends EntityService<GradeTask, Long> {
 	CuttingsImageGradeRecord createImageGradeRecordBy(Long taskId,Referees referees) throws Exception;
 
 	void itemScoring(Long taskId,Referees referees,Float[] scores) throws Exception;
+
+	/**
+	 * 恢复没有完成的任务
+	 * @param task
+	 * @return　boolean 有需要恢复的任务返回true，否则返回false
+	 */
+	boolean recoverUndo(GradeTask task);
+
 }
 
 

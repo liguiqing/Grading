@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.grade.GradeTask;
+import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;
@@ -35,6 +36,7 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 	}
 	
 	private void createTask() {
+
 		CuttingsArea area = new CuttingsArea();
 		area.setId(1l);
 		Section section = new Section();

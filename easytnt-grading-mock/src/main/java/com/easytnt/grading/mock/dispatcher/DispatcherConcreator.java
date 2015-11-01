@@ -91,6 +91,7 @@ public class DispatcherConcreator {
 		Object[] args = new Object[] {this.cutFrom.getPaperId()};
 		final Subject subject  = new Subject();
 		subject.setId(100l);
+		
 		return jdbcTemplate.query("select * from paperiteminfo where paperid=?", args, new RowMapper<CuttingsArea>() {
 
 			@Override

@@ -59,10 +59,11 @@ public class GradingTaskController {
 		
 		Referees referees = refereesService.getCurrentReferees();
 		GradeTask task = taskService.getTaskOf(taskId, referees);
+		taskService.recoverUndo(task); 
 		referees = task.getAssignedTo();
 
-		CuttingsImageGradeRecord pieceGradeRecord = task.getAssignedTo().fetchCuttings();
-		List<Section> sections = pieceGradeRecord.getRecordFor().getSections();
+		CuttingsImageGradeRecord gradeRecord = task.getAGradeRecord();
+		List<Section> sections = gradeRecord.getRecordFor().getSections();
 		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask")
 				.with("menus", menus)
 				.with("referees", referees)
@@ -70,6 +71,12 @@ public class GradingTaskController {
 				.with("sections", sections).build();
 	}
 
+	/**
+	 * 读取切割图
+	 * @param taskId
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{taskId}/cuttings", method = RequestMethod.GET)
 	public ModelAndView onGetCuttings(@PathVariable Long taskId) throws Exception {
 		logger.debug("URL /task/{}/cuttings Method Get", taskId);
@@ -79,6 +86,13 @@ public class GradingTaskController {
 		return ModelAndViewFactory.newModelAndViewFor().with("imgPath", cuttings.getImgPath()).with("imageId", cuttings.getImageId()).build();
 	}
 
+	/**
+	 * 给分
+	 * @param scores
+	 * @param taskId
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{taskId}/itemscoring", method = RequestMethod.POST)
 	public ModelAndView onScoring(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
 		logger.debug("URL /task/{}/itemscoring Method POST", taskId, scores.toString());
@@ -88,9 +102,55 @@ public class GradingTaskController {
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 	
+	/**
+	 * 回看已经评过某一记录
+	 * @param scores
+	 * @param taskId
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/{taskId}/review/{recordId}", method = RequestMethod.GET)
+	public ModelAndView onReview(@PathVariable Long taskId,@PathVariable Long recordId) throws Exception {
+		logger.debug("URL /task/{}/review/{} Method POST", taskId, recordId);
+		Referees referees = refereesService.getCurrentReferees();
+		
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
+	
+	/**
+	 * 取消回看已经评过某一记录
+	 * @param scores
+	 * @param taskId
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/{taskId}/cancel/{recordId}", method = RequestMethod.GET)
+	public ModelAndView onCancelReview(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
+		logger.debug("URL /task/{}/itemscoring Method POST", taskId, scores.toString());
+
+		Referees referees = refereesService.getCurrentReferees();
+		taskService.itemScoring(taskId, referees, scores);
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
+	
+	/**
+	 * 给分
+	 * @param scores
+	 * @param taskId
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/{taskId}/redo/itemscoring", method = RequestMethod.POST)
+	public ModelAndView onRedoScoring(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
+		logger.debug("URL /task/{}/itemscoring Method POST", taskId, scores.toString());
+		Referees referees = refereesService.getCurrentReferees();
+		taskService.itemScoring(taskId, referees, scores);
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
+	
 	@RequestMapping(value = "/{taskId}/error", method = RequestMethod.POST)
 	public ModelAndView onError(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
-		logger.debug("URL /task/{}/itemscoring Method POST", taskId, scores.toString());
+		logger.debug("URL /task/{}/error Method POST", taskId, scores.toString());
 
 		Referees referees = refereesService.getCurrentReferees();
 		taskService.itemScoring(taskId, referees, scores);
