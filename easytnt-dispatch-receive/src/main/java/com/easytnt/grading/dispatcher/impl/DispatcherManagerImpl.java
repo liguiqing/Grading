@@ -14,6 +14,7 @@ import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.dispatcher.DispathcerManager;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.domain.grade.GradeTask;
 
 /** 
  * <pre>
@@ -60,6 +61,10 @@ public class DispatcherManagerImpl implements DispathcerManager {
 	
 	public Dispatcher getDispatcherFor(CuttingsArea area) {
 		return dispatcherPool.get(area);
+	}
+	
+	public Dispatcher getDispatcherFor(GradeTask task) {
+		return dispatcherPool.get(task.getArea());
 	}
 	
 }

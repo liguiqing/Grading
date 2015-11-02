@@ -4,11 +4,18 @@
  **/
 package com.easytnt.grading.repository.impl;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.easytnt.commons.entity.repository.HibernateRepository;
+import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
+import com.easytnt.grading.domain.grade.GradeTask;
+import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.repository.CuttingsImageGradeRecordRepository;
 
 /**
@@ -42,6 +49,15 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 			query.setLong(index++, record.getReferees().getId());
 			query.setTimestamp(index++, record.getStartTime());
 			query.setString(index, record.getRecordFor().getImgPath());
+			query.executeUpdate();
+			
+			String updatePaperimport = "update paperimport set pingci=?, getmark=0 where  itemid=? and paperid=? and imagepath = ?";
+			query =  getCurrentSession().createSQLQuery(updatePaperimport);
+			index = 0;
+			query.setInteger(index++, record.getPinci());
+			query.setLong(index++, record.getRecordFor().definedOf().getId());
+			query.setLong(index++, record.getRecordFor().definedOf().getPaper().getPaperId());
+			query.setString(index++, record.getRecordFor().getImgPath());
 			query.executeUpdate();
 		}
 
@@ -83,6 +99,30 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 		query.setLong(index++, record.getRecordFor().definedOf().getPaper().getPaperId());
 		query.setString(index++, record.getRecordFor().getImgPath());
 		query.executeUpdate();
+	}
+
+	@Override
+	public CuttingsImageGradeRecord findUndoRecordOf(GradeTask task) {
+		Referees referees = task.getAssignedTo();
+		CuttingsArea area = task.getGenBy();
+		String sql = "SELECT itemid,imagepath,getpaperdatetime,pingci FROM getpaper WHERE teacheroid=? AND itemid = ? AND scored=0;";
+		Query query =  getCurrentSession().createSQLQuery(sql);
+		int index = 0;
+		query.setLong(index++, referees.getId());
+		query.setLong(index++, area.getId());
+		List result = query.list();
+		if(result != null && result.size() > 0) {
+			Object[] row = (Object[])result.get(0);
+			CuttingsImage image = new CuttingsImage(task.getGenBy());
+			image.setImageId(Long.parseLong(row[0]+""));
+			image.setImgPath(row[1]+"");
+			image.setUuid(row[1]+"");
+			CuttingsImageGradeRecord gradeRecord = image.createRecord(referees);
+			gradeRecord.setStartTime(((Timestamp)row[2]));
+			gradeRecord.setPinci((int)row[3]);
+			return gradeRecord;
+		}
+		return null;
 	}
 
 }

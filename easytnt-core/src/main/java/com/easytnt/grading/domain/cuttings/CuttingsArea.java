@@ -34,6 +34,8 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 	
 	private Area areaInPaper;
 	
+	private List<PositionOfItemInArea> itemAreas;
+	
 	private List<Section> sections;
 	
 	private int requiredPinci = 1; //必须执行的评判次数
@@ -43,6 +45,13 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 	public CuttingsArea(ExamPaper paper,Area areaInPaper) {
 		this.paper = paper;
 		this.areaInPaper = areaInPaper;
+	}
+	
+	public void addItemDefinition(PositionOfItemInArea itemArea) {
+		if(this.itemAreas == null )
+			this.itemAreas = new ArrayList<>();
+		this.itemAreas.add(itemArea);
+		this.bindSection(itemArea.getSection());
 	}
 	
 	public void bindSection(Section section) {
@@ -56,8 +65,6 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 			return this.sections.get(0).getSubject();
 		return null;
 	}
-	
-	
 	
 	@Override
 	public int hashCode() {
