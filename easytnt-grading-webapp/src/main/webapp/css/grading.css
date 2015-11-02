@@ -42,6 +42,7 @@
 .img-panel {
     height:100%;
     margin-left:40px;
+    display:none;
 }
 
 .point-panel-detail {
@@ -157,9 +158,6 @@
 	background-image: url("img/logv.png");
 	width: 25px;
 	height:153px;
-	bottom:5px;
-	margin-left: 4px;
-    position: absolute;
 }
 
 #markingPanel aside:last{
@@ -175,6 +173,7 @@
 	color: #fff;
 	height:100%;
 	padding-top:15px;
+	display:none;
 }
 
 

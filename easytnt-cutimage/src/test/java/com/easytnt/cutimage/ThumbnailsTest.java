@@ -69,5 +69,6 @@ public class ThumbnailsTest {
 		Thumbnails.of(bufImage).rotate(-90).size(bufImage.getWidth(), bufImage.getHeight())
 				.toFile("D:/test/image/2.png");
 		System.out.println((e - b) + "ms");
+
 	}
 }

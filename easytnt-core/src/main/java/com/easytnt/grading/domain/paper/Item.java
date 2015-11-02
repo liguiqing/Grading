@@ -59,6 +59,19 @@ public class Item implements ValueObject<Item> {
 		}
 		
 	}
+	
+	public String genScoredot() {
+		if(this.validValues != null && this.validValues.length > 0) {
+			StringBuffer sb = new StringBuffer();
+			for(Float f:this.validValues) {
+				sb.append(f.floatValue()).append(",");
+			}
+			sb.deleteCharAt(sb.lastIndexOf(","));
+			return sb.toString();
+		}
+		
+		return "";
+	}
 
 	public Float getMinPoint() {
 		Float[] allPoints = getAllPoints();
@@ -77,7 +90,7 @@ public class Item implements ValueObject<Item> {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(this.title).append(this.fullScore).toHashCode();
+				.append(this.itemId).append(this.title).append(this.fullScore).toHashCode();
 	}
 
 	@Override
@@ -86,7 +99,7 @@ public class Item implements ValueObject<Item> {
 			return false;
 		
 		Item other = (Item) o;
-		return new EqualsBuilder().append(this.title, other.title)
+		return new EqualsBuilder().append(this.itemId,other.itemId).append(this.title, other.title)
 				.append(this.fullScore, other.fullScore).isEquals();
 	}
 

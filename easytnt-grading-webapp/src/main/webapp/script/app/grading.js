@@ -48,7 +48,10 @@
 		function getTaskUrl(){
 			var url = window.location.href;
 			url =  url.substring(url.indexOf('task'));
-			return url.substring(0,url.indexOf("#"));
+			if(url.indexOf("#") >0)
+				return url.substring(0,url.indexOf("#"));
+			else
+				return url;
 		};
 
 		var Grading = function() {
@@ -107,6 +110,7 @@
 
 			this.render = function(model) {
 				setImgPanelHeight();
+				
 				point.newInstance();
 				_imgViewer = imgViewer.init({containerId:"imgContainer",imgSrc:"",eagleEyeRatio:0.2,
 					imgLoaded:function(){
@@ -139,6 +143,12 @@
 	            imgPanel.height(h1);
 	            pointPanel.find('.panel-body').height(h1-150);
 	            imgToolboxPanel.find('.panel-body ').height(h1-65);
+	            imgPanel.find('>div.img-panel').show();
+	            pointPanel.parent().parent().show();
+	            var toolsH  = imgToolboxPanel.height() - (imgToolboxPanel.find('.row').size()-1) * (40);
+	            console.log(toolsH+"   " +imgToolboxPanel.height() +"  " + (toolsH));
+	            imgToolboxPanel.find('.row:last').css({"margin-top":toolsH-160});
+	            
 			};		
 					
 		};
