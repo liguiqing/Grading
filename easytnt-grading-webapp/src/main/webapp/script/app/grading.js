@@ -93,7 +93,7 @@
 				}}];
 				var message =  "总分：<b style='color:#c83025;font-size:14px'>"+ score.value +"</b>";
 				
-				var modal = ui.modal( score.title+'得分情况',message,'sm',btns);
+				var modal = ui.modal('得分情况',message,'sm',btns);
 				$(document).off('keyup').on('keyup',function(e){
 					var eventCode = e.which||e.keyCode;
 					if(eventCode == 27){				//退出键

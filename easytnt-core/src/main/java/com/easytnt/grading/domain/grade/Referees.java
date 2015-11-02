@@ -51,7 +51,6 @@ public class Referees {
 	 */
 	public CuttingsImageGradeRecord fetchCuttings() throws Exception {
 		if(iAmFree()) {
-			
 			if(this.dispatcher != null) {
 				CuttingsImage cuttings = this.dispatcher.getFor(this);
 				this.recordingNow = cuttings.createRecord(this);
@@ -62,7 +61,7 @@ public class Referees {
 	
 
 	public void recoverRecord(CuttingsImageGradeRecord gradeRecord) {
-		if(gradeRecord == null || gradeRecord.equals(this.recordingNow))
+		if(this.inDoneTaskList(gradeRecord.getRecordFor()))
 			return;
 		
 		if(this.recordingNow != null && this.waittingRecord != null)
@@ -81,6 +80,7 @@ public class Referees {
 		if(this.recordingNow == null) {
 			if(this.waittingRecord != null) {
 				this.recordingNow = this.waittingRecord;
+				this.waittingRecord = null;
 			}
 		}
 		
@@ -129,7 +129,7 @@ public class Referees {
 		return false;
 	}
 	
-	public void insert(CuttingsImage cuttingsimage) {
+	public void insertBefore(CuttingsImage cuttingsimage) {
 		CuttingsImageGradeRecord redoRecord = cuttingsimage.createRecord(this);
 		if(this.waittingRecord == null) {
 			this.waittingRecord = this.recordingNow;			

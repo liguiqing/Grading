@@ -165,7 +165,7 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).append(this.referees)
-				.append(this.recordFor).append(this.recordFor).build();
+				.append(this.recordFor).build();
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class JdbcFetcher implements Fetcher {
 				String imgPath = rs.getString("imagepath");
 				CuttingsImage cuttings = new CuttingsImage(fetchFor);
 				cuttings.setImgPath(imgPath);
-				
+				cuttings.setUuid(imgPath);
 				return cuttings;
 			}
 			

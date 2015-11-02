@@ -116,6 +116,7 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 			CuttingsImage image = new CuttingsImage(task.getGenBy());
 			image.setImageId(Long.parseLong(row[0]+""));
 			image.setImgPath(row[1]+"");
+			image.setUuid(row[1]+"");
 			CuttingsImageGradeRecord gradeRecord = image.createRecord(referees);
 			gradeRecord.setStartTime(((Timestamp)row[2]));
 			gradeRecord.setPinci((int)row[3]);
