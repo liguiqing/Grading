@@ -77,13 +77,13 @@
 	</distributionManagement>
 
 	<build>
-	    <sourceDirectory>src/main/java</sourceDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
-		</resources>	    
-	    <testSourceDirectory>src/test/java</testSourceDirectory>
+		</resources>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<testResources>
 			<testResource>
 				<directory>${basedir}/src/test/resources</directory>
@@ -147,10 +147,16 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>net.coobird</groupId>
+				<artifactId>thumbnailator</artifactId>
+				<version>0.4.8</version>
+			</dependency>
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-api-mockito</artifactId>
@@ -398,8 +404,8 @@
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
 				<version>2.4</version>
-			</dependency>			
-			
+			</dependency>
+
 			<dependency>
 				<groupId>com.lmax</groupId>
 				<artifactId>disruptor</artifactId>
@@ -445,10 +451,10 @@
 				<artifactId>shiro-spring</artifactId>
 				<version>${shiro.version}</version>
 				<scope>compile</scope>
-			</dependency>																	
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
-    
+
 	<reporting>
 		<plugins>
 			<plugin>
@@ -507,7 +513,7 @@
 			</plugin>
 		</plugins>
 	</reporting>
-    
+
 	<profiles>
 		<profile>
 			<id>nocheck</id>

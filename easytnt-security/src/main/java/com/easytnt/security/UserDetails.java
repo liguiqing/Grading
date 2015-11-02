@@ -26,4 +26,3 @@ public interface UserDetails {
 	
 	<T> boolean sourceOf(T t);
 }
-
