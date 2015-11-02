@@ -29,7 +29,7 @@ public class FileInfoBulidor {
 		String rootDir = path.subpath(0, dirDepth - 1).toString();
 
 		FileInfo itemImageFile = new FileInfo();
-		itemImageFile.setRootDir(rootDir).setRelativelyPath(relativelyPath);
+		itemImageFile.setRootDir(rootDir).setRelativelyPath(relativelyPath).setFilePath(path);
 		return itemImageFile;
 	}
 
