@@ -4,9 +4,6 @@
  **/
 package com.easytnt.grading.service.impl;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.easytnt.commons.entity.service.AbstractEntityService;
 import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.dispatcher.DispathcerManager;
-import com.easytnt.grading.domain.grade.GradeTask;
-import com.easytnt.grading.domain.grade.ItemGradeRecord;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
+import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.repository.CuttingsImageGradeRecordRepository;
 import com.easytnt.grading.repository.GradeTaskRepository;
@@ -82,6 +79,17 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		gradeRecordRepository.saveForFetching(imageGradeRecord);
 		
 		return imageGradeRecord;
+	}
+
+	@Override
+	public boolean recoverUndo(GradeTask task) {
+		Referees referees = task.getAssignedTo();
+		CuttingsImageGradeRecord gradeRecord = gradeRecordRepository.findUndoRecordOf(task);
+		if(gradeRecord != null) {
+		    referees.recoverRecord(gradeRecord);
+		    return true;
+		}
+		return false;
 	}
 
 }

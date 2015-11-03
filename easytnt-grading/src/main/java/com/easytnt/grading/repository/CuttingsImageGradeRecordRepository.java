@@ -6,6 +6,7 @@ package com.easytnt.grading.repository;
 
 import com.easytnt.commons.entity.repository.Repository;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
+import com.easytnt.grading.domain.grade.GradeTask;
 
 /** 
  * <pre>
@@ -21,6 +22,8 @@ public interface CuttingsImageGradeRecordRepository extends
 	void saveForFetching(CuttingsImageGradeRecord record);
 	
 	void saveForScoring(CuttingsImageGradeRecord record);
+
+	CuttingsImageGradeRecord findUndoRecordOf(GradeTask task);
 }
 
 

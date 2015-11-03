@@ -45,6 +45,8 @@ public class DispatcherConcreator {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	private List<CuttingsArea> cuttingsDefineds;
+	
 	private ExamPaper cutFrom;
 	
 	public DispatcherConcreator() {
@@ -60,9 +62,9 @@ public class DispatcherConcreator {
 	private void creatorMockDispatcher() throws Exception {
 		logger.debug("Mock Dispatcher Concreat");
 	
-		List<CuttingsArea> areas = getCuttingsArea();
-		if(areas != null) {
-			for(CuttingsArea area:areas) {
+		this.cuttingsDefineds = getCuttingsArea();
+		if(this.cuttingsDefineds != null) {
+			for(CuttingsArea area:this.cuttingsDefineds) {
 				Fetcher fetcher = getFetherFor(area);
 				Dispatcher dispatcher = new DispatcherImpl(dispatcherStrategy,fetcher,1);
 				dispathcerManager.registerDispatcher(area, dispatcher);
@@ -80,6 +82,10 @@ public class DispatcherConcreator {
 	public void setDispatcherStrategy(DispatcherStrategy dispatcherStrategy) {
 		this.dispatcherStrategy = dispatcherStrategy;
 	}
+	
+	public List<CuttingsArea> getCuttingsDefineds(){
+		return this.cuttingsDefineds;
+	}
 
 	private Fetcher getFetherFor(final CuttingsArea area) {
 		JdbcFetcher fetcher = new JdbcFetcher(area);
@@ -91,6 +97,7 @@ public class DispatcherConcreator {
 		Object[] args = new Object[] {this.cutFrom.getPaperId()};
 		final Subject subject  = new Subject();
 		subject.setId(100l);
+		
 		return jdbcTemplate.query("select * from paperiteminfo where paperid=?", args, new RowMapper<CuttingsArea>() {
 
 			@Override
@@ -99,6 +106,7 @@ public class DispatcherConcreator {
 
 				Area areaInPaper = new Area(rs.getInt("left"),rs.getInt("top"),rs.getInt("right"),rs.getInt("height"));
 				CuttingsArea area = new CuttingsArea(cutFrom,areaInPaper);
+				
 				area.setId(rs.getLong("itemid"));
 				area.setMaxerror(rs.getFloat("maxerror"));
 				Section section = new Section();

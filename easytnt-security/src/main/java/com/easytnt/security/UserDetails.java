@@ -23,5 +23,7 @@ public interface UserDetails {
 	Object getCredentials();
 	
 	<T> T getSource();
+	
+	<T> boolean sourceOf(T t);
 }
 

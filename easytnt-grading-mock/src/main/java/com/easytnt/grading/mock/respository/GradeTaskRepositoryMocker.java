@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.grade.GradeTask;
+import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;
+import com.easytnt.grading.mock.dispatcher.DispatcherConcreator;
 import com.easytnt.grading.repository.GradeTaskRepository;
 
 /** 
@@ -28,6 +30,9 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 	@Autowired
 	RefereesRepositoryMocker refereesRepository;
 	
+	@Autowired
+	DispatcherConcreator dispatcherConcreator;
+	
 	private static HashMap<Long,GradeTask> tasks = new HashMap<>();
 	
 	public void initMethod() {
@@ -35,16 +40,7 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 	}
 	
 	private void createTask() {
-		CuttingsArea area = new CuttingsArea();
-		area.setId(1l);
-		Section section = new Section();
-		section.setTitle("二、填空题");
-		section.setCaption("二、填空题");
-		area.bindSection(section);
-		for(int i=13;i<=16;i++) {
-			section.addItem(new Item.Builder(i+"").caption(i+"").validValues(new Float[] {0f,1f,2f})
-					.fullScore(2f).answerArea(new Area(10,20,100,50)).create());
-		}
+		CuttingsArea area = dispatcherConcreator.getCuttingsDefineds().get(0);
 		
 		for(Long id=1l;id<=10;id++) {
 			GradeTask task = GradeTask.createOfficialGradeTask(refereesRepository.load(id), area);

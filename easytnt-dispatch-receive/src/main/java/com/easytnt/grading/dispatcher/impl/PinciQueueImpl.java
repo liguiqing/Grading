@@ -45,7 +45,7 @@ public class PinciQueueImpl implements PinciQueue {
 		if(cuttings == null)
 			return null;
 		
-		if(cuttings.recordedBy(referees)) {
+		if(referees.inDoneTaskList(cuttings)) {
 			this.queue.offerLast(cuttings);
 			return this.get(referees);
 		}else {

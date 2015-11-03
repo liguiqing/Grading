@@ -124,6 +124,11 @@ public class ComefromDbRealm extends AuthorizingRealm {
 					}
 					
 					@Override
+					public <T> boolean sourceOf(T t) {
+						return true;
+					}
+					
+					@Override
 					public String toString() {
 						return this.userName;
 					}

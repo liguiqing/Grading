@@ -16,7 +16,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.Entity;
-import com.easytnt.commons.entity.share.ValueObject;
 import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
@@ -133,6 +132,12 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 		return this.referees.equals(referees);
 	}
 	
+
+	public boolean recordedFor(CuttingsImage cuttingsimage) {
+		return this.recordFor == null?false:this.recordFor.equals(cuttingsimage);
+	}
+
+	
 	public Examinee recordOf() {
 		return this.recordFor.getCutFrom().getExaminee();
 	}
@@ -160,7 +165,7 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).append(this.referees)
-				.append(this.recordFor).append(this.recordFor).build();
+				.append(this.recordFor).build();
 	}
 
 	@Override
