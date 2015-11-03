@@ -82,6 +82,10 @@ public class GradeTask implements ValueObject<GradeTask> {
 	public void useDispatcher(Dispatcher dispatcher) {
 		this.assignedTo.useDispatcher(dispatcher);
 	}
+	
+	public CuttingsImageGradeRecord getAGradeRecord() throws Exception{
+		return this.assignedTo.fetchCuttings();
+	}
 
 	public String getSubjectName() {
 		//TODO

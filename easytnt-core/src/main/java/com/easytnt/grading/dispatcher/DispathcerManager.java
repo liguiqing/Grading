@@ -6,6 +6,7 @@
 package com.easytnt.grading.dispatcher;
 
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.domain.grade.GradeTask;
 
 /** 
  * <pre>
@@ -18,6 +19,8 @@ import com.easytnt.grading.domain.cuttings.CuttingsArea;
 public interface DispathcerManager {
 	
 	public Dispatcher getDispatcherFor(CuttingsArea area);
+	
+	public Dispatcher getDispatcherFor(GradeTask task);
 
 	void registerDispatcher(CuttingsArea area, Dispatcher dispathcer) throws Exception;
 

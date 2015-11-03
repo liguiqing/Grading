@@ -30,7 +30,7 @@
     <div class="panel-footer ">
      <div class="row">
       <div class="col-sm-3 ">
-       <button type="button" class=" button  button-plain button-border button-square" >满</button>
+       <a type="button" class=" button  button-plain button-border button-square" >满</a>
       </div>
       <div class="col-sm-3 ">
        <button type="button" class=" button  button-plain button-border button-square" >零</button>

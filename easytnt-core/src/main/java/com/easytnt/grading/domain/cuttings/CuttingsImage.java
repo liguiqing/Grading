@@ -5,9 +5,7 @@
 
 package com.easytnt.grading.domain.cuttings;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -36,8 +34,6 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 	
 	private ExamineePaper cutFrom;
 	
-	private Set<CuttingsImageGradeRecord> records;
-	
 	private int pinci = 0;
 	
 	private String imgPath;
@@ -46,12 +42,8 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 		this.definedOf = definedOf;
 	}
 	
-	public CuttingsImageGradeRecord addRecord(Referees referees) {
-		if(this.records == null) {
-			this.records = new HashSet<>();
-		}
+	public CuttingsImageGradeRecord createRecord(Referees referees) {
 		CuttingsImageGradeRecord record = new CuttingsImageGradeRecord(referees,this);
-		this.records.add(record);
 		return record;
 	}
 	
@@ -63,28 +55,13 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 		return this.definedOf.subjectOf();
 	}
 	
-	public boolean recordedBy(Referees referees) {
-		if(this.records == null)
-			return false;
-		for(CuttingsImageGradeRecord record:this.records) {
-			if(record.recordBy(referees)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public List<Section> getSections(){
 		return this.definedOf.getSections();
 	}
 	
-	
-
 	public int getCurrentPinci() {
-	
 		return this.pinci;
 	}
-
 
 	public void nextPinci() {
 		this.pinci++;
@@ -94,7 +71,6 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 		this.pinci++;
 		return this.pinci;
 	}
-	
 
 	@Override
 	public int hashCode() {
@@ -106,7 +82,6 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 		if(!(o instanceof CuttingsImage))
 			return false;
 		CuttingsImage other = (CuttingsImage)o;
-		
 		return new EqualsBuilder().append(this.uuid,other.uuid).isEquals();
 	}
 	
@@ -131,14 +106,6 @@ public class CuttingsImage implements Entity<CuttingsImage>{
 
 	public void setCutFrom(ExamineePaper cutFrom) {
 		this.cutFrom = cutFrom;
-	}
-
-	public Set<CuttingsImageGradeRecord> getRecords() {
-		return records;
-	}
-
-	public void setRecords(Set<CuttingsImageGradeRecord> records) {
-		this.records = records;
 	}
 
 	public int getPinci() {

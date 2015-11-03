@@ -39,11 +39,11 @@ public class ComefromDbRealm extends AuthorizingRealm {
 	private Logger logger = LoggerFactory.getLogger(ComefromDbRealm.class);
 
 	private String sql = "select user_name,user_pwd,enabled from tb_user where user_name+?";
-	
+
 	private String userNameField = "user_name";
-	
+
 	private String passwordField = "user_pwd";
-	
+
 	private String enabledField = "enabled";
 
 	private JdbcTemplate jdbcTemplate;
@@ -73,9 +73,9 @@ public class ComefromDbRealm extends AuthorizingRealm {
 		if (user == null)
 			throw new UnknownAccountException();
 
-		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getCredentials(), ByteSource.Util.bytes(user
-				.getUserName()), getName());
-		logger.debug("{}",authenticationInfo);
+		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getCredentials(),
+				ByteSource.Util.bytes(user.getUserName()), getName());
+		logger.debug("{}", authenticationInfo);
 		return authenticationInfo;
 	}
 
@@ -84,19 +84,19 @@ public class ComefromDbRealm extends AuthorizingRealm {
 
 			@Override
 			public UserDetails extractData(ResultSet rs) throws SQLException, DataAccessException {
-				if(!rs.next())
+				if (!rs.next())
 					return null;
-				if(rs.getInt(enabledField) != enabledValue)
+				if (rs.getInt(enabledField) != enabledValue)
 					throw new LockedAccountException();
-				
+
 				final String _username = rs.getString(userNameField);
 				final String _password = rs.getString(passwordField);
-				
+
 				UserDetails user = new UserDetails() {
 					private String userName = _username;
-					
+
 					private String credentials = _password;
-					
+
 					@Override
 					public String getUserName() {
 
@@ -122,23 +122,29 @@ public class ComefromDbRealm extends AuthorizingRealm {
 					public <T> T getSource() {
 						return null;
 					}
-					
+
+					@Override
+					public <T> boolean sourceOf(T t) {
+						return true;
+					}
+
 					@Override
 					public String toString() {
 						return this.userName;
 					}
-					
+
 				};
-				
+
 				return user;
 			}
-			
+
 		};
 
 	}
 
 	/**
-	 * 查询结果必须含有：user_name,user_pwd,enabled 三个字段，查询参数有且只一个	
+	 * 查询结果必须含有：user_name,user_pwd,enabled 三个字段，查询参数有且只一个
+	 * 
 	 * @param sql
 	 */
 	public void setSql(String sql) {
