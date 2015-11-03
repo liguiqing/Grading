@@ -145,7 +145,6 @@
 	            imgPanel.find('>div.img-panel').show();
 	            pointPanel.parent().parent().show();
 	            var toolsH  = imgToolboxPanel.height() - (imgToolboxPanel.find('.row').size()-1) * (40);
-	            console.log(toolsH+"   " +imgToolboxPanel.height() +"  " + (toolsH));
 	            imgToolboxPanel.find('.row:last').css({"margin-top":toolsH-160});
 	            
 			};		
