@@ -24,4 +24,8 @@ public interface CuttingsImageGradeRecordRepository extends
 	void saveForScoring(CuttingsImageGradeRecord record);
 
 	CuttingsImageGradeRecord findUndoRecordOf(GradeTask task);
+
+	void saveForBlank(CuttingsImageGradeRecord imageGradeRecord);
+
+	void saveForError(CuttingsImageGradeRecord imageGradeRecord);
 }

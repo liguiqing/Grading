@@ -5,7 +5,7 @@
     <div class="panel-heading">
      <h6 class="panel-title"></h6>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" style="overflow: auto;">
       <#list sections as section>  
       <div class="form-group section-title">
         <label class="col-sm-6 col-md-6 col-lg-6 control-label " >${section.caption!}</label>
@@ -28,18 +28,25 @@
       </div>
     </div>
     <div class="panel-footer ">
-     <div class="row">
-      <div class="col-sm-3 ">
-       <a type="button" class=" button  button-plain button-border button-square" >满</a>
+      <div class="form-group " style="bottom: 5px;">
+      <div class="col-sm-2 ">
+       <a type="button" class=" button  button-plain button-border button-square button-small" title="快捷键A">满</a>
       </div>
-      <div class="col-sm-3 ">
-       <button type="button" class=" button  button-plain button-border button-square" >零</button>
+      <div class="col-sm-2 ">
+       <button type="button" class=" button  button-plain button-border button-square button-small" title="快捷键S">零</button>
       </div>
-      <div class="col-sm-3 ">
-       <button type="button" class=" button  button-plain button-border button-square" >优</button>
+      <div class="col-sm-2 ">
+       <button type="button" class=" button  button-plain button-border button-square button-small" title="快捷键D">优</button>
       </div>            
-      <div class="col-sm-3 ">
-       <button type="button" class=" button  button-plain button-border button-square" >样</button>
+      <div class="col-sm-2 ">
+       <button type="button" class=" button  button-plain button-border button-square button-small" title="快捷键F">样</button>
+      </div>
+      <div class="col-sm-2 ">
+       <button type="button" class=" button  button-plain button-border button-square button-small" title="快捷键E">空</button>
+      </div>
+      <div class="col-sm-2 ">
+       <button type="button" class=" button  button-plain button-border button-square button-small" title="快捷键C" >坏</button>
+      </div>             
       </div>
      </div>
      <div class="clearfix"></div>

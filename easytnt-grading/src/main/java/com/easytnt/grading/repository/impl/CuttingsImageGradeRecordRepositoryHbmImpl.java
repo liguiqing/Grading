@@ -65,9 +65,24 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 
 	@Override
 	public void saveForScoring(CuttingsImageGradeRecord record) {
+		saveGradeRecord(record,"Y");
+	}
+	
+
+	@Override
+	public void saveForBlank(CuttingsImageGradeRecord record) {
+		saveGradeRecord(record,"B");
+	}
+
+	@Override
+	public void saveForError(CuttingsImageGradeRecord record) {
+		saveGradeRecord(record,"E");
+	}
+	
+	private void saveGradeRecord(CuttingsImageGradeRecord record,String markStr) {
 		String insertScoreinfolog = "INSERT INTO scoreinfolog (paperid, virtualroomid, studentoid, itemid, score, postdatetime, "
 				+ " teacheroid, scorestr, pingci, spenttime, teacherip, memo, markstr, delmark, teachermark, kemuoid, papertype, id ) "
-				+ " SELECT paperid,roomid,studentoid,itemid,?,?,?,?,?,?,'teacherip','memo','Y',0,'Y',?,'papertype',? FROM paperimport where imagepath = ? ";
+				+ " SELECT paperid,roomid,studentoid,itemid,?,?,?,?,?,?,'teacherip','memo',?,0,'Y',?,'papertype',? FROM paperimport where imagepath = ? ";
 		Query query =  getCurrentSession().createSQLQuery(insertScoreinfolog);
 		int index = 0;
 		query.setFloat(index++,record.calScore());
@@ -76,6 +91,7 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 		query.setString(index++, record.getScorestr());
 		query.setInteger(index++, record.getPinci());
 		query.setInteger(index++, record.spendTime());
+		query.setString(index++, markStr);
 		query.setLong(index++, record.getRecordFor().definedOf().subjectOf().getId());
 		query.setLong(index++, record.genId());
 		query.setString(index, record.getRecordFor().getImgPath());

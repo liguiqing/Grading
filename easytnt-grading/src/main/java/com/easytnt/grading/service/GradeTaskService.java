@@ -32,6 +32,12 @@ public interface GradeTaskService extends EntityService<GradeTask, Long> {
 	 */
 	boolean recoverUndo(GradeTask task);
 
+	void itemBlank(Long taskId, Referees referees)
+			throws Exception;
+
+	void itemError(Long taskId, Referees referees)
+			throws Exception;
+
 }
 
 
