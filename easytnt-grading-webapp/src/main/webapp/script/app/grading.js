@@ -38,6 +38,29 @@
 						_grading.record();
 					}
 					break;
+				case 65: //满分
+					point.fullScore();
+					break;
+				case 83: //零分
+					point.zeroScore();
+					break;
+				case 68: //优秀
+					point.excellent();
+					point.checked();
+					break;
+				case 70: //样卷
+					point.sample();
+					point.checked();
+					break;
+				case 69: //空的卷
+					point.blanked();
+					point.checked();
+					break;
+				case 67: //异常卷
+					//point.error();
+					//point.checked();
+					_grading.submitError();
+					break;
 				default:
 					point.checked();
 				}
@@ -80,6 +103,34 @@
 				$.extend(true,thisModel,{},_pointModel);
 				onShortKeys(thisModel);
 				point.init(this);
+			};
+			
+			this.submitError = function(){
+				var btns = [{text:'确定',clazz : 'btn-primary',callback:function(){
+					save(score);
+					$(this).trigger('close');
+				}},{text:'放弃',callback:function(){
+					point.actived();
+					$(this).trigger('close');
+				}}];
+				var message =  '<p>确定要提交异常卷吗？</p><div class="input-group"><span class="input-group-addon" id="error-reason">异常原因</span><input type="text" class="form-control" placeholder="请填写此卷的异常原因" aria-describedby="error-reason"></div>';
+				
+				var modal = ui.modal('异常卷处理',message,'md',btns);
+				$(document).off('keyup').on('keyup',function(e){
+					var eventCode = e.which||e.keyCode;
+					if(eventCode == 27){				//退出键
+						point.actived();
+						pointPanelKeyShort();
+						modal.close();
+					}else if(eventCode == 13){	//退出键					
+						//save(score);
+						pointPanelKeyShort();
+						modal.close();						
+					}							
+	            });	
+				
+				modal.find(':text').focus();
+				
 			};
 			
 			this.record = function(){
