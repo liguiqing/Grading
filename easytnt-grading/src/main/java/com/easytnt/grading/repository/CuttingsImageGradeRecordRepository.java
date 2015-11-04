@@ -29,4 +29,5 @@ public interface CuttingsImageGradeRecordRepository extends
 	void saveForBlank(CuttingsImageGradeRecord imageGradeRecord);
 
 	void saveForError(CuttingsImageGradeRecord imageGradeRecord);
+
 }

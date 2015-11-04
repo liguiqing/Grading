@@ -3,6 +3,7 @@
  */
 package com.easytnt.cutimage.disruptor.event;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,17 @@ public class StudentTestPaperAnswerCardEvent {
 	private String rootDir;
 
 	private List<String> filePaths = new ArrayList<>();
+
+	private List<BufferedImage> bufferedImages;
+
+	public List<BufferedImage> getBufferedImages() {
+		return bufferedImages;
+	}
+
+	public StudentTestPaperAnswerCardEvent setBufferedImages(List<BufferedImage> bufferedImages) {
+		this.bufferedImages = bufferedImages;
+		return this;
+	}
 
 	public CuttingsSolution getCuttingsSolution() {
 		return cuttingsSolution;

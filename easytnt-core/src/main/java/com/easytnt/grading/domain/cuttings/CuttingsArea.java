@@ -33,7 +33,7 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 	private ExamPaper paper;
 	
 	private Area areaInPaper;
-	
+
 	private List<PositionOfItemInArea> itemAreas;
 	
 	private List<Section> sections;
@@ -46,9 +46,9 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 		this.paper = paper;
 		this.areaInPaper = areaInPaper;
 	}
-	
+
 	public void addItemDefinition(PositionOfItemInArea itemArea) {
-		if(this.itemAreas == null )
+		if (this.itemAreas == null)
 			this.itemAreas = new ArrayList<>();
 		this.itemAreas.add(itemArea);
 		this.bindSection(itemArea.getSection());
