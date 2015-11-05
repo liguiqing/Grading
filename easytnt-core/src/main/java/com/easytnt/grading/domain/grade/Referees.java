@@ -114,8 +114,8 @@ public class Referees {
 		return this.updateRecord();
 	}
 
-	public CuttingsImageGradeRecord dealError() {
-		this.recordingNow.errors();
+	public CuttingsImageGradeRecord dealError(String reason) {
+		this.recordingNow.errors(reason);
 		return this.updateRecord();
 	}
 	

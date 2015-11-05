@@ -83,10 +83,10 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	
 	@Override
 	@Transactional
-	public void itemError(Long taskId, Referees referees) throws Exception {
+	public void itemError(Long taskId, Referees referees,String reason) throws Exception {
 		GradeTask task = taskRepository.load(taskId);
 		referees = task.getAssignedTo();
-		CuttingsImageGradeRecord imageGradeRecord  = referees.dealError();
+		CuttingsImageGradeRecord imageGradeRecord  = referees.dealError(reason);
 		logger.debug("Scoring ", imageGradeRecord);
 		task.increment();
 		// 数据持久化处理

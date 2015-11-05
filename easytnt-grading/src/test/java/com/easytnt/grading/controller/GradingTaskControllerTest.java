@@ -131,5 +131,29 @@ public class GradingTaskControllerTest extends AbstractControllerTest {
 				.accept(MediaType.APPLICATION_JSON).content(content))
 				.andExpect(jsonPath("$.status.success", is(Boolean.TRUE)));
 	}
+	
+	@Test
+	public void testOnError()throws Exception{
+		assertNotNull(controller);
+		Referees r1 = mock(Referees.class);
+		when(refereesService.getCurrentReferees()).thenReturn(r1);
+		doNothing().when(taskService).itemError(isA(Long.class), isA(Referees.class),isA(String.class));
+		
+		this.mvc.perform(post("/task/1/error").contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON).param("reason", "reason"))
+				.andExpect(jsonPath("$.status.success", is(Boolean.TRUE)));
+	}
+	
+	@Test
+	public void testOnBlank()throws Exception{
+		assertNotNull(controller);
+		Referees r1 = mock(Referees.class);
+		when(refereesService.getCurrentReferees()).thenReturn(r1);
+		doNothing().when(taskService).itemBlank(isA(Long.class), isA(Referees.class));
+		
+		this.mvc.perform(post("/task/1/blank").contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.status.success", is(Boolean.TRUE)));
+	}
 
 }

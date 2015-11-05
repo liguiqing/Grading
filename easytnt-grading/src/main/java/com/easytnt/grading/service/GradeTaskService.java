@@ -35,7 +35,7 @@ public interface GradeTaskService extends EntityService<GradeTask, Long> {
 	void itemBlank(Long taskId, Referees referees)
 			throws Exception;
 
-	void itemError(Long taskId, Referees referees)
+	void itemError(Long taskId, Referees referees,String reason)
 			throws Exception;
 
 }

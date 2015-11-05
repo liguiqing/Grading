@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.ui.Menu;
@@ -149,21 +150,21 @@ public class GradingTaskController {
 	}
 	
 	@RequestMapping(value = "/{taskId}/error", method = RequestMethod.POST)
-	public ModelAndView onError(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
-		logger.debug("URL /task/{}/error Method POST", taskId, scores.toString());
+	public ModelAndView onError(@PathVariable Long taskId,@RequestParam String reason) throws Exception {
+		logger.debug("URL /task/{}/error Method POST,reason is {}", taskId,reason);
 
 		Referees referees = refereesService.getCurrentReferees();
-		taskService.itemScoring(taskId, referees, scores);
+		taskService.itemError(taskId, referees,reason);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 	
 	
 	@RequestMapping(value = "/{taskId}/blank", method = RequestMethod.POST)
-	public ModelAndView onBlank(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
-		logger.debug("URL /task/{}/error Method POST", taskId, scores.toString());
+	public ModelAndView onBlank(@PathVariable Long taskId) throws Exception {
+		logger.debug("URL /task/{}/error Method POST", taskId);
 
 		Referees referees = refereesService.getCurrentReferees();
-		taskService.itemScoring(taskId, referees, scores);
+		taskService.itemBlank(taskId, referees);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 

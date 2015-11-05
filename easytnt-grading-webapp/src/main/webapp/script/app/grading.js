@@ -18,6 +18,26 @@
 			});
 		};
 		
+		function errorPaper(reason){
+			ajaxWrapper.postJson(getTaskUrl()+"/error?reason="+reason,{},{beforeMsg:{tipText:"",show:false},successMsg:{tipText:"异常卷保存成功",show:true}},
+					function(m){
+				if(m.status.success){
+					_grading.nextPaper();
+					_grading.incrementTask();
+				}
+			});			
+		};
+		
+		function blankPaper(){
+			ajaxWrapper.postJson(getTaskUrl()+"/reason",{},{beforeMsg:{tipText:"",show:false},successMsg:{tipText:"空白卷保存成功",show:true}},
+					function(m){
+				if(m.status.success){
+					_grading.nextPaper();
+					_grading.incrementTask();
+				}
+			});			
+		};
+		
 		//键盘定义
 		function pointPanelKeyShort(){
 			$(document).off('keyup').on('keyup',function(e){
@@ -107,7 +127,10 @@
 			
 			this.submitError = function(){
 				var btns = [{text:'确定',clazz : 'btn-primary',callback:function(){
-					save(score);
+					var reason = modal.find(':text').val();
+					errorPaper(reason);
+					point.actived();
+					pointPanelKeyShort();
 					$(this).trigger('close');
 				}},{text:'放弃',callback:function(){
 					point.actived();
@@ -119,6 +142,8 @@
 				$(document).off('keyup').on('keyup',function(e){
 					var eventCode = e.which||e.keyCode;
 					if(eventCode == 27){				//退出键
+						var reason = modal.find(':text').val();
+						errorPaper(reason);
 						point.actived();
 						pointPanelKeyShort();
 						modal.close();
@@ -184,6 +209,9 @@
 					}
 				}).on('click','button:last',function(){
 					point.reset();
+				});
+				$('div.point-panel-marking div.panel-footer .form-group').on('click','button:last',function(e){
+					_grading.submitError();
 				});
 			};
 			

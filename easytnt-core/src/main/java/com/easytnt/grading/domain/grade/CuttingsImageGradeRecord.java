@@ -46,6 +46,8 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 	private boolean valid = Boolean.TRUE;
 	
 	private String scorestr;
+	
+	private String memo;
 
 	public CuttingsImageGradeRecord(Referees referees, CuttingsImage recordFor) {
 		this.referees = referees;
@@ -64,7 +66,7 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 	 */
 	public Float calScore() {
 		Float score = 0f;
-		if(this.isFinished()) {
+		if(this.isFinished() && this.isValid()) {
 			for(ItemGradeRecord itemRecord:this.itemRecords) {
 				score += itemRecord.getScored();
 			}
@@ -157,7 +159,8 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 	/**
 	 * 记录为异常
 	 */
-	public void errors() {
+	public void errors(String reason) {
+		this.memo = reason;
 		this.invalid();//TODO
 	}
 	
@@ -258,4 +261,20 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 		this.scorestr = scorestr;
 	}
 
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 }
