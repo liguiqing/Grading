@@ -38,7 +38,6 @@
 						_grading.record();
 					}
 					break;
-					
 				default:
 					point.checked();
 				}
