@@ -156,5 +156,15 @@ public class GradingTaskController {
 		taskService.itemScoring(taskId, referees, scores);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
+	
+	
+	@RequestMapping(value = "/{taskId}/blank", method = RequestMethod.POST)
+	public ModelAndView onBlank(@RequestBody Float[] scores, @PathVariable Long taskId) throws Exception {
+		logger.debug("URL /task/{}/error Method POST", taskId, scores.toString());
+
+		Referees referees = refereesService.getCurrentReferees();
+		taskService.itemScoring(taskId, referees, scores);
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
 
 }

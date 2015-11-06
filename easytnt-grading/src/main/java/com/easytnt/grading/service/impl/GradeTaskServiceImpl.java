@@ -68,6 +68,30 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		// 数据持久化处理
 		gradeRecordRepository.saveForScoring(imageGradeRecord);
 	}
+	
+	@Override
+	@Transactional
+	public void itemBlank(Long taskId, Referees referees) throws Exception {
+		GradeTask task = taskRepository.load(taskId);
+		referees = task.getAssignedTo();
+		CuttingsImageGradeRecord imageGradeRecord  = referees.dealBlank();
+		logger.debug("Scoring ", imageGradeRecord);
+		task.increment();
+		// 数据持久化处理
+		gradeRecordRepository.saveForBlank(imageGradeRecord);
+	}
+	
+	@Override
+	@Transactional
+	public void itemError(Long taskId, Referees referees) throws Exception {
+		GradeTask task = taskRepository.load(taskId);
+		referees = task.getAssignedTo();
+		CuttingsImageGradeRecord imageGradeRecord  = referees.dealError();
+		logger.debug("Scoring ", imageGradeRecord);
+		task.increment();
+		// 数据持久化处理
+		gradeRecordRepository.saveForError(imageGradeRecord);
+	}
 
 	@Override
 	@Transactional

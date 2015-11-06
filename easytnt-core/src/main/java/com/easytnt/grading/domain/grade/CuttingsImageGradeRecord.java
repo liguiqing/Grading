@@ -147,6 +147,20 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 		return this.id;
 	}
 	
+	/**
+	 * 记录为空白
+	 */
+	public void blanks() {
+		this.invalid();//TODO
+	}
+
+	/**
+	 * 记录为异常
+	 */
+	public void errors() {
+		this.invalid();//TODO
+	}
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(this.referees).append(this.recordFor).toHashCode();

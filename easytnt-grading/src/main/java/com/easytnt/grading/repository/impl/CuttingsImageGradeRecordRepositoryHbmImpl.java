@@ -27,31 +27,32 @@ import com.easytnt.grading.repository.CuttingsImageGradeRecordRepository;
  * @version 1.0
  **/
 @Repository
-public class CuttingsImageGradeRecordRepositoryHbmImpl extends HibernateRepository<CuttingsImageGradeRecord, Long>
-		implements CuttingsImageGradeRecordRepository {
+public class CuttingsImageGradeRecordRepositoryHbmImpl extends
+		HibernateRepository<CuttingsImageGradeRecord, Long> implements
+		CuttingsImageGradeRecordRepository {
 
 	@Override
 	public void saveForFetching(CuttingsImageGradeRecord record) {
 		String querySql = "SELECT 1 FROM getpaper WHERE teacheroid= ? AND itemid=? and paperid=? and imagepath = ?";
-		Query query = getCurrentSession().createSQLQuery(querySql);
+		Query query =  getCurrentSession().createSQLQuery(querySql);
 		int index = 0;
 		query.setLong(index++, record.getReferees().getId());
 		query.setLong(index++, record.getRecordFor().definedOf().getId());
 		query.setLong(index++, record.getRecordFor().definedOf().getPaper().getPaperId());
 		query.setString(index++, record.getRecordFor().getImgPath());
-		if (query.list().size() <= 0) {
+		if(query.list().size() <= 0) {
 			String insetSql = "INSERT INTO getpaper (paperid,	kemuoid, virtualroomid,studentoid, itemid, imagepath,pingci,teacheroid,scored,getpaperdatetime) "
 					+ "select paperid,kemuoid,roomid,studentoid,itemid,imagepath,? ,?,0,? from paperimport where imagepath = ?";
-			query = getCurrentSession().createSQLQuery(insetSql);
+			query =  getCurrentSession().createSQLQuery(insetSql);
 			index = 0;
 			query.setInteger(index++, record.getPinci());
 			query.setLong(index++, record.getReferees().getId());
 			query.setTimestamp(index++, record.getStartTime());
 			query.setString(index, record.getRecordFor().getImgPath());
 			query.executeUpdate();
-
+			
 			String updatePaperimport = "update paperimport set pingci=?, getmark=0 where  itemid=? and paperid=? and imagepath = ?";
-			query = getCurrentSession().createSQLQuery(updatePaperimport);
+			query =  getCurrentSession().createSQLQuery(updatePaperimport);
 			index = 0;
 			query.setInteger(index++, record.getPinci());
 			query.setLong(index++, record.getRecordFor().definedOf().getId());
@@ -64,24 +65,40 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends HibernateReposito
 
 	@Override
 	public void saveForScoring(CuttingsImageGradeRecord record) {
+		saveGradeRecord(record,"Y");
+	}
+	
+
+	@Override
+	public void saveForBlank(CuttingsImageGradeRecord record) {
+		saveGradeRecord(record,"B");
+	}
+
+	@Override
+	public void saveForError(CuttingsImageGradeRecord record) {
+		saveGradeRecord(record,"E");
+	}
+	
+	private void saveGradeRecord(CuttingsImageGradeRecord record,String markStr) {
 		String insertScoreinfolog = "INSERT INTO scoreinfolog (paperid, virtualroomid, studentoid, itemid, score, postdatetime, "
 				+ " teacheroid, scorestr, pingci, spenttime, teacherip, memo, markstr, delmark, teachermark, kemuoid, papertype, id ) "
-				+ " SELECT paperid,roomid,studentoid,itemid,?,?,?,?,?,?,'teacherip','memo','Y',0,'Y',?,'papertype',? FROM paperimport where imagepath = ? ";
-		Query query = getCurrentSession().createSQLQuery(insertScoreinfolog);
+				+ " SELECT paperid,roomid,studentoid,itemid,?,?,?,?,?,?,'teacherip','memo',?,0,'Y',?,'papertype',? FROM paperimport where imagepath = ? ";
+		Query query =  getCurrentSession().createSQLQuery(insertScoreinfolog);
 		int index = 0;
-		query.setFloat(index++, record.calScore());
+		query.setFloat(index++,record.calScore());
 		query.setTimestamp(index++, record.getFinishTime());
-		query.setLong(index++, record.getReferees().getId());
+		query.setLong(index++,record.getReferees().getId());
 		query.setString(index++, record.getScorestr());
 		query.setInteger(index++, record.getPinci());
 		query.setInteger(index++, record.spendTime());
+		query.setString(index++, markStr);
 		query.setLong(index++, record.getRecordFor().definedOf().subjectOf().getId());
 		query.setLong(index++, record.genId());
 		query.setString(index, record.getRecordFor().getImgPath());
 		query.executeUpdate();
-
+		
 		String updateGetpaper = "update getpaper set pingci=?,scored=1 where teacheroid= ? AND itemid=? and paperid=? and imagepath = ?";
-		query = getCurrentSession().createSQLQuery(updateGetpaper);
+		query =  getCurrentSession().createSQLQuery(updateGetpaper);
 		index = 0;
 		query.setInteger(index++, record.getPinci());
 		query.setLong(index++, record.getReferees().getId());
@@ -89,9 +106,9 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends HibernateReposito
 		query.setLong(index++, record.getRecordFor().definedOf().getPaper().getPaperId());
 		query.setString(index++, record.getRecordFor().getImgPath());
 		query.executeUpdate();
-
+		
 		String updatePaperimport = "update paperimport set pingci=?, getmark=1 where  itemid=? and paperid=? and imagepath = ?";
-		query = getCurrentSession().createSQLQuery(updatePaperimport);
+		query =  getCurrentSession().createSQLQuery(updatePaperimport);
 		index = 0;
 		query.setInteger(index++, record.getPinci());
 		query.setLong(index++, record.getRecordFor().definedOf().getId());
@@ -105,20 +122,20 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends HibernateReposito
 		Referees referees = task.getAssignedTo();
 		CuttingsArea area = task.getGenBy();
 		String sql = "SELECT itemid,imagepath,getpaperdatetime,pingci FROM getpaper WHERE teacheroid=? AND itemid = ? AND scored=0;";
-		Query query = getCurrentSession().createSQLQuery(sql);
+		Query query =  getCurrentSession().createSQLQuery(sql);
 		int index = 0;
 		query.setLong(index++, referees.getId());
 		query.setLong(index++, area.getId());
 		List result = query.list();
-		if (result != null && result.size() > 0) {
-			Object[] row = (Object[]) result.get(0);
+		if(result != null && result.size() > 0) {
+			Object[] row = (Object[])result.get(0);
 			CuttingsImage image = new CuttingsImage(task.getGenBy());
-			image.setImageId(Long.parseLong(row[0] + ""));
-			image.setImgPath(row[1] + "");
-			image.setUuid(row[1] + "");
+			image.setImageId(Long.parseLong(row[0]+""));
+			image.setImgPath(row[1]+"");
+			image.setUuid(row[1]+"");
 			CuttingsImageGradeRecord gradeRecord = image.createRecord(referees);
-			gradeRecord.setStartTime(((Timestamp) row[2]));
-			gradeRecord.setPinci((int) row[3]);
+			gradeRecord.setStartTime(((Timestamp)row[2]));
+			gradeRecord.setPinci((int)row[3]);
 			return gradeRecord;
 		}
 		return null;

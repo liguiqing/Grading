@@ -17,7 +17,8 @@ import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;
 
-/**
+
+/** 
  * <pre>
  * 切割块定义
  * </pre>
@@ -25,25 +26,23 @@ import com.easytnt.grading.domain.share.Area;
  * @author 李贵庆 2015年10月18日
  * @version 1.0
  **/
-public class CuttingsArea implements ValueObject<CuttingsArea> {
+public class CuttingsArea implements ValueObject<CuttingsArea>{
 
 	private Long id;
-
+	
 	private ExamPaper paper;
-
+	
 	private Area areaInPaper;
 
 	private List<PositionOfItemInArea> itemAreas;
-
+	
 	private List<Section> sections;
-
-	private int requiredPinci = 1; // 必须执行的评判次数
-
-	private Float maxerror; // 最大误差值
-
-	private int answerCardImageIdx;// 答题卡图片位置
-
-	public CuttingsArea(ExamPaper paper, Area areaInPaper) {
+	
+	private int requiredPinci = 1; //必须执行的评判次数
+	
+	private Float maxerror; //最大误差值
+	
+	public CuttingsArea(ExamPaper paper,Area areaInPaper) {
 		this.paper = paper;
 		this.areaInPaper = areaInPaper;
 	}
@@ -54,19 +53,19 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 		this.itemAreas.add(itemArea);
 		this.bindSection(itemArea.getSection());
 	}
-
+	
 	public void bindSection(Section section) {
-		if (this.sections == null)
+		if(this.sections == null)
 			this.sections = new ArrayList<>();
-		this.sections.add(section);
+		this.sections.add(section);	
 	}
-
+	
 	public Subject subjectOf() {
-		if (this.sections != null && this.sections.size() > 0)
+		if(this.sections != null && this.sections.size() > 0)
 			return this.sections.get(0).getSubject();
 		return null;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(this.id).toHashCode();
@@ -85,15 +84,15 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 	public String toString() {
 		return new ToStringBuilder(this).append(this.paper).append(this.areaInPaper).build();
 	}
-
+	
 	@Override
 	public boolean sameValueAs(CuttingsArea other) {
 		return this.equals(other);
 	}
-
-	// 以下功能为ORM或者自动构造使用，非此慎用
-	public CuttingsArea() {
-	}
+	
+	
+	//以下功能为ORM或者自动构造使用，非此慎用
+	public CuttingsArea() {}
 
 	public Long getId() {
 		return id;
@@ -118,7 +117,7 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 	public void setAreaInPaper(Area areaInPaper) {
 		this.areaInPaper = areaInPaper;
 	}
-
+	
 	public List<Section> getSections() {
 		return sections;
 	}
@@ -143,12 +142,6 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 		this.maxerror = maxerror;
 	}
 
-	public int getAnswerCardImageIdx() {
-		return answerCardImageIdx;
-	}
-
-	public void setAnswerCardImageIdx(int answerCardImageIdx) {
-		this.answerCardImageIdx = answerCardImageIdx;
-	}
-
 }
+
+

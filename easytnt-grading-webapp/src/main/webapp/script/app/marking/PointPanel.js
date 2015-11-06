@@ -37,7 +37,7 @@
 											}
 										}																				
 									}
-									onlyNumber(this._input);
+									//onlyNumber(this._input);
 									// 打分框只能输入一个小数点
 									this._input.value = this._input.value.replace(/^(\-)*(\d+)\.(\d).*$/,'$1$2.$3'); 
 									//是否在有效值范围内
@@ -71,6 +71,12 @@
 								},
 								valueOf:function(){
 									return this._input.value  * 1;
+								},
+								autoFill:function(score){
+									if(score < 0)
+										this._input.value = 0;
+									else
+										this._input.value = this.dataTo;
 								}
 						};
 						$apoint.on('hidden.bs.dropdown', function () {
@@ -137,6 +143,10 @@
 					});
 					this.point = this.points[0];
 					this.actived();
+				},
+				lastFocus:function(){
+					this.points[this.points.length-1].actived();
+					this.points[this.points.length-1]._input.focus();
 				}
 		};
 		
@@ -183,6 +193,37 @@
 			this.reset = function() {
 				PointGroup.reset();
 			};
+			
+			this.fullScore = function(){
+				$.each(PointGroup.points,function(){
+					this.autoFill(1);
+				});
+				PointGroup.lastFocus();
+			};
+			
+			this.zeroScore = function(){
+				$.each(PointGroup.points,function(){
+					this.autoFill(-1);
+				});
+				PointGroup.lastFocus();
+			};
+			
+			this.excellent = function(){
+				
+			};
+			
+			this.sample = function(){
+				
+			};
+		
+			this.blanked = function(){
+				
+			};
+		
+			this.error = function(){
+				
+			};
+		
 			this.total = function(){
 				var total = {value:0,points:[],onlyValues:function(){
 					var values= [];

@@ -102,6 +102,24 @@ public class Referees {
 	 */
 	public CuttingsImageGradeRecord scoringForItems(Float[] scores) {
 		this.recordingNow.scoringForItems(scores);
+		return updateRecord();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public CuttingsImageGradeRecord dealBlank() {
+		this.recordingNow.blanks();
+		return this.updateRecord();
+	}
+
+	public CuttingsImageGradeRecord dealError() {
+		this.recordingNow.errors();
+		return this.updateRecord();
+	}
+	
+	private CuttingsImageGradeRecord updateRecord() {
 		this.recordingNow.finish();
 		this.lastFinishedRecord  = this.recordingNow;
 		return this.recordingNow;
@@ -178,5 +196,6 @@ public class Referees {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 }
 
