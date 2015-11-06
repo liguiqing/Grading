@@ -5,6 +5,7 @@
 		var obj = function() {
 			var me = this;
 			this.render = function() {
+				console.log("ddddd")
 				//浏览器自适应高度
 				this.setContainerHeight();
 				$(window).resize(function() {

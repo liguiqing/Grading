@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx" 
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
             http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -16,17 +14,13 @@
             http://www.springframework.org/schema/jee 
             http://www.springframework.org/schema/jee/spring-jee.xsd">
 
-
-	<bean id="mockDispatcherStrategy" class="com.easytnt.grading.dispatcher.impl.SinglePaperPriorDispatcherStrategy">
-		<constructor-arg type="int" value="1"></constructor-arg>
-	</bean>
-
-	<bean id="mockDispatcherConcreator" class="com.easytnt.grading.mock.dispatcher.DispatcherConcreator" init-method="initMethod">
-	    <property name="dispathcerManager" ref="dispathcerManager"></property>
-	    <property name="dispatcherStrategy" ref="mockDispatcherStrategy"></property>
-	</bean>
-	<bean id="mockGradeTaskRepository" class="com.easytnt.grading.mock.respository.GradeTaskRepositoryMocker" init-method="initMethod"></bean>
-	<bean id="mockRefereesRepository" class="com.easytnt.grading.mock.respository.RefereesRepositoryMocker" init-method="initMethod"></bean>
-	
+	<!-- <bean id="mockDispatcherStrategy" class="com.easytnt.grading.dispatcher.impl.SinglePaperPriorDispatcherStrategy"> 
+		<constructor-arg type="int" value="1"></constructor-arg> </bean> <bean id="mockDispatcherConcreator" 
+		class="com.easytnt.grading.mock.dispatcher.DispatcherConcreator" init-method="initMethod"> 
+		<property name="dispathcerManager" ref="dispathcerManager"></property> <property 
+		name="dispatcherStrategy" ref="mockDispatcherStrategy"></property> </bean> 
+		<bean id="mockGradeTaskRepository" class="com.easytnt.grading.mock.respository.GradeTaskRepositoryMocker" 
+		init-method="initMethod"></bean> <bean id="mockRefereesRepository" class="com.easytnt.grading.mock.respository.RefereesRepositoryMocker" 
+		init-method="initMethod"></bean> -->
 
 </beans>
