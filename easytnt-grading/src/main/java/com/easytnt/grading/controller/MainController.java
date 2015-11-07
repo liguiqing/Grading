@@ -7,6 +7,7 @@
 
 package com.easytnt.grading.controller;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.easytnt.commons.ui.Menu;
+import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 
 /** 
@@ -33,6 +36,38 @@ import com.easytnt.commons.web.view.ModelAndViewFactory;
 @Controller
 public class MainController {
     private static Logger logger = LoggerFactory.getLogger(MainController.class);
+    
+    private static MenuGroup topRightMenuGroup = MenuGroup.createMenuGroup();
+    
+    private static MenuGroup workerTopMenuGroup = MenuGroup.createMenuGroup();
+    
+    private static MenuGroup rightMenuGroup = MenuGroup.createMenuGroup();
+    
+    private static MenuGroup configMenuGroup = MenuGroup.createMenuGroup();
+    
+    private static MenuGroup monitorMenuGroup = MenuGroup.createMenuGroup();
+    
+    public MainController() {
+    	topRightMenuGroup.appendMenu(new Menu("退    出","logout"));
+    	
+    	workerTopMenuGroup.appendMenu(new Menu("退    出","logout"));
+    	
+    	rightMenuGroup.appendMenu(new Menu("首    页","home"));
+    	rightMenuGroup.appendMenu(new Menu("评    卷","task"));
+    	rightMenuGroup.appendMenu(new Menu("进度监控","monitor?page=subject&index=1"));
+    	rightMenuGroup.appendMenu(new Menu("评卷设置","config?page=subject&index=1"));
+    	rightMenuGroup.appendMenu(new Menu("个人中心","infocenter?page=subject&index=1"));
+    	
+    	configMenuGroup.appendMenu(new Menu("定义考试","confing?page=test&index=0"));
+    	configMenuGroup.appendMenu(new Menu("科目设置","confing?page=subject&index=1"));
+    	configMenuGroup.appendMenu(new Menu("导入考生","confing?page=examinee&index=2"));
+    	configMenuGroup.appendMenu(new Menu("评卷老师管理","confing?page=worker&index=3"));
+    	
+    	monitorMenuGroup.appendMenu(new Menu("评卷进度","monitor?page=progress&index=0"));
+    	monitorMenuGroup.appendMenu(new Menu("评卷教师监控","monitor?page=worker&index=1"));
+    	monitorMenuGroup.appendMenu(new Menu("小组一致性","monitor?page=team&index=2"));
+    	monitorMenuGroup.appendMenu(new Menu("自身稳定性","monitor?page=self&index=3"));
+    }
 	
 	@RequestMapping(value="/index",method=RequestMethod.GET)
 	public ModelAndView onIndex()throws Exception{
@@ -40,20 +75,27 @@ public class MainController {
 		
 		return ModelAndViewFactory.newModelAndViewFor("/index").build();
 	}
-//	
-//	@RequestMapping(value="/marking/{l}")
-//	public ModelAndView onMark(@PathVariable String l)throws Exception{
-//		logger.debug("URL /mark Method Get");
-//		if("0".equals(l))
-//			l="";
-//		return ModelAndViewFactory.newModelAndViewFor("marking/layout"+l).build();
-//	}
-//	
-//	@RequestMapping(value="/marking",method=RequestMethod.POST)
-//	public ModelAndView onPostMark(@RequestBody Map model)throws Exception{
-//		logger.debug("URL /mark Method POST");
-//		logger.debug("model {}" ,model);
-//		return ModelAndViewFactory.newModelAndViewFor("marking/layout2").build();
-//	}
+
+	@RequestMapping(value="/config",method=RequestMethod.GET)
+	public ModelAndView onConfig(@RequestParam String page,@RequestParam int index)throws Exception{
+		logger.debug("URL /config Method Get");
+		configMenuGroup.activedMenuByIndex(index);
+		rightMenuGroup.activedMenuByIndex(3);
+		return ModelAndViewFactory.newModelAndViewFor("/config")
+				.with("menus2", topRightMenuGroup.getMenus())
+				.with("rightSideMenu", rightMenuGroup.getMenus())
+				.with("menus3", configMenuGroup.getMenus()).build();
+	}
+	
+	@RequestMapping(value="/monitor",method=RequestMethod.GET)
+	public ModelAndView onMonitor(@RequestParam String page,@RequestParam int index)throws Exception{
+		logger.debug("URL /config Method Get");
+		monitorMenuGroup.activedMenuByIndex(index);
+		rightMenuGroup.activedMenuByIndex(2);
+		return ModelAndViewFactory.newModelAndViewFor("/config")
+				.with("menus2", topRightMenuGroup.getMenus())
+				.with("rightSideMenu", rightMenuGroup.getMenus())
+				.with("menus3", monitorMenuGroup.getMenus()).build();
+	}
 }
 

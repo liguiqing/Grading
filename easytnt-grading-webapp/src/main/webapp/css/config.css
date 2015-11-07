@@ -1,0 +1,63 @@
+.config-panel-container{
+	padding-top: 15px;
+    padding-left: 60px;
+    padding-right: 0px;
+
+}
+
+.config-panel{
+	 background: #c5c5c5;
+}
+
+.config-panel .navbar-nav  {
+	 
+}
+
+.config-panel .navbar-nav a{
+	 font-size:14pt;
+	 color:#fff;
+}
+
+.config-panel .navbar-nav a:HOVER,.config-panel .config-actived a{
+	 color:#000;
+}
+
+.config-wrapper{
+	padding:50px 30px 0 30px;
+}
+
+.config-wrapper .table{
+	text-align: center;
+	border: 1px solid #000;
+}
+
+
+.config-wrapper .table-bordered>tbody>tr>td, .config-wrapper .table-bordered>thead>tr>th{
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.config-wrapper .table-striped>tbody>tr:nth-of-type(odd){
+	background:#d9edf7;
+}
+.config-wrapper .table-striped>tbody>tr{
+	background: #5bc0de;
+}
+
+.config-wrapper .icon-ok{
+	color:#5cb85c;
+}
+
+.config-wrapper .icon-remove{
+	color:#d9534f;
+}
+
+.subject-container{
+	overflow:auto;
+}
+
+.subject-container .subject-editor{
+	text-align: center;
+}
+
+
