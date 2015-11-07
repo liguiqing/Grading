@@ -433,7 +433,7 @@
 		}
 		
 		var o ={
-				newInstance : function(){
+				newInstance : function(target){
 					return new Selection(target);
 				}
 		};
