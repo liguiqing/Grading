@@ -47,7 +47,7 @@ html,body{
 .element {
 	position:absolute;
 	z-index:100;
-	border:1px solid #2a8ee1;
+	border:2px solid #2a8ee1;
 }
 
 .span-btn {

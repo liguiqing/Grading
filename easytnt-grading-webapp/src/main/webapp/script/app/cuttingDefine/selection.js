@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery',"easyui" ];
-	define(deps, function($,easyui) {
+	var deps = [ 'jquery',"easyui", "./element" ];
+	define(deps, function($,easyui, Element) {
 		//选区组件
 		function Selection(target) {
 			var selection = this;
@@ -15,8 +15,28 @@
 			
 			//目标控件
 			selection.target = target;
+			
+			selection.key_del_enable = function() {
+				
+				$('body').keyup(function(e) {
+					//获取客户点击的按键
+					var e=e||event;
+					var keyCode = e.keyCode || e.which || e.charCode;
+					if(keyCode == 46) {
+						if(selection.currentElement) {
+							selection.currentElement.del();
+						}
+					}
+				});
+				
+			}
+			
 			//初始化控件事件
 			selection.init = function() {
+				
+				// 监听按键，点击删除按钮删除用户选择的element
+				selection.key_del_enable();
+				
 				//为图片内容div添加事件
 				$(selection.target).mousedown(function(e) {
 					selection.showSize = true;
@@ -72,14 +92,12 @@
 						var currentX = position.x;///相对于屏幕的位置，包括滚动条
 						var currentY = position.y;
 						
-						// 如果用户直接点击鼠标没有拖动，在鼠标按下时就创建了该元素，但是该元素此时宽度为0，
+						// 如果用户直接点击鼠标没有拖动，在鼠标按下时就创建了该元素
 						// 在鼠标移动过程中才对该元素宽高进行控制，所以，需要将该无效元素去掉
-						if($(selection.currentElement.view).width() == 0) {
-							selection.elements.remove(selection.currentElement);
-							//恢复鼠标形状
-							$(target).css({
-								cursor : 'default'
-							});
+						if($(selection.currentElement.view).width() < 50) {
+							if(selection.currentElement) {
+								selection.currentElement.del();
+							}
 							return;
 						}
 						
@@ -151,6 +169,7 @@
 			selection.select_element = function(element) {
 				selection.show_resize_points(selection.currentElement);
 				selection.show_msg(selection.currentElement);
+				selection.show_size();
 			};
 			
 			//显示八个助托点，方便改变元素大小
@@ -196,7 +215,7 @@
 			//添加一个元素到内容区中
 			selection.add_element = function() {
 				
-				var element = new Element();
+				var element = Element.newElement();
 				
 				$(selection.target).append($(element.view));
 				

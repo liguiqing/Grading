@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', "easyui" ];
-	define(deps, function($, easyui) {
+	var deps = [ 'jquery', "easyui", "./resize" ];
+	define(deps, function($, easyui, Resize) {
 		function Element() {
 			var element = this;
 
@@ -12,7 +12,22 @@
 			element.make_element_editable = function() {
 				element.make_draggable();
 				element.make_resizable();
+				
 			};
+			
+			element.del = function() {
+				//删除elements列表中的当前元素
+				selection.elements.remove(element);
+				//删除页面上的无效dom元素
+				$(element.view).remove();
+				//隐藏无效dom的宽高tip
+				$('.size').css({display : 'none'});
+				
+				//恢复鼠标形状
+				$(selection.target).css({
+					cursor : 'default'
+				});
+			}
 
 			// 让元素可以拖动
 			element.make_draggable = function() {
@@ -148,7 +163,8 @@
 					.append($(leftUp))
 					.append($(rightDown));
 				
-				var resize = new Resize(element)
+				
+				var resize = Resize.newInstance(element)
 					.left(left)
 					.right(right)
 					.up(up)
@@ -272,7 +288,7 @@
 			var div = document.createElement('div');
 			$(div).addClass('element');
 
-			$(div)[0].ondragstart = prevent_drag;
+			$(div)[0].ondragstart = function() {return false;};
 
 			return div;
 		}

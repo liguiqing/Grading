@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="${request.contextPath}/static/css/smartWizard/smart_wizard_vertical.css"/>
     <#--且过图片的css样式 -->
     <link rel="stylesheet" href="${request.contextPath}/static/css/cutting/common.css"/>
-    <link rel="stylesheet" href="${request.contextPath}/static/css/smartWizard/smart_wizard_vertical.css"/>
+    <link rel="stylesheet" href="${request.contextPath}/static/css/cutting/resize.css"/>
     
     
     

@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', 'ajaxwrapper', 'dialog',"easyui" ];
-	define(deps, function($, ajaxWrapper, dialog,easyui) {
+	var deps = [ 'jquery', 'ajaxwrapper', 'dialog',"easyui", "./selection"];
+	define(deps, function($, ajaxWrapper, dialog,easyui, Selection) {
 		var obj = function() {
 			var me = this;
 			this.render = function() {
@@ -12,7 +12,28 @@
 					me.setContainerHeight();
 				});
 				kk();
+				
+				entrance();
 			};
+			
+			function entrance() {
+				preventImageDrag();
+				
+				initSelection();
+				
+			}
+			
+			function initSelection() {
+				var selection = Selection.newInstance('.image-content');
+				window.selection = selection;
+				selection.init();
+			}
+			
+			function preventImageDrag() {
+				$(document.images).each(function() {
+					$(this)[0].ondragstart = function() {return false;}
+				});
+			}
 
 			function kk(){
 				$('.testpaperImage').attr("unselectable", "on");

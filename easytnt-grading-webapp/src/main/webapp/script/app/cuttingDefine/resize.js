@@ -582,9 +582,10 @@
 		
 		var o={
 				newInstance : function(target){
-					return Resize(target);
+					return new Resize(target);
 				}
 		};
+		return o;
 
 	});
 })();
