@@ -18,17 +18,18 @@
 			
 			function entrance() {
 				preventImageDrag();
-				
 				initSelection();
 				
 			}
 			
+			//初始化试卷可以创建选区
 			function initSelection() {
 				var selection = Selection.newInstance('.image-content');
 				window.selection = selection;
 				selection.init();
 			}
 			
+			//防止试卷图片被拖动
 			function preventImageDrag() {
 				$(document.images).each(function() {
 					$(this)[0].ondragstart = function() {return false;}

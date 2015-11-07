@@ -16,8 +16,132 @@
 			//目标控件
 			selection.target = target;
 			
-			selection.key_del_enable = function() {
+			//选区一系列初始化操作
+			selection.init = function() {
+				selection.enable_key_del();
+				selection.enable_selection();
+				selection.btn_style();
+				selection.init_event();
+				selection.make_element_data_panel_draggable();
+			};
+			
+			// 元素数据面板可拖动
+			selection.make_element_data_panel_draggable = function() {
+				var dragui = '.panel-heading';
+				var target = '.control-content';
+				$(dragui).mouseover(function() {
+					$(this).css({
+						cursor : 'move'
+					});
+				});
+				$(dragui).mouseout(function() {
+					$(this).css({
+						cursor : 'default'
+					});
+				});
 				
+				$(dragui).mousedown(function(e) {
+					selection.prevent_event(e);
+					$(this).css({
+						cursor : 'move'
+					});
+					
+					var draggable = true;
+					var startX = e.pageX;
+					var startY = e.pageY;
+					$(document).mousemove(function(e) {
+						selection.prevent_event(e);
+						if(draggable) {//可以进行拖动操作
+							var currentX = e.pageX;
+							var currentY = e.pageY;
+
+							var distanceX = currentX - startX;
+							var distanceY = currentY - startY;
+
+							var left = $(target)[0].offsetLeft;
+							var top = $(target)[0].offsetTop;
+
+							$(target).css({
+								left : (left + distanceX) + 'px',
+								top : (top + distanceY) + 'px'
+							});
+
+							startX = currentX;
+							startY = currentY;
+						}
+					});
+
+					$(document).mouseup(function() {
+						selection.prevent_event(e);
+
+						draggable = false;
+
+						$(this).css({
+							cursor : 'move'
+						});
+						$(document).unbind('mousemove');
+						$(document).unbind('mouseup');
+					});
+
+				});
+			}
+			
+			// 阻止事件冒泡
+			selection.prevent_event = function(event) {
+				if (event.stopPropagation) {
+					event.stopPropagation();
+				} else {
+					event.cancelBubble = true;
+				}
+			};
+			
+			//初始化一些题目信息中按钮点击事件
+			selection.init_event = function() {
+				// 点击添加小题按钮触发事件
+				$('.add-btn').click(function() {
+					var element = selection.currentElement;
+					element.show_data(true);
+				});
+				
+				//面板关闭按钮
+				$('.panel-heading .close-btn').click(function() {
+					$('.control-content').css({
+						display : 'none'
+					});
+				});
+			};
+			
+			//加载按钮样式
+			selection.btn_style = function() {
+				selection.add_btn_style();
+			};
+			
+			//添加题目信息框添加小题定义按钮样式
+			selection.add_btn_style = function() {
+				// 添加右侧小题定义样式
+				var addbtn_defaulticon = window.app.rootPath + 'static/css/images/add_default.png';
+				var addbtn_focusicon =window.app.rootPath + 'static/css/images/add_focus.png';
+				selection.btn_mouse_style($('.add-btn'), addbtn_defaulticon, addbtn_focusicon);
+			}
+			
+			// 添加按钮获得和失去焦点样式
+			selection.btn_mouse_style = function(btn, defaulticon, focusicon) {
+				$(btn).mouseover(function() {
+					$(this).css({
+						backgroundImage : 'url(' + focusicon + ')',
+						cursor : 'pointer'
+					});
+				});
+				$(btn).mouseout(function() {
+					$(this).css({
+						backgroundImage : 'url(' + defaulticon + ')',
+						cursor : 'default'
+					});
+				});
+			}
+			
+			// 监听按键，点击删除按钮删除用户选择的element
+			selection.enable_key_del = function() {
 				$('body').keyup(function(e) {
 					//获取客户点击的按键
 					var e=e||event;
@@ -28,15 +152,10 @@
 						}
 					}
 				});
-				
 			}
 			
-			//初始化控件事件
-			selection.init = function() {
-				
-				// 监听按键，点击删除按钮删除用户选择的element
-				selection.key_del_enable();
-				
+			//初始化用户创建选区操作
+			selection.enable_selection = function() {
 				//为图片内容div添加事件
 				$(selection.target).mousedown(function(e) {
 					selection.showSize = true;

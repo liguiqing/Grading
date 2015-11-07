@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', "easyui", "./resize" ];
-	define(deps, function($, easyui, Resize) {
+	var deps = [ 'jquery', "easyui", "./resize", "./sub_question_panel" ];
+	define(deps, function($, easyui, Resize, SubQuestionPanel) {
 		function Element() {
 			var element = this;
 
@@ -15,6 +15,10 @@
 				
 			};
 			
+			//选区删除
+			//1.删除选区列表中对应的当前元素
+			//2.从试卷面板中移除已经画出的选区
+			//3.删除选区左上角显示的宽高提示面板
 			element.del = function() {
 				//删除elements列表中的当前元素
 				selection.elements.remove(element);
@@ -228,11 +232,11 @@
 					var subQuestionName = $(subQuestionPanel).find('input[name=subQuestionNum]').val();
 					var subQuestionScore = $(subQuestionPanel).find('input[name=subQuestionScore]').val();
 					var subQuestionScoreRate = $(subQuestionPanel).find('select').val();
-					var subQuestionScoreInterval = $(subQuestionPanel).find('input[name=subQuestionScoreInterval]').val();
+					var subQuestionScoreRateInterval = $(subQuestionPanel).find('input[name=subQuestionScoreRateInterval]').val();
 					var subQuestionScoreRateVal = $(subQuestionPanel).find('input[name=subQuestionScoreRateVal]').val();
 					
 					var subQuestionData = create_sub_question_data(subQuestionName, subQuestionScore, 
-							subQuestionScoreRate, subQuestionScoreInterval, subQuestionScoreRateVal);
+							subQuestionScoreRate, subQuestionScoreRateInterval, subQuestionScoreRateVal);
 					el.questionData.subQuestionDatas.push(subQuestionData);
 				}
 				
@@ -255,11 +259,14 @@
 				
 				if(display == 'none') {
 					$('.control-content').css({
-						display:'block',
-						left : (x+width) + 'px',
-						top : y + 'px'
+						display:'block'
 					});
 				}
+				
+				$('.control-content').css({
+					left : (x+width) + 'px',
+					top : y + 'px'
+				});
 				
 				// 2清空小题信息，重新加载
 				$('.sub-question-container').empty();
@@ -271,15 +278,22 @@
 				var subQuestionDatas = element.questionData.subQuestionDatas;
 				var subQuestionData = null;
 				for(var i = 0; i <subQuestionDatas.length; i++) {
-					panel = add_sub_question(i);
+					panel = element.add_sub_question(i);
+					
 					subQuestionData = subQuestionDatas[i];
 					// 赋值
 					$(panel.view).find('input[name=subQuestionNum]').val(subQuestionData.subQuestionNum);
 					$(panel.view).find('input[name=subQuestionScore]').val(subQuestionData.subQuestionScore);
 					$(panel.view).find('select').val(subQuestionData.subQuestionScoreRate);
-					$(panel.view).find('input[name=subQuestionScoreRateInterval]').val(subQuestionData.subQuestionScoreInterval);
+					$(panel.view).find('input[name=subQuestionScoreRateInterval]').val(subQuestionData.subQuestionScoreRateInterval);
 					$(panel.view).find('input[name=subQuestionScoreRateVal]').val(subQuestionData.subQuestionScoreRateVal);
 				}
+			};
+			
+			element.add_sub_question = function(index) {
+				var panel = SubQuestionPanel.newInstance(index);
+				$('.sub-question-container').append($(panel.view));
+				return panel;
 			};
 		}
 		
@@ -310,20 +324,19 @@
 		}
 
 		// 创建选中元素的小题数据
-
 		// @param subQuestionNum 小题号
 		// @param subQuestionScore 分值
 		// @param subQuestionScoreRate 给分率 1:连续 0:不连续
-		// @param subQuestionScoreInterval 分值间隔
+		// @param subQuestionScoreRateInterval 分值间隔
 		// @param subQuestionScoreRateVal 给分率所计算的值
-		function create_sub_question_data(subQuestionNum, subQuestionScore, subQuestionScoreRate, subQuestionScoreInterval, subQuestionScoreRateVal) {
+		function create_sub_question_data(subQuestionNum, subQuestionScore, subQuestionScoreRate, subQuestionScoreRateInterval, subQuestionScoreRateVal) {
 			var data = {};
 			data.subQuestionNum = subQuestionNum == undefined ? '' : subQuestionNum;// 小题号
 			data.subQuestionScore = subQuestionScore == undefined ? 10 : subQuestionScore;// 小题分值
 			data.subQuestionScoreRate = subQuestionScoreRate == undefined ? 1 : subQuestionScoreRate;// 默认为连续
-			data.subQuestionScoreInterval = subQuestionScoreInterval == undefined ? 1 : subQuestionScoreInterval;// 默认从1开始
+			data.subQuestionScoreRateInterval = subQuestionScoreRateInterval == undefined ? 1 : subQuestionScoreRateInterval;// 默认从1开始
 			data.subQuestionScoreRateVal = subQuestionScoreRateVal == undefined ? '0,1,2,3,4,5,6,7,8,9,10' : subQuestionScoreRateVal;// 给分率
-																																		// 所对应的分率取值
+
 			return data;
 		}
 		

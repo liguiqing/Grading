@@ -3,10 +3,9 @@
  <#import "/taglib/commons/navigation.ftl" as nav> 
   <@nav.navigation menus2=menus2/>
   
-  
 <#include "./CuttingDefineUI.ftl">
-<#include "./QuestionDefineUI.ftl">
- <#import "/taglib/commons/status.ftl" as footer> 
+<#include "QuestionDefineUI.ftl">
+<#import "/taglib/commons/status.ftl" as footer> 
   <@footer.status>
     <ul class="pull-right"></ul>
   </@footer.status>

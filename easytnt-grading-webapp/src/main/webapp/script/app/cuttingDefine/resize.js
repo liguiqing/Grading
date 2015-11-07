@@ -10,22 +10,14 @@
 			resize.left = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.prevent_event(e);
 					selection.record_current_element(resize.target);
-					if(e.stopPropagation) {
-				        e.stopPropagation();
-					} else {
-				        e.cancelBubble = true;
-					}
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
 					var y = position.y;
 					$(document).mousemove(function(e) {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						
 						if(isResize) {//开始拖动
 							var position = selection.get_current_position(e);
@@ -52,11 +44,7 @@
 					});
 
 					$(document).mouseup(function() {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
 						$(document).unbind('mouseup');
@@ -69,22 +57,14 @@
 			resize.right = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.prevent_event(e);
 					selection.record_current_element(resize.target);
-					if(e.stopPropagation) {
-				        e.stopPropagation();
-					} else {
-				        e.cancelBubble = true;
-					}
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
 					var y = position.y;
 					$(document).mousemove(function(e) {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						if(isResize) {//开始拖动
 							var position = selection.get_current_position(e);
 							var currentX = position.x;
@@ -106,11 +86,7 @@
 					});
 
 					$(document).mouseup(function() {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
 						$(document).unbind('mouseup');
@@ -123,22 +99,14 @@
 			resize.up = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.prevent_event(e);
 					selection.record_current_element(resize.target);
-					if(e.stopPropagation) {
-				        e.stopPropagation();
-					} else {
-				        e.cancelBubble = true;
-					}
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
 					var y = position.y;
 					$(document).mousemove(function(e) {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						if(isResize) {//开始拖动
 							var position = selection.get_current_position(e);
 							var currentX = position.x;
@@ -165,11 +133,7 @@
 					});
 
 					$(document).mouseup(function() {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
 						$(document).unbind('mouseup');
@@ -182,22 +146,14 @@
 			resize.down = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.prevent_event(e);
 					selection.record_current_element(resize.target);
-					if(e.stopPropagation) {
-				        e.stopPropagation();
-					} else {
-				        e.cancelBubble = true;
-					}
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
 					var y = position.y;
 					$(document).mousemove(function(e) {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						if(isResize) {//开始拖动
 							var position = selection.get_current_position(e);
 							var currentX = position.x;
@@ -219,11 +175,7 @@
 					});
 
 					$(document).mouseup(function() {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
 						$(document).unbind('mouseup');
@@ -236,22 +188,14 @@
 			resize.leftUp = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.prevent_event(e);
 					selection.record_current_element(resize.target);
-					if(e.stopPropagation) {
-				        e.stopPropagation();
-					} else {
-				        e.cancelBubble = true;
-					}
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
 					var y = position.y;
 					$(document).mousemove(function(e) {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						if(isResize) {//开始拖动
 							var position = selection.get_current_position(e);
 							var currentX = position.x;
@@ -297,11 +241,7 @@
 					});
 
 					$(document).mouseup(function() {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
 						$(document).unbind('mouseup');
@@ -314,22 +254,14 @@
 			resize.rightUp = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.prevent_event(e);
 					selection.record_current_element(resize.target);
-					if(e.stopPropagation) {
-				        e.stopPropagation();
-					} else {
-				        e.cancelBubble = true;
-					}
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
 					var y = position.y;
 					$(document).mousemove(function(e) {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						if(isResize) {//开始拖动
 							var position = selection.get_current_position(e);
 							var currentX = position.x;
@@ -364,11 +296,7 @@
 					});
 
 					$(document).mouseup(function() {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
 						$(document).unbind('mouseup');
@@ -381,22 +309,14 @@
 			resize.leftDown = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
-					if(e.stopPropagation) {
-				        e.stopPropagation();
-					} else {
-				        e.cancelBubble = true;
-					}
+					selection.prevent_event(e);
 					selection.record_current_element(resize.target);
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
 					var y = position.y;
 					$(document).mousemove(function(e) {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						if(isResize) {//开始拖动
 							var position = selection.get_current_position(e);
 							var currentX = position.x;
@@ -433,11 +353,7 @@
 					});
 
 					$(document).mouseup(function() {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
 						$(document).unbind('mouseup');
@@ -450,22 +366,14 @@
 			resize.rightDown = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.prevent_event(e);
 					selection.record_current_element(resize.target);
-					if(e.stopPropagation) {
-				        e.stopPropagation();
-					} else {
-				        e.cancelBubble = true;
-					}
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
 					var y = position.y;
 					$(document).mousemove(function(e) {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						if(isResize) {//开始拖动
 							var position = selection.get_current_position(e);
 							var currentX = position.x;
@@ -488,11 +396,7 @@
 					});
 
 					$(document).mouseup(function() {
-						if(e.stopPropagation) {
-					        e.stopPropagation();
-						} else {
-					        e.cancelBubble = true;
-						}
+						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
 						$(document).unbind('mouseup');
