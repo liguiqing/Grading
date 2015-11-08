@@ -86,6 +86,10 @@ html,body{
 	margin-bottom:20px;
 }
 
+td.table-label {
+	width: 60px;
+}
+
 .element {
     box-sizing: content-box;
 }

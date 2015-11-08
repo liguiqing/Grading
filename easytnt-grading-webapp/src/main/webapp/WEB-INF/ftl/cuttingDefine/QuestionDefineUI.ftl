@@ -53,16 +53,16 @@
 					<div class="sub-question">
 						<table class="table no-border">
 							<tr>
-								<td>小题号</td>
+								<td class="table-label">小题号</td>
 								<td><input type="text" name="subQuestionNum"
 									class="form-control"></td>
 							</tr>
 							<tr>
-								<td>分值</td>
+								<td class="table-label">分值</td>
 								<td><input type="text" name="subQuestionScore" class="form-control"></td>
 							</tr>
 							<tr>
-								<td>给分率</td>
+								<td class="table-label">给分率</td>
 								<td>
 									<select name="subQuestionScoreRate" class="subQuestionScoreRate form-control">
 										<option value="1">连续</option>
