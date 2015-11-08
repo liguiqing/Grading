@@ -1,6 +1,6 @@
 <div class="workspace" >
 <aside class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-<div id="cuttingDefineContainer" css="image-container" style="width:100%;background-color:white;overflow:auto;">
+<div id="cuttingDefineContainer" css="image-container" style="width:100%;background-color:white;overflow:auto;position:relative;">
 
 <#-- 且过操作区域-->
 <div class="image-content">

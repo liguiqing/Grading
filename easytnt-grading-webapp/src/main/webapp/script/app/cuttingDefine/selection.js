@@ -25,6 +25,112 @@
 				selection.make_element_data_panel_draggable();
 			};
 			
+			// 监听按键，点击删除按钮删除用户选择的element
+			selection.enable_key_del = function() {
+				$('body').keyup(function(e) {
+					//获取客户点击的按键
+					var e=e||event;
+					var keyCode = e.keyCode || e.which || e.charCode;
+					if(keyCode == 46) {
+						if(selection.currentElement) {
+							selection.currentElement.del();
+						}
+					}
+				});
+			}
+			
+			//初始化用户创建选区操作
+			selection.enable_selection = function() {
+				//为图片内容div添加事件
+				$(selection.target).mousedown(function(e) {
+					selection.showSize = true;
+					var position = selection.get_current_position(e);
+					selection.startX = position.x;///相对于屏幕的位置
+					selection.startY = position.y;
+					
+					//鼠标拖动元素时触发，这时就不再是新建元素，而是拖动元素
+					if(selection.intersect(selection.startX, selection.startY)) {
+						return;
+					}
+					
+					//添加一个元素到内容中
+					selection.add_element();
+					
+					//改变鼠标指针形状
+					$(this).css({
+						cursor : 'crosshair'
+					});
+					
+					$(document).mousemove(function(e) {
+						//通过showSize控制鼠标事件是否对页面影响，鼠标按下时开启鼠标事件、鼠标弹起时取消鼠标事件
+						if(!selection.showSize) {
+							return;
+						}
+						
+						//设置要显示的当前选区宽高
+						var position = selection.get_current_position(e);
+						var currentX = position.x;///相对于屏幕的位置
+						var currentY = position.y;
+						
+						//这里需要判断是否是拖动时点击触发
+						var cursor = $(selection.target).css('cursor');
+						//元素在创建过程中，完成元素创建之后才可以再设置元素大小
+						if(selection.intersect(currentX, currentY) && cursor != 'crosshair') {
+							return;
+						}
+						
+						//初始化宽高提示框大小
+						selection.init_size(currentX, currentY);
+						
+						//初始化刚创建的元素大小
+						selection.init_element_size(currentX, currentY);
+						
+						selection.select_element(selection.currentElement);
+					});
+					
+					//完成选区
+					$(document).mouseup(function(e) {
+						selection.showSize = false;
+						//设置要显示的当前选区宽高
+						var position = selection.get_current_position(e);
+						var currentX = position.x;///相对于屏幕的位置，包括滚动条
+						var currentY = position.y;
+						
+						// 如果用户直接点击鼠标没有拖动，在鼠标按下时就创建了该元素
+						// 在鼠标移动过程中才对该元素宽高进行控制，所以，需要将该无效元素去掉
+						if($(selection.currentElement.view).width() < 50) {
+							if(selection.currentElement) {
+								selection.currentElement.del();
+							}
+							return;
+						}
+						
+						//这里需要判断是否恢复鼠标形状，如果是拖拽触发就不恢复
+						var cursor = $(target).css('cursor');
+						if(selection.intersect(currentX, currentY) && cursor != 'crosshair') {
+							return;
+						}
+						//这里需要判断是否是拖动时点击触发
+						if(cursor != 'move') {//新建元素
+							//恢复鼠标形状
+							$(target).css({
+								cursor : 'default'
+							});
+							//为当前元素添加事件
+							selection.currentElement.make_element_editable();
+						}
+						
+						//显示当前设置的元素的数据
+						selection.currentElement.show_data();
+						
+						
+						//清理当前类的mousemove mouseup事件
+						$(document).unbind('mousemove');
+						$(document).unbind('mouseup');
+					});
+				});
+			};
+			
 			// 元素数据面板可拖动
 			selection.make_element_data_panel_draggable = function() {
 				var dragui = '.panel-heading';
@@ -139,112 +245,6 @@
 					});
 				});
 			}
-			
-			// 监听按键，点击删除按钮删除用户选择的element
-			selection.enable_key_del = function() {
-				$('body').keyup(function(e) {
-					//获取客户点击的按键
-					var e=e||event;
-					var keyCode = e.keyCode || e.which || e.charCode;
-					if(keyCode == 46) {
-						if(selection.currentElement) {
-							selection.currentElement.del();
-						}
-					}
-				});
-			}
-			
-			//初始化用户创建选区操作
-			selection.enable_selection = function() {
-				//为图片内容div添加事件
-				$(selection.target).mousedown(function(e) {
-					selection.showSize = true;
-					var position = selection.get_current_position(e);
-					selection.startX = position.x;///相对于屏幕的位置
-					selection.startY = position.y;
-					
-					//鼠标拖动元素时触发，这时就不再是新建元素，而是拖动元素
-					if(selection.intersect(selection.startX, selection.startY)) {
-						return;
-					}
-					
-					//添加一个元素到内容中
-					selection.add_element();
-					
-					//改变鼠标指针形状
-					$(this).css({
-						cursor : 'crosshair'
-					});
-					
-					$(document).mousemove(function(e) {
-						//通过showSize控制鼠标事件是否对页面影响，鼠标按下时开启鼠标事件、鼠标弹起时取消鼠标事件
-						if(!selection.showSize) {
-							return;
-						}
-						
-						//设置要显示的当前选区宽高
-						var position = selection.get_current_position(e);
-						var currentX = position.x;///相对于屏幕的位置
-						var currentY = position.y;
-						
-						//这里需要判断是否是拖动时点击触发
-						var cursor = $(selection.target).css('cursor');
-						//元素在创建过程中，完成元素创建之后才可以再设置元素大小
-						if(selection.intersect(currentX, currentY) && cursor != 'crosshair') {
-							return;
-						}
-						
-						//初始化宽高提示框大小
-						selection.init_size(currentX, currentY);
-						
-						//初始化刚创建的元素大小
-						selection.init_element_size(currentX, currentY);
-						
-						selection.select_element(selection.currentElement);
-					});
-					
-					//完成选区
-					$(document).mouseup(function(e) {
-						selection.showSize = false;
-						//设置要显示的当前选区宽高
-						var position = selection.get_current_position(e);
-						var currentX = position.x;///相对于屏幕的位置，包括滚动条
-						var currentY = position.y;
-						
-						// 如果用户直接点击鼠标没有拖动，在鼠标按下时就创建了该元素
-						// 在鼠标移动过程中才对该元素宽高进行控制，所以，需要将该无效元素去掉
-						if($(selection.currentElement.view).width() < 50) {
-							if(selection.currentElement) {
-								selection.currentElement.del();
-							}
-							return;
-						}
-						
-						//这里需要判断是否恢复鼠标形状，如果是拖拽触发就不恢复
-						var cursor = $(target).css('cursor');
-						if(selection.intersect(currentX, currentY) && cursor != 'crosshair') {
-							return;
-						}
-						//这里需要判断是否是拖动时点击触发
-						if(cursor != 'move') {//新建元素
-							//恢复鼠标形状
-							$(target).css({
-								cursor : 'default'
-							});
-							//为当前元素添加事件
-							selection.currentElement.make_element_editable();
-						}
-						
-						//显示当前设置的元素的数据
-						selection.currentElement.show_data();
-						
-						
-						//清理当前类的mousemove mouseup事件
-						$(document).unbind('mousemove');
-						$(document).unbind('mouseup');
-					});
-				});
-			};
 			
 			//判断当前操作是否是拖动
 			selection.intersect = function(x, y) {
