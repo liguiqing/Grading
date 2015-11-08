@@ -249,13 +249,20 @@
 			
 			// 根据当前选择的元素在右侧显示其数据信息
 			element.show_with_element_data = function() {
+				var target = $('.control-content');
 				// 1显示右侧数据表单
-				var display = $('.control-content').css('display');
+				var display = $(target).css('display');
 				
 				// 获取当前元素的相对位置
 				var x = selection.currentElement.view.offsetLeft;
-				var width = $(selection.currentElement.view).width();
-				var y = selection.currentElement.view.offsetTop;
+				var w = $(selection.currentElement.view).width();
+				var top = selection.currentElement.view.offsetTop;
+				var left = x+w;
+				
+				var width = $(target).outerWidth();
+				var height = $(target).outerHeight();
+				
+				var position = selection.restrain_question_panel(left, top, width, height);
 				
 				if(display == 'none') {
 					$('.control-content').css({
@@ -264,8 +271,8 @@
 				}
 				
 				$('.control-content').css({
-					left : (x+width) + 'px',
-					top : y + 'px'
+					left : position.left + 'px',
+					top : position.top + 'px'
 				});
 				
 				// 2清空小题信息，重新加载

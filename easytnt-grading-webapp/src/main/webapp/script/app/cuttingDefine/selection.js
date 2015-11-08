@@ -164,12 +164,20 @@
 							var distanceX = currentX - startX;
 							var distanceY = currentY - startY;
 
-							var left = $(target)[0].offsetLeft;
-							var top = $(target)[0].offsetTop;
+							var x = $(target)[0].offsetLeft;
+							var y = $(target)[0].offsetTop;
 
+							var left = x + distanceX;
+							var top = y + distanceY;
+							var width = $(target).outerWidth();
+							var height = $(target).outerHeight();
+							
+							//容错处理
+							var position = selection.restrain_question_panel(left, top, width, height);
+							
 							$(target).css({
-								left : (left + distanceX) + 'px',
-								top : (top + distanceY) + 'px'
+								left : position.left + 'px',
+								top : position.top + 'px'
 							});
 
 							startX = currentX;
@@ -191,6 +199,29 @@
 
 				});
 			}
+			
+			//重新定位信息框位置，防止超出试卷范围
+			selection.restrain_question_panel = function(left, top, width, height) {
+				if (left < 0) {
+					left = 0;
+				}
+				if (top < 0) {
+					top = 0;
+				}
+				if (left + width > $(target).parent()[0].scrollWidth) {
+					left = $(target).parent()[0].scrollWidth - width;
+				}
+				if (top + height > $(target).parent()[0].scrollHeight) {
+					top = $(target).parent()[0].scrollHeight - height;
+				}
+				
+				var position = {
+						left: left,
+						top: top
+				};
+				
+				return position;
+			};
 			
 			// 阻止事件冒泡
 			selection.prevent_event = function(event) {
@@ -215,6 +246,12 @@
 						display : 'none'
 					});
 				});
+				
+				//小题框被点击时事件也会传递到图片上，需要阻止
+				$('.control-content').mousedown(function(e) {
+					selection.prevent_event(e);
+				});
+				
 			};
 			
 			//加载按钮样式
