@@ -98,4 +98,3 @@ public class MainController {
 				.with("menus3", monitorMenuGroup.getMenus()).build();
 	}
 }
-

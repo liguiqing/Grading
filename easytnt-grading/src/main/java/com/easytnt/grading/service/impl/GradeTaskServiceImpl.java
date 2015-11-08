@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.easytnt.commons.entity.service.AbstractEntityService;
 import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.dispatcher.DispathcerManager;
-import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
@@ -35,8 +34,8 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 
 	@Autowired(required = false)
 	private GradeTaskRepository taskRepository;
-	
-	@Autowired
+
+	@Autowired(required = false)
 	private CuttingsImageGradeRecordRepository gradeRecordRepository;
 
 	@Override
@@ -62,30 +61,31 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	public void itemScoring(Long taskId, Referees referees, Float[] scores) throws Exception {
 		GradeTask task = taskRepository.load(taskId);
 		referees = task.getAssignedTo();
-		CuttingsImageGradeRecord imageGradeRecord  = referees.scoringForItems(scores);
+		CuttingsImageGradeRecord imageGradeRecord = referees.scoringForItems(scores);
 		logger.debug("Scoring ", imageGradeRecord);
 		task.increment();
 		// 数据持久化处理
 		gradeRecordRepository.saveForScoring(imageGradeRecord);
 	}
-	
+
 	@Override
 	@Transactional
 	public void itemBlank(Long taskId, Referees referees) throws Exception {
 		GradeTask task = taskRepository.load(taskId);
 		referees = task.getAssignedTo();
-		CuttingsImageGradeRecord imageGradeRecord  = referees.dealBlank();
+		CuttingsImageGradeRecord imageGradeRecord = referees.dealBlank();
 		logger.debug("Scoring ", imageGradeRecord);
 		task.increment();
 		// 数据持久化处理
 		gradeRecordRepository.saveForBlank(imageGradeRecord);
 	}
-	
+
 	@Override
 	@Transactional
 	public void itemError(Long taskId, Referees referees,String reason) throws Exception {
 		GradeTask task = taskRepository.load(taskId);
 		referees = task.getAssignedTo();
+
 		CuttingsImageGradeRecord imageGradeRecord  = referees.dealError(reason);
 		logger.debug("Scoring ", imageGradeRecord);
 		task.increment();
@@ -101,7 +101,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		CuttingsImageGradeRecord imageGradeRecord = task.getAssignedTo().fetchCuttings();
 		// 数据持久化处理
 		gradeRecordRepository.saveForFetching(imageGradeRecord);
-		
+
 		return imageGradeRecord;
 	}
 
@@ -109,9 +109,9 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	public boolean recoverUndo(GradeTask task) {
 		Referees referees = task.getAssignedTo();
 		CuttingsImageGradeRecord gradeRecord = gradeRecordRepository.findUndoRecordOf(task);
-		if(gradeRecord != null) {
-		    referees.recoverRecord(gradeRecord);
-		    return true;
+		if (gradeRecord != null) {
+			referees.recoverRecord(gradeRecord);
+			return true;
 		}
 		return false;
 	}

@@ -1,3 +1,17 @@
+Array.prototype.remove = function(obj) {
+	var index = -1;
+	for(var i = 0; i < this.length; i++) {
+		if(this[i] == obj) {
+			index = i;
+			break;
+		}
+	}
+	
+	if(index != -1) {
+		this.splice(index, 1);
+	}
+}
+
 function getUrlFileName(){
 	var pathname = window.location.pathname;
 	if(pathname == '' || pathname == '/') return 'index';
@@ -73,6 +87,7 @@ var config = {
 
 	paths : {
 		"jquery" : jqueryPath,
+		"easyui" : "lib/jquery/jquery.easyui.min",
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
 		"chart" : "lib/highcharts/highcharts",
 		"smartWizard" : "lib/smartWizard/jquery.smartWizard",

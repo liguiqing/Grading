@@ -1,3 +1,4 @@
+
 /**
  * <p><b>© 2015-2015</b></p>
  * 
@@ -52,4 +53,3 @@ public class MaincontrollerTest extends AbstractControllerTest{
 		this.mvc.perform(get("/config")).andExpect(view().name("/config"));
 	}
 }
-

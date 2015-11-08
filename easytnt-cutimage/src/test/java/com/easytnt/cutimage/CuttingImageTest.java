@@ -13,6 +13,8 @@ import com.easytnt.cutimage.disruptor.event.StudentTestPaperAnswerCardEvent;
 import com.easytnt.cutimage.disruptor.event.StudentTestPaperAnswerCardEvent.StudentTestPaperAnswerCardEventTranslator;
 import com.easytnt.cutimage.disruptor.handler.CountDownLatchHandler;
 import com.easytnt.cutimage.disruptor.handler.CuttingImageHandler;
+import com.easytnt.cutimage.disruptor.handler.LogHandlerException;
+import com.easytnt.cutimage.disruptor.handler.ReadImageHandler;
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingsSolution;
@@ -65,6 +67,56 @@ public class CuttingImageTest {
 				ProducerType.SINGLE, new YieldingWaitStrategy());
 
 		disruptor
+				.handleEventsWithWorkerPool(new CuttingImageHandler(), new CuttingImageHandler(),
+						new CuttingImageHandler(), new CuttingImageHandler())
+				.handleEventsWith(new CountDownLatchHandler(countDownLatch));
+		disruptor.start();
+
+		final CuttingsSolution solution = cuttingsSolution();
+		final String rootDir = "D:/test/tif/lizong";
+		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(rootDir);
+		try {
+			directoryScanner.scan(new VisitorFile() {
+				private ArrayList<String> paths = new ArrayList<>();
+
+				@Override
+				public void visit(FileInfo fileInfo) {
+					if (fileInfo.getFilePath().toString().toLowerCase().endsWith(".tif")) {
+						paths.add(fileInfo.getFilePath().toString());
+					}
+
+					if (paths.size() == 2) {
+						StudentTestPaperAnswerCardEvent event = new StudentTestPaperAnswerCardEvent();
+						event.setFilePaths(paths).setRootDir(rootDir).setCuttingsSolution(solution);
+						disruptor.publishEvent(new StudentTestPaperAnswerCardEventTranslator(event));
+						paths = new ArrayList<>();
+					}
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		countDownLatch.await();
+		long e = System.currentTimeMillis();
+		System.out.println(((e - b) * 1.0 / 1000) + "s");
+
+	}
+
+	@Test
+	public void testMitl2() throws Exception {
+		long b = System.currentTimeMillis();
+
+		CountDownLatch countDownLatch = new CountDownLatch(60);
+
+		int bufferSize = Util.ceilingNextPowerOfTwo(1024);
+		final Disruptor<StudentTestPaperAnswerCardEvent> disruptor = new Disruptor<>(
+				StudentTestPaperAnswerCardEvent.FACTORY, bufferSize, EasytntExecutor.instance().getExecutorService(),
+				ProducerType.SINGLE, new YieldingWaitStrategy());
+
+		disruptor.handleExceptionsWith(new LogHandlerException());
+
+		disruptor.handleEventsWithWorkerPool(new ReadImageHandler(), new ReadImageHandler(), new ReadImageHandler())
 				.handleEventsWithWorkerPool(new CuttingImageHandler(), new CuttingImageHandler(),
 						new CuttingImageHandler(), new CuttingImageHandler())
 				.handleEventsWith(new CountDownLatchHandler(countDownLatch));

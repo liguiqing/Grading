@@ -1,5 +1,3 @@
-
-
 package com.easytnt.commons.ui;
 /** 
  * <pre>
@@ -63,4 +61,3 @@ public class Menu {
 		this.actived = actived;
 	}
 }
-
