@@ -54,9 +54,9 @@ public class MainController {
     	
     	rightMenuGroup.appendMenu(new Menu("首    页","home"));
     	rightMenuGroup.appendMenu(new Menu("评    卷","task"));
-    	rightMenuGroup.appendMenu(new Menu("进度监控","monitor?page=subject&index=1"));
+    	rightMenuGroup.appendMenu(new Menu("进度监控","monitor?page=progress&index=0"));
     	rightMenuGroup.appendMenu(new Menu("评卷设置","config?page=subject&index=1"));
-    	rightMenuGroup.appendMenu(new Menu("个人中心","infocenter?page=subject&index=1"));
+    	rightMenuGroup.appendMenu(new Menu("个人中心","infocenter"));
     	
     	configMenuGroup.appendMenu(new Menu("定义考试","confing?page=test&index=0"));
     	configMenuGroup.appendMenu(new Menu("科目设置","confing?page=subject&index=1"));
@@ -92,7 +92,7 @@ public class MainController {
 		logger.debug("URL /config Method Get");
 		monitorMenuGroup.activedMenuByIndex(index);
 		rightMenuGroup.activedMenuByIndex(2);
-		return ModelAndViewFactory.newModelAndViewFor("/config")
+		return ModelAndViewFactory.newModelAndViewFor("/monitor")
 				.with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus())
 				.with("menus3", monitorMenuGroup.getMenus()).build();

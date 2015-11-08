@@ -9,7 +9,7 @@
 			<div class="config-panel">
 	          <ul class="nav navbar-nav">
 	          <#list menus3 as menu>
-	            <li class="<#if menu.actived=true>config-actived</#if>"><a class="smoothScroll" href="#${menu.url!""}">${menu.name}</a></li>
+	            <li class="<#if menu.actived=true>config-actived</#if>"><a class="smoothScroll" href="${menu.url!""}">${menu.name}</a></li>
 	          </#list>
 	          </ul>
 	          <div class="config-wrapper">

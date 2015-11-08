@@ -240,11 +240,11 @@
 	}
 }
 
-#monitorPanel .container-fluid .monitor-panel-container{
+.container-fluid .monitor-panel-container{
 	height:100%;
 }
 
-#monitorPanel .sidebar-menu-container{
+.sidebar-menu-container{
 	padding-left:0px;
 	padding-top:30px;
 	padding-right:0px;

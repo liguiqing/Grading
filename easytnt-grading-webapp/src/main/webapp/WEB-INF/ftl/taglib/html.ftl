@@ -1,10 +1,12 @@
-<#macro html entryjs="" title="">
+<#macro html entryjs="" title="" css=[]>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
   <title>${title}</title>	
-  <#import "meta.ftl" as meta> 
-  <@meta.meta/>
+  <#include "meta.ftl"> 
+  <#list css as c>
+    <link rel="stylesheet" href="${request.contextPath}/static/css/${c}.css"/>
+  </#list>
 </head>
 <#compress>
 <body entry="${entryjs}" rootPath="${request.contextPath}/" style="overflow:hidden">

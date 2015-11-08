@@ -44,20 +44,27 @@
 	background: #5bc0de;
 }
 
-.config-wrapper .icon-ok{
-	color:#5cb85c;
-}
-
-.config-wrapper .icon-remove{
-	color:#d9534f;
-}
-
-.subject-container{
+.subject-container,.worker-container{
 	overflow:auto;
+}
+
+.subject-container .doing{
+	background:#d9534f;
+}
+
+.subject-container .completed,.worker-container .completed{
+	background:#5cb85c;
 }
 
 .subject-container .subject-editor{
 	text-align: center;
 }
 
+.worker-container .completed{
+	text-align: left;
+	color:#fff;
+}
 
+.worker-container .mini{
+	background:#d9534f;
+}

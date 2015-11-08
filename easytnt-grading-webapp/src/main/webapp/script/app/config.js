@@ -1,9 +1,13 @@
 (function(){
 	"use strict";
-	var deps = ['jquery'];
-	define(deps,function($,point){
+	define(['jquery'],function($){
 		var o = function(){
-			
+			var url = window.location.href;
+			var m = url.substring(url.indexOf('page=')+5,url.indexOf("&"));
+			var p = ['app/config/'+m];
+			require(p,function(module){
+				module.render();
+			});
 		};
 		function setWorkspaceWH(){
 			var navigationPanel = $('#navigation .container');
