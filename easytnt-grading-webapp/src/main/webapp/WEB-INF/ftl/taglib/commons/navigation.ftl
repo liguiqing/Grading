@@ -15,14 +15,14 @@
 	            <ul class="nav navbar-nav">
 	                <li class="active hidden"></li>
 	                <#list menus as menu>
-	                <li class=""><a class="smoothScroll" href="#${menu.url!""}">${menu.name}</a></li>
+	                <li class=""><a class="smoothScroll" id="${menu.id!""}" href="#${menu.url!""}">${menu.name}</a></li>
 	                </#list>
 	            </ul>
 	            </#if>
 	            <#if (menus2?size > 0)>
 	            <ul class="nav navbar-nav navbar-right">
 	                <#list menus2 as menu>
-	                <li class=""><a class="smoothScroll" href="#${menu.url!""}">${menu.name}</a></li>
+	                <li class=""><a class="smoothScroll" id="${menu.id!""}" href="#${menu.url!""}">${menu.name}</a></li>
 	                </#list>
 	            </ul>
 	            </#if>
