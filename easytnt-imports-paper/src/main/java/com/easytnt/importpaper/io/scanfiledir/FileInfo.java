@@ -14,6 +14,15 @@ public class FileInfo {
 
 	private Path rootDir;
 	private Path relativelyPath;
+	private Path filePath;
+	public Path getFilePath() {
+		return filePath;
+	}
+
+	public FileInfo setFilePath(Path filePath) {
+		this.filePath = filePath;
+		return this;
+	}
 
 	public String getRootDir() {
 		return rootDir.toString();

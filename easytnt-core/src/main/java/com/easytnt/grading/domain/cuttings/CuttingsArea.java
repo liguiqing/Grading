@@ -42,6 +42,8 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 	
 	private Float maxerror; //最大误差值
 	
+	private int answerCardImageIdx;// 答题卡图片位置
+	
 	public CuttingsArea(ExamPaper paper,Area areaInPaper) {
 		this.paper = paper;
 		this.areaInPaper = areaInPaper;
@@ -141,7 +143,13 @@ public class CuttingsArea implements ValueObject<CuttingsArea>{
 	public void setMaxerror(Float maxerror) {
 		this.maxerror = maxerror;
 	}
+	public int getAnswerCardImageIdx() {
+		return answerCardImageIdx;
+	}
 
+	public void setAnswerCardImageIdx(int answerCardImageIdx) {
+		this.answerCardImageIdx = answerCardImageIdx;
+	}
 }
 
 
