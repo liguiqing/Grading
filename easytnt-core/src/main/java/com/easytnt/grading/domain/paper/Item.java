@@ -30,46 +30,63 @@ public class Item implements ValueObject<Item> {
 	private Area answerArea;
 
 	private Float fullScore;
-	
+
 	private Float[] validValues;
-	
-	public Item(String title,Float fullScore) {
+	private boolean seriesScore;// 是否连续给分
+	private double interval;// 如果连续给分的给分区间
+
+	public boolean isSeriesScore() {
+		return seriesScore;
+	}
+
+	public void setSeriesScore(boolean seriesScore) {
+		this.seriesScore = seriesScore;
+	}
+
+	public double getInterval() {
+		return interval;
+	}
+
+	public void setInterval(double interval) {
+		this.interval = interval;
+	}
+
+	public Item(String title, Float fullScore) {
 		this.title = title;
 		this.fullScore = fullScore;
 	}
 
 	public boolean isEffectiveScore(Float score) {
-		return score.compareTo(this.getMinPoint()) >= 0
-				&& score.compareTo(getMaxPoint()) <= 0;
+		return score.compareTo(this.getMinPoint()) >= 0 && score.compareTo(getMaxPoint()) <= 0;
 	}
-	
+
 	public void genValidValues(String validscoredot) {
 		String[] values = validscoredot.split(",");
-		if(values.length > 0) {
+		if (values.length > 0) {
 			Float[] scores = new Float[values.length];
 			int i = 0;
-			for(String value:values) {
+			for (String value : values) {
 				scores[i++] = NumberUtils.parseNumber(value, Float.class);
 			}
-			if(!this.isEffectiveScore(scores[scores.length-1])) {
+			if (!this.isEffectiveScore(scores[scores.length - 1])) {
 				throw new IllegalArgumentException(validscoredot + "不在有效分范围内");
 			}
-			
+
 			this.validValues = scores;
 		}
-		
+
 	}
-	
+
 	public String genScoredot() {
-		if(this.validValues != null && this.validValues.length > 0) {
+		if (this.validValues != null && this.validValues.length > 0) {
 			StringBuffer sb = new StringBuffer();
-			for(Float f:this.validValues) {
+			for (Float f : this.validValues) {
 				sb.append(f.floatValue()).append(",");
 			}
 			sb.deleteCharAt(sb.lastIndexOf(","));
 			return sb.toString();
 		}
-		
+
 		return "";
 	}
 
@@ -89,80 +106,76 @@ public class Item implements ValueObject<Item> {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(this.itemId).append(this.title).append(this.fullScore).toHashCode();
+		return new HashCodeBuilder().append(this.itemId).append(this.title).append(this.fullScore).toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Item))
 			return false;
-		
+
 		Item other = (Item) o;
-		return new EqualsBuilder().append(this.itemId,other.itemId).append(this.title, other.title)
+		return new EqualsBuilder().append(this.itemId, other.itemId).append(this.title, other.title)
 				.append(this.fullScore, other.fullScore).isEquals();
 	}
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this)
-				.append(this.title).append(this.fullScore).build();
+		return new ToStringBuilder(this).append(this.title).append(this.fullScore).build();
 	}
 
 	@Override
 	public boolean sameValueAs(Item other) {
 		return this.equals(other);
 	}
-	
-	public static class Builder{
+
+	public static class Builder {
 		private Item item;
-		
+
 		public Builder(String title) {
 			this.item = new Item();
 			this.item.title = title;
 		}
-		
+
 		public Builder caption(String caption) {
 			this.item.caption = caption;
 			return this;
 		}
-		
+
 		public Builder validValues(Float[] validValues) {
 			this.item.validValues = validValues;
 			return this;
 		}
-		
+
 		public Builder fullScore(Float fullScore) {
 			this.item.fullScore = fullScore;
 			return this;
 		}
-		
+
 		public Builder answerArea(Area answerArea) {
 			this.item.answerArea = answerArea;
 			return this;
 		}
-		
+
 		public Item create() {
 			return this.item;
 		}
 	}
 
-	//以下功能为ORM或者自动构造使用，非此慎用
+	// 以下功能为ORM或者自动构造使用，非此慎用
 	public Item() {
-		
+
 	}
-	
+
 	private Long itemId;
-	
+
 	public Long getItemId() {
 		return itemId;
 	}
 
-
 	public void setItemId(Long itemId) {
 		this.itemId = itemId;
 	}
-
 
 	public String getTitle() {
 		return title;
@@ -179,7 +192,7 @@ public class Item implements ValueObject<Item> {
 	public void setCaption(String caption) {
 		this.caption = caption;
 	}
-	
+
 	public Float[] getValidValues() {
 		return validValues;
 	}
@@ -187,7 +200,6 @@ public class Item implements ValueObject<Item> {
 	public void setValidValues(Float[] validValues) {
 		this.validValues = validValues;
 	}
-
 
 	public Area getAnswerArea() {
 		return answerArea;

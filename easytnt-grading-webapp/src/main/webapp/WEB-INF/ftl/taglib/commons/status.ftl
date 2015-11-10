@@ -7,4 +7,3 @@
 		<input id="nextBtn" type="button" value="下一页" style="color:black;"/>
 	</div>
 </footer>
-</#macro>
