@@ -63,19 +63,27 @@
 							+ '<table class="table no-border">'
 								+ '<tr>'
 									+ '<td>题号</td>'
-									+ '<td><input type="text" id="questionName" name="questionName" class="form-control"></td>'
+									+ '<td><input type="text" id="name" name="name" class="form-control"></td>'
 								+ '</tr>'
 								+ '<tr>'
 									+ '<td>满分值</td>'
 									+ '<td><input id="fullScore" type="text" name="fullScore" class="form-control"></td>'
 								+ '</tr>'
 								+ '<tr>'
+								+ '<td>评次</td>'
+								+ '<td><input type="text" id="requiredPinci" name="requiredPinci" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+								+ '<td>误差</td>'
+								+ '<td><input id="maxerror" type="text" name="maxerror" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
 									+ '<td>X坐标(px)</td>'
-									+ '<td><span id="x" class="label label-success"></span></td>'
+									+ '<td><span id="left" class="label label-success"></span></td>'
 								+ '</tr>'
 								+ '<tr>'
 									+ '<td>Y坐标(px)</td>'
-									+ '<td><span id="y" class="label label-success"></span></td>'
+									+ '<td><span id="top" class="label label-success"></span></td>'
 								+ '</tr>'
 								+ '<tr>'
 									+ '<td>宽度(px)</td>'
@@ -435,13 +443,13 @@
 				var width = $(view).width();
 				var height = $(view).height();
 				
-				element.questionData.x = x;
-				element.questionData.y = y;
-				element.questionData.width = width;
-				element.questionData.height = height;
+				element.data.x = Math.round(x);
+				element.data.y = Math.round(y);
+				element.data.width = Math.round(width);
+				element.data.height = Math.round(height);
 				
-				$('#x').text(x);
-				$('#y').text(y);
+				$('#left').text(x);
+				$('#top').text(y);
 				$('#width').text(width);
 				$('#height').text(height);
 				

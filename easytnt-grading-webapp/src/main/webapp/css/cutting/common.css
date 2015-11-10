@@ -20,7 +20,7 @@ html,body{
 }
 
 .control-content {
-	width :320px;
+	width :330px;
 	position:absolute;
 	z-index:101;/*浮在选区上面*/
 }

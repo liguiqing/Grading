@@ -20,23 +20,23 @@
 				<table class="table no-border">
 					<tr>
 						<td class="table-label">小题号</td>
-						<td><input type="text" name="subQuestionNum"
+						<td><input type="text" id="title" name="title"
 							class="form-control"></td>
 					</tr>
 					<tr>
 						<td class="table-label">分值</td>
-						<td><input type="text" name="subQuestionScore" class="form-control"></td>
+						<td><input type="text" id="subFullScore" name="subFullScore" class="form-control"></td>
 					</tr>
 					<tr>
 						<td class="table-label">给分率</td>
 						<td>
-							<select name="subQuestionScoreRate" class="subQuestionScoreRate form-control">
+							<select id="seriesScore" name="seriesScore" class="seriesScore form-control">
 								<option value="1">连续</option>
 								<option value="0">不连续</option>
 							</select> <br/>
 							<!-- 间隔 -->
-							<input name="subQuestionScoreRateInterval" type="text" class="form-control" value="" placeholder="输入分值间隔">
-							<input name="subQuestionScoreRateVal" readonly="readonly" type="text" class="form-control" value="">
+							<input id="interval" name="interval" type="text" class="form-control" value="" placeholder="输入分值间隔">
+							<input id="validValues" name="validValues" readonly="readonly" type="text" class="form-control" value="">
 						</td>
 					</tr>
 				</table>

@@ -20,6 +20,14 @@
 			
 			//用于记录试卷对象
 			function ExamObj() {
+				this.paperId = 1;//当前试卷id
+				this.answerCardCuttingTemplates = [{
+					index: 0,
+					url: window.app.rootPath + 'static/css/images/shijuan.jpg'
+				},{
+					index: 1,
+					url: window.app.rootPath + 'static/css/images/shijuan.jpg'
+				}];
 				this.examPapers = [];//每一张试卷都对应一个selection对象
 			}
 			

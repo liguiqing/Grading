@@ -6,7 +6,7 @@
 			var element = this;
 
 			element.view = create_element_view();
-			element.questionData = create_question_data();
+			element.data = create_question_data();
 			
 			// 为元素添加事件
 			element.make_element_editable = function() {
@@ -187,7 +187,7 @@
 			element.show_data = function(isForce) {
 				// 判断之前是否处理过元素，如果处理了，就需要把设置的数据保存到元素中
 				element.save_preview_element_data(isForce);
-				element.show_with_element_data();
+				element.show_with_element_data(isForce);
 			};
 			
 			// 保存设置的数据到元素数据域中
@@ -207,48 +207,51 @@
 				// 获取设置的数据信息，填入到element数据域中
 				var questionPanel = $('.control-content');
 				
-				var questionName = $(questionPanel).find('#questionName').val();
+				var name = $(questionPanel).find('#name').val();
 				var fullScore = $(questionPanel).find('#fullScore').val();
 				
-				el.questionData.questionName = questionName;
-				el.questionData.fullScore = fullScore;
+				var requiredPinci = $(questionPanel).find('#requiredPinci').val();
+				var maxerror = $(questionPanel).find('#maxerror').val();
 				
+				el.data.name = name;
+				el.data.fullScore = fullScore;
+				el.data.requiredPinci = requiredPinci;
+				el.data.maxerror = maxerror;
 				// 获取小题信息
 				var subQuestionPanels = $(questionPanel).find('.subQuestionPanel');
 				
 				// 如果是添加按钮并且是初次添加一个小题，上面获取小题信息为空,所以需要手动创建一个小题对象
 				if(isForce && subQuestionPanels.length == 0) {
-					var subQuestionData = create_sub_question_data();
-					el.questionData.subQuestionDatas.push(subQuestionData);
+					var subData = create_sub_question_data();
+					el.data.itemAreas.push(subData);
 					return;
 				}
 				
-				el.questionData.subQuestionDatas.length = 0;
+				el.data.itemAreas.length = 0;
 				// 重新填入小题信息
 				var subQuestionPanel = null;
 				for(var i = 0; i < subQuestionPanels.length; i++) {
-					// 如果是删除操作会存在空对象，需要排除
 					subQuestionPanel = subQuestionPanels[i];
-					var subQuestionName = $(subQuestionPanel).find('input[name=subQuestionNum]').val();
-					var subQuestionScore = $(subQuestionPanel).find('input[name=subQuestionScore]').val();
-					var subQuestionScoreRate = $(subQuestionPanel).find('select').val();
-					var subQuestionScoreRateInterval = $(subQuestionPanel).find('input[name=subQuestionScoreRateInterval]').val();
-					var subQuestionScoreRateVal = $(subQuestionPanel).find('input[name=subQuestionScoreRateVal]').val();
+					var title = $(subQuestionPanel).find('input[name=title]').val();
+					var subFullScore = $(subQuestionPanel).find('input[name=subFullScore]').val();
+					var seriesScore = $(subQuestionPanel).find('select#seriesScore').val();
+					var interval = $(subQuestionPanel).find('input[name=interval]').val();
+					var validValues = $(subQuestionPanel).find('input[name=validValues]').val();
 					
-					var subQuestionData = create_sub_question_data(subQuestionName, subQuestionScore, 
-							subQuestionScoreRate, subQuestionScoreRateInterval, subQuestionScoreRateVal);
-					el.questionData.subQuestionDatas.push(subQuestionData);
+					var subData = create_sub_question_data(title, subFullScore, 
+							seriesScore, interval, validValues);
+					el.data.itemAreas.push(subData);
 				}
 				
 				// 如果是按钮添加，则还需要创建一个新的数据对象
 				if(isForce) {
-					var subQuestionData = create_sub_question_data();
-					el.questionData.subQuestionDatas.push(subQuestionData);
+					var subData = create_sub_question_data();
+					el.data.itemAreas.push(subData);
 				}
 			};
 			
 			// 根据当前选择的元素在右侧显示其数据信息
-			element.show_with_element_data = function() {
+			element.show_with_element_data = function(isForce) {
 				var target = $('.control-content');
 				// 1显示右侧数据表单
 				var display = $(target).css('display');
@@ -270,38 +273,53 @@
 					});
 				}
 				
-				$('.control-content').css({
-					left : position.left + 'px',
-					top : position.top + 'px'
-				});
+				//如果不是点击添加按钮触发就不用重新调整信息框位置
+				if(!isForce) {
+					$('.control-content').css({
+						left : position.left + 'px',
+						top : position.top + 'px'
+					});
+				}
 				
 				// 2清空小题信息，重新加载
 				$('.sub-question-container').empty();
 				
 				// 3根据当前元素值初始化数据控件
-				$('#questionName').val(element.questionData.questionName);
-				$('#fullScore').val(element.questionData.fullScore);
+				$('#name').val(element.data.name);
+				$('#fullScore').val(element.data.fullScore);
+				$('#requiredPinci').val(element.data.requiredPinci);
+				$('#maxerror').val(element.data.maxerror);
+				
 				var panel = null;
-				var subQuestionDatas = element.questionData.subQuestionDatas;
-				var subQuestionData = null;
-				for(var i = 0; i <subQuestionDatas.length; i++) {
+				var subDatas = element.data.itemAreas;
+				
+				//删除其中空元素
+				for(var i = 0; i < subDatas.length; i++) {
+					if(subDatas[i] == null) {
+						subDatas.remove(subDatas[i]);
+						i--;
+					}
+				}
+				
+				var subData = null;
+				for(var i = 0; i <subDatas.length; i++) {
 					panel = element.add_sub_question(i);
 					
-					subQuestionData = subQuestionDatas[i];
+					subData = subDatas[i];
 					// 赋值
-					$(panel.view).find('input[name=subQuestionNum]').val(subQuestionData.subQuestionNum);
-					$(panel.view).find('input[name=subQuestionScore]').val(subQuestionData.subQuestionScore);
-					$(panel.view).find('select').val(subQuestionData.subQuestionScoreRate);
-					$(panel.view).find('input[name=subQuestionScoreRateInterval]').val(subQuestionData.subQuestionScoreRateInterval);
-					$(panel.view).find('input[name=subQuestionScoreRateVal]').val(subQuestionData.subQuestionScoreRateVal);
+					$(panel.view).find('input[name=title]').val(subData.title);
+					$(panel.view).find('input[name=subFullScore]').val(subData.fullScore);
+					$(panel.view).find('select#seriesScore').val(subData.seriesScore);
+					$(panel.view).find('input[name=interval]').val(subData.interval);
+					$(panel.view).find('input[name=validValues]').val(subData.validValues);
 					
 					//根据用户给分率初始化控件状态
-					if(!Number(subQuestionData.subQuestionScoreRate)) {
-						$(panel.view).find('input[name=subQuestionScoreRateInterval]').css({
+					if(!Number(subData.seriesScore)) {
+						$(panel.view).find('input[name=interval]').css({
 							display: 'none'
 						});
 						
-						$(panel.view).find('input[name=subQuestionScoreRateVal]').removeAttr('readonly');
+						$(panel.view).find('input[name=validValues]').removeAttr('readonly');
 					}
 					
 				}
@@ -328,31 +346,36 @@
 		function create_question_data() {
 			var data = {};
 			
-			data.questionName = '1';// 题号
+			data.name = '1';// 题号
+			data.answerCardImageIdx = 0;//答题卡位置
+			data.requiredPinci = 1;//评次
+			data.maxerror = 1;//误差
 			data.fullScore = 10;// 满分值
+			data.areaInPaper = {
+					left: 0,// 相对图片的x轴坐标
+					top: 0, // 相对图片的y轴坐标
+					width: 0, // 所选区域的宽度
+					height: 0// 所选区域的高度
+					
+			};
 			
-			data.x = 0; // 相对图片的x轴坐标
-			data.y = 0; // 相对图片的y轴坐标
-			data.width = 0; // 所选区域的宽度
-			data.height = 0; // 所选区域的高度
-			
-			data.subQuestionDatas = [];// 小题定义
+			data.itemAreas = [];// 小题定义
 			return data;
 		}
 
 		// 创建选中元素的小题数据
-		// @param subQuestionNum 小题号
-		// @param subQuestionScore 分值
-		// @param subQuestionScoreRate 给分率 1:连续 0:不连续
-		// @param subQuestionScoreRateInterval 分值间隔
-		// @param subQuestionScoreRateVal 给分率所计算的值
-		function create_sub_question_data(subQuestionNum, subQuestionScore, subQuestionScoreRate, subQuestionScoreRateInterval, subQuestionScoreRateVal) {
+		// @param title 小题号
+		// @param fullScore 分值
+		// @param seriesScore 给分率 1:连续 0:不连续
+		// @param interval 分值间隔
+		// @param validValues 给分率所计算的值
+		function create_sub_question_data(title, fullScore, seriesScore, interval, validValues) {
 			var data = {};
-			data.subQuestionNum = subQuestionNum == undefined ? '' : subQuestionNum;// 小题号
-			data.subQuestionScore = subQuestionScore == undefined ? 10 : subQuestionScore;// 小题分值
-			data.subQuestionScoreRate = subQuestionScoreRate == undefined ? 1 : subQuestionScoreRate;// 默认为连续
-			data.subQuestionScoreRateInterval = subQuestionScoreRateInterval == undefined ? 1 : subQuestionScoreRateInterval;// 默认从1开始
-			data.subQuestionScoreRateVal = subQuestionScoreRateVal == undefined ? '0,1,2,3,4,5,6,7,8,9,10' : subQuestionScoreRateVal;// 给分率
+			data.title = title == undefined ? '' : title;// 小题号
+			data.fullScore = fullScore == undefined ? 10 : fullScore;// 小题分值
+			data.seriesScore = seriesScore == undefined ? 1 : seriesScore;// 默认为连续
+			data.interval = interval == undefined ? 1 : interval;// 默认从1开始
+			data.validValues = validValues == undefined ? '0,1,2,3,4,5,6,7,8,9,10' : validValues;// 给分率
 
 			return data;
 		}
