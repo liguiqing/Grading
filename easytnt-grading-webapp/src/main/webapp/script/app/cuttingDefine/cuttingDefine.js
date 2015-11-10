@@ -14,11 +14,41 @@
 				kk();
 				
 				entrance();
+				
+				initEvent();
 			};
 			
+			//用于记录试卷对象
+			function ExamObj() {
+				this.examPapers = [];//每一张试卷都对应一个selection对象
+			}
+			
+			//初始化底部工具栏中按钮点击事件
+			function initEvent() {
+				$('#nextBtn').click(function() {
+					clearCanvas();
+					
+					//将当前试卷保存
+					window.examObj.examPapers.push(window.selection);
+					
+					initSelection();
+				});
+				
+				
+			}
+			
 			function entrance() {
-				preventImageDrag();
+				window.examObj = new ExamObj();
 				initSelection();
+			}
+			
+			//清除画布中内容
+			function clearCanvas() {
+				var target = $('.image-content');
+				$(target).empty();
+				//取消对画布容器设置的mousedown事件监听
+				$(target).unbind('mousedown');
+				console.info(window.examObj);
 				
 			}
 			
@@ -27,13 +57,6 @@
 				var selection = Selection.newInstance('.image-content');
 				window.selection = selection;
 				selection.init();
-			}
-			
-			//防止试卷图片被拖动
-			function preventImageDrag() {
-				$(document.images).each(function() {
-					$(this)[0].ondragstart = function() {return false;}
-				});
 			}
 
 			function kk(){

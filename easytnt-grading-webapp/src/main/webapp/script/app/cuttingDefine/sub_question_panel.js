@@ -58,10 +58,11 @@
 			//分值间隔
 			var scoreIntervalInput = $(panelview).find('input[name=subQuestionScoreRateInterval]');
 			var scoreRate = $(panelview).find('select.subQuestionScoreRate').val();
+			scoreRate = Number(scoreRate);
 			//判断当前选中的是连续还是不连续
 			if(!scoreRate) {//不连续
 				$(scoreRateInput).removeAttr('readonly');
-				$(scoreRateIntervalInput).css({display:'none'});
+				$(scoreIntervalInput).css({display:'none'});
 				$(scoreRateInput).val('');
 			}else {
 				$(scoreRateInput).attr({

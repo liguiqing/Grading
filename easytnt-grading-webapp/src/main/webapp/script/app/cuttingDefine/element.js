@@ -294,6 +294,16 @@
 					$(panel.view).find('select').val(subQuestionData.subQuestionScoreRate);
 					$(panel.view).find('input[name=subQuestionScoreRateInterval]').val(subQuestionData.subQuestionScoreRateInterval);
 					$(panel.view).find('input[name=subQuestionScoreRateVal]').val(subQuestionData.subQuestionScoreRateVal);
+					
+					//根据用户给分率初始化控件状态
+					if(!Number(subQuestionData.subQuestionScoreRate)) {
+						$(panel.view).find('input[name=subQuestionScoreRateInterval]').css({
+							display: 'none'
+						});
+						
+						$(panel.view).find('input[name=subQuestionScoreRateVal]').removeAttr('readonly');
+					}
+					
 				}
 			};
 			

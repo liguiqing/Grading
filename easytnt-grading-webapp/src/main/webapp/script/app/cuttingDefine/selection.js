@@ -10,7 +10,7 @@
 			selection.showSize = false;//是否显示提示框
 			selection.currentElement = null;//当前操作的元素
 			selection.previousElement = null///前一个被选中的元素， 用于保存数据
-			
+			selection.examPaperUrl = window.app.rootPath + 'static/css/images/shijuan.jpg';
 			selection.elements = [];//已经添加到内容中的元素
 			
 			//目标控件
@@ -18,11 +18,85 @@
 			
 			//选区一系列初始化操作
 			selection.init = function() {
+				selection.initUI();//初始化界面元素
+				selection.preventImageDrag();
 				selection.enable_key_del();
 				selection.enable_selection();
 				selection.btn_style();
 				selection.init_event();
 				selection.make_element_data_panel_draggable();
+			};
+			
+			//防止试卷图片被拖动
+			selection.preventImageDrag = function() {
+				$(document.images).each(function() {
+					$(this)[0].ondragstart = function() {return false;}
+				});
+			}
+			
+			//初始化试卷内容，添加选框宽高提示框，添加题目信息框
+			selection.initUI = function() {
+				//1.初始化试卷内容
+				var img = document.createElement('img');
+				$(img).addClass('testpaperImage');
+				$(img).attr('src', selection.examPaperUrl);
+				$(selection.target).append(img);
+				
+				//2.添加宽高提示框
+				var html = '<div class="size" style="display:none;">'
+								+ '<span id="width-tip" class="tip">30</span>'
+								+ '<span class="tip">&nbsp;x&nbsp;</span>'
+								+ '<span id="height-tip" class="tip">20</span>'
+						 + '</div>';
+				
+				$(selection.target).append($(html));
+				
+				//3.添加题目信息框
+				var qhtml = 
+					'<div class="control-content" style="display:none;">'
+					+ '<div class="panel panel-info">'
+						+ '<div class="panel-heading" style="position:relative;">'
+							+ '<span>题目信息</span>'
+							+ '<span class="span-btn close-btn"></span>'
+						+ '</div>'
+						+ '<div class="panel-body" style="width:100%;height:400px;overflow:auto;">'
+							+ '<table class="table no-border">'
+								+ '<tr>'
+									+ '<td>题号</td>'
+									+ '<td><input type="text" id="questionName" name="questionName" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>满分值</td>'
+									+ '<td><input id="fullScore" type="text" name="fullScore" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>X坐标(px)</td>'
+									+ '<td><span id="x" class="label label-success"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>Y坐标(px)</td>'
+									+ '<td><span id="y" class="label label-success"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>宽度(px)</td>'
+									+ '<td><span id="width" class="label label-info"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>高度(px)</td>'
+									+ '<td><span id="height" class="label label-info"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>小题定义</td>'
+									+ '<td><span class="span-btn add-btn"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td colspan="2" class="sub-question-container"></td>'
+								+ '</tr>'
+							+ '</table>'
+						+ '</div>'
+					+ '</div>'
+				+ '</div>';
+				$(selection.target).append($(qhtml));
 			};
 			
 			// 监听按键，点击删除按钮删除用户选择的element
@@ -100,6 +174,11 @@
 						// 在鼠标移动过程中才对该元素宽高进行控制，所以，需要将该无效元素去掉
 						if($(selection.currentElement.view).width() < 50) {
 							if(selection.currentElement) {
+								selection.currentElement.save_preview_element_data();
+								//隐藏题目信息框
+								$('.control-content').css({
+									display: 'none'
+								});
 								selection.currentElement.del();
 							}
 							return;
