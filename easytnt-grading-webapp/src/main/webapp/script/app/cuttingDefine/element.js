@@ -53,6 +53,7 @@
 					},
 					onDrag : function(e) {
 						element.element_drag_restrain(e);
+						element.position_question_panel();
 						// 显示选区当前宽高tip
 						selection.show_size();
 						// 改变宽高tip中的值
@@ -213,10 +214,19 @@
 				var requiredPinci = $(questionPanel).find('#requiredPinci').val();
 				var maxerror = $(questionPanel).find('#maxerror').val();
 				
+				var left = $(questionPanel).find('#left').text();
+				var top = $(questionPanel).find('#top').text();
+				var width = $(questionPanel).find('#width').text();
+				var height = $(questionPanel).find('#height').text();
+				
 				el.data.name = name;
 				el.data.fullScore = fullScore;
 				el.data.requiredPinci = requiredPinci;
 				el.data.maxerror = maxerror;
+				el.data.areaInPaper.left = left;
+				el.data.areaInPaper.top = top;
+				el.data.areaInPaper.width = width;
+				el.data.areaInPaper.height = height;
 				// 获取小题信息
 				var subQuestionPanels = $(questionPanel).find('.subQuestionPanel');
 				
@@ -250,16 +260,14 @@
 				}
 			};
 			
-			// 根据当前选择的元素在右侧显示其数据信息
-			element.show_with_element_data = function(isForce) {
+			//重新调整题目信息框位置
+			element.position_question_panel = function(isForce) {
 				var target = $('.control-content');
-				// 1显示右侧数据表单
 				var display = $(target).css('display');
-				
 				// 获取当前元素的相对位置
-				var x = selection.currentElement.view.offsetLeft;
-				var w = $(selection.currentElement.view).width();
-				var top = selection.currentElement.view.offsetTop;
+				var x = element.view.offsetLeft;
+				var w = $(element.view).width();
+				var top = element.view.offsetTop;
 				var left = x+w;
 				
 				var width = $(target).outerWidth();
@@ -273,16 +281,22 @@
 					});
 				}
 				
-				//如果不是点击添加按钮触发就不用重新调整信息框位置
+				//如果是点击添加按钮触发就不用重新调整信息框位置
 				if(!isForce) {
 					$('.control-content').css({
 						left : position.left + 'px',
 						top : position.top + 'px'
 					});
 				}
-				
+			}
+			
+			// 根据当前选择的元素在右侧显示其数据信息
+			element.show_with_element_data = function(isForce) {
+				// 1显示右侧数据表单
+				element.position_question_panel(isForce);
 				// 2清空小题信息，重新加载
 				$('.sub-question-container').empty();
+				
 				
 				// 3根据当前元素值初始化数据控件
 				$('#name').val(element.data.name);

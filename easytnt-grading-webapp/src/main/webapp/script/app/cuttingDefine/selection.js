@@ -27,99 +27,43 @@
 				selection.make_element_data_panel_draggable();
 			};
 			
-			//防止试卷图片被拖动
-			selection.preventImageDrag = function() {
-				$(document.images).each(function() {
-					$(this)[0].ondragstart = function() {return false;}
-				});
-			}
-			
-			//初始化试卷内容，添加选框宽高提示框，添加题目信息框
-			selection.initUI = function() {
-				//1.初始化试卷内容
-				var img = document.createElement('img');
-				$(img).addClass('testpaperImage');
-				$(img).attr('src', selection.examPaperUrl);
-				$(selection.target).append(img);
+			//恢复某一页答题卡的内容
+			selection.recover = function() {
+				//初始化整个画布
+				selection.init();
 				
-				//2.添加宽高提示框
-				var html = '<div class="size" style="display:none;">'
-								+ '<span id="width-tip" class="tip">30</span>'
-								+ '<span class="tip">&nbsp;x&nbsp;</span>'
-								+ '<span id="height-tip" class="tip">20</span>'
-						 + '</div>';
-				
-				$(selection.target).append($(html));
-				
-				//3.添加题目信息框
-				var qhtml = 
-					'<div class="control-content" style="display:none;">'
-					+ '<div class="panel panel-info">'
-						+ '<div class="panel-heading" style="position:relative;">'
-							+ '<span>题目信息</span>'
-							+ '<span class="span-btn close-btn"></span>'
-						+ '</div>'
-						+ '<div class="panel-body" style="width:100%;height:400px;overflow:auto;">'
-							+ '<table class="table no-border">'
-								+ '<tr>'
-									+ '<td>题号</td>'
-									+ '<td><input type="text" id="name" name="name" class="form-control"></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>满分值</td>'
-									+ '<td><input id="fullScore" type="text" name="fullScore" class="form-control"></td>'
-								+ '</tr>'
-								+ '<tr>'
-								+ '<td>评次</td>'
-								+ '<td><input type="text" id="requiredPinci" name="requiredPinci" class="form-control"></td>'
-								+ '</tr>'
-								+ '<tr>'
-								+ '<td>误差</td>'
-								+ '<td><input id="maxerror" type="text" name="maxerror" class="form-control"></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>X坐标(px)</td>'
-									+ '<td><span id="left" class="label label-success"></span></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>Y坐标(px)</td>'
-									+ '<td><span id="top" class="label label-success"></span></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>宽度(px)</td>'
-									+ '<td><span id="width" class="label label-info"></span></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>高度(px)</td>'
-									+ '<td><span id="height" class="label label-info"></span></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>小题定义</td>'
-									+ '<td><span class="span-btn add-btn"></span></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td colspan="2" class="sub-question-container"></td>'
-								+ '</tr>'
-							+ '</table>'
-						+ '</div>'
-					+ '</div>'
-				+ '</div>';
-				$(selection.target).append($(qhtml));
+				//填充已经存在的选框
+				selection.display_elements();
 			};
 			
-			// 监听按键，点击删除按钮删除用户选择的element
-			selection.enable_key_del = function() {
-				$('body').keyup(function(e) {
-					//获取客户点击的按键
-					var e=e||event;
-					var keyCode = e.keyCode || e.which || e.charCode;
-					if(keyCode == 46) {
-						if(selection.currentElement) {
-							selection.currentElement.del();
-						}
-					}
-				});
+			//回显所有已经存在的元素
+			selection.display_elements = function() {
+				for(var i = 0; i < selection.elements.length; i++) {
+					var element = selection.elements[i];
+					selection.add_exist_element(element);
+				}
 			}
+			
+			selection.add_exist_element = function(element){
+				$(selection.target).append($(element.view));
+				
+				//设置当前元素的位置
+				$(element.view).css({
+					x: element.data.areaInPaper.left + 'px', 
+					y: element.data.areaInPaper.top + 'px',
+					width: element.data.areaInPaper.width + 'px',
+					height: element.data.areaInPaper.height + 'px'
+				});
+				
+				//让当前元素可以编辑
+				element.make_element_editable();
+				
+				//隐藏元素的八个助托点，表示选取框默认为不选中状态
+				$(element.view).find('.point').css({
+					display: 'none'
+				});;
+				
+			};
 			
 			//初始化用户创建选区操作
 			selection.enable_selection = function() {
@@ -465,8 +409,6 @@
 				selection.record_current_element(element);
 				
 				selection.elements.push(selection.currentElement);
-				
-				selection.select_element(element);
 			}
 			
 			//记录当前正在处理的元素
@@ -690,6 +632,100 @@
 				}
 				
 				return top;
+			};
+			
+			//初始化试卷内容，添加选框宽高提示框，添加题目信息框
+			selection.initUI = function() {
+				//1.初始化试卷内容
+				var img = document.createElement('img');
+				$(img).addClass('testpaperImage');
+				$(img).attr('src', selection.examPaperUrl);
+				$(selection.target).append(img);
+				
+				//2.添加宽高提示框
+				var html = '<div class="size" style="display:none;">'
+								+ '<span id="width-tip" class="tip">30</span>'
+								+ '<span class="tip">&nbsp;x&nbsp;</span>'
+								+ '<span id="height-tip" class="tip">20</span>'
+						 + '</div>';
+				
+				$(selection.target).append($(html));
+				
+				//3.添加题目信息框
+				var qhtml = 
+					'<div class="control-content" style="display:none;">'
+					+ '<div class="panel panel-info">'
+						+ '<div class="panel-heading" style="position:relative;">'
+							+ '<span>题目信息</span>'
+							+ '<span class="span-btn close-btn"></span>'
+						+ '</div>'
+						+ '<div class="panel-body" style="width:100%;height:400px;overflow:auto;">'
+							+ '<table class="table no-border">'
+								+ '<tr>'
+									+ '<td>题号</td>'
+									+ '<td><input type="text" id="name" name="name" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>满分值</td>'
+									+ '<td><input id="fullScore" type="text" name="fullScore" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+								+ '<td>评次</td>'
+								+ '<td><input type="text" id="requiredPinci" name="requiredPinci" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+								+ '<td>误差</td>'
+								+ '<td><input id="maxerror" type="text" name="maxerror" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>X坐标(px)</td>'
+									+ '<td><span id="left" class="label label-success"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>Y坐标(px)</td>'
+									+ '<td><span id="top" class="label label-success"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>宽度(px)</td>'
+									+ '<td><span id="width" class="label label-info"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>高度(px)</td>'
+									+ '<td><span id="height" class="label label-info"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>小题定义</td>'
+									+ '<td><span class="span-btn add-btn"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td colspan="2" class="sub-question-container"></td>'
+								+ '</tr>'
+							+ '</table>'
+						+ '</div>'
+					+ '</div>'
+				+ '</div>';
+				$(selection.target).append($(qhtml));
+			};
+			
+			// 监听按键，点击删除按钮删除用户选择的element
+			selection.enable_key_del = function() {
+				$('body').keyup(function(e) {
+					//获取客户点击的按键
+					var e=e||event;
+					var keyCode = e.keyCode || e.which || e.charCode;
+					if(keyCode == 46) {
+						if(selection.currentElement) {
+							selection.currentElement.del();
+						}
+					}
+				});
+			};
+			
+			//防止试卷图片被拖动
+			selection.preventImageDrag = function() {
+				$(document.images).each(function() {
+					$(this)[0].ondragstart = function() {return false;}
+				});
 			};
 			
 		}
