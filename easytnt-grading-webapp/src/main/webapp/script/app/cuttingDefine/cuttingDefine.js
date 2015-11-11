@@ -34,6 +34,7 @@
 			
 			//初始化底部工具栏中按钮点击事件
 			function initEvent() {
+				//下翻，指向下一张答题卡
 				$('#nextBtn').click(function() {
 					stage_unsaved_element();
 					//判断当前元素是否有下一页答题卡，并且之前已经被处理过
@@ -55,6 +56,7 @@
 					
 				});
 				
+				//上翻指向上一张答题卡
 				$('#previousBtn').click(function() {
 					stage_unsaved_element();
 					//只要在第二页及其以上，就可以往上翻页
@@ -70,13 +72,36 @@
 					
 				});
 				
+				//保存，将试卷数据转化为固定格式的json，并传递到后台
 				$('#saveBtn').click(function() {
 					stage_unsaved_element();
 					
-					
-					
+					var data = buildData();
+					alert(data);
 				});
 				
+			}
+			
+			//构建提交到后台的json数据对象
+			function buildData() {
+				var CuttingsSolution = {
+						designFor: {
+							paperId: window.examObj.paperId,
+							answerCardCuttingTemplates : window.examObj.answerCardCuttingTemplates,
+						},
+						cutTo: []
+				};
+				
+				for(var i = 0; i < window.examObj.examPapers.length; i++) {
+					var selection = window.examObj.examPapers[i];
+					for(var j = 0; j < selection.elements.length; j++) {
+						var element = selection.elements[i];
+						CuttingsSolution.cutTo.push(element.data);
+						
+					}
+				}
+				
+				return CuttingsSolution;
 			}
 			
 			//判断当前有没有没有被保存的元素,存在就保存

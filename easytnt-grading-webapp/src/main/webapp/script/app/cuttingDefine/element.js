@@ -185,18 +185,18 @@
 			
 			// 显示当前选中元素的数据值
 			// 这里涉及到将前一个选中元素的数据保存到其数据域中
-			element.show_data = function(isForce) {
+			element.show_data = function(saveSelf) {
 				// 判断之前是否处理过元素，如果处理了，就需要把设置的数据保存到元素中
-				element.save_preview_element_data(isForce);
-				element.show_with_element_data(isForce);
+				element.save_preview_element_data(saveSelf);
+				element.show_with_element_data(saveSelf);
 			};
 			
 			// 保存设置的数据到元素数据域中
-			// 只有点击添加按钮时是强制将数据保存到当前选中元素下
+			// 只有点击添加按钮或者点击下一页、上一页按钮时还显示信息提示框时是将数据保存到当前选中元素下
 			// 其他情况都是将数据保存到上一个选中元素中
-			element.save_preview_element_data = function(isForce) {
+			element.save_preview_element_data = function(saveSelf) {
 				var el = null;
-				if(isForce) {
+				if(saveSelf) {
 					el = selection.currentElement;
 				}else {
 					if(selection.previousElement == null) {
@@ -231,7 +231,7 @@
 				var subQuestionPanels = $(questionPanel).find('.subQuestionPanel');
 				
 				// 如果是添加按钮并且是初次添加一个小题，上面获取小题信息为空,所以需要手动创建一个小题对象
-				if(isForce && subQuestionPanels.length == 0) {
+				if(saveSelf && subQuestionPanels.length == 0) {
 					var subData = create_sub_question_data();
 					el.data.itemAreas.push(subData);
 					return;
@@ -250,12 +250,6 @@
 					
 					var subData = create_sub_question_data(title, subFullScore, 
 							seriesScore, interval, validValues);
-					el.data.itemAreas.push(subData);
-				}
-				
-				// 如果是按钮添加，则还需要创建一个新的数据对象
-				if(isForce) {
-					var subData = create_sub_question_data();
 					el.data.itemAreas.push(subData);
 				}
 			};
