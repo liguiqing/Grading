@@ -10,7 +10,7 @@
 			selection.showSize = false;//是否显示提示框
 			selection.currentElement = null;//当前操作的元素
 			selection.previousElement = null///前一个被选中的元素， 用于保存数据
-			selection.examPaperUrl = window.app.rootPath + 'static/css/images/shijuan.jpg';
+			selection.answerCardImageIdx = 0; //答题卡图片索引
 			selection.elements = [];//已经添加到内容中的元素
 			
 			//目标控件
@@ -634,12 +634,33 @@
 				return top;
 			};
 			
+			//获取当前答题卡图片url
+			selection.getAnswerCardImageUrl = function(index) {
+				var url = null;
+				var template = null;
+				for(var i = 0; i < window.examObj.answerCardCuttingTemplates.length; i++) {
+					template = window.examObj.answerCardCuttingTemplates[i];
+					
+					if(template.index == index) {
+						url = template.url;
+						break;
+					}
+				}
+				
+				return url;
+			};
+
 			//初始化试卷内容，添加选框宽高提示框，添加题目信息框
 			selection.initUI = function() {
 				//1.初始化试卷内容
 				var img = document.createElement('img');
 				$(img).addClass('testpaperImage');
-				$(img).attr('src', selection.examPaperUrl);
+				var imageUrl = selection.getAnswerCardImageUrl(selection.answerCardImageIdx);
+				if(!imageUrl) {
+					throw new Error('获取答题卡图片地址失败!');
+				}
+				
+				$(img).attr('src', imageUrl);
 				$(selection.target).append(img);
 				
 				//2.添加宽高提示框

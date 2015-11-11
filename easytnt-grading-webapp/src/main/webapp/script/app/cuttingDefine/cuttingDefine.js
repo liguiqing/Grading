@@ -20,6 +20,7 @@
 			
 			//用于记录试卷对象
 			function ExamObj() {
+				this.count = 0;//计数器，记录当前被使用的答题卡索引
 				this.paperId = 1;//当前试卷id
 				this.answerCardCuttingTemplates = [{
 					index: 0,
@@ -41,13 +42,17 @@
 						//存在下一页，并之前已经被处理过，就恢复到下一页继续编辑
 						//恢复到下一页
 						recover_selection(selection);
-						
 					}else {//这里后面需要根据传递过来的数据进行判断，是否还可以继续往下翻页
 						clearCanvas();
 						initSelection();
 					}
 					
 					$('#previousBtn')[0].disabled = false;//启用上翻功能
+					var enable = isNextEnable();//判断是否还可以往下翻
+					if(!enable) {
+						$('#nextBtn')[0].disabled = true;//禁用下翻功能
+					}
+					
 				});
 				
 				$('#previousBtn').click(function() {
@@ -57,12 +62,21 @@
 					//恢复到上一页
 					recover_selection(selection);
 					//判断下一次是否还可以继续往上翻
-					var enable = previousEnable();
+					var enable = isPreviousEnable();
 					if(!enable) {//不可以翻页
 						$('#previousBtn')[0].disabled = true;
 					}
+					$('#nextBtn')[0].disabled = false;//禁用下翻功能
 					
 				});
+				
+				$('#saveBtn').click(function() {
+					stage_unsaved_element();
+					
+					
+					
+				});
+				
 			}
 			
 			//判断当前有没有没有被保存的元素,存在就保存
@@ -105,7 +119,7 @@
 			}
 			
 			//是否还可以往前翻页，如果为第一页就不能再往前翻页
-			function previousEnable() {
+			function isPreviousEnable() {
 				var index = window.examObj.examPapers.indexOf(window.selection);
 				if(index == -1) {//刚开始初始化完毕
 					return false;
@@ -119,9 +133,36 @@
 				return true;
 			}
 			
+			//是否还可以往后翻页,如果已经是最后一张答题卡就不能继续往下翻了
+			function isNextEnable() {
+				var index = window.examObj.examPapers.indexOf(window.selection);
+				index += 1;
+				if(index == window.examObj.answerCardCuttingTemplates.length) {
+					return false;
+				}
+				
+				return true;
+			}
+			
 			function entrance() {
 				window.examObj = new ExamObj();
+				//初始化底部工具栏按钮状态
+				initBtnStatus();
+				//初始化整个答题卡区域可以编辑
 				initSelection();
+			}
+			
+			//根据examObj初始化底部上翻下翻按钮状态
+			function initBtnStatus() {
+				var templates = window.examObj.answerCardCuttingTemplates;
+				if(templates.length < 1) {//没有答题卡
+					throw new Error('试卷状态不合法!');
+				}else if(templates.length == 1){//只有一张答题卡
+					$('#nextBtn')[0].disabled = true;
+				}else {
+					$('#nextBtn')[0].disabled = false;
+				}
+				$('#previousBtn')[0].disabled = true;
 			}
 			
 			//清除画布中内容
@@ -135,6 +176,8 @@
 			//初始化试卷可以创建选区
 			function initSelection() {
 				var selection = Selection.newInstance('.image-content');
+				//初始化该答题卡对应的图片地址
+				selection.answerCardImageIdx = window.examObj.count++;
 				window.selection = selection;
 				selection.init();
 				//将当前试卷保存
