@@ -12,7 +12,7 @@
 					me.setContainerHeight();
 				});
 				kk();
-				
+				recoverPaper();
 				entrance();
 				
 				initEvent();
@@ -42,7 +42,7 @@
 					if(selection != null) {
 						//存在下一页，并之前已经被处理过，就恢复到下一页继续编辑
 						//恢复到下一页
-						recover_selection(selection);
+						recoverSelection(selection);
 					}else {//这里后面需要根据传递过来的数据进行判断，是否还可以继续往下翻页
 						clearCanvas();
 						initSelection();
@@ -62,7 +62,7 @@
 					//只要在第二页及其以上，就可以往上翻页
 					var selection = getPreviousSelection();
 					//恢复到上一页
-					recover_selection(selection);
+					recoverSelection(selection);
 					//判断下一次是否还可以继续往上翻
 					var enable = isPreviousEnable();
 					if(!enable) {//不可以翻页
@@ -76,10 +76,20 @@
 				$('#saveBtn').click(function() {
 					stage_unsaved_element();
 					
+					//构建数据
 					var data = buildData();
+					//提交保存
+					saveData(data);
+				});
+			}
+			
+			//保存题目数据
+			function saveData(data) {
+				var url = "/cuttingDefine/savetest";
+				console.info(data);
+				ajaxWrapper.postJson(url,data,'',function(data) {
 					alert(data);
 				});
-				
 			}
 			
 			//构建提交到后台的json数据对象
@@ -95,9 +105,37 @@
 				for(var i = 0; i < window.examObj.examPapers.length; i++) {
 					var selection = window.examObj.examPapers[i];
 					for(var j = 0; j < selection.elements.length; j++) {
-						var element = selection.elements[i];
-						CuttingsSolution.cutTo.push(element.data);
+						var element = selection.elements[j];
+						var data = element.data;
+						var cut = {
+								name: data.name,
+								answerCardImageIdx: data.answerCardImageIdx,
+								requiredPinci: data.requiredPinci,
+								maxerror: data.maxerror,
+								fullScore: data.fullScore,
+								areaInPaper: {
+									left: data.areaInPaper.left,
+									top: data.areaInPaper.top,
+									width: data.areaInPaper.width,
+									height: data.areaInPaper.height
+								},
+								itemAreas:[]
+						};
+						CuttingsSolution.cutTo.push(cut);
 						
+						for(var k = 0; k < data.itemAreas.length; k++) {
+							var itemArea = data.itemAreas[k];
+							var item = {
+									item: {
+										title: itemArea.title,
+										fullScore: itemArea.fullScore,
+										seriesScore: itemArea.seriesScore,
+										interval: itemArea.interval,
+										validValues: itemArea.validValues.split(',')
+									}
+							};
+							cut.itemAreas.push(item);
+						}
 					}
 				}
 				
@@ -114,8 +152,63 @@
 				}
 			}
 			
+			//恢复整个试卷内容
+			function recoverPaper() {
+				var data = {
+				    designFor: {
+				        paperId: 1,
+				        answerCardImageNum: 0,
+				        answerCardCuttingTemplates: [{
+				            index: 0,
+				            rotate: 0,
+				            url: "/grading/static/css/images/shijuan.jpg"
+				        },
+				        {
+				            index: 1,
+				            rotate: 0,
+				            url: "/grading/static/css/images/shijuan.jpg"
+				        }]
+				    },
+				    cutTo: [{
+				        name: 1,
+				        areaInPaper: {
+				            left: 180,
+				            top: 30,
+				            width: 91,
+				            height: 74
+				        },
+				        itemAreas: [{
+				            item: {
+				                title: 2,
+				                fullScore: 5.0,
+				                validValues: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
+				                seriesScore: true,
+				                interval: 1.0
+				            }
+				        }],
+				        requiredPinci: 1,
+				        maxerror: 1.0,
+				        answerCardImageIdx: 0,
+				        fullScore: 10.0
+				    }]
+				}
+				
+				var examObj = data.designFor;
+				examObj.examPapers = [];//每一张试卷都对应一个selection对象
+				for(var i = 0; i < data.cutTo.length; i++) {
+					var cut = data.cutTo[i];
+					
+					
+					
+				}
+				
+				
+				window.examObj = examObj;
+			}
+			
+			
 			//恢复指定答题卡页面内容
-			function recover_selection(selection) {
+			function recoverSelection(selection) {
 				//初始化试卷状态
 				clearCanvas();
 				selection.recover();

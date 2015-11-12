@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.google.gson.Gson;
 
 /**
  * <pre>
@@ -25,18 +26,39 @@ import com.easytnt.grading.domain.cuttings.CuttingsSolution;
 public class CuttingDefineController {
 
 	@RequestMapping(value = "/{examId}/{paperId}", method = RequestMethod.GET)
-	public ModelAndView index(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
-		return ModelAndViewFactory.newModelAndViewFor("/cuttingDefine/home").build();
+	public ModelAndView index(@PathVariable Long examId,
+			@PathVariable Long paperId) throws Exception {
+		return ModelAndViewFactory.newModelAndViewFor("/cuttingDefine/home")
+				.build();
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView save(@RequestBody CuttingsSolution cuttingsSolution) throws Exception {
+	public ModelAndView save(@RequestBody CuttingsSolution cuttingsSolution)
+			throws Exception {
 		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
 
 	@RequestMapping(value = "/get/{examId}/{paperId}", method = RequestMethod.GET)
-	public ModelAndView get(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
+	public ModelAndView get(@PathVariable Long examId,
+			@PathVariable Long paperId) throws Exception {
 		CuttingsSolution cuttingsSolution = new CuttingsSolution();
-		return ModelAndViewFactory.newModelAndViewFor("").with("cuttingsSolution", cuttingsSolution).build();
+		return ModelAndViewFactory.newModelAndViewFor("")
+				.with("cuttingsSolution", cuttingsSolution).build();
 	}
+
+	@RequestMapping(value = "/gettest/{examId}/{paperId}", method = RequestMethod.GET)
+	public ModelAndView getTest(@PathVariable Long examId,
+			@PathVariable Long paperId) throws Exception {
+		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		return ModelAndViewFactory.newModelAndViewFor("")
+				.with("cuttingsSolution", cuttingsSolution).build();
+	}
+	
+	@RequestMapping(value = "/savetest", method = RequestMethod.POST)
+	public void saveTest(@RequestBody CuttingsSolution cuttingsSolution) throws Exception {
+		Gson gson = new Gson();
+		String json = gson.toJson(cuttingsSolution);
+		System.out.println(json);
+	}
+	
 }

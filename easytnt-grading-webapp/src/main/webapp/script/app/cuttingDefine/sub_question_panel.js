@@ -84,7 +84,7 @@
 
 		//根据rate值拼接字符串
 		function get_score_rate_val(score, interval) {
-			var val = '[';
+			var val = '';
 			if(score != '' && !isNaN(score)) {
 				var num = 0;
 				while(num <= score) {
@@ -92,7 +92,6 @@
 					if(num < score) {
 						val += ',';
 					}else if (num == score) {
-						val += ']';
 						break;
 					}
 					
