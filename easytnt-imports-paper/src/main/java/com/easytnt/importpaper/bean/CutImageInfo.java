@@ -14,58 +14,58 @@ import java.nio.file.Paths;
  *
  */
 public class CutImageInfo {
-	private int testId;
-	private int paperId;
-	private int kemuId;
-	private long roomId;
-	private long virtualroomId;
-	private int roomType;
-	private long studentId;
-	private int itemId;
-	private int diquId;
+	private Long testId = 0L;
+	private Long paperId = 0L;
+	private Long kemuId = 0L;
+	private Long roomId = 0L;
+	private Long virtualroomId = 0L;
+	private Long roomType = 0L;
+	private Long studentId = 0L;
+	private Long itemId = 0L;
+	private Long diquId = 0L;
 	private String imagePath;
 
-	public int getPaperId() {
+	public Long getPaperId() {
 		return paperId;
 	}
 
-	public CutImageInfo setPaperId(int paperId) {
+	public CutImageInfo setPaperId(Long paperId) {
 		this.paperId = paperId;
 		return this;
 	}
 
-	public int getKemuId() {
+	public Long getKemuId() {
 		return kemuId;
 	}
 
-	public CutImageInfo setKemuId(int kemuId) {
+	public CutImageInfo setKemuId(Long kemuId) {
 		this.kemuId = kemuId;
 		return this;
 	}
 
-	public long getVirtualroomId() {
+	public Long getVirtualroomId() {
 		return virtualroomId;
 	}
 
-	public CutImageInfo setVirtualroomId(long virtualroomId) {
+	public CutImageInfo setVirtualroomId(Long virtualroomId) {
 		this.virtualroomId = virtualroomId;
 		return this;
 	}
 
-	public long getStudentId() {
+	public Long getStudentId() {
 		return studentId;
 	}
 
-	public CutImageInfo setStudentId(long studentId) {
+	public CutImageInfo setStudentId(Long studentId) {
 		this.studentId = studentId;
 		return this;
 	}
 
-	public int getItemId() {
+	public Long getItemId() {
 		return itemId;
 	}
 
-	public CutImageInfo setItemId(int itemId) {
+	public CutImageInfo setItemId(Long itemId) {
 		this.itemId = itemId;
 		return this;
 	}
@@ -79,38 +79,38 @@ public class CutImageInfo {
 		return this;
 	}
 
-	public int getTestId() {
+	public Long getTestId() {
 		return testId;
 	}
 
-	public CutImageInfo setTestId(int testId) {
+	public CutImageInfo setTestId(Long testId) {
 		this.testId = testId;
 		return this;
 	}
 
-	public long getRoomId() {
+	public Long getRoomId() {
 		return roomId;
 	}
 
-	public CutImageInfo setRoomId(long roomId) {
+	public CutImageInfo setRoomId(Long roomId) {
 		this.roomId = roomId;
 		return this;
 	}
 
-	public int getRoomType() {
+	public Long getRoomType() {
 		return roomType;
 	}
 
-	public CutImageInfo setRoomType(int roomType) {
+	public CutImageInfo setRoomType(Long roomType) {
 		this.roomType = roomType;
 		return this;
 	}
 
-	public int getDiquId() {
+	public Long getDiquId() {
 		return diquId;
 	}
 
-	public CutImageInfo setDiquId(int diquId) {
+	public CutImageInfo setDiquId(Long diquId) {
 		this.diquId = diquId;
 		return this;
 	}

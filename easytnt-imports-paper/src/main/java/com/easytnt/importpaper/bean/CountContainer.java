@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class CountContainer<T> {
 	private CopyOnWriteArrayList<T> container = new CopyOnWriteArrayList<>();
+	private long totalNum = 0;
 	private AtomicLong fileNumber = new AtomicLong();
 	private final int capacity;
 	private AtomicBoolean isOver = new AtomicBoolean(false);
@@ -47,6 +48,14 @@ public class CountContainer<T> {
 
 	public void setIsOver(boolean isOver) {
 		this.isOver.set(isOver);
+	}
+
+	public long getTotalNum() {
+		return totalNum;
+	}
+
+	public void setTotalNum(long totalNum) {
+		this.totalNum = totalNum;
 	}
 
 }
