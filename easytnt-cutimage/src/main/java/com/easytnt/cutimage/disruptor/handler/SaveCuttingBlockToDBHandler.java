@@ -6,9 +6,8 @@ package com.easytnt.cutimage.disruptor.handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.cutimage.disruptor.event.StudentTestPaperAnswerCardEvent;
-import com.easytnt.cutimage.utils.CuttingImage;
+import com.easytnt.importpaper.service.SaveCutImageInfoToDatabaseService;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;
 
@@ -19,9 +18,14 @@ import com.lmax.disruptor.WorkHandler;
  * @author liuyu
  *
  */
-public class CuttingImageHandler
+public class SaveCuttingBlockToDBHandler
 		implements WorkHandler<StudentTestPaperAnswerCardEvent>, EventHandler<StudentTestPaperAnswerCardEvent> {
-	private static Logger log = LoggerFactory.getLogger(CuttingImageHandler.class);
+	private static Logger log = LoggerFactory.getLogger(SaveCuttingBlockToDBHandler.class);
+	private SaveCutImageInfoToDatabaseService saveService;
+
+	public SaveCuttingBlockToDBHandler(SaveCutImageInfoToDatabaseService saveService) {
+		this.saveService = saveService;
+	}
 
 	@Override
 	public void onEvent(StudentTestPaperAnswerCardEvent event, long sequence, boolean endOfBatch) throws Exception {
@@ -30,19 +34,8 @@ public class CuttingImageHandler
 
 	@Override
 	public void onEvent(StudentTestPaperAnswerCardEvent event) throws Exception {
-		log.debug("开始切割....");
-		CuttingImage cuttingImage = new CuttingImage(event);
-
-		// CuttingImageService service = new CuttingImageService(event);
-		try {
-			cuttingImage.cutting();
-			// service.cutting();
-			// event.setBufferedImages(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(ThrowableParser.toString(e));
-		}
-		log.debug("且过完成.");
+		log.debug("保存到数据库....");
+		saveService.save(event.getCutImageInfos());
 	}
 
 }

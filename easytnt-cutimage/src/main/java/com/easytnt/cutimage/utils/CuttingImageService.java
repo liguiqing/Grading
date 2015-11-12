@@ -86,8 +86,9 @@ public class CuttingImageService {
 
 	private String createSaveFilePath(Long itemId) throws Exception {
 		StringBuffer saveFilePath = new StringBuffer();
-		saveFilePath.append(cuttingRootPath).append(diquId).append("/").append(kcId).append("/").append(itemId)
-				.append("/").append(studentName).append(".png");
+		saveFilePath.append(cuttingRootPath).append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/")
+				.append(diquId).append("/").append(kcId).append("/").append(itemId).append("/").append(studentName)
+				.append(".png");
 		Path path = Paths.get(saveFilePath.toString());
 		if (!Files.exists(path.getParent())) {
 			Files.createDirectories(path.getParent());

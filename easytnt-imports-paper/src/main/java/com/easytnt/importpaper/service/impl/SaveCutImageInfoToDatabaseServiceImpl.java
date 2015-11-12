@@ -4,7 +4,7 @@
 package com.easytnt.importpaper.service.impl;
 
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
@@ -37,6 +37,30 @@ public class SaveCutImageInfoToDatabaseServiceImpl implements SaveCutImageInfoTo
 		this.ds = ds;
 	}
 
+	@Override
+	public void save(List<CutImageInfo> cutImageInfos) {
+		ArrayList<String> tmepSqls = new ArrayList<>();
+		for (CutImageInfo cutImageInfo : cutImageInfos) {
+			tmepSqls.add(createSQL(cutImageInfo));
+		}
+
+		ArrayList<String> saveToDBSqls = new ArrayList<>();
+		lock.lock();
+		try {
+			sqls.addAll(tmepSqls);
+			if (sqls.size() % 10000 == 0) {
+				saveToDBSqls.addAll(sqls);
+				sqls.clear();
+			}
+		} finally {
+			lock.unlock();
+		}
+
+		if (!saveToDBSqls.isEmpty()) {
+			saveToDb(saveToDBSqls);
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -60,34 +84,34 @@ public class SaveCutImageInfoToDatabaseServiceImpl implements SaveCutImageInfoTo
 		}
 
 		if (!tempSqls.isEmpty()) {
-			save(tempSqls);
+			saveToDb(tempSqls);
 		}
 	}
 
 	@Override
 	public void clear() {
 		if (!sqls.isEmpty()) {
-			save(sqls);
+			saveToDb(sqls);
 		}
 	}
 
-	private void save(List<String> sqls) {
+	private void saveToDb(List<String> sqls) {
 		Connection con = null;
-		Statement statement = null;
+		PreparedStatement ps = null;
 		try {
 			con = ds.getConnection();
-			statement = con.createStatement();
+			ps = con.prepareStatement("");
 			for (String sql : sqls) {
-				statement.addBatch(sql);
+				ps.addBatch(sql);
 			}
-			statement.executeBatch();
+			ps.executeBatch();
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(ThrowableParser.toString(e));
 		} finally {
 			try {
-				if (statement != null) {
-					statement.close();
+				if (ps != null) {
+					ps.close();
 				}
 				if (con != null) {
 					con.close();

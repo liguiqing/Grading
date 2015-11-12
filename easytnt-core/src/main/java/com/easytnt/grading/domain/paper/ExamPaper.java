@@ -34,10 +34,13 @@ public class ExamPaper implements Entity<ExamPaper> {
 
 	private Float fullScore;
 
-	private int answerCardImageNum;// 答题卡图片数量
+	private int answerCardImageNum;// 答题卡图片模板数量
 
-	private List<AnswerCardCuttingTemplate> answerCardCuttingTemplates;
-	private String cuttingRootPath;
+	private List<AnswerCardCuttingTemplate> answerCardCuttingTemplates;// 答题卡图片模板信息
+
+	private String cuttingRootPath;// 切割图片保存路劲
+
+	private String studentAnserCardRootPath;// 学生答题卡图片路劲
 
 	public ExamPaper(String name, Float fullScore) {
 		this.name = name;
@@ -138,4 +141,13 @@ public class ExamPaper implements Entity<ExamPaper> {
 		}
 		this.cuttingRootPath = cuttingRootPath;
 	}
+
+	public String getStudentAnserCardRootPath() {
+		return studentAnserCardRootPath;
+	}
+
+	public void setStudentAnserCardRootPath(String studentAnserCardRootPath) {
+		this.studentAnserCardRootPath = studentAnserCardRootPath;
+	}
+
 }
