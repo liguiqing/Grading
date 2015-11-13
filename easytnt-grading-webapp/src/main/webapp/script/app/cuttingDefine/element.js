@@ -25,7 +25,7 @@
 				//删除页面上的无效dom元素
 				$(element.view).remove();
 				//隐藏无效dom的宽高tip
-				$('.size').css({display : 'none'});
+				$(selection.target).find('.size').css({display : 'none'});
 				
 				//恢复鼠标形状
 				$(selection.target).css({
@@ -262,7 +262,7 @@
 				var x = element.view.offsetLeft;
 				var w = $(element.view).width();
 				var top = element.view.offsetTop;
-				var left = x+w;
+				var left = x + w + 20;
 				
 				var width = $(target).outerWidth();
 				var height = $(target).outerHeight();
@@ -290,8 +290,6 @@
 				element.position_question_panel(flag);
 				// 2清空小题信息，重新加载
 				$('.sub-question-container').empty();
-				
-				
 				// 3根据当前元素值初始化数据控件
 				$('#name').val(element.data.name);
 				$('#fullScore').val(element.data.fullScore);

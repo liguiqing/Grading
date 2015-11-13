@@ -5,7 +5,6 @@
 		var obj = function() {
 			var me = this;
 			this.render = function() {
-				console.log("ddddd")
 				//浏览器自适应高度
 				this.setContainerHeight();
 				$(window).resize(function() {
@@ -14,7 +13,6 @@
 				kk();
 				recoverPaper();
 				entrance();
-				
 				initEvent();
 			};
 			
@@ -209,10 +207,10 @@
 			
 			//恢复指定答题卡页面内容
 			function recoverSelection(selection) {
+				window.selection = selection;//标记当前处理的答题卡
 				//初始化试卷状态
 				clearCanvas();
 				selection.recover();
-				window.selection = selection;//标记当前处理的答题卡
 			}
 			
 			//得到上一张答题卡

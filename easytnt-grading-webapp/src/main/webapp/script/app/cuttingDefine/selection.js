@@ -29,11 +29,20 @@
 			
 			//恢复某一页答题卡的内容
 			selection.recover = function() {
+				//重置seleciton属性值
+				selection.init_properties();
 				//初始化整个画布
 				selection.init();
-				
 				//填充已经存在的选框
 				selection.display_elements();
+			};
+			
+			selection.init_properties = function() {
+				selection.startX = 0;
+				selection.startY = 0;
+				selection.showSize = false;//是否显示提示框
+				selection.currentElement = null;//当前操作的元素
+				selection.previousElement = null///前一个被选中的元素， 用于保存数据
 			};
 			
 			//回显所有已经存在的元素
@@ -45,12 +54,15 @@
 			}
 			
 			selection.add_exist_element = function(element){
+				//清空原来元素中设定的八个助托点,重新设置元素可编辑
+				$(element.view).empty();
+				
 				$(selection.target).append($(element.view));
 				
 				//设置当前元素的位置
 				$(element.view).css({
-					x: element.data.areaInPaper.left + 'px', 
-					y: element.data.areaInPaper.top + 'px',
+					left: element.data.areaInPaper.left + 'px',
+					top: element.data.areaInPaper.top + 'px',
 					width: element.data.areaInPaper.width + 'px',
 					height: element.data.areaInPaper.height + 'px'
 				});
@@ -164,8 +176,8 @@
 			
 			// 元素数据面板可拖动
 			selection.make_element_data_panel_draggable = function() {
-				var dragui = '.panel-heading';
-				var target = '.control-content';
+				var dragui = $(selection.target).find('.panel-heading');
+				var target = $(selection.target).find('.control-content');
 				$(dragui).mouseover(function() {
 					$(this).css({
 						cursor : 'move'
@@ -266,20 +278,20 @@
 			//初始化一些题目信息中按钮点击事件
 			selection.init_event = function() {
 				// 点击添加小题按钮触发事件
-				$('.add-btn').click(function() {
+				$(selection.target).find('.add-btn').click(function() {
 					var element = selection.currentElement;
 					element.show_data(true);
 				});
 				
 				//面板关闭按钮
-				$('.panel-heading .close-btn').click(function() {
+				$(selection.target).find('.panel-heading .close-btn').click(function() {
 					$('.control-content').css({
 						display : 'none'
 					});
 				});
 				
 				//小题框被点击时事件也会传递到图片上，需要阻止
-				$('.control-content').mousedown(function(e) {
+				$(selection.target).find('.control-content').mousedown(function(e) {
 					selection.prevent_event(e);
 				});
 				
@@ -737,6 +749,11 @@
 					if(keyCode == 46) {
 						if(selection.currentElement) {
 							selection.currentElement.del();
+							
+							//如果当前数据信息提示框显示，就隐藏,元素被删除了，显示数据就没有意义了
+							$(selection.target).find('.control-content').css({
+								display: 'none'
+							});
 						}
 					}
 				});
