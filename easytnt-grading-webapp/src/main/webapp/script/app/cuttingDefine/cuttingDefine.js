@@ -143,7 +143,7 @@
 				        {
 				            index: 1,
 				            rotate: 0,
-				            url: "/grading/static/css/images/shijuan.jpg"
+				            url: "/grading/static/css/images/shijuan2.jpg"
 				        }]
 				    },
 				    cutTo: [{
