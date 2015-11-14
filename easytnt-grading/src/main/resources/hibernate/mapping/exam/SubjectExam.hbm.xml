@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.easytnt.grading.domain.exam.SubjectExam" table="test">
+		<id name="testId" type="java.lang.Long">
+			<column name="test_id" />
+			<generator class="identity" />
+		</id>
+		<property name="oid" type="java.lang.Long">
+			<column name="test_oid" />
+		</property>
+		<many-to-one name="subject"  class="com.easytnt.grading.domain.exam.Subject"  
+                     column="subject_id" cascade="all"  >
+         </many-to-one> 
+		<component name="desc" class="com.easytnt.grading.domain.exam.ExamDesc" lazy="true">
+            <property name="name" column="test_name" type="java.lang.String"/>
+            <property name="from" column="test_from" type="java.util.Date"/>
+            <property name="to" column="test_to" type="java.util.Date"/>
+        </component>
+		
+		<property name="testYear" type="java.lang.Integer">
+			<column name="test_year" />
+		</property>
+		
+		<property name="testMonth" type="java.lang.Integer">
+			<column name="test_month" />
+		</property>
+		
+		<property name="testWeek" type="java.lang.Integer">
+			<column name="test_week" />
+		</property>
+		<set name="usedPaper" table="test_used_paper"  lazy="false" inverse="true" cascade="all">
+            <key column="test_id"></key>
+            <many-to-many class="com.easytnt.grading.domain.paper.ExamPaper" column="paper_id"></many-to-many>
+        </set>
+		
+	</class>
+</hibernate-mapping>

@@ -229,4 +229,11 @@ public class Item implements ValueObject<Item> {
 		this.itemOid = itemOid;
 	}
 	
+	public String getValidscoredot() {
+		return genValidscoredot(this.validValues);
+	}
+
+	public void setValidscoredot(String validscoredot) {
+		genValidValues(validscoredot);
+	}
 }

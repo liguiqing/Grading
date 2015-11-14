@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.easytnt.grading.domain.paper.PaperCard" table="paper_card">
+		<id name="cardId" type="java.lang.Long">
+			<column name="card_id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="paper" class="com.easytnt.grading.domain.paper.ExamPaper" 
+                     column="paper_id" >
+         </many-to-one>
+		<property name="cardSeq" type="java.lang.Integer">
+			<column name="card_seq" />
+		</property>
+		<property name="path" type="java.lang.String">
+			<column name="path" />
+		</property>
+	</class>
+</hibernate-mapping>

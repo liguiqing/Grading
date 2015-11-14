@@ -38,7 +38,9 @@ public class SubjectExam implements Entity<SubjectExam>{
     private Set<ExamPaper> usedPaper;
     
     private Integer testYear;
+    
     private Integer testMonth;
+    
     private Integer testWeek;
     
     public SubjectExam(ExamDesc desc,Subject subject ,Long oid) {
@@ -53,12 +55,11 @@ public class SubjectExam implements Entity<SubjectExam>{
 		}
 	}
     
-    private int index=1;
+
     public void addExamPapers(ExamPaper examPaper){
     	init();
-    	examPaper.setPaperOid(this.oid*10+index);
+    	examPaper.setPaperOid( this.oid * 10 + (this.usedPaper.size()+1));
     	this.usedPaper.add(examPaper);
-    	this.index++;
     }
     public static SubjectExam createBy(Set<ExamPaper> usedPaper,ExamDesc desc,Subject subject) {
     	SubjectExam se = new SubjectExam();
@@ -95,6 +96,16 @@ public class SubjectExam implements Entity<SubjectExam>{
 	//以下功能为ORM或者自动构造使用，非此慎用
 	public SubjectExam() {
 		
+	}
+	
+	private Long testId;
+
+	public Long getTestId() {
+		return testId;
+	}
+
+	public void setTestId(Long testId) {
+		this.testId = testId;
 	}
 
 	public Long getOid() {

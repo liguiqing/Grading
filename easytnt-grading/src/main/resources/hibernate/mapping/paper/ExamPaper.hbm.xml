@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.easytnt.grading.domain.paper.ExamPaper" table="paper_info">
+		<id name="paperId" type="java.lang.Long">
+			<column name="paper_id" />
+			<generator class="identity" />
+		</id>
+		<property name="fullScore" type="java.lang.Float">
+			<column name="full_score" />
+		</property>
+		<property name="subjectivityScore" type="java.lang.Float">
+			<column name="subjectivity_score" />
+		</property>
+		<property name="objectivityScore" type="java.lang.Float">
+			<column name="objectivity_score" />
+		</property>				
+		<property name="paperOid" type="java.lang.Long">
+			<column name="taper_oid" />
+		</property>
+		
+		<property name="name" type="java.lang.String">
+			<column name="paper_name" />
+		</property>
+		<component name="paperType" class="com.easytnt.grading.domain.paper.PaperType" lazy="true">
+            <property name="typeName" column="paper_type" type="java.lang.String"/>
+        </component>
+		
+		<set name="sections" inverse="true" cascade="all-delete-orphan"   >
+            <key column="paper_id" ></key>
+            <one-to-many class="com.easytnt.grading.domain.paper.Section"/>
+        </set>
+        <set name="subjectExam" table="test_used_paper"  lazy="false" cascade="all">
+            <key column="paper_id"></key>
+            <many-to-many class="com.easytnt.grading.domain.exam.SubjectExam" column="test_id"></many-to-many>
+        </set>
+        <set name="paperCards" inverse="true" cascade="all-delete-orphan" order-by="card_id asc"  >
+            <key column="paper_id" ></key>
+            <one-to-many class="com.easytnt.grading.domain.paper.PaperCard"/>
+        </set>
+	</class>
+</hibernate-mapping>
