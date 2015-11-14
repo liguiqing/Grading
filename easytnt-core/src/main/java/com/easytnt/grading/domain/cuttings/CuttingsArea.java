@@ -167,4 +167,14 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 	public void setAnswerCardImageIdx(int answerCardImageIdx) {
 		this.answerCardImageIdx = answerCardImageIdx;
 	}
+
+	public List<PositionOfItemInArea> getItemAreas() {
+		return itemAreas;
+	}
+
+	public void setItemAreas(List<PositionOfItemInArea> itemAreas) {
+		this.itemAreas = itemAreas;
+	}
+	
+	
 }

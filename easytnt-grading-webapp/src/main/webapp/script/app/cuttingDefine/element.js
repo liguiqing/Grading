@@ -25,7 +25,7 @@
 				//删除页面上的无效dom元素
 				$(element.view).remove();
 				//隐藏无效dom的宽高tip
-				$('.size').css({display : 'none'});
+				$(selection.target).find('.size').css({display : 'none'});
 				
 				//恢复鼠标形状
 				$(selection.target).css({
@@ -47,12 +47,16 @@
 							selection.record_current_element(element);
 							// 选中当前元素，其余元素都取消选中,隐藏助托点
 							selection.select_element(element);
-							
+							//保存上一个元素的数据
+							element.save_preview_element_data();
+							//显示当前元素的数据
 							element.show_data();
 						}
 					},
 					onDrag : function(e) {
+						//限制元素位置和大小，不超出整个试卷范围
 						element.element_drag_restrain(e);
+						//限制数据栏显示位置，不超出整个试卷范围
 						element.position_question_panel();
 						// 显示选区当前宽高tip
 						selection.show_size();
@@ -185,18 +189,21 @@
 			
 			// 显示当前选中元素的数据值
 			// 这里涉及到将前一个选中元素的数据保存到其数据域中
-			element.show_data = function(isForce) {
-				// 判断之前是否处理过元素，如果处理了，就需要把设置的数据保存到元素中
-				element.save_preview_element_data(isForce);
-				element.show_with_element_data(isForce);
+			element.show_data = function(createSubData) {
+				if(createSubData) {
+					var subData = create_sub_question_data();
+					element.data.itemAreas.push(subData);
+				}
+				//显示对象中的数据到信息框上
+				element.show_with_element_data(createSubData);
 			};
 			
 			// 保存设置的数据到元素数据域中
-			// 只有点击添加按钮时是强制将数据保存到当前选中元素下
+			// 只有点击添加按钮或者点击下一页、上一页按钮时还显示信息提示框时是将数据保存到当前选中元素下
 			// 其他情况都是将数据保存到上一个选中元素中
-			element.save_preview_element_data = function(isForce) {
+			element.save_preview_element_data = function(saveSelf) {
 				var el = null;
-				if(isForce) {
+				if(saveSelf) {
 					el = selection.currentElement;
 				}else {
 					if(selection.previousElement == null) {
@@ -230,13 +237,6 @@
 				// 获取小题信息
 				var subQuestionPanels = $(questionPanel).find('.subQuestionPanel');
 				
-				// 如果是添加按钮并且是初次添加一个小题，上面获取小题信息为空,所以需要手动创建一个小题对象
-				if(isForce && subQuestionPanels.length == 0) {
-					var subData = create_sub_question_data();
-					el.data.itemAreas.push(subData);
-					return;
-				}
-				
 				el.data.itemAreas.length = 0;
 				// 重新填入小题信息
 				var subQuestionPanel = null;
@@ -244,7 +244,7 @@
 					subQuestionPanel = subQuestionPanels[i];
 					var title = $(subQuestionPanel).find('input[name=title]').val();
 					var subFullScore = $(subQuestionPanel).find('input[name=subFullScore]').val();
-					var seriesScore = $(subQuestionPanel).find('select#seriesScore').val();
+					var seriesScore = Number($(subQuestionPanel).find('select#seriesScore').val());
 					var interval = $(subQuestionPanel).find('input[name=interval]').val();
 					var validValues = $(subQuestionPanel).find('input[name=validValues]').val();
 					
@@ -252,23 +252,17 @@
 							seriesScore, interval, validValues);
 					el.data.itemAreas.push(subData);
 				}
-				
-				// 如果是按钮添加，则还需要创建一个新的数据对象
-				if(isForce) {
-					var subData = create_sub_question_data();
-					el.data.itemAreas.push(subData);
-				}
 			};
 			
 			//重新调整题目信息框位置
-			element.position_question_panel = function(isForce) {
+			element.position_question_panel = function(flag) {
 				var target = $('.control-content');
 				var display = $(target).css('display');
 				// 获取当前元素的相对位置
 				var x = element.view.offsetLeft;
 				var w = $(element.view).width();
 				var top = element.view.offsetTop;
-				var left = x+w;
+				var left = x + w + 20;
 				
 				var width = $(target).outerWidth();
 				var height = $(target).outerHeight();
@@ -282,7 +276,7 @@
 				}
 				
 				//如果是点击添加按钮触发就不用重新调整信息框位置
-				if(!isForce) {
+				if(!flag) {
 					$('.control-content').css({
 						left : position.left + 'px',
 						top : position.top + 'px'
@@ -291,13 +285,11 @@
 			}
 			
 			// 根据当前选择的元素在右侧显示其数据信息
-			element.show_with_element_data = function(isForce) {
+			element.show_with_element_data = function(flag) {
 				// 1显示右侧数据表单
-				element.position_question_panel(isForce);
+				element.position_question_panel(flag);
 				// 2清空小题信息，重新加载
 				$('.sub-question-container').empty();
-				
-				
 				// 3根据当前元素值初始化数据控件
 				$('#name').val(element.data.name);
 				$('#fullScore').val(element.data.fullScore);
@@ -359,9 +351,9 @@
 		// 创建选中元素的题目数据
 		function create_question_data() {
 			var data = {};
-			
+			data.id = 0;
 			data.name = '1';// 题号
-			data.answerCardImageIdx = 0;//答题卡位置
+			data.answerCardImageIdx = window.selection.answerCardImageIdx;//答题卡位置
 			data.requiredPinci = 1;//评次
 			data.maxerror = 1;//误差
 			data.fullScore = 10;// 满分值
@@ -370,7 +362,6 @@
 					top: 0, // 相对图片的y轴坐标
 					width: 0, // 所选区域的宽度
 					height: 0// 所选区域的高度
-					
 			};
 			
 			data.itemAreas = [];// 小题定义
@@ -385,6 +376,7 @@
 		// @param validValues 给分率所计算的值
 		function create_sub_question_data(title, fullScore, seriesScore, interval, validValues) {
 			var data = {};
+			data.id = 0;
 			data.title = title == undefined ? '' : title;// 小题号
 			data.fullScore = fullScore == undefined ? 10 : fullScore;// 小题分值
 			data.seriesScore = seriesScore == undefined ? 1 : seriesScore;// 默认为连续
@@ -395,7 +387,7 @@
 		}
 		
 		var o={
-				newElement:function(){
+				newInstance:function(){
 					return new Element();
 				}
 		};

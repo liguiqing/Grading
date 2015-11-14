@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingsSolution;
 import com.easytnt.grading.service.CuttingTestpaperService;
+import com.google.gson.Gson;
 
 /**
  * <pre>
@@ -49,4 +50,18 @@ public class CuttingDefineController {
 		cuttingTestpaperService.cutting(paperId);
 		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
+
+	@RequestMapping(value = "/gettest/{examId}/{paperId}", method = RequestMethod.GET)
+	public ModelAndView getTest(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
+		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		return ModelAndViewFactory.newModelAndViewFor("").with("cuttingsSolution", cuttingsSolution).build();
+	}
+
+	@RequestMapping(value = "/savetest", method = RequestMethod.POST)
+	public void saveTest(@RequestBody CuttingsSolution cuttingsSolution) throws Exception {
+		Gson gson = new Gson();
+		String json = gson.toJson(cuttingsSolution);
+		System.out.println(json);
+	}
+
 }
