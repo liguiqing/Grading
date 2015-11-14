@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.paper.ExamPaper;
@@ -87,6 +88,12 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 	public List<GradeTask> list() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void query(Query<GradeTask> query) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

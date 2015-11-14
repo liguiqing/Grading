@@ -44,8 +44,12 @@ public class QueryBuilder {
 				this.parameters = parameters;
 			}
 			
-			public <E> E parameterOf(String name,Class<E> clazz){
-				//等实现
+			public String parameterOf(String name){
+				//实现
+				String[] vs = this.parameters.get(name);
+				if(vs != null && vs.length >0 ) {
+					return vs[0];
+				}
 				return null;
 			}
 
@@ -55,7 +59,7 @@ public class QueryBuilder {
 			}
 			
 			@Override
-			public void totalRows(int totalRows) {
+			public void rows(int totalRows) {
 				this.totalRows = totalRows;
 				this.totalPage = this.totalRows / this.getPageSize();
 				
@@ -177,4 +181,3 @@ public class QueryBuilder {
 		return query;
 	}
 }
-

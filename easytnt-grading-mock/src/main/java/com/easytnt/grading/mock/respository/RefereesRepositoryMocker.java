@@ -7,6 +7,7 @@ package com.easytnt.grading.mock.respository;
 import java.util.HashMap;
 import java.util.List;
 
+import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.repository.RefereesRepository;
 
@@ -74,6 +75,12 @@ public class RefereesRepositoryMocker implements RefereesRepository {
 	public List<Referees> list() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void query(Query<Referees> query) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
