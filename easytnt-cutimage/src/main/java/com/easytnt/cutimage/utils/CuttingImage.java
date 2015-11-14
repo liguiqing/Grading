@@ -165,11 +165,12 @@ public class CuttingImage {
 
 	private CutImageInfo createCutImageInfo(Long itemId) {
 		StringBuffer imagePath = new StringBuffer();
-		imagePath.append("/").append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/").append(diquId)
-				.append("/").append(kcId).append("/").append(itemId).append("/").append(studentName).append(".png");
+		imagePath.append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/").append(diquId).append("/")
+				.append(kcId).append("/").append(itemId).append("/").append(studentName).append(".png");
 		CutImageInfo cutImageInfo = new CutImageInfo();
 		cutImageInfo.setPaperId(event.getCuttingsSolution().getDesignFor().getPaperId()).setDiquId(diquId)
-				.setRoomId(kcId).setVirtualroomId(kcId).setItemId(itemId).setImagePath(imagePath.toString());
+				.setRoomId(kcId).setVirtualroomId(kcId).setItemId(itemId).setImagePath(imagePath.toString())
+				.setStudentId(Long.parseLong(studentName));
 		return cutImageInfo;
 	}
 

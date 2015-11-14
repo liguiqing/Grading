@@ -99,7 +99,9 @@ public class StartCuttingTestpaper implements Runnable {
 
 				@Override
 				public void visit(FileInfo fileInfo) {
-					counter.add();
+					if (isTiff(fileInfo)) {
+						counter.add();
+					}
 				}
 			});
 		} catch (Exception e) {
@@ -136,7 +138,7 @@ public class StartCuttingTestpaper implements Runnable {
 
 			@Override
 			public void visit(FileInfo fileInfo) {
-				if (fileInfo.getFilePath().toString().toLowerCase().endsWith(".tif")) {
+				if (isTiff(fileInfo)) {
 					paths.add(fileInfo.getFilePath().toString());
 				}
 
@@ -148,6 +150,10 @@ public class StartCuttingTestpaper implements Runnable {
 				}
 			}
 		});
+	}
+
+	private boolean isTiff(FileInfo fileInfo) {
+		return fileInfo.getFilePath().toString().toLowerCase().endsWith(".tif");
 	}
 
 	private class Counter {

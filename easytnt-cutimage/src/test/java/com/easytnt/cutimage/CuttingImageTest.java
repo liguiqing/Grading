@@ -67,7 +67,7 @@ public class CuttingImageTest {
 		final Disruptor<StudentTestPaperAnswerCardEvent> disruptor = new Disruptor<>(
 				StudentTestPaperAnswerCardEvent.FACTORY, bufferSize, EasytntExecutor.instance().getExecutorService(),
 				ProducerType.SINGLE, new YieldingWaitStrategy());
-
+		disruptor.handleExceptionsWith(new LogHandlerException());
 		disruptor
 				.handleEventsWithWorkerPool(new CuttingImageHandler(), new CuttingImageHandler(),
 						new CuttingImageHandler(), new CuttingImageHandler())
@@ -200,6 +200,7 @@ public class CuttingImageTest {
 		examPaper.setAnswerCardImageNum(2);
 		examPaper.setPaperId(1000L);
 		examPaper.setCuttingRootPath("D:/test/cuttingImage");
+		examPaper.setStudentAnserCardRootPath("D:/test/tif/lizong");
 
 		return examPaper;
 	}

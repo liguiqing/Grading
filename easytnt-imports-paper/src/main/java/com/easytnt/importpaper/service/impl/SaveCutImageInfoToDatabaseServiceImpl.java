@@ -96,35 +96,38 @@ public class SaveCutImageInfoToDatabaseServiceImpl implements SaveCutImageInfoTo
 	}
 
 	private void saveToDb(List<String> sqls) {
-		Connection con = null;
-		PreparedStatement ps = null;
-		try {
-			con = ds.getConnection();
-			ps = con.prepareStatement("");
+		if (ds == null) {
 			for (String sql : sqls) {
-				ps.addBatch(sql);
+				System.out.println(sql);
 			}
-			ps.executeBatch();
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(ThrowableParser.toString(e));
-		} finally {
+		} else {
+			Connection con = null;
+			PreparedStatement ps = null;
 			try {
-				if (ps != null) {
-					ps.close();
+				con = ds.getConnection();
+				ps = con.prepareStatement("");
+				for (String sql : sqls) {
+					ps.addBatch(sql);
 				}
-				if (con != null) {
-					con.close();
-				}
+				ps.executeBatch();
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.error(ThrowableParser.toString(e));
-			}
+			} finally {
+				try {
+					if (ps != null) {
+						ps.close();
+					}
+					if (con != null) {
+						con.close();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					log.error(ThrowableParser.toString(e));
+				}
 
+			}
 		}
-		// for (String sql : sqls) {
-		// System.out.println(sql);
-		// }
 	}
 
 	private String createSQL(CutImageInfo cutImageInfo) {

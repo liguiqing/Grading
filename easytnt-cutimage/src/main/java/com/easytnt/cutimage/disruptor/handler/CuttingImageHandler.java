@@ -37,7 +37,7 @@ public class CuttingImageHandler
 		try {
 			cuttingImage.cutting();
 			// service.cutting();
-			// event.setBufferedImages(null);
+			event.setBufferedImages(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(ThrowableParser.toString(e));
