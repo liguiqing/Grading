@@ -353,7 +353,7 @@
 			var data = {};
 			data.id = 0;
 			data.name = '1';// 题号
-			data.answerCardImageIdx = 0;//答题卡位置
+			data.answerCardImageIdx = window.selection.answerCardImageIdx;//答题卡位置
 			data.requiredPinci = 1;//评次
 			data.maxerror = 1;//误差
 			data.fullScore = 10;// 满分值
@@ -387,7 +387,7 @@
 		}
 		
 		var o={
-				newElement:function(){
+				newInstance:function(){
 					return new Element();
 				}
 		};

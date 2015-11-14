@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', 'ajaxwrapper', 'dialog',"easyui", "./selection"];
-	define(deps, function($, ajaxWrapper, dialog,easyui, Selection) {
+	var deps = [ 'jquery', 'ajaxwrapper', 'dialog',"easyui", "./selection", "./examObj", "./element"];
+	define(deps, function($, ajaxWrapper, dialog,easyui, Selection, ExamObj, Element) {
 		var obj = function() {
 			var me = this;
 			this.render = function() {
@@ -11,73 +11,50 @@
 					me.setContainerHeight();
 				});
 				kk();
-				recoverPaper();
+				//切割入口
 				entrance();
+				//初始化底部工具栏按钮状态
+				initBtnStatus();
 				initEvent();
 			};
 			
-			//用于记录试卷对象
-			function ExamObj() {
-				this.count = 0;//计数器，记录当前被使用的答题卡索引
-				this.paperId = 1;//当前试卷id
-				this.answerCardCuttingTemplates = [{
-					index: 0,
-					url: window.app.rootPath + 'static/css/images/shijuan.jpg'
-				},{
-					index: 1,
-					url: window.app.rootPath + 'static/css/images/shijuan.jpg'
-				}];
-				this.examPapers = [];//每一张试卷都对应一个selection对象
+			function entrance() {
+				//准备试卷信息
+				recoverPaper();
+				if(window.examObj.examPapers.length == 0) {//保存操作
+					doCreate();
+				}else {//编辑操作
+					doEdit();
+				}
+			}
+			
+			//进行新建试卷初始化
+			function doCreate() {
+				initSelection(0);
+			}
+			
+			//进行编辑操作,默认恢复第一张答题卡数据
+			function doEdit() {
+				var selection = window.examObj.examPapers[0];
+				selection.recover();
 			}
 			
 			//初始化底部工具栏中按钮点击事件
 			function initEvent() {
-				//下翻，指向下一张答题卡
-				$('#nextBtn').click(function() {
-					stage_unsaved_element();
-					//判断当前元素是否有下一页答题卡，并且之前已经被处理过
-					var selection = getNextSelection();
-					if(selection != null) {
-						//存在下一页，并之前已经被处理过，就恢复到下一页继续编辑
-						//恢复到下一页
-						recoverSelection(selection);
-					}else {//这里后面需要根据传递过来的数据进行判断，是否还可以继续往下翻页
-						clearCanvas();
-						initSelection();
-					}
-					
-					$('#previousBtn')[0].disabled = false;//启用上翻功能
-					var enable = isNextEnable();//判断是否还可以往下翻
-					if(!enable) {
-						$('#nextBtn')[0].disabled = true;//禁用下翻功能
-					}
-					
-				});
-				
-				//上翻指向上一张答题卡
-				$('#previousBtn').click(function() {
-					stage_unsaved_element();
-					//只要在第二页及其以上，就可以往上翻页
-					var selection = getPreviousSelection();
-					//恢复到上一页
-					recoverSelection(selection);
-					//判断下一次是否还可以继续往上翻
-					var enable = isPreviousEnable();
-					if(!enable) {//不可以翻页
-						$('#previousBtn')[0].disabled = true;
-					}
-					$('#nextBtn')[0].disabled = false;//禁用下翻功能
-					
-				});
-				
 				//保存，将试卷数据转化为固定格式的json，并传递到后台
 				$('#saveBtn').click(function() {
 					stage_unsaved_element();
-					
 					//构建数据
 					var data = buildData();
 					//提交保存
 					saveData(data);
+				});
+				
+				//答题卡页面点击事件
+				$('.clearfix').find('a.examPage').click(function() {
+					var val = $(this).text();
+					var index = Number(val) - 1;
+					jumpTo(this, index);
 				});
 			}
 			
@@ -106,6 +83,7 @@
 						var element = selection.elements[j];
 						var data = element.data;
 						var cut = {
+								id: data.id,
 								name: data.name,
 								answerCardImageIdx: data.answerCardImageIdx,
 								requiredPinci: data.requiredPinci,
@@ -125,6 +103,7 @@
 							var itemArea = data.itemAreas[k];
 							var item = {
 									item: {
+										id: itemArea.id,
 										title: itemArea.title,
 										fullScore: itemArea.fullScore,
 										seriesScore: itemArea.seriesScore,
@@ -168,12 +147,13 @@
 				        }]
 				    },
 				    cutTo: [{
+				        id: 0,
 				        name: 1,
 				        areaInPaper: {
-				            left: 180,
-				            top: 30,
-				            width: 91,
-				            height: 74
+				            left: 244,
+				            top: 119,
+				            width: 191,
+				            height: 102
 				        },
 				        itemAreas: [{
 				            item: {
@@ -188,19 +168,74 @@
 				        maxerror: 1.0,
 				        answerCardImageIdx: 0,
 				        fullScore: 10.0
+				    },
+				    {
+				        id: 0,
+				        name: 1,
+				        areaInPaper: {
+				            left: 257,
+				            top: 259,
+				            width: 236,
+				            height: 145
+				        },
+				        itemAreas: [{
+				            item: {
+				                title: 2,
+				                fullScore: 6.0,
+				                validValues: [0.0, 2.0, 4.0, 6.0],
+				                seriesScore: true,
+				                interval: 2.0
+				            }
+				        }],
+				        requiredPinci: 1,
+				        maxerror: 1.0,
+				        answerCardImageIdx: 1,
+				        fullScore: 10.0
 				    }]
 				}
-				
-				var examObj = data.designFor;
-				examObj.examPapers = [];//每一张试卷都对应一个selection对象
+				//试卷数据
+				var examObj = ExamObj.newInstance();
+				examObj.paperId = data.designFor.paperId;
+				examObj.answerCardCuttingTemplates = data.designFor.answerCardCuttingTemplates;
+				//答题卡数据
+				var selections = [];
+				var index = -1; 
 				for(var i = 0; i < data.cutTo.length; i++) {
 					var cut = data.cutTo[i];
+					index = cut.answerCardImageIdx;
+					//当前selection如果没有被创建，就新建一个
+					var selection = selections[index];
+					if(selection == undefined) {
+						selection = Selection.newInstance('.image-content');
+						window.selection = selection;
+						selection.answerCardImageIdx = index;
+						selections[index] = selection;
+					}
 					
+					//创建题目信息
+					var element = Element.newInstance();
+					element.data = {
+							id: cut.id,
+							name: cut.name,// 题号
+							answerCardImageIdx :cut.answerCardImageIdx,//答题卡位置
+							requiredPinci: cut.requiredPinci,//评次
+							maxerror: cut.maxerror,//误差
+							fullScore: cut.fullScore,// 满分值
+							areaInPaper: cut.areaInPaper,
+							itemAreas:[]// 小题定义
+					};
 					
+					//创建小题信息
+					for(var j = 0; j < cut.itemAreas.length; j++) {
+						var itemArea = cut.itemAreas[j].item;
+						itemArea.seriesScore = itemArea.seriesScore ? 1 : 0;//转换为select的值
+						element.data.itemAreas.push(itemArea);
+					}
 					
+					selection.elements.push(element);
 				}
 				
-				
+				examObj.examPapers = selections;
 				window.examObj = examObj;
 			}
 			
@@ -260,25 +295,52 @@
 				return true;
 			}
 			
-			function entrance() {
-				window.examObj = new ExamObj();
-				//初始化底部工具栏按钮状态
-				initBtnStatus();
-				//初始化整个答题卡区域可以编辑
-				initSelection();
-			}
-			
 			//根据examObj初始化底部上翻下翻按钮状态
 			function initBtnStatus() {
-				var templates = window.examObj.answerCardCuttingTemplates;
-				if(templates.length < 1) {//没有答题卡
-					throw new Error('试卷状态不合法!');
-				}else if(templates.length == 1){//只有一张答题卡
-					$('#nextBtn')[0].disabled = true;
+				//根据examobj中的试卷答题卡数量创建对应每一张答题卡的超链接
+				var arr = window.examObj.answerCardCuttingTemplates;
+				if(arr.length == 0) {
+					throw new Error('异常，试卷无答题卡!');
 				}else {
-					$('#nextBtn')[0].disabled = false;
+					var html = '';
+					for(var i = 0; i < arr.length; i++) {
+						var currentCls = '';
+						if(i == window.examObj.current) {
+							currentCls = ' currentPage';
+						}
+						html += '<a class="examPage'+currentCls+'" href="javascript:void(0)">' 
+							+ (arr[i].index+1) + '</a>';
+					}
+					$('.clearfix').append($(html));
 				}
-				$('#previousBtn')[0].disabled = true;
+			}
+			
+			//跳转到相应答题卡页面
+			function jumpTo(target, index) {
+				//如果当前点击的是当前显示页面就不作渲染
+				var val = $('.clearfix').find('a.currentPage').text();
+				var curIndex = Number(val) - 1;
+				if(index == curIndex) {
+					return;
+				}else {//跳转到其他答题卡页面
+					stage_unsaved_element();
+					var selection = window.examObj.examPapers[index];
+					//如果是不存在的就直接创建一个
+					if(selection == undefined) {
+						initSelection(index);
+					}else {
+						recoverSelection(selection);
+						
+					}
+				}
+				
+				resetCurrentPageStyle(target);
+			}
+			
+			//重新设置当前页面索引样式
+			function resetCurrentPageStyle(target) {
+				$(target).siblings('a.currentPage').removeClass('currentPage');
+				$(target).addClass('currentPage');
 			}
 			
 			//清除画布中内容
@@ -290,14 +352,16 @@
 			}
 			
 			//初始化试卷可以创建选区
-			function initSelection() {
+			function initSelection(index) {
+				//初始化之前先清空画布
+				clearCanvas();
 				var selection = Selection.newInstance('.image-content');
 				//初始化该答题卡对应的图片地址
-				selection.answerCardImageIdx = window.examObj.count++;
+				selection.answerCardImageIdx = index;
 				window.selection = selection;
 				selection.init();
-				//将当前试卷保存
-				window.examObj.examPapers.push(window.selection);
+				//将当前答题卡保存到指定索引
+				window.examObj.examPapers[index] = window.selection;
 			}
 
 			function kk(){

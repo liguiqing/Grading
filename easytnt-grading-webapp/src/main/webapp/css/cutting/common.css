@@ -7,6 +7,33 @@ html,body{
 	height:100%;
 } 
 
+/*底部工具条按钮样式*/
+.clearfix a{
+	display: inline-block;
+	width:25px;
+	line-height:25px;
+	text-align:center;
+	height:25px;
+	text-decoration: none;
+	background-color: #ccc;
+	outline: none;
+	margin: 3px;
+	color: black;
+}
+
+.clearfix a:HOVER, .clearfix a.currentPage {
+	background-color: #eee;
+	color:blue;
+	outline: none;
+	text-decoration: none;
+}
+
+.clearfix a.currentPage {
+	cursor: default;
+}
+
+/*底部工具条按钮样式  end*/
+
 .image-container {
 	width : 100%;
 	height : 100%;

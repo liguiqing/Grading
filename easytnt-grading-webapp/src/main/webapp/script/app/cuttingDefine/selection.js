@@ -414,7 +414,7 @@
 			//添加一个元素到内容区中
 			selection.add_element = function() {
 				
-				var element = Element.newElement();
+				var element = Element.newInstance();
 				
 				$(selection.target).append($(element.view));
 				
