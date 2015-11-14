@@ -143,4 +143,9 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 		return null;
 	}
 
+	@Override
+	protected Class<CuttingsImageGradeRecord> getEntityClass() {
+		return CuttingsImageGradeRecord.class;
+	}
+
 }
