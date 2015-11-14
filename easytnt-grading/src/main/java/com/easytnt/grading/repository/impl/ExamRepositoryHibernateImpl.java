@@ -9,4 +9,9 @@ import com.easytnt.grading.repository.ExamRepository;
 @Repository
 public class ExamRepositoryHibernateImpl extends HibernateRepository<Exam,Long> implements ExamRepository {
 
+	@Override
+	protected Class<Exam> getEntityClass() {
+		return Exam.class;
+	}
+
 }
