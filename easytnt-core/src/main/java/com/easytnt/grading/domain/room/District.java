@@ -23,6 +23,15 @@ public class District implements ValueObject<District> {
 	private int number;
 	
 	private District parent;
+	
+	public District(int number){
+		this.number = number;
+	}
+	
+	public District(int number,District parent){
+		this.number = number;
+		this.parent = parent;
+	}
 
 	@Override
 	public int hashCode() {
@@ -48,6 +57,36 @@ public class District implements ValueObject<District> {
 	@Override
 	public boolean sameValueAs(District other) {
 		return this.equals(other);
+	}
+	
+	public District(){
+		
+	}
+	
+	private Long id;
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public District getParent() {
+		return parent;
+	}
+
+	public void setParent(District parent) {
+		this.parent = parent;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
 

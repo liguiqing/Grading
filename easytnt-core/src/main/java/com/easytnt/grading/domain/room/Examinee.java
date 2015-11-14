@@ -53,6 +53,12 @@ public class Examinee implements Entity<Examinee>{
 	public boolean sameIdentityAs(Examinee other) {
 		return this.equals(other);
 	}
+	
+	public Examinee(){
+		
+	}
+	
+	private Long id;
 
 	public String getUuid() {
 		return uuid;
@@ -68,6 +74,14 @@ public class Examinee implements Entity<Examinee>{
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }
