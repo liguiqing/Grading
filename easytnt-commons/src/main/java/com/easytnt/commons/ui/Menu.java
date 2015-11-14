@@ -8,7 +8,7 @@ package com.easytnt.commons.ui;
  * @version 1.0
  **/
 public class Menu {
-	private String name;
+private String name;
 	
 	private String url;
 	

@@ -38,6 +38,13 @@ public class MenuGroup {
 		}	
 	}
 	
+	@Override
+	public MenuGroup clone() {
+		MenuGroup mg = new MenuGroup();
+		mg.menus = new ArrayList<>(this.menus);
+		return mg;
+	}
+	
 	public void activedMenuByUrl(String url) {
 		
 	}
