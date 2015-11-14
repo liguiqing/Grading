@@ -50,6 +50,8 @@ public class MaincontrollerTest extends AbstractControllerTest{
 	@Test
 	public void testOnConfig() throws Exception{
 		assertNotNull(controller);
-		this.mvc.perform(get("/config")).andExpect(view().name("/config"));
+		this.mvc.perform(get("/config").param("page", "worker")).andExpect(view().name("redirect:/worker"));
+		this.mvc.perform(get("/config").param("page", "subject")).andExpect(view().name("redirect:/subject"));
+		this.mvc.perform(get("/config").param("page", "examinee")).andExpect(view().name("redirect:/examinee"));
 	}
 }
