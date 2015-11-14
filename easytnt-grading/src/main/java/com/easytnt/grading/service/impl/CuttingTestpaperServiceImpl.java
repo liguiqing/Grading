@@ -5,9 +5,13 @@ package com.easytnt.grading.service.impl;
 
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.easytnt.commons.web.view.Progress;
 import com.easytnt.commons.web.view.ProgressListener;
 import com.easytnt.grading.service.CuttingTestpaperService;
+import com.easytnt.importpaper.bean.CountContainer;
+import com.easytnt.importpaper.bean.CountContainerMgr;
 
 /**
  * <pre>
@@ -16,6 +20,7 @@ import com.easytnt.grading.service.CuttingTestpaperService;
  * @author liuyu
  *
  */
+@Service("CuttingTestpaperService")
 public class CuttingTestpaperServiceImpl implements CuttingTestpaperService, ProgressListener {
 
 	/*
@@ -25,14 +30,26 @@ public class CuttingTestpaperServiceImpl implements CuttingTestpaperService, Pro
 	 */
 	@Override
 	public void cutting(long paperId) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Progress on(Map<String, String> params) {
-		Long paperId = Long.parseLong(params.get("paperId"));
-		return null;
+		String paperId = params.get("paperId");
+		String key = "paperId:" + paperId;
+		CountContainer<Integer> counterContainer = CountContainerMgr.getInstance().get(key);
+		int totalNum = counterContainer.getTotalNum();
+		int complateNum = counterContainer.getFileNumber();
+		boolean isOver = counterContainer.getIsOver();
+		String text = "正在扫描切割目录...";
+		if (!isOver && totalNum == 0) {
+			totalNum = 100;
+			complateNum = 20;
+		} else {
+			text = complateNum + "/" + totalNum;
+		}
+		Progress progress = new Progress(complateNum, totalNum, text);
+		return progress;
 	}
 
 }

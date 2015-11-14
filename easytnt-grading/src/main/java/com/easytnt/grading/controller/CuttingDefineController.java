@@ -3,6 +3,7 @@
  */
 package com.easytnt.grading.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.service.CuttingTestpaperService;
 
 /**
  * <pre>
@@ -21,8 +23,10 @@ import com.easytnt.grading.domain.cuttings.CuttingsSolution;
  *
  */
 @Controller
-@RequestMapping("cuttingDefine")
+@RequestMapping("/cuttingDefine")
 public class CuttingDefineController {
+	@Autowired(required = false)
+	private CuttingTestpaperService cuttingTestpaperService;
 
 	@RequestMapping(value = "/{examId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView index(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
@@ -38,5 +42,11 @@ public class CuttingDefineController {
 	public ModelAndView get(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
 		CuttingsSolution cuttingsSolution = new CuttingsSolution();
 		return ModelAndViewFactory.newModelAndViewFor("").with("cuttingsSolution", cuttingsSolution).build();
+	}
+
+	@RequestMapping(value = "/cutting/{paperId}", method = RequestMethod.GET)
+	public ModelAndView cutting(@PathVariable Long paperId) throws Exception {
+		cuttingTestpaperService.cutting(paperId);
+		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
 }
