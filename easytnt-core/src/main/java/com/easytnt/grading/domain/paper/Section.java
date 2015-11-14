@@ -86,7 +86,9 @@ public class Section implements ValueObject<Section>{
 		if (item.getFullScore() == null) {
 			throw new UnsupportedOperationException("给分点为空");
 		}
-		//item.setSection(this,index);
+		int index = this.items.size();
+		Long itemOid = this.sectionOid  * 1000 + (index + 1);
+		item.setItemOid(itemOid);
 		this.items.add(item);
 		validate();
 		//index++;
@@ -146,15 +148,15 @@ public class Section implements ValueObject<Section>{
 	
 	public void validate(){
 		Iterator<Item> iterItem =  items.iterator();
-		float itemFullScores=0;
+		float itemFullScores = 0;
 		while(iterItem.hasNext()){
 			Item item = iterItem.next();
-			itemFullScores+=item.getFullScore();
+			itemFullScores += item.getFullScore();
 		}
-		if(this.fullScore==null){
+		if(this.fullScore == null){
 			throw new UnsupportedOperationException("试题分数为空");
 		}
-		if(itemFullScores>this.fullScore){
+		if(itemFullScores > this.fullScore){
 			throw new UnsupportedOperationException("给分点大于试题分数");
 		}
 	}
@@ -162,6 +164,13 @@ public class Section implements ValueObject<Section>{
 	public void addAllItems(Collection<Item> items) {
 		init();
 		this.items.addAll(items);
+	}
+	
+	public Long genOid(int position) {
+		if(this.paper!=null && this.paper.getPaperOid()!=null){
+			this.sectionOid = this.paper.getPaperOid() * 100 + position;
+		}
+		return this.sectionOid;
 	}
 	
 	private void init() {

@@ -86,6 +86,7 @@ public class Item implements ValueObject<Item> {
 		return fullScore;
 	}
 
+
 	public Float[] getAllPoints() {
 		// TODO
 		return new Float[] { 0f, 1f, 2f };
