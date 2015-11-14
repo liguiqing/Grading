@@ -6,6 +6,7 @@
 package com.easytnt.grading.domain.paper;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.Entity;
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
+import com.easytnt.grading.domain.exam.SubjectExam;
 
 /**
  * <pre>
@@ -30,13 +32,24 @@ public class ExamPaper implements Entity<ExamPaper> {
 
 	private Long paperId;
 
-	private List<Section> sections;
-
+	private Long paperOid;
+	
+	private Set<Section> sections;
+	
+	private Set<SubjectExam> subjectExam;
+	
+	private Set<PaperCard> paperCards;
+	
 	private Float fullScore;
+	
+	private Float objectivityScore; //客观题满分
+	
+	private Float subjectivityScore; //主观题满分
 
 	private int answerCardImageNum;// 答题卡图片数量
 
 	private List<AnswerCardCuttingTemplate> answerCardCuttingTemplates;
+	
 	private String cuttingRootPath;
 
 	public ExamPaper(String name, Float fullScore) {
@@ -88,11 +101,11 @@ public class ExamPaper implements Entity<ExamPaper> {
 		this.paperId = paperId;
 	}
 
-	public List<Section> getSections() {
+	public Set<Section> getSections() {
 		return sections;
 	}
 
-	public void setSections(List<Section> sections) {
+	public void setSections(Set<Section> sections) {
 		this.sections = sections;
 	}
 
@@ -128,6 +141,46 @@ public class ExamPaper implements Entity<ExamPaper> {
 		this.answerCardCuttingTemplates = answerCardCuttingTemplates;
 	}
 
+	public Long getPaperOid() {
+		return paperOid;
+	}
+
+	public void setPaperOid(Long paperOid) {
+		this.paperOid = paperOid;
+	}
+
+	public Set<SubjectExam> getSubjectExam() {
+		return subjectExam;
+	}
+
+	public void setSubjectExam(Set<SubjectExam> subjectExam) {
+		this.subjectExam = subjectExam;
+	}
+
+	public Set<PaperCard> getPaperCards() {
+		return paperCards;
+	}
+
+	public void setPaperCards(Set<PaperCard> paperCards) {
+		this.paperCards = paperCards;
+	}
+
+	public Float getObjectivityScore() {
+		return objectivityScore;
+	}
+
+	public void setObjectivityScore(Float objectivityScore) {
+		this.objectivityScore = objectivityScore;
+	}
+
+	public Float getSubjectivityScore() {
+		return subjectivityScore;
+	}
+
+	public void setSubjectivityScore(Float subjectivityScore) {
+		this.subjectivityScore = subjectivityScore;
+	}
+	
 	public String getCuttingRootPath() {
 		return cuttingRootPath;
 	}

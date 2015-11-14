@@ -94,7 +94,7 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 		int i = 0;
 		StringBuilder sb = new StringBuilder();
 		for (Section section : sections) {
-			List<Item> items = section.getItems();
+			Set<Item> items = section.getItems();
 			for (Item item : items) {
 				Float score = 0f;
 				if( i < scores.length)

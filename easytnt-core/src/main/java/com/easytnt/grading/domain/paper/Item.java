@@ -24,6 +24,8 @@ import com.easytnt.grading.domain.share.Area;
 public class Item implements ValueObject<Item> {
 
 	private String title;
+	
+	private Long itemOid;
 
 	private String caption;
 
@@ -32,62 +34,47 @@ public class Item implements ValueObject<Item> {
 	private Float fullScore;
 
 	private Float[] validValues;
+	
 	private boolean seriesScore;// 是否连续给分
+	
 	private double interval;// 如果连续给分的给分区间
 
-	public boolean isSeriesScore() {
-		return seriesScore;
-	}
-
-	public void setSeriesScore(boolean seriesScore) {
-		this.seriesScore = seriesScore;
-	}
-
-	public double getInterval() {
-		return interval;
-	}
-
-	public void setInterval(double interval) {
-		this.interval = interval;
-	}
-
-	public Item(String title, Float fullScore) {
-		this.title = title;
+	public Item(Float fullScore,String title,String caption) {
 		this.fullScore = fullScore;
+		this.title = title;
+		this.caption = caption;
 	}
 
 	public boolean isEffectiveScore(Float score) {
-		return score.compareTo(this.getMinPoint()) >= 0 && score.compareTo(getMaxPoint()) <= 0;
+		return score.compareTo(this.getMinPoint()) >= 0
+				&& score.compareTo(getMaxPoint()) <= 0;
 	}
-
+	
 	public void genValidValues(String validscoredot) {
 		String[] values = validscoredot.split(",");
-		if (values.length > 0) {
+		if(values.length > 0) {
 			Float[] scores = new Float[values.length];
 			int i = 0;
-			for (String value : values) {
+			for(String value:values) {
 				scores[i++] = NumberUtils.parseNumber(value, Float.class);
 			}
-			if (!this.isEffectiveScore(scores[scores.length - 1])) {
+			if(!this.isEffectiveScore(scores[scores.length-1])) {
 				throw new IllegalArgumentException(validscoredot + "不在有效分范围内");
 			}
-
+			
 			this.validValues = scores;
 		}
-
 	}
-
-	public String genScoredot() {
-		if (this.validValues != null && this.validValues.length > 0) {
+	public String genValidscoredot(Float[] validValues) {
+		if(validValues.length > 0) {
 			StringBuffer sb = new StringBuffer();
-			for (Float f : this.validValues) {
-				sb.append(f.floatValue()).append(",");
+			for(Float value:validValues) {
+				sb.append(value).append(",");
 			}
-			sb.deleteCharAt(sb.lastIndexOf(","));
+			sb.deleteCharAt(sb.length()-1);
 			return sb.toString();
 		}
-
-		return "";
+		return null;
 	}
 
 	public Float getMinPoint() {
@@ -216,5 +203,29 @@ public class Item implements ValueObject<Item> {
 	public void setFullScore(Float fullScore) {
 		this.fullScore = fullScore;
 	}
+	
+	public boolean isSeriesScore() {
+		return seriesScore;
+	}
 
+	public void setSeriesScore(boolean seriesScore) {
+		this.seriesScore = seriesScore;
+	}
+
+	public double getInterval() {
+		return interval;
+	}
+
+	public void setInterval(double interval) {
+		this.interval = interval;
+	}
+
+	public Long getItemOid() {
+		return itemOid;
+	}
+
+	public void setItemOid(Long itemOid) {
+		this.itemOid = itemOid;
+	}
+	
 }

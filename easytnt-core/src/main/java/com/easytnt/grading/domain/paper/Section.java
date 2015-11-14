@@ -7,7 +7,10 @@ package com.easytnt.grading.domain.paper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -15,6 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.ValueObject;
 import com.easytnt.grading.domain.exam.Subject;
+import com.easytnt.grading.domain.share.Area;
 
 /**
  * <pre>
@@ -40,7 +44,8 @@ import com.easytnt.grading.domain.exam.Subject;
  * @version 1.0
  **/
 public class Section implements ValueObject<Section>{
-
+	private Long sectionOid;
+	
 	private ExamPaper paper;
 
 	private Section parentSection;
@@ -54,12 +59,104 @@ public class Section implements ValueObject<Section>{
 	private String caption;
 	
 	private Float fullScore;
+	
+	private int maxPinci;
 
-	private List<Item> items;
+	private Set<Item> items;
+	
+	private Float maxerror;
+	
+	private Area area;
 
+	public Section(ExamPaper examPaper){
+		this.paper = examPaper;
+	}
+	
+	public Section(ExamPaper examPaper,Float fullScore,String caption,String title){
+		this.paper = examPaper;
+		this.fullScore = fullScore;
+		this.caption = caption;
+		this.title = title;
+	}
+	
+	//private Integer index=1;
+	
 	public void addItem(Item item) {
 		init();
+		if (item.getFullScore() == null) {
+			throw new UnsupportedOperationException("给分点为空");
+		}
+		//item.setSection(this,index);
 		this.items.add(item);
+		validate();
+		//index++;
+	}
+	public void addItem(Integer position,Item item) {
+		init();
+		if (item.getFullScore() == null) {
+			throw new UnsupportedOperationException("给分点为空");
+		}
+		List<Item> itemList = new ArrayList<Item>();
+		itemList.addAll(items);
+		if((itemList.get(position).getItemOid()%10)==(position+1)){
+			item.setItemOid(itemList.get(position).getItemOid());
+			itemList.set(position, item);
+		}else{
+			//item.setSection(this,position+1);
+			itemList.add(position, item);
+		}
+		itemList.set(position, item);
+		this.items.clear();
+		this.items.addAll(itemList);
+		validate();
+	}
+	
+	public void updateItem(Item oldItem,Item newItem){
+		init();
+		if (newItem.getFullScore() == null) {
+			throw new UnsupportedOperationException("给分点为空");
+		}
+		List<Item> itemList = new ArrayList<Item>();
+		itemList.addAll(items);
+		itemList.set(itemList.indexOf(oldItem), newItem);
+		this.items.clear();
+		this.items.addAll(itemList);
+		validate();
+	}
+	
+	public void removeItems(Integer position){
+		init();
+		List<Item> itemList = new ArrayList<Item>();
+		itemList.addAll(items);
+		itemList.remove(position);
+		this.items.clear();
+		this.items.addAll(itemList);
+	}
+	
+	public void removeItems(Item item){
+		init();
+		//item.setSection(null);
+		this.items.remove(item);
+	}
+	
+	public void clearItems(){
+		init();
+		this.items.clear();
+	}
+	
+	public void validate(){
+		Iterator<Item> iterItem =  items.iterator();
+		float itemFullScores=0;
+		while(iterItem.hasNext()){
+			Item item = iterItem.next();
+			itemFullScores+=item.getFullScore();
+		}
+		if(this.fullScore==null){
+			throw new UnsupportedOperationException("试题分数为空");
+		}
+		if(itemFullScores>this.fullScore){
+			throw new UnsupportedOperationException("给分点大于试题分数");
+		}
 	}
 	
 	public void addAllItems(Collection<Item> items) {
@@ -69,7 +166,7 @@ public class Section implements ValueObject<Section>{
 	
 	private void init() {
 		if (this.items == null) {
-			this.items = new ArrayList<>();
+			this.items = new LinkedHashSet<Item>();
 		}
 	}
 
@@ -159,11 +256,11 @@ public class Section implements ValueObject<Section>{
 		this.caption = caption;
 	}
 
-	public List<Item> getItems() {
+	public Set<Item> getItems() {
 		return items;
 	}
 
-	public void setItems(List<Item> items) {
+	public void setItems(Set<Item> items) {
 		this.items = items;
 	}
 
@@ -181,6 +278,38 @@ public class Section implements ValueObject<Section>{
 
 	public void setSubject(Subject subject) {
 		this.subject = subject;
+	}
+
+	public Long getSectionOid() {
+		return sectionOid;
+	}
+
+	public void setSectionOid(Long sectionOid) {
+		this.sectionOid = sectionOid;
+	}
+
+	public int getMaxPinci() {
+		return maxPinci;
+	}
+
+	public void setMaxPinci(int maxPinci) {
+		this.maxPinci = maxPinci;
+	}
+
+	public Float getMaxerror() {
+		return maxerror;
+	}
+
+	public void setMaxerror(Float maxerror) {
+		this.maxerror = maxerror;
+	}
+
+	public Area getArea() {
+		return area;
+	}
+
+	public void setArea(Area area) {
+		this.area = area;
 	}
 	
 }

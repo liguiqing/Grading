@@ -5,8 +5,6 @@
 
 package com.easytnt.grading.domain.exam;
 
-import java.util.List;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -23,6 +21,8 @@ import com.easytnt.commons.entity.share.Entity;
  **/
 public class Exam implements Entity<Exam> {
 	
+	private Long id;
+	
     private Long oid;
     
     private ExamDesc desc;
@@ -33,6 +33,10 @@ public class Exam implements Entity<Exam> {
 		this.oid = oid;
 	}
 
+	public void genOid(){
+		this.oid = System.currentTimeMillis();
+	}
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(this.oid).toHashCode();
@@ -78,6 +82,11 @@ public class Exam implements Entity<Exam> {
 		this.desc = desc;
 	}
 
-	
-}
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+}
