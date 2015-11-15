@@ -27,8 +27,11 @@ public class Area implements ValueObject<Area> {
 	private int width;
 
 	private int height;
-	
-	public Area(int left,int top,int width,int height) {
+
+	public Area() {
+	}
+
+	public Area(int left, int top, int width, int height) {
 		this.left = left;
 		this.top = top;
 		this.width = width;
@@ -95,7 +98,5 @@ public class Area implements ValueObject<Area> {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	
-	
 
 }

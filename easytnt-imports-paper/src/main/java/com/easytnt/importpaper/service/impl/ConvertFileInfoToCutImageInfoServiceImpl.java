@@ -33,17 +33,17 @@ public class ConvertFileInfoToCutImageInfoServiceImpl implements ConvertFileInfo
 	 */
 	@Override
 	public CutImageInfo convert(ScannerDirectoryConfig config, FileInfo fileInfo) {
-		int testId = config.getTestId();
-		int paperId = 1;
-		int roomType = 1;
+		long testId = config.getTestId();
+		long paperId = 1;
+		long roomType = 1;
 		Long studentId = StringUtil.toLong(fileInfo.getFileName());
 		String imagePath = fileInfo.getRelativelyURL();
 
-		int kemuId = 0;
+		long kemuId = 0;
 		long roomId = 0;
 		long virtualroomId = 0;
-		int itemId = 0;
-		int diquId = 0;
+		long itemId = 0;
+		long diquId = 0;
 
 		List<DirectoryMapping> dirMappings = config.getDirectoryMappings();
 		for (DirectoryMapping dirMapping : dirMappings) {

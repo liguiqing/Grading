@@ -23,6 +23,8 @@ import com.easytnt.grading.domain.share.Area;
  **/
 public class Item implements ValueObject<Item> {
 
+	private Long id;
+
 	private String title;
 	
 	private Long itemOid;
@@ -38,6 +40,14 @@ public class Item implements ValueObject<Item> {
 	private boolean seriesScore;// 是否连续给分
 	
 	private double interval;// 如果连续给分的给分区间
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Item(Float fullScore,String title,String caption) {
 		this.fullScore = fullScore;
@@ -94,7 +104,8 @@ public class Item implements ValueObject<Item> {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(this.itemId).append(this.title).append(this.fullScore).toHashCode();
+		return new HashCodeBuilder().append(this.itemId).append(this.title)
+				.append(this.fullScore).toHashCode();
 	}
 
 	@Override
@@ -103,13 +114,15 @@ public class Item implements ValueObject<Item> {
 			return false;
 
 		Item other = (Item) o;
-		return new EqualsBuilder().append(this.itemId, other.itemId).append(this.title, other.title)
+		return new EqualsBuilder().append(this.itemId, other.itemId)
+				.append(this.title, other.title)
 				.append(this.fullScore, other.fullScore).isEquals();
 	}
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append(this.title).append(this.fullScore).build();
+		return new ToStringBuilder(this).append(this.title)
+				.append(this.fullScore).build();
 	}
 
 	@Override

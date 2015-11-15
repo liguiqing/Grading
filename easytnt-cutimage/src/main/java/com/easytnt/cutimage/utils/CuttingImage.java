@@ -20,6 +20,7 @@ import com.easytnt.cutimage.disruptor.event.StudentTestPaperAnswerCardEvent;
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.share.Area;
+import com.easytnt.importpaper.bean.CutImageInfo;
 
 import ij.ImagePlus;
 import ij.io.Opener;
@@ -36,7 +37,7 @@ public class CuttingImage {
 	private Logger log = LoggerFactory.getLogger(CuttingImage.class);
 	private StudentTestPaperAnswerCardEvent event;
 
-	private int diquId;// 地区ID
+	private long diquId;// 地区ID
 	private long kcId;// 考场ID
 	private String studentName;//
 
@@ -133,20 +134,23 @@ public class CuttingImage {
 		createBufferedImages();// 读取图片buffer
 		rotateImages();// 转换图片
 
+		ArrayList<CutImageInfo> cutImageInfos = new ArrayList<>();
 		List<CuttingsArea> cutTo = event.getCuttingsSolution().getCutTo();
 		for (CuttingsArea cuttingsArea : cutTo) {
 			String savePath = createSaveFilePath(cuttingsArea.getId());
 			BufferedImage bufferedImage = this.bufferedImages.get(cuttingsArea.getAnswerCardImageIdx());
 			Area areaInPaper = cuttingsArea.getAreaInPaper();
 			cutting(savePath, bufferedImage, areaInPaper);
+			cutImageInfos.add(createCutImageInfo(cuttingsArea.getId()));
 		}
-
+		event.setCutImageInfos(cutImageInfos);
 	}
 
 	private String createSaveFilePath(Long itemId) throws Exception {
 		StringBuffer saveFilePath = new StringBuffer();
-		saveFilePath.append(cuttingRootPath).append(diquId).append("/").append(kcId).append("/").append(itemId)
-				.append("/").append(studentName).append(".png");
+		saveFilePath.append(cuttingRootPath).append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/")
+				.append(diquId).append("/").append(kcId).append("/").append(itemId).append("/").append(studentName)
+				.append(".png");
 		Path path = Paths.get(saveFilePath.toString());
 		if (!Files.exists(path.getParent())) {
 			Files.createDirectories(path.getParent());
@@ -157,6 +161,17 @@ public class CuttingImage {
 	private void cutting(String savePath, BufferedImage bufferImage, Area area) throws Exception {
 		Thumbnails.of(bufferImage).sourceRegion(area.getLeft(), area.getTop(), area.getWidth(), area.getHeight())
 				.size(area.getWidth(), area.getHeight()).toFile(savePath);
+	}
+
+	private CutImageInfo createCutImageInfo(Long itemId) {
+		StringBuffer imagePath = new StringBuffer();
+		imagePath.append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/").append(diquId).append("/")
+				.append(kcId).append("/").append(itemId).append("/").append(studentName).append(".png");
+		CutImageInfo cutImageInfo = new CutImageInfo();
+		cutImageInfo.setPaperId(event.getCuttingsSolution().getDesignFor().getPaperId()).setDiquId(diquId)
+				.setRoomId(kcId).setVirtualroomId(kcId).setItemId(itemId).setImagePath(imagePath.toString())
+				.setStudentId(Long.parseLong(studentName));
+		return cutImageInfo;
 	}
 
 }

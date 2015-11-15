@@ -13,16 +13,16 @@
 			//添加panel事件
 			panel.init_event = function() {
 				//添加分值onchange事件
-				$(panel.view).find('input[name=subQuestionScore]').change(function() {
+				$(panel.view).find('input[name=subFullScore]').change(function() {
 					init_sub_question_values($(panel.view));
 				});
 				
 				//添加给分率onchange事件
-				$(panel.view).find('select.subQuestionScoreRate').change(function() {
+				$(panel.view).find('select#seriesScore').change(function() {
 					init_sub_question_values($(panel.view));
 				});
 				
-				$(panel.view).find('input[name=subQuestionScoreRateInterval]').change(function() {
+				$(panel.view).find('input[name=interval]').change(function() {
 					init_sub_question_values($(panel.view));
 				});
 			};
@@ -39,6 +39,11 @@
 				$(closeBtn).click(function() {
 					//得到面板
 					var panelview = $(this)[0].panel.view;
+					
+					var id = panelview.attr('id');
+					
+					//删除小题定义数组中的当前小题对象
+					selection.currentElement.data.itemAreas[id] = null;//当前还不能彻底删除该对象，会对后面元素位置有影响，所以只设置为空
 					$(panelview).remove();
 				});
 			};
@@ -52,26 +57,28 @@
 		//赋值小题数据
 		function init_sub_question_values(panelview) {
 			//得到用户输入的分值
-			var scoreInput = $(panelview).find('input[name=subQuestionScore]');
+			var fullScoreInput = $(panelview).find('input[name=subFullScore]');
 			//得到要设置的分序列
-			var scoreRateInput = $(panelview).find('input[name=subQuestionScoreRateVal]');
+			var validValuesInput = $(panelview).find('input[name=validValues]');
 			//分值间隔
-			var scoreIntervalInput = $(panelview).find('input[name=subQuestionScoreRateInterval]');
-			var scoreRate = $(panelview).find('select.subQuestionScoreRate').val();
+			var intervalInput = $(panelview).find('input[name=interval]');
+			
+			var seriesScore = $(panelview).find('select#seriesScore').val();
+			seriesScore = Number(seriesScore);
 			//判断当前选中的是连续还是不连续
-			if(!scoreRate) {//不连续
-				$(scoreRateInput).removeAttr('readonly');
-				$(scoreRateIntervalInput).css({display:'none'});
-				$(scoreRateInput).val('');
+			if(!seriesScore) {//不连续
+				$(validValuesInput).removeAttr('readonly');
+				$(intervalInput).css({display:'none'});
+				$(validValuesInput).val('');
 			}else {
-				$(scoreRateInput).attr({
+				$(validValuesInput).attr({
 					readonly : 'readonly'
 				});
-				$(scoreIntervalInput).css({display:'inline'});
-				var score = $(scoreInput).val();
-				var scoreInterval = $(scoreIntervalInput).val();
-				var val = get_score_rate_val(Number(score), Number(scoreInterval));
-				$(scoreRateInput).val(val);
+				$(intervalInput).css({display:'inline'});
+				var fullScore = $(fullScoreInput).val();
+				var interval = $(intervalInput).val();
+				var val = get_score_rate_val(Number(fullScore), Number(interval));
+				$(validValuesInput).val(val);
 			}
 		}
 
@@ -102,11 +109,11 @@
 		//面板内容布局
 		function create_sub_question_panel(index) {
 			if(index == undefined) {
-				index = selection.currentElement.questionData.subQuestionDatas.length;
+				index = selection.currentElement.data.itemAreas.length;
 			}
 			var panel = $('#subQuestionPanel').clone();
 			
-			$(panel).attr('id', 'subpanel' + index);
+			$(panel).attr('id', index);
 			return panel;
 		}
 		
