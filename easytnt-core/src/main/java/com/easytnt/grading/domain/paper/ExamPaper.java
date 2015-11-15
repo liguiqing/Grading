@@ -51,7 +51,6 @@ public class ExamPaper implements Entity<ExamPaper> {
 
 	private int answerCardImageNum;// 答题卡图片模板数量
 
-
 	private List<AnswerCardCuttingTemplate> answerCardCuttingTemplates;// 答题卡图片模板信息
 
 	private String cuttingRootPath;// 切割图片保存路劲
