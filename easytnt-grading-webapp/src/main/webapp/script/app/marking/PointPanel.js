@@ -114,7 +114,8 @@
 							
 							//点击了数字
 							if(!$btn.hasClass('button-action')){
-								point.input.val(point.input.val()+$btn.text());
+								//point.input.val(point.input.val()*1+$btn.text()*1);
+								point.input.val($btn.text());
 								point.validate();
 								e.stopPropagation();
 							}else{//点击了确定
