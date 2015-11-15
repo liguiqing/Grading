@@ -13,7 +13,7 @@
 			<column name="test_oid" />
 		</property>
 		<many-to-one name="subject"  class="com.easytnt.grading.domain.exam.Subject"  
-                     column="subject_id" cascade="all"  >
+                     column="subject_id" cascade="all-delete-orphan" unique="true">
          </many-to-one> 
 		<component name="desc" class="com.easytnt.grading.domain.exam.ExamDesc" lazy="true">
             <property name="name" column="test_name" type="java.lang.String"/>

@@ -62,6 +62,12 @@ public class ExamPaper implements Entity<ExamPaper> {
 		this.fullScore = fullScore;
 	}
 	
+	public ExamPaper(String name,Float fullScore,Float objectivityScore,Float subjectivityScore) {
+		this.name = name;
+		this.fullScore = fullScore;
+		this.objectivityScore = objectivityScore;
+		this.subjectivityScore = subjectivityScore;
+	}
 	
 	private void init() {
 		if (this.sections == null) {

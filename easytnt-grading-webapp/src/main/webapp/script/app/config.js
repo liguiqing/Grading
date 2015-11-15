@@ -3,7 +3,7 @@
 	define(['jquery'],function($){
 		var o = function(){
 			var url = window.location.href;
-			var m = url.substring(url.indexOf('page=')+5,url.indexOf("&"));
+			var m = url.substring(url.lastIndexOf('/')+1,url.indexOf('#') > 0 ?url.indexOf('#'):url.length);
 			var p = ['app/config/'+m];
 			require(p,function(module){
 				module.render();

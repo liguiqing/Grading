@@ -73,12 +73,10 @@ if(browser.ie && browser.ie * 1 < 10){
 }
 //IEMobile10 
 if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-	var msViewportStyle = document.createElement('style')
-	msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'))
-	document.querySelector('head').appendChild(msViewportStyle)
+	var msViewportStyle = document.createElement('style');
+	msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'));
+	document.querySelector('head').appendChild(msViewportStyle);
 }
-
-
 
 var config = {
 	contextPath : window.app.rootPath,
@@ -87,10 +85,14 @@ var config = {
 
 	paths : {
 		"jquery" : jqueryPath,
+		"pager" : "lib/jquery/jquery.pager",
 		"easyui" : "lib/jquery/jquery.easyui.min",
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
+		"select" : "lib/bootstrap/plugins/bootstrap-select",
+		"icheck" : "lib/bootstrap/plugins/iCheck/icheck.min",
 		"chart" : "lib/highcharts/highcharts",
 		"smartWizard" : "lib/smartWizard/jquery.smartWizard",
+		"ichart":"lib/ichart/ichart.1.2.min",
 		"dialog":"commons/dialog",
 		"ui":"commons/uiwrapper", 
 		"ajax":"commons/ajax",
@@ -98,11 +100,15 @@ var config = {
 		"logger":"util/logger",
 		"funcs":"commons/functions",
 		"StringBuffer":"ext/StringBuffer",
-		"Map":"ext/Map"
+		"Map":"ext/Map",
+		"ichartUtil":"commons/ichart",
+		"intense":"lib/jquery/intense"
 	},
 	shim : {
 		'bootstrap' : {deps:['jquery']},
-		'chart' : {deps:['jquery']}
+		'chart' : {deps:['jquery']},
+		'select' : {deps:['bootstrap']},
+		'icheck' : {deps:['bootstrap']}
 	}
 };
 if(browser.isMobile()){

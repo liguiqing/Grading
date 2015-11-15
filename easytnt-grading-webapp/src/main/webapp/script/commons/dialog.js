@@ -284,11 +284,6 @@
 					footer: {
 						show: true,
 						buttons: [{
-							type: 'submit',
-							text: "确定",
-							clazz:'btn-primary',
-							callback: function() {}
-						}, {
 							type: 'button',
 							text: "取消",
 							clazz:'btn-default',

@@ -23,12 +23,12 @@ CREATE TABLE `test` (
 DROP TABLE IF EXISTS  `paper_info`;
 CREATE TABLE `paper_info` (
   `paper_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `taper_oid` bigint(20) COMMENT '内码，设置规则：test_oid+1位数字(1-9)' ,
+  `paper_oid` bigint(20) COMMENT '内码，设置规则：test_oid+1位数字(1-9)' ,
   `paper_name` varchar(16) COMMENT '试卷名称',
   `paper_type` varchar(16) COMMENT '试卷类型',
   `full_score` float(5,2) COMMENT '试卷满分',
-  `subjectivity_score` float(5,2) COMMENT '试卷满分',
-  `objectivity_score` float(5,2) COMMENT '试卷满分',
+  `subjectivity_score` float(5,2) COMMENT '试卷主观题满分',
+  `objectivity_score` float(5,2) COMMENT '试卷客观题满分',
   PRIMARY KEY (`paper_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='试卷信息定义';
 

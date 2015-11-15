@@ -1,7 +1,7 @@
 (function() {
 	"use strict";
 
-	define([ 'jquery', 'dialog' ],function($, dialog) {
+	define([ 'jquery', 'dialog','lib/jquery/ajaxfileupload' ],function($, dialog) {
 				var defaultSettings = {
 					target : $(document.body),
 					type : 'GET',
@@ -96,7 +96,6 @@
 								if ($overlay) {
 									$overlay.complete();
 								}
-
 							},
 							success : function(data, textStatus, jqXHR) {
 								if (jqXHR) {
@@ -134,11 +133,11 @@
 											} ]
 										},
 										tipText : '操作失败:' + tmpData.status.msg,
-										incoInfo : 'error',
+										iconInfo : 'error',
 									});
 								} else {
-									if (settings.beforeMsg.show)
-										dialog.fadedialog(settings.beforeMsg);
+									//if (settings.beforeMsg.show)
+									//	dialog.fadedialog(settings.beforeMsg);
 									if (settings.successMsg.show)
 										dialog.fadedialog(settings.successMsg);
 									settings.callback(data);
@@ -153,7 +152,7 @@
 						if (settings.callback)
 							ajaxOpts["callback"] = settings.callback;
 						if (settings.dataType === 'text') {
-							ajaxOpts.fileElementId = settings.fileElementId|| "fileUpload";
+							ajaxOpts.fileElementId = settings.fileElementId|| "fileName";
 							$.ajaxFileUpload(ajaxOpts);
 						} else {
 							$.ajax(ajaxOpts);

@@ -1,5 +1,5 @@
 <#import "/taglib/html.ftl" as doc> 
-<@doc.html entryjs="config" title="评卷设置" css=["config"]>
+<@doc.html entryjs="config" title="评卷设置" css=["pager","config","bootstrap/bootstrap-select","bootstrap/iCheck/all"]>
   <#import "/taglib/commons/navigation.ftl" as nav>
   <@nav.navigation menus=[] menus2=menus2/>
   <div class="workspace ">
@@ -9,12 +9,12 @@
 			<div class="config-panel">
 	          <ul class="nav navbar-nav">
 	          <#list menus3 as menu>
-	            <li class="<#if menu.actived=true>config-actived</#if>"><a class="smoothScroll" href="${menu.url!""}">${menu.name}</a></li>
+	            <li class="<#if menu.actived=true>config-actived</#if>"><a class="smoothScroll" href="${request.contextPath}/${menu.url!""}">${menu.name}</a></li>
 	          </#list>
 	          </ul>
 	          <div class="config-wrapper">
-	          <#if RequestParameters["page"]?exists>
-	          <#include "/config/"+RequestParameters["page"]+".ftl" />
+	          <#if page?exists>
+	          <#include "/config/"+page+".ftl" />
 	          </#if>
 	          </div>		  
 			</div>       

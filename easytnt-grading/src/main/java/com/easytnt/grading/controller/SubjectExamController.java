@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.web.view.ModelAndViewFactory;
+import com.easytnt.grading.controller.formbean.SubjectExamFormBean;
 import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.exam.SubjectExam;
 import com.easytnt.grading.domain.paper.ExamPaper;
@@ -34,18 +35,32 @@ public class SubjectExamController {
 	@Autowired(required = false)
 	private SubjectService subjectService;
 	
+//	@RequestMapping(method = RequestMethod.POST)
+//	public ModelAndView onCreateSubjectExam(@RequestBody SubjectExam subjectExam)
+//					throws Exception {
+//		logger.debug("URL /subjectExam Method POST ", subjectExam);
+//		int maxSubjectCode = subjectService.getMaxCode();
+//		subjectExam.getSubject().setSubjectCode(subjectService.getMaxCode());
+//		for(ExamPaper ep:subjectExam.getUsedPaper()){
+//			ep.addSubjectExams(subjectExam);
+//			subjectExam.addExamPapers(ep);
+//		}
+//		subjectExamService.create(subjectExam);
+//		return ModelAndViewFactory.newModelAndViewFor("/exam/editExam").build();
+//	}
+	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView onCreateSubjectExam(@RequestBody SubjectExam subjectExam)
+	public ModelAndView onCreateSubjectExam(@RequestBody SubjectExamFormBean formBean)
 					throws Exception {
-		logger.debug("URL /subjectExam Method POST ", subjectExam);
-		subjectExam.getSubject().setSubjectCode(subjectService.getMaxCode());
-		for(ExamPaper ep:subjectExam.getUsedPaper()){
-			ep.addSubjectExams(subjectExam);
-			subjectExam.addExamPapers(ep);
-		}
+		logger.debug("URL /subjectExam Method POST ");
+		int subjectCode = subjectService.getMaxCode();
+		SubjectExam subjectExam = formBean.toSubjectExam(subjectCode);
+		
 		subjectExamService.create(subjectExam);
 		return ModelAndViewFactory.newModelAndViewFor("/exam/editExam").build();
 	}
+	
+	
 	@RequestMapping(method = RequestMethod.PUT)
 	public ModelAndView onUpdateSubjectExam(@RequestBody SubjectExam subjectExam)
 			throws Exception {

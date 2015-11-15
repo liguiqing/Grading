@@ -2,18 +2,46 @@
   <table class="table table-striped table-bordered ">
   	<thead class="bg-primary">
   	  <tr>
-  	    <th>科目</th><th>试卷量</th><th>切割块</th><th>满分</th><th>客观题满分</th><th>主观题满分</th><th>导入情况</th>
+  	    <th>科目</th><th>试卷量</th><th>答题卡原图</th><th>切割块</th><th>满分</th><th>客观题满分</th><th>主观题满分</th><th>导入情况</th><#--<th>删除</th>-->
   	  </tr>
   	</thead>
   	<tbody>
-  	  <tr >
-  	    <td><a href="#" data-rr-name="subjectName" data-rr-value="100">语文</a></td><td>0</td><td><a href="#">8</a></td><td>150</td><td>30</td><td>120</td><td class="completed"><i class=" icon-ok"></i></td>
-  	  </tr>
-  	  <tr >
-  	    <td><a href="#" data-rr-name="subjectName" data-rr-value="101">数学</a></td><td>0</td><td><a href="#">设计切割方案</a></td><td>150</td><td>50</td><td>100</td><td class="doing"><i class=" icon-remove"></i></td>
-  	  </tr>  	    	
+  	<#if resultList??>
+	  	<#list resultList as result>
+	  	  <tr>
+	  	    <td><a href="javascript:void(0)" data-rr-name="subjectName" data-rr-value="${result.subject.subjectCode}" data-rr-testId="${result.testId}">${result.subject.name}</a></td>
+	  	    <td>0</td>
+	  	    <#if result.usedPaper??>
+		  	  <#list result.usedPaper as usedPaper>
+		  	    <td>
+		  	    <section class="demos">
+		  	    <#if usedPaper.paperCards ??>
+		  	      <#list usedPaper.paperCards as paperCard>
+				  	<a href="javascript:void(0)" data-rr-name="image"  class="demo-image" data-image="static/${paperCard.path}" data-rr-cardId="${paperCard.cardId}">${paperCard.cardSeq}</a>
+				  </#list>
+		  	    </#if>
+		  	      	<a href="javascript:void(0)" data-rr-name="addImage" ><i class="icon-plus"></i></a></td>
+				  </section>
+				</td>
+		  	    <#if usedPaper.sections ?size = 0>
+		  	      <td><a href="javascript:void(0)">设计切割方案</a></td>
+		  	    <#else>
+		  	      <td><a href="javascript:void(0)">${usedPaper.sections ?size}</a></td>
+		  	    </#if>
+		  	    <td data-rr-paperId="${usedPaper.paperId}" >${usedPaper.fullScore}</td>
+		  	    <td>${usedPaper.objectivityScore}</td>
+		  	    <td>${usedPaper.subjectivityScore}</td>
+		  	    </#list>
+	  	    </#if>
+	  	    <td class="doing"><i class=" icon-remove" style="cursor: pointer;"></i></td>
+	  	    <#--
+	  	    <td>
+	  	    <a href="javascript:void(0)" id="removeSubject"><i class="icon-minus"></i></a></td>-->
+	  	  </tr>
+	  	</#list>
+  	</#if>	    	
   	  <tr class="bg-warning">
-  	    <td><a href="#" id="newSubject"><i class="icon-plus"></i></a></td><td>0</td><td><a href="#">设计切割方案</a></td><td>0</td><td>0</td><td>0</td><td class="doing"></td>
+  	    <td><a href="javascript:void(0)" id="newSubject"><i class="icon-plus"></i></a></td><td>0</td><td></td><td><a href="javascript:void(0)">设计切割方案</a></td><td>0</td><td>0</td><td>0</td><td class="doing"></td>
   	  </tr>
   	</tbody>
   </table>
@@ -24,6 +52,8 @@
 	    <label for="subjectName" class="col-sm-4 control-label">科目名称</label>
 	    <div class="col-sm-8">
 	      <input type="text" class="form-control" id="name" placeholder="科目名称">
+	      <input type="hidden" class="form-control" id="subjectCode">
+	      <input type="hidden" class="form-control" id="testId">
 	    </div>
 	  </div>
 	  <div class="form-group">

@@ -1,16 +1,12 @@
 package com.easytnt.grading.repository.impl;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
-import org.hibernate.Query;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.easytnt.grading.domain.paper.ExamPaper;
-import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.PaperType;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;

@@ -5,6 +5,8 @@
 
 package com.easytnt.grading.domain.exam;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -55,12 +57,26 @@ public class SubjectExam implements Entity<SubjectExam>{
 		}
 	}
     
-
+    public static SubjectExam newSubjectExam(String subjectName,int subjectCode,Float fullScore,
+    		Float objectivityScore,Float subjectivityScore) {
+    	SubjectExam se = new SubjectExam();
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
+    	Calendar now = Calendar.getInstance();  
+    	se.oid = Long.valueOf(sdf.format(now.getTime()));
+    	se.desc  =new ExamDesc(subjectName);
+    	se.subject = new Subject(subjectName,subjectCode);
+    	ExamPaper paper = new ExamPaper(subjectName,fullScore,objectivityScore,subjectivityScore);
+    	se.addExamPapers(paper);
+    	return se;
+    }
+    
     public void addExamPapers(ExamPaper examPaper){
     	init();
+    	examPaper.addSubjectExams(this);
     	examPaper.setPaperOid( this.oid * 10 + (this.usedPaper.size()+1));
     	this.usedPaper.add(examPaper);
     }
+    
     public static SubjectExam createBy(Set<ExamPaper> usedPaper,ExamDesc desc,Subject subject) {
     	SubjectExam se = new SubjectExam();
     	se.usedPaper = usedPaper;

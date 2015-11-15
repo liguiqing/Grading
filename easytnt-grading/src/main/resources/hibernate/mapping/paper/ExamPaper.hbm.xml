@@ -19,7 +19,7 @@
 			<column name="objectivity_score" />
 		</property>				
 		<property name="paperOid" type="java.lang.Long">
-			<column name="taper_oid" />
+			<column name="paper_oid" />
 		</property>
 		
 		<property name="name" type="java.lang.String">
