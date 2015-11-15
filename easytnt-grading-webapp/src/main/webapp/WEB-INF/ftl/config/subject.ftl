@@ -17,7 +17,7 @@
 		  	    <section class="demos">
 		  	    <#if usedPaper.paperCards ??>
 		  	      <#list usedPaper.paperCards as paperCard>
-				  	<a href="javascript:void(0)" data-rr-name="image"  class="demo-image" data-image="static/${paperCard.path}" data-rr-cardId="${paperCard.cardId}">${paperCard.cardSeq}</a>
+				  	<a href="javascript:void(0)" data-rr-name="image"  class="demo-image" data-image="static/${paperCard.path}" data-rr-cardId="${paperCard.cardId}" data-rr-paperId="${usedPaper.paperId}">${paperCard_index+1}<i class="icon icon-remove" style="display:none;margin:-5px 0 0 5px;color:#d9534f"></i></a>
 				  </#list>
 		  	    </#if>
 		  	      	<a href="javascript:void(0)" data-rr-name="addImage" ><i class="icon-plus"></i></a></td>

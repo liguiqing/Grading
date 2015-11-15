@@ -103,6 +103,7 @@ public class ExamPaperController {
 					throws Exception {
 		logger.debug("URL /examPaper/{}/{} Method U ", examPaperId);
 		//examPaperService.updateSectionFor(examPaperId,section,position);
+		//File imgFile = new File(imgDir)
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 	

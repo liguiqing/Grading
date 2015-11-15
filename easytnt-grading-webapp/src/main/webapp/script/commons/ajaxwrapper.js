@@ -99,7 +99,10 @@
 				doSend(url,data,dataType,messages,Method.GET,callback);
 			},
 			remove:function(url,data,dataType,messages,callback){
-				doSend(url,data,dataType,messages,Method.DELETE,callback);
+				dialog.confirm('删除',msg,function(){
+					doSend(url,data,dataType,{beforeMsg:{tipText:"",show:true},
+						 successMsg:{tipText:"删除成功",show:true}},Method.DELETE,callback);
+				});
 			},
 			postJson : function(url,data,messages,callback){
 				doSend(url,data,DataType.JSON,messages,Method.POST,callback);				
@@ -110,8 +113,11 @@
 			putJson:function(url,data,messages,callback){
 				doSend(url,data,DataType.JSON,messages,Method.PUT,callback);
 			},
-			removeJson:function(url,data,messages,callback){
-				doSend(url,data,DataType.JSON,messages,Method.DELETE,callback);
+			removeJson:function(url,data,msg,callback){
+				dialog.confirm('删除',msg,function(){
+					doSend(url,data,DataType.JSON,{beforeMsg:{tipText:"",show:true},
+						 successMsg:{tipText:"删除成功",show:true}},Method.DELETE,callback);
+				});
 			},
 			getJson:function(url,data,messages,callback){
 				doSend(url,data,DataType.JSON,messages,Method.GET,callback);

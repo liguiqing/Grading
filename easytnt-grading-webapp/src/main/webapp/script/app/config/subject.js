@@ -228,24 +228,17 @@
 				$(modal.find('.close')).click(function(){
 					location.reload();
 				});
-			}).on('click','tbody tr td a[data-rr-name="image"]',function(e){
-//				var path = $(this).attr('data-rr-imagePath');
-
-//				var message ='<img src="static/'+path+'"  />'
-//				ui.show("图片预览",message,'lg');
-				
-//				var cardId = $(this).attr('data-rr-cardId');
-//				var row = $(this).parent().parent();
-//				var paperId = row.find('td:eq(4)').attr('data-rr-paperId');
-//				ajaxWrapper.removeJson("examPaper/removePaperCard/"+paperId,{cardId:cardId,path:path},
-//						{beforeMsg:{tipText:".",show:false},
-//						sucessMsg:{tipText:"删除成功",show:true}},
-//						function(m){
-//							if(m.status.success){
-//								dialog.fadedialog(getOpts("删除成功"));
-//								setTimeout(function(){location.reload();},1000);
-//							}
-//						});
+			}).on('mouseover','tbody tr td a[data-rr-name="image"]',function(e){
+				$(this).find('i').show();
+			}).on('mouseout','tbody tr td a[data-rr-name="image"]',function(e){
+				$(this).find('i').hide();
+			}).on('click','tbody tr td a[data-rr-name="image"] i',function(e){
+				var $p = $(this).parent();
+				var card = {cardId:$p.attr('data-rr-cardid'),paper:{paperId:$p.attr('data-rr-paperid')}};
+				ajaxWrapper.removeJson('examPaper/removePaperCard/'+card.paper.paperId,card,'<b>确定要删除题卡图片吗？</b>',function(){
+					$p.remove();
+				});
+				e.stopPropagation();
 			});
 		};
 		var elements = document.querySelectorAll( '.demo-image' );

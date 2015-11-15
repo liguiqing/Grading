@@ -270,7 +270,44 @@
 				
 				return $modalBox;
 			},
-
+			confirm : function(title, msg, callback1, btn1Text, callback2,
+					btn2Text) {
+				return this.modal({
+					size:'sm',
+					header : {
+						show : true,
+						text : title
+					},
+					
+					canmove : true, // 是否拖动
+					iconInfo : 'warning',
+					body:'<b>'+msg+'</b>',
+					footer : {
+						show : true,
+						buttons : [ {
+							type : 'submit',
+							text : btn1Text || "确定",
+							clazz : 'primary',
+							callback : function() {
+								$(this).trigger('close');
+								if (callback1) {
+									callback1();
+								}
+							}
+						}, {
+							type : 'button',
+							text : btn2Text || "取消",
+							clazz : 'default',
+							callback : function() {
+								$(this).trigger('close');
+								if (callback2) {
+									callback2();
+								}
+							}
+						} ]
+					}
+				});
+			},
 			modal: function(opts){
 				var defaultSettings = {
 					size: 'lg',
@@ -324,7 +361,7 @@
 							text: "取消",
 							clazz:'btn-default',
 							callback: function() {
-								$(this).trigger('close')
+								$(this).trigger('close');
 							}
 						}]
 					},
