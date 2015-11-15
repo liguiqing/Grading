@@ -6,6 +6,10 @@
 <#include "./CuttingDefineUI.ftl">
 <#import "/taglib/commons/status.ftl" as footer> 
   <@footer.status>
-    <ul class="pull-right"></ul>
+    <ul class="pull-right">
+    	<div class="clearfix">
+			<input id="saveBtn" class="btn btn-default btn-sm" type="button" value="保存" style="color:black;">
+		</div>
+    </ul>
   </@footer.status>
 </@doc.html>

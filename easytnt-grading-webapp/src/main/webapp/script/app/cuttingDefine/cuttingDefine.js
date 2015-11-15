@@ -229,6 +229,11 @@
 					for(var j = 0; j < cut.itemAreas.length; j++) {
 						var itemArea = cut.itemAreas[j].item;
 						itemArea.seriesScore = itemArea.seriesScore ? 1 : 0;//转换为select的值
+						if(itemArea.validValues.length == 0) {
+							itemArea.validValues = '';
+						}else {
+							itemArea.validValues = itemArea.validValues.join(',');
+						}
 						element.data.itemAreas.push(itemArea);
 					}
 					

@@ -399,15 +399,15 @@
 				var width = $(view).width();
 				var height = $(view).height();
 				
-				element.data.x = Math.round(x);
-				element.data.y = Math.round(y);
-				element.data.width = Math.round(width);
-				element.data.height = Math.round(height);
+				element.data.x = parseInt(x);
+				element.data.y = parseInt(y);
+				element.data.width = parseInt(width);
+				element.data.height = parseInt(height);
 				
-				$('#left').text(x);
-				$('#top').text(y);
-				$('#width').text(width);
-				$('#height').text(height);
+				$('#left').text(element.data.x);
+				$('#top').text(element.data.y);
+				$('#width').text(element.data.width);
+				$('#height').text(element.data.height);
 				
 			};
 			
