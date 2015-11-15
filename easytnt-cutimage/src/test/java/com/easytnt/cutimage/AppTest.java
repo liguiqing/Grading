@@ -43,7 +43,7 @@ public class AppTest {
 
 	@Test
 	public void test03() throws Exception {
-		Path p = Paths.get("d:/test/tif/lizong/01222000002/00000060.Tif");
+		Path p = Paths.get("e:/tif/lizong/01222000002/00000060.Tif");
 		System.out.println(p.toString());
 		System.out.println(p.subpath(0, 3).toString());
 		System.out.println(p.getRoot());
