@@ -46,6 +46,6 @@ public class StartCutTest {
 		cutting.run();
 		long e = System.currentTimeMillis();
 		System.out.println((e - b) * 1.0 / 1000 + "s");
-		System.out.println("测试提交");
+		System.out.println("测试提交l");
 	}
 }
