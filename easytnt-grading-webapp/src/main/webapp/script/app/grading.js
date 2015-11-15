@@ -6,7 +6,7 @@
 		var _grading;
 		var _imgViewer;
 
-		var _imgServer ="http://easytnt.6655.la:10263/";
+		var _imgServer ="http://easytnt.6655.la:10291/";
 		
 		function save(data){
 			ajaxWrapper.postJson(getTaskUrl()+"/itemscoring",data.onlyValues(),{beforeMsg:{tipText:"系统正在计分....",show:false},successMsg:{tipText:"计分成功",show:true}},
