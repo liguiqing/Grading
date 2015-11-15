@@ -77,6 +77,8 @@ public class ExamPaperController {
 		examPaperService.addSectionFor(examPaperId,section);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
+	
+	
 	@RequestMapping(value="/{examPaperId}",method = RequestMethod.POST)
 	public ModelAndView onAddPaperCard(@PathVariable Long examPaperId,MultipartHttpServletRequest request)
 					throws Exception {
@@ -93,6 +95,14 @@ public class ExamPaperController {
 			throw new IllegalArgumentException("无效的文件名");
 		}
 		examPaperService.addPaperCardFor(examPaperId, paperCard);
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
+	
+	@RequestMapping(value="/{examPaperId}/{cardId}",method = RequestMethod.GET)
+	public ModelAndView onShowCard(@PathVariable Long examPaperId,@PathVariable Long cardId)
+					throws Exception {
+		logger.debug("URL /examPaper/{}/{} Method U ", examPaperId);
+		//examPaperService.updateSectionFor(examPaperId,section,position);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 	
