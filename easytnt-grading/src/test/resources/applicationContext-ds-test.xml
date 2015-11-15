@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/aop 
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/jee 
+            http://www.springframework.org/schema/jee/spring-jee.xsd
+            http://www.springframework.org/schema/task 
+            http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<bean id="sessionFactoryMock"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="configLocation" value="hibernate.cfg.xml">
+		</property>		
+		
+		<property name="mappingResources">
+			<list>
+				 <value>hibernate/mapping/exam/Subject.hbm.xml</value>
+				 <value>hibernate/mapping/grade/Teacher.hbm.xml</value>
+				 <value>hibernate/mapping/paper/ExamPaper.hbm.xml</value>
+				 <value>hibernate/mapping/paper/Item.hbm.xml</value>
+				 <value>hibernate/mapping/paper/Section.hbm.xml</value>
+				 <value>hibernate/mapping/paper/PaperCard.hbm.xml</value>
+				 <value>hibernate/mapping/exam/SubjectExam.hbm.xml</value>
+				 <value>hibernate/mapping/room/District.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>
