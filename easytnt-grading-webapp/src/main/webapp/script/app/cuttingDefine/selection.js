@@ -10,7 +10,7 @@
 			selection.showSize = false;//是否显示提示框
 			selection.currentElement = null;//当前操作的元素
 			selection.previousElement = null///前一个被选中的元素， 用于保存数据
-			
+			selection.answerCardImageIdx = 0; //答题卡图片索引
 			selection.elements = [];//已经添加到内容中的元素
 			
 			//目标控件
@@ -18,6 +18,8 @@
 			
 			//选区一系列初始化操作
 			selection.init = function() {
+				selection.initUI();//初始化界面元素
+				selection.preventImageDrag();
 				selection.enable_key_del();
 				selection.enable_selection();
 				selection.btn_style();
@@ -25,19 +27,55 @@
 				selection.make_element_data_panel_draggable();
 			};
 			
-			// 监听按键，点击删除按钮删除用户选择的element
-			selection.enable_key_del = function() {
-				$('body').keyup(function(e) {
-					//获取客户点击的按键
-					var e=e||event;
-					var keyCode = e.keyCode || e.which || e.charCode;
-					if(keyCode == 46) {
-						if(selection.currentElement) {
-							selection.currentElement.del();
-						}
-					}
-				});
+			//恢复某一页答题卡的内容
+			selection.recover = function() {
+				//重置seleciton属性值
+				selection.init_properties();
+				//初始化整个画布
+				selection.init();
+				//填充已经存在的选框
+				selection.display_elements();
+			};
+			
+			selection.init_properties = function() {
+				selection.startX = 0;
+				selection.startY = 0;
+				selection.showSize = false;//是否显示提示框
+				selection.currentElement = null;//当前操作的元素
+				selection.previousElement = null///前一个被选中的元素， 用于保存数据
+			};
+			
+			//回显所有已经存在的元素
+			selection.display_elements = function() {
+				for(var i = 0; i < selection.elements.length; i++) {
+					var element = selection.elements[i];
+					selection.add_exist_element(element);
+				}
 			}
+			
+			selection.add_exist_element = function(element){
+				//清空原来元素中设定的八个助托点,重新设置元素可编辑
+				$(element.view).empty();
+				
+				$(selection.target).append($(element.view));
+				
+				//设置当前元素的位置
+				$(element.view).css({
+					left: element.data.areaInPaper.left + 'px',
+					top: element.data.areaInPaper.top + 'px',
+					width: element.data.areaInPaper.width + 'px',
+					height: element.data.areaInPaper.height + 'px'
+				});
+				
+				//让当前元素可以编辑
+				element.make_element_editable();
+				
+				//隐藏元素的八个助托点，表示选取框默认为不选中状态
+				$(element.view).find('.point').css({
+					display: 'none'
+				});;
+				
+			};
 			
 			//初始化用户创建选区操作
 			selection.enable_selection = function() {
@@ -100,6 +138,11 @@
 						// 在鼠标移动过程中才对该元素宽高进行控制，所以，需要将该无效元素去掉
 						if($(selection.currentElement.view).width() < 50) {
 							if(selection.currentElement) {
+								selection.currentElement.save_preview_element_data();
+								//隐藏题目信息框
+								$('.control-content').css({
+									display: 'none'
+								});
 								selection.currentElement.del();
 							}
 							return;
@@ -133,8 +176,8 @@
 			
 			// 元素数据面板可拖动
 			selection.make_element_data_panel_draggable = function() {
-				var dragui = '.panel-heading';
-				var target = '.control-content';
+				var dragui = $(selection.target).find('.panel-heading');
+				var target = $(selection.target).find('.control-content');
 				$(dragui).mouseover(function() {
 					$(this).css({
 						cursor : 'move'
@@ -235,20 +278,20 @@
 			//初始化一些题目信息中按钮点击事件
 			selection.init_event = function() {
 				// 点击添加小题按钮触发事件
-				$('.add-btn').click(function() {
+				$(selection.target).find('.add-btn').click(function() {
 					var element = selection.currentElement;
 					element.show_data(true);
 				});
 				
 				//面板关闭按钮
-				$('.panel-heading .close-btn').click(function() {
+				$(selection.target).find('.panel-heading .close-btn').click(function() {
 					$('.control-content').css({
 						display : 'none'
 					});
 				});
 				
 				//小题框被点击时事件也会传递到图片上，需要阻止
-				$('.control-content').mousedown(function(e) {
+				$(selection.target).find('.control-content').mousedown(function(e) {
 					selection.prevent_event(e);
 				});
 				
@@ -356,13 +399,13 @@
 				var width = $(view).width();
 				var height = $(view).height();
 				
-				element.questionData.x = x;
-				element.questionData.y = y;
-				element.questionData.width = width;
-				element.questionData.height = height;
+				element.data.x = Math.round(x);
+				element.data.y = Math.round(y);
+				element.data.width = Math.round(width);
+				element.data.height = Math.round(height);
 				
-				$('#x').text(x);
-				$('#y').text(y);
+				$('#left').text(x);
+				$('#top').text(y);
 				$('#width').text(width);
 				$('#height').text(height);
 				
@@ -371,15 +414,13 @@
 			//添加一个元素到内容区中
 			selection.add_element = function() {
 				
-				var element = Element.newElement();
+				var element = Element.newInstance();
 				
 				$(selection.target).append($(element.view));
 				
 				selection.record_current_element(element);
 				
 				selection.elements.push(selection.currentElement);
-				
-				selection.select_element(element);
 			}
 			
 			//记录当前正在处理的元素
@@ -603,6 +644,126 @@
 				}
 				
 				return top;
+			};
+			
+			//获取当前答题卡图片url
+			selection.getAnswerCardImageUrl = function(index) {
+				var url = null;
+				var template = null;
+				for(var i = 0; i < window.examObj.answerCardCuttingTemplates.length; i++) {
+					template = window.examObj.answerCardCuttingTemplates[i];
+					
+					if(template.index == index) {
+						url = template.url;
+						break;
+					}
+				}
+				
+				return url;
+			};
+
+			//初始化试卷内容，添加选框宽高提示框，添加题目信息框
+			selection.initUI = function() {
+				//1.初始化试卷内容
+				var img = document.createElement('img');
+				$(img).addClass('testpaperImage');
+				var imageUrl = selection.getAnswerCardImageUrl(selection.answerCardImageIdx);
+				if(!imageUrl) {
+					throw new Error('获取答题卡图片地址失败!');
+				}
+				
+				$(img).attr('src', imageUrl);
+				$(selection.target).append(img);
+				
+				//2.添加宽高提示框
+				var html = '<div class="size" style="display:none;">'
+								+ '<span id="width-tip" class="tip">30</span>'
+								+ '<span class="tip">&nbsp;x&nbsp;</span>'
+								+ '<span id="height-tip" class="tip">20</span>'
+						 + '</div>';
+				
+				$(selection.target).append($(html));
+				
+				//3.添加题目信息框
+				var qhtml = 
+					'<div class="control-content" style="display:none;">'
+					+ '<div class="panel panel-info">'
+						+ '<div class="panel-heading" style="position:relative;">'
+							+ '<span>题目信息</span>'
+							+ '<span class="span-btn close-btn"></span>'
+						+ '</div>'
+						+ '<div class="panel-body" style="width:100%;height:400px;overflow:auto;">'
+							+ '<table class="table no-border">'
+								+ '<tr>'
+									+ '<td>题号</td>'
+									+ '<td><input type="text" id="name" name="name" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>满分值</td>'
+									+ '<td><input id="fullScore" type="text" name="fullScore" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+								+ '<td>评次</td>'
+								+ '<td><input type="text" id="requiredPinci" name="requiredPinci" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+								+ '<td>误差</td>'
+								+ '<td><input id="maxerror" type="text" name="maxerror" class="form-control"></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>X坐标(px)</td>'
+									+ '<td><span id="left" class="label label-success"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>Y坐标(px)</td>'
+									+ '<td><span id="top" class="label label-success"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>宽度(px)</td>'
+									+ '<td><span id="width" class="label label-info"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>高度(px)</td>'
+									+ '<td><span id="height" class="label label-info"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td>小题定义</td>'
+									+ '<td><span class="span-btn add-btn"></span></td>'
+								+ '</tr>'
+								+ '<tr>'
+									+ '<td colspan="2" class="sub-question-container"></td>'
+								+ '</tr>'
+							+ '</table>'
+						+ '</div>'
+					+ '</div>'
+				+ '</div>';
+				$(selection.target).append($(qhtml));
+			};
+			
+			// 监听按键，点击删除按钮删除用户选择的element
+			selection.enable_key_del = function() {
+				$('body').keyup(function(e) {
+					//获取客户点击的按键
+					var e=e||event;
+					var keyCode = e.keyCode || e.which || e.charCode;
+					if(keyCode == 46) {
+						if(selection.currentElement) {
+							selection.currentElement.del();
+							
+							//如果当前数据信息提示框显示，就隐藏,元素被删除了，显示数据就没有意义了
+							$(selection.target).find('.control-content').css({
+								display: 'none'
+							});
+						}
+					}
+				});
+			};
+			
+			//防止试卷图片被拖动
+			selection.preventImageDrag = function() {
+				$(document.images).each(function() {
+					$(this)[0].ondragstart = function() {return false;}
+				});
 			};
 			
 		}

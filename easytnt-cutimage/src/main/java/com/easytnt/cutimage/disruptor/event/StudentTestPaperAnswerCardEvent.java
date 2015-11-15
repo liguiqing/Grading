@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.importpaper.bean.CutImageInfo;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventTranslator;
 
@@ -27,6 +28,8 @@ public class StudentTestPaperAnswerCardEvent {
 	private List<String> filePaths = new ArrayList<>();
 
 	private List<BufferedImage> bufferedImages;
+
+	private List<CutImageInfo> cutImageInfos;
 
 	public List<BufferedImage> getBufferedImages() {
 		return bufferedImages;
@@ -65,6 +68,15 @@ public class StudentTestPaperAnswerCardEvent {
 		}
 		this.rootDir = rootDir;
 
+		return this;
+	}
+
+	public List<CutImageInfo> getCutImageInfos() {
+		return cutImageInfos;
+	}
+
+	public StudentTestPaperAnswerCardEvent setCutImageInfos(List<CutImageInfo> cutImageInfos) {
+		this.cutImageInfos = cutImageInfos;
 		return this;
 	}
 

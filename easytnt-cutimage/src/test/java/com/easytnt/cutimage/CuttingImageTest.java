@@ -20,6 +20,7 @@ import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingsSolution;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.share.Area;
+import com.easytnt.importpaper.bean.CountContainer;
 import com.easytnt.importpaper.io.scanfiledir.DirectoryScanner;
 import com.easytnt.importpaper.io.scanfiledir.DirectoryScannerFactory;
 import com.easytnt.importpaper.io.scanfiledir.FileInfo;
@@ -60,16 +61,17 @@ public class CuttingImageTest {
 		long b = System.currentTimeMillis();
 
 		CountDownLatch countDownLatch = new CountDownLatch(60);
+		CountContainer<Integer> countContainer = new CountContainer<>(0);
 
 		int bufferSize = Util.ceilingNextPowerOfTwo(1024);
 		final Disruptor<StudentTestPaperAnswerCardEvent> disruptor = new Disruptor<>(
 				StudentTestPaperAnswerCardEvent.FACTORY, bufferSize, EasytntExecutor.instance().getExecutorService(),
 				ProducerType.SINGLE, new YieldingWaitStrategy());
-
+		disruptor.handleExceptionsWith(new LogHandlerException());
 		disruptor
 				.handleEventsWithWorkerPool(new CuttingImageHandler(), new CuttingImageHandler(),
 						new CuttingImageHandler(), new CuttingImageHandler())
-				.handleEventsWith(new CountDownLatchHandler(countDownLatch));
+				.handleEventsWith(new CountDownLatchHandler(countDownLatch, countContainer));
 		disruptor.start();
 
 		final CuttingsSolution solution = cuttingsSolution();
@@ -108,7 +110,7 @@ public class CuttingImageTest {
 		long b = System.currentTimeMillis();
 
 		CountDownLatch countDownLatch = new CountDownLatch(60);
-
+		CountContainer<Integer> countContainer = new CountContainer<>(0);
 		int bufferSize = Util.ceilingNextPowerOfTwo(1024);
 		final Disruptor<StudentTestPaperAnswerCardEvent> disruptor = new Disruptor<>(
 				StudentTestPaperAnswerCardEvent.FACTORY, bufferSize, EasytntExecutor.instance().getExecutorService(),
@@ -119,7 +121,7 @@ public class CuttingImageTest {
 		disruptor.handleEventsWithWorkerPool(new ReadImageHandler(), new ReadImageHandler(), new ReadImageHandler())
 				.handleEventsWithWorkerPool(new CuttingImageHandler(), new CuttingImageHandler(),
 						new CuttingImageHandler(), new CuttingImageHandler())
-				.handleEventsWith(new CountDownLatchHandler(countDownLatch));
+				.handleEventsWith(new CountDownLatchHandler(countDownLatch, countContainer));
 		disruptor.start();
 
 		final CuttingsSolution solution = cuttingsSolution();
@@ -198,6 +200,7 @@ public class CuttingImageTest {
 		examPaper.setAnswerCardImageNum(2);
 		examPaper.setPaperId(1000L);
 		examPaper.setCuttingRootPath("D:/test/cuttingImage");
+		examPaper.setStudentAnserCardRootPath("D:/test/tif/lizong");
 
 		return examPaper;
 	}
