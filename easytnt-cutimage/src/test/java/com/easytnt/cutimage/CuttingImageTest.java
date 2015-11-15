@@ -44,7 +44,7 @@ public class CuttingImageTest {
 	public void test() throws Exception {
 		long b = System.currentTimeMillis();
 		StudentTestPaperAnswerCardEvent event = new StudentTestPaperAnswerCardEvent();
-		event.setRootDir("D:/test/tif/lizong").setFilePaths(filePaths()).setCuttingsSolution(cuttingsSolution());
+		event.setRootDir("E:/tif/lizong").setFilePaths(filePaths()).setCuttingsSolution(cuttingsSolution());
 
 		// ConvertImageHandler convertHandler = new ConvertImageHandler();
 		// convertHandler.onEvent(event);
@@ -75,7 +75,7 @@ public class CuttingImageTest {
 		disruptor.start();
 
 		final CuttingsSolution solution = cuttingsSolution();
-		final String rootDir = "D:/test/tif/lizong";
+		final String rootDir = "E:/tif/lizong";
 		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(rootDir);
 		try {
 			directoryScanner.scan(new VisitorFile() {
@@ -125,7 +125,7 @@ public class CuttingImageTest {
 		disruptor.start();
 
 		final CuttingsSolution solution = cuttingsSolution();
-		final String rootDir = "D:/test/tif/lizong";
+		final String rootDir = "E:/tif/lizong";
 		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(rootDir);
 		try {
 			directoryScanner.scan(new VisitorFile() {
@@ -157,8 +157,8 @@ public class CuttingImageTest {
 
 	private List<String> filePaths() {
 		ArrayList<String> filePaths = new ArrayList<>();
-		filePaths.add("D:/test/tif/lizong/01/222000002/00000001.Tif");
-		filePaths.add("D:/test/tif/lizong/01/222000002/00000002.Tif");
+		filePaths.add("E:/tif/lizong/01/222000002/00000001.Tif");
+		filePaths.add("E:/tif/lizong/01/222000002/00000002.Tif");
 		return filePaths;
 	}
 
@@ -199,8 +199,8 @@ public class CuttingImageTest {
 		examPaper.setAnswerCardCuttingTemplates(answerCardCuttingTemplates);
 		examPaper.setAnswerCardImageNum(2);
 		examPaper.setPaperId(1000L);
-		examPaper.setCuttingRootPath("D:/test/cuttingImage");
-		examPaper.setStudentAnserCardRootPath("D:/test/tif/lizong");
+		examPaper.setCuttingRootPath("E:/test/cuttingImage");
+		examPaper.setStudentAnserCardRootPath("E:/tif/lizong");
 
 		return examPaper;
 	}

@@ -17,7 +17,7 @@ public class FileInfoTest {
 
 	@Test
 	public void testFileName() throws Exception {
-		String root = "D:/sj";
+		String root = "e:/jpe/";
 		String relativelyPath = "lishu/23/1060258300/1/1060258300011.jpg";
 
 		FileInfo fileInfo = new FileInfo().setRootDir(root).setRelativelyPath(relativelyPath);
