@@ -141,8 +141,13 @@
 						return;
 					}
 					
-					//添加一个元素到内容中
+					//添加一个新元素到内容中
 					selection.add_element();
+					
+					//在进行创建元素时，需要对前一个元素数据进行保存
+					if(selection.previousElement) {
+						selection.previousElement.save_preview_element_data();
+					}
 					
 					//改变鼠标指针形状
 					$(this).css({
@@ -152,6 +157,7 @@
 					$(document).mousemove(function(e) {
 						//通过showSize控制鼠标事件是否对页面影响，鼠标按下时开启鼠标事件、鼠标弹起时取消鼠标事件
 						if(!selection.showSize) {
+							$(document).unbind('mousemove');
 							return;
 						}
 						
@@ -164,6 +170,7 @@
 						var cursor = $(selection.target).css('cursor');
 						//元素在创建过程中，完成元素创建之后才可以再设置元素大小
 						if(selection.intersect(currentX, currentY) && cursor != 'crosshair') {
+							$(document).unbind('mousemove');
 							return;
 						}
 						
@@ -213,12 +220,12 @@
 									//为当前元素添加事件
 									selection.currentElement.make_element_editable();
 								}
-								
-								//显示当前设置的元素的数据
-								selection.currentElement.show_data();
-								//用户选择了其他元素就需要将上一个选中的元素数据进行保存
-								selection.currentElement.save_preview_element_data();
 							}
+							//显示当前设置的元素的数据
+							selection.currentElement.show_data();
+							//保存上一次操作的节点数据
+							//selection.currentElement.save_preview_element_data();
+							
 						}
 						
 						//清理当前类的mousemove mouseup事件
@@ -421,6 +428,7 @@
 			//选中某一个元素，取消其他元素的选中效果(取消助托点)
 			selection.select_element = function(element) {
 				selection.show_resize_points(selection.currentElement);
+				//鼠标停止改变元素位置的时候显示出最后的位置坐标
 				selection.show_msg(selection.currentElement);
 				selection.show_size();
 			};
