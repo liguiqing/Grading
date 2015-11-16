@@ -1,5 +1,9 @@
 package com.easytnt.grading.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -14,9 +18,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.commons.entity.cqrs.QueryBuilder;
+import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.exam.Exam;
+import com.easytnt.grading.domain.exam.ExamDesc;
 import com.easytnt.grading.service.ExamService;
+import com.easytnt.grading.service.SubjectExamService;
+import com.easytnt.grading.service.SubjectService;
 
 @Controller
 @RequestMapping(value = "/exam")
@@ -26,10 +34,28 @@ public class ExamController {
 	@Autowired(required = false)
 	private ExamService examService;
 	
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView onGet()throws Exception {
+		logger.debug("URL /Exam Method GET ");
+		MenuGroup topRightMenuGroup = MenuGroupFactory.getInstance().getTopRightMenuGroup();
+		MenuGroup rightMenuGroup = MenuGroupFactory.getInstance().getRightMenuGroup();
+		MenuGroup configMenuGroup = MenuGroupFactory.getInstance().getConfigMenuGroup();
+		configMenuGroup.activedMenuByIndex(0);
+		rightMenuGroup.activedMenuByIndex(3);
+		return ModelAndViewFactory.newModelAndViewFor("/config")
+				.with("examList", examService.list())
+				.with("menus2", topRightMenuGroup.getMenus())
+				.with("rightSideMenu", rightMenuGroup.getMenus())
+				.with("menus3", configMenuGroup.getMenus())
+				.with("page","exam").build();
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView onCreateExam(@RequestBody Exam exam)
 					throws Exception {
 		logger.debug("URL /exam Method POST ", exam);
+		exam.genOid();
 		examService.create(exam);
 		return ModelAndViewFactory.newModelAndViewFor("/exam/editExam").build();
 	}

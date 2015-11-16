@@ -1,6 +1,6 @@
 (function() {
 	"use strict";
-	define([ 'jquery', 'dialog','select','icheck','pager' ], function($, dialog) {
+	define([ 'jquery', 'dialog','select','icheck','pager','datapicker' ], function($, dialog) {
 		var DialogSize = {SM:'sm',MD:'md',LG:'lg'};
 		var button = {
 				type : 'button',
@@ -82,8 +82,27 @@
 					reader.readAsDataURL(file);
 				});
 			},
-			pretty:function(html){
+			pretty:function(html,opts){
 				var $html = $(html);
+				var _opts ={
+						dataFormat:'yyyy-mm-dd'
+				};
+				
+				if(opts){
+					$.extend(true,_opts,opts);
+				}
+				
+				var $html = $(html);
+				$html.find('input.date-picker').datetimepicker({
+					autoclose : true,
+					format : _opts.dataFormat,
+					weekStart : 1,
+					todayBtn : 1,
+					minView : 3
+				}).next().on('click', function() {
+					$(this).prev().focus();
+				});
+					
 				$html.find('select.selectpicker').each(function(){
 					var $select = $(this);
 					if($select.attr('disabled')){

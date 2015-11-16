@@ -6,6 +6,16 @@ CREATE TABLE `subject` (
   PRIMARY KEY (`subject_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='科目定义';
 
+DROP TABLE IF EXISTS  `term_test`;
+CREATE TABLE `term_test` (
+  `term_test_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `term_test_oid` BIGINT(20) NOT NULL COMMENT '内码，设置规则：yyyymmdd' ,
+  `term_test_name` VARCHAR(16)  COMMENT '考试名称',
+  `term_test_from` DATETIME DEFAULT NULL COMMENT '考试开始时间' ,
+  `term_test_to` DATETIME DEFAULT NULL COMMENT '考试完成时间' ,
+  PRIMARY KEY (`term_test_id`)
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='学期考试定义';
+
 DROP TABLE IF EXISTS  `test`;
 CREATE TABLE `test` (
   `test_id` bigint(20) NOT NULL AUTO_INCREMENT,

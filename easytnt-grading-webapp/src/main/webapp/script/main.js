@@ -10,7 +10,7 @@ Array.prototype.remove = function(obj) {
 	if(index != -1) {
 		this.splice(index, 1);
 	}
-}
+};
 
 function getUrlFileName(){
 	var pathname = window.location.pathname;
@@ -89,6 +89,7 @@ var config = {
 		"easyui" : "lib/jquery/jquery.easyui.min",
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
 		"select" : "lib/bootstrap/plugins/bootstrap-select",
+		"datapicker" : "lib/bootstrap/plugins/bootstrap-datetimepicker",
 		"icheck" : "lib/bootstrap/plugins/iCheck/icheck.min",
 		"chart" : "lib/highcharts/highcharts",
 		"smartWizard" : "lib/smartWizard/jquery.smartWizard",
