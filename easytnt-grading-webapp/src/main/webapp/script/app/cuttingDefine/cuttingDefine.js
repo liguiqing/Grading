@@ -37,6 +37,7 @@
 			function doEdit() {
 				var selection = window.examObj.examPapers[0];
 				selection.recover();
+				window.selection = selection;
 			}
 			
 			//初始化底部工具栏中按钮点击事件
@@ -48,6 +49,15 @@
 					var data = buildData();
 					//提交保存
 					saveData(data);
+				});
+				
+				//对齐按钮，针对选中的元素，距离该元素位置范围[-15%, 15%]*width之间的元素自动按照该元素位置和宽度进行对齐操作
+				$('#alignBtn').click(function() {
+					//得到当前选中的元素
+					var element = window.selection.currentElement;
+					if(element) {
+						selection.alignElements(element);
+					}
 				});
 				
 				//答题卡页面点击事件
@@ -314,7 +324,7 @@
 							currentCls = ' currentPage';
 						}
 						html += '<a class="examPage'+currentCls+'" href="javascript:void(0)">' 
-							+ (arr[i].index+1) + '</a>';
+							+ (Number(arr[i].index)+1) + '</a>';
 					}
 					$('.clearfix').append($(html));
 				}
@@ -337,9 +347,9 @@
 						recoverSelection(selection);
 						
 					}
+					
+					resetCurrentPageStyle(target);
 				}
-				
-				resetCurrentPageStyle(target);
 			}
 			
 			//重新设置当前页面索引样式

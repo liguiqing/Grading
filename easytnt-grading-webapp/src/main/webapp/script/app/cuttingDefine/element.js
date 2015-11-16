@@ -15,6 +15,19 @@
 				
 			};
 			
+			//根据x轴坐标和宽度进行对齐操作
+			element.align = function(left, width) {
+				//设置数据域中的值
+				element.data.areaInPaper.left = left;
+				element.data.areaInPaper.width = width;
+				
+				//修改页面上的位置
+				$(element.view).css({
+					left: left + 'px',
+					width: width + 'px'
+				});
+			}
+			
 			//选区删除
 			//1.删除选区列表中对应的当前元素
 			//2.从试卷面板中移除已经画出的选区
@@ -31,6 +44,8 @@
 				$(selection.target).css({
 					cursor : 'default'
 				});
+				
+				selection.currentElement = null;
 			}
 
 			// 让元素可以拖动
@@ -51,6 +66,7 @@
 							element.save_preview_element_data();
 							//显示当前元素的数据
 							element.show_data();
+							selection.showSize = true;
 						}
 					},
 					onDrag : function(e) {
@@ -64,6 +80,9 @@
 						selection.change_size_tip();
 						// 显示位置信息
 						selection.show_msg(selection.currentElement);
+					},
+					onStopDrag: function() {
+						selection.showSize = false;
 					}
 				});
 			};
