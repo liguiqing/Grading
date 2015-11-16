@@ -1,5 +1,7 @@
 package com.easytnt.grading.service;
 
+import java.io.File;
+
 import com.easytnt.commons.entity.service.EntityService;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.PaperCard;
@@ -13,8 +15,10 @@ public interface ExamPaperService extends EntityService<ExamPaper, Long> {
 
 	void addSectionFor(Long paperId, Section section);
 	
-	void addPaperCardFor(Long paperId, PaperCard paperCard);
-	
 	void deletePaperCardFor(Long paperId, PaperCard paperCard);
+
+	void addPaperCardTo(ExamPaper examPaper, File cardFile);
+
+	File getPaperCardFile(ExamPaper examPaper,Long cardId);
 	
 }

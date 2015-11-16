@@ -1,9 +1,12 @@
 package com.easytnt.grading.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.commons.entity.cqrs.QueryBuilder;
+import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.commons.io.FileUtil;
+import com.easytnt.commons.util.Closer;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.PaperCard;
@@ -83,28 +88,42 @@ public class ExamPaperController {
 	public ModelAndView onAddPaperCard(@PathVariable Long examPaperId,MultipartHttpServletRequest request)
 					throws Exception {
 		logger.debug("URL /examPaper Method onAddPaperCard "+imgDir);
-		PaperCard paperCard = new PaperCard();
 		Iterator<String> it = request.getFileNames();
 		if(it.hasNext()) {
 			String fileName = it.next();
 			MultipartFile mfile = request.getFile(fileName);
-			File file = FileUtil.inputStreamToFile(request,imgDir,mfile.getInputStream(),mfile.getOriginalFilename());
-			logger.debug(file.getAbsolutePath());
-			paperCard.setPath(imgDir+File.separator+file.getName());
+			File cardFile  = FileUtil.inputStreamToFile(mfile.getInputStream(),mfile.getOriginalFilename());
+			ExamPaper examPaper = examPaperService.load(examPaperId);
+			examPaperService.addPaperCardTo(examPaper, cardFile);
+			
 		}else {
 			throw new IllegalArgumentException("无效的文件名");
 		}
-		examPaperService.addPaperCardFor(examPaperId, paperCard);
+		//examPaperService.update(examPaper);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 	
 	@RequestMapping(value="/{examPaperId}/{cardId}",method = RequestMethod.GET)
-	public ModelAndView onShowCard(@PathVariable Long examPaperId,@PathVariable Long cardId)
+	public void onShowPaperCard(@PathVariable Long examPaperId,@PathVariable Long cardId,
+			HttpServletResponse response)
 					throws Exception {
-		logger.debug("URL /examPaper/{}/{} Method U ", examPaperId);
-		//examPaperService.updateSectionFor(examPaperId,section,position);
-		//File imgFile = new File(imgDir)
-		return ModelAndViewFactory.newModelAndViewFor().build();
+		ExamPaper examPaper = examPaperService.load(examPaperId);
+		File file = examPaperService.getPaperCardFile(examPaper,cardId);
+
+		FileInputStream iis = new FileInputStream(file);
+		OutputStream out = response.getOutputStream();
+		try {
+			int read = 0;
+			byte[] bytes = new byte[1024];
+			while((read = iis.read(bytes)) != -1) {
+				out.write(bytes);
+			}
+			out.flush();
+		}catch(Exception e) {
+			logger.error(ThrowableParser.toString(e));
+		}finally{
+			Closer.close(iis);
+		}
 	}
 	
 	@RequestMapping(value="/{examPaperId}/section/{position}",method = RequestMethod.PUT)

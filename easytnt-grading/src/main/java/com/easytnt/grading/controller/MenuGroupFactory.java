@@ -45,7 +45,7 @@ public class MenuGroupFactory {
     	rightMenuGroup.appendMenu(new Menu("评卷设置","config?page=subject"));
     	rightMenuGroup.appendMenu(new Menu("个人中心","infocenter"));
     	
-    	configMenuGroup.appendMenu(new Menu("定义考试","config?page=test"));
+    	configMenuGroup.appendMenu(new Menu("定义考试","config?page=exam"));
     	configMenuGroup.appendMenu(new Menu("科目设置","config?page=subject"));
     	configMenuGroup.appendMenu(new Menu("导入考生","config?page=examinee"));
     	configMenuGroup.appendMenu(new Menu("评卷老师管理","config?page=teacher"));

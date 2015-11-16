@@ -62,7 +62,7 @@ public class ExamineeController {
 		if(it.hasNext()) {
 			String fileName = it.next();
 			MultipartFile mfile = request.getFile(fileName);
-			File file = FileUtil.inputStreamToFile(request,imgDir,mfile.getInputStream(),mfile.getOriginalFilename());
+			File file = FileUtil.inputStreamToFile(mfile.getInputStream(),mfile.getOriginalFilename());
 			logger.debug(file.getAbsolutePath());
 		}else {
 			throw new IllegalArgumentException("无效的文件名");
