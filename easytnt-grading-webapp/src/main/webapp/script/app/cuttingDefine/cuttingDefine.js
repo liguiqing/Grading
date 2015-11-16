@@ -19,13 +19,18 @@
 			};
 			
 			function entrance() {
-				//准备试卷信息
-				recoverPaper();
-				if(window.examObj.examPapers.length == 0) {//保存操作
-					doCreate();
-				}else {//编辑操作
-					doEdit();
-				}
+				var examId = $('#examId').val();
+				var paperId=$('#paperId').val();
+				var url='/cuttingDefine/get/'+examId+'/'+paperId;
+				ajaxWrapper.getJson(url,{},{},function(data){
+					//准备试卷信息
+					recoverPaper();
+					if(window.examObj.examPapers.length == 0) {//保存操作
+						doCreate();
+					}else {//编辑操作
+						doEdit();
+					}
+				});
 			}
 			
 			//进行新建试卷初始化
@@ -193,6 +198,8 @@
 				        fullScore: 10.0
 				    }]
 				}
+				
+				
 				//试卷数据
 				var examObj = ExamObj.newInstance();
 				examObj.paperId = data.designFor.paperId;

@@ -24,7 +24,7 @@
 				  </section>
 				</td>
 		  	    <#if usedPaper.sections ?size = 0>
-		  	      <td><a href="javascript:void(0)">设计切割方案</a></td>
+		  	      <td><a class="cuttingDefine" href="javascript:void(0)">设计切割方案</a></td>
 		  	    <#else>
 		  	      <td><a href="javascript:void(0)">${usedPaper.sections ?size}</a></td>
 		  	    </#if>

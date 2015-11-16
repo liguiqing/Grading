@@ -31,7 +31,9 @@ public class CuttingDefineController {
 
 	@RequestMapping(value = "/{examId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView index(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
-		return ModelAndViewFactory.newModelAndViewFor("/cuttingDefine/home").build();
+
+		return ModelAndViewFactory.newModelAndViewFor("/cuttingDefine/home").with("examId", examId)
+				.with("paperId", paperId).build();
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
