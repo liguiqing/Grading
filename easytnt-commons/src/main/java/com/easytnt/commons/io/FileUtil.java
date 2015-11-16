@@ -13,32 +13,36 @@ import org.slf4j.LoggerFactory;
 import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.commons.util.Closer;
 
-
-/** 
+/**
  * <pre>
  * 
  * </pre>
- *  
+ * 
  * @author 李贵庆2015年11月10日
  * @version 1.0
  **/
 public class FileUtil {
 	private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
-	
-	public static File inputStreamToFile(HttpServletRequest request,String imagedir,InputStream in,String fileName) throws Exception{
+
+	public static File inputStreamToFile(HttpServletRequest request, String imagedir, InputStream in, String fileName)
+			throws Exception {
 		String root = request.getServletContext().getRealPath("/");
-		File file = new File(root+ File.separator+imagedir + File.separator + System.currentTimeMillis() + "_" + fileName);
+		File file = new File(
+				root + File.separator + imagedir + File.separator + System.currentTimeMillis() + "_" + fileName);
+		if (!file.getParentFile().exists()) {
+			file.getParentFile().mkdirs();
+		}
 		OutputStream out = null;
 		try {
 			out = new FileOutputStream(file);
 			int read = 0;
 			byte[] bytes = new byte[1024];
-			while((read = in.read(bytes)) != -1) {
+			while ((read = in.read(bytes)) != -1) {
 				out.write(bytes);
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logger.error(ThrowableParser.toString(e));
-		}finally{
+		} finally {
 			Closer.close(out);
 		}
 		return file;
