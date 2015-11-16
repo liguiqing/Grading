@@ -1,4 +1,6 @@
 <div class="workspace" >
+<input type="hidden" id="examId" value="${examId}">
+<input type="hidden" id="paperId" value="${paperId}">
 <aside class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <div id="cuttingDefineContainer" css="image-container" style="width:100%;background-color:white;overflow:auto;position:relative;">
 

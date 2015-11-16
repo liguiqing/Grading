@@ -48,9 +48,9 @@ public class TeacherControllerTest extends AbstractControllerTest {
 		//Teacher Teacher = mock(Teacher.class);
 		Teacher Teacher = new Teacher();
 		ObjectMapper mapper = new ObjectMapper();
-		doNothing().when(teacherService).create(Teacher);
+		doNothing().when(teacherService).create(Teacher,1);
 		String content = mapper.writeValueAsString(Teacher);
-		this.mvc.perform(post("/teacher").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/teacher/1").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(content))
 				.andExpect(jsonPath("$.status.success", is(Boolean.TRUE)));
 	}
@@ -98,10 +98,11 @@ public class TeacherControllerTest extends AbstractControllerTest {
 		
 		doNothing().when(teacherService).query(isA(Query.class));
 		
-		this.mvc.perform(get("/teacher/query/1/10").param("name", "name"))
+		this.mvc.perform(get("/teacher/query/1/10").param("name", "name")
+		.accept(MediaType.APPLICATION_JSON)
+		.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(view().name("/teacher/listTeacher"))
-		.andExpect(content().string(startsWith("<!DOCTYPE html>")))
-		.andExpect(content().string(containsString("</html>")));
+		.andExpect(jsonPath("$.status.success", is(Boolean.TRUE)));
 		
 	}
 }

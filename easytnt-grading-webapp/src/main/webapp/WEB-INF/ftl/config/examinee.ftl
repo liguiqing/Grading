@@ -57,7 +57,4 @@
   <div class="col-sm-offset-5 col-md-4" style="margin-bottom:10px;">
     <button type="submit" class="btn btn-default">导入考生</button>
   </div>
-
-  <#import "/taglib/commons/pager.ftl" as page> 
-  <@page.pager pager=query/>
 </div>
