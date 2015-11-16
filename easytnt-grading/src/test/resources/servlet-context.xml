@@ -52,7 +52,7 @@
 	</bean>
 	
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="file:E:/github/easytnt-grading-webapp/src/main/webapp/WEB-INF/ftl" />
+        <property name="templateLoaderPath" value="D:/workspace-ci/jenkins/jobs/grading/workspace/easytnt-grading-webapp/src/main/webapp/WEB-INF/ftl" />
         <property name="freemarkerSettings" ref="freemarkerConfiguration" />
         <property name="freemarkerVariables">
             <map>

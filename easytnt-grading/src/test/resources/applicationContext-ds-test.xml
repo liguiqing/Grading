@@ -24,6 +24,7 @@
 		<property name="mappingResources">
 			<list>
 				 <value>hibernate/mapping/exam/Subject.hbm.xml</value>
+				 <value>hibernate/mapping/exam/Exam.hbm.xml</value>
 				 <value>hibernate/mapping/grade/Teacher.hbm.xml</value>
 				 <value>hibernate/mapping/paper/ExamPaper.hbm.xml</value>
 				 <value>hibernate/mapping/paper/Item.hbm.xml</value>
