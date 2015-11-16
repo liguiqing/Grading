@@ -75,7 +75,8 @@
 					}
 				};
 			return draw;
-		}
+		};
+		
 		var ichartDraw = self = {
 				showMiamJiTu:function(data,labels,min,max,space,unit,renderTo){
 					var chart = new iChart.Area2D(draw(data,labels,min,max,space,unit,renderTo));
@@ -84,6 +85,10 @@
 				showZheXianTu:function(data,labels,min,max,space,unit,renderTo){
 					var chart = new iChart.LineBasic2D(draw(data,labels,min,max,space,unit,renderTo));
 					this.finaly(chart,unit);
+				},
+				showZhuZhuangTu:function(data,min,max,space,unit,renderTo){
+					var chart = new iChart.Column2D(draw(data,[],min,max,space,unit,renderTo,false));
+					this.finaly(chart,unit,false);
 				},
 				finaly:function(chart,unit){
 					//利用自定义组件构造左侧说明文本

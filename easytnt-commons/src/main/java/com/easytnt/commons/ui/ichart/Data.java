@@ -2,7 +2,7 @@ package com.easytnt.commons.ui.ichart;
 
 public class Data {
 	private String name;
-	private String value;
+	private Float value;
 	private String color;
 
 	public String getName() {
@@ -13,11 +13,11 @@ public class Data {
 		this.name = name;
 	}
 
-	public String getValue() {
+	public Float getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(Float value) {
 		this.value = value;
 	}
 
