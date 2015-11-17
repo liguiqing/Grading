@@ -42,7 +42,7 @@ public class CuttingsImageGradeRecordTest {
 		
 		section.setTitle("二、填空题");
 		section.setCaption("二、填空题");
-		area.bindSection(section);
+		//area.bindSection(section);
 		Item item1 = mock(Item.class);
 		when(item1.isEffectiveScore(isA(Float.class))).thenReturn(Boolean.TRUE);
 		section.addItem(item1);
@@ -75,7 +75,7 @@ public class CuttingsImageGradeRecordTest {
 		
 		section.setTitle("二、填空题");
 		section.setCaption("二、填空题");
-		area.bindSection(section);
+		//area.bindSection(section);
 		Item item1 = mock(Item.class);
 		when(item1.isEffectiveScore(isA(Float.class))).thenReturn(Boolean.FALSE);
 		section.addItem(item1);
@@ -103,7 +103,7 @@ public class CuttingsImageGradeRecordTest {
 		
 		section.setTitle("二、填空题");
 		section.setCaption("二、填空题");
-		area.bindSection(section);
+		//area.bindSection(section);
 		for(long i =1l;i<=4l;i++) {
 			Item item1 = mock(Item.class);
 			doNothing().when(item1).setItemId(i);

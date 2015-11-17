@@ -5,6 +5,7 @@
 package com.easytnt.grading.domain.cuttings;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.easytnt.commons.entity.share.ValueObject;
 import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.paper.ExamPaper;
+import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;
 
@@ -28,27 +30,28 @@ import com.easytnt.grading.domain.share.Area;
 public class CuttingsArea implements ValueObject<CuttingsArea> {
 
 	private Long id;
+	
 	private String name;
+	
 	private ExamPaper paper;
 
 	private Area areaInPaper;
 
 	private List<PositionOfItemInArea> itemAreas;
 
-	private List<Section> sections;
-
 	private int requiredPinci = 1; // 必须执行的评判次数
 
 	private Float maxerror; // 最大误差值
 
 	private int answerCardImageIdx;// 答题卡图片位置
-	private double fullScore;
+	
+	private Float fullScore;
 
-	public double getFullScore() {
+	public Float getFullScore() {
 		return fullScore;
 	}
 
-	public void setFullScore(double fullScore) {
+	public void setFullScore(Float fullScore) {
 		this.fullScore = fullScore;
 	}
 
@@ -60,20 +63,42 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 	public void addItemDefinition(PositionOfItemInArea itemArea) {
 		if (this.itemAreas == null)
 			this.itemAreas = new ArrayList<>();
-		this.itemAreas.add(itemArea);
-		this.bindSection(itemArea.getSection());
-	}
-
-	public void bindSection(Section section) {
-		if (this.sections == null)
-			this.sections = new ArrayList<>();
-		this.sections.add(section);
+		this.itemAreas.add(itemArea);		
 	}
 
 	public Subject subjectOf() {
-		if (this.sections != null && this.sections.size() > 0)
-			return this.sections.get(0).getSubject();
+		List<Section> sections = this.getSections();
+		if (sections != null && sections.size() > 0)
+			return sections.get(0).getSubject();
 		return null;
+	}
+	
+	public List<Section> getSections(){
+		if(this.itemAreas != null ) {
+			ArrayList<Section> sections = new ArrayList<>();
+			for(PositionOfItemInArea area:itemAreas) {
+				if(!sections.contains(area.getSection())) {
+					sections.add(area.getSection());
+				}
+			}
+			return sections;
+		}
+		return null;
+	}
+	
+	public void validate(){
+		Iterator<PositionOfItemInArea> iterItem =  itemAreas.iterator();
+		float itemFullScores = 0;
+		while(iterItem.hasNext()){
+			PositionOfItemInArea item = iterItem.next();
+			itemFullScores += item.getFullScore();
+		}
+		if(this.fullScore == null){
+			throw new UnsupportedOperationException("试题分数为空");
+		}
+		if(itemFullScores > this.fullScore){
+			throw new UnsupportedOperationException("给分点大于试题分数");
+		}
 	}
 
 	@Override
@@ -134,14 +159,6 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 
 	public void setAreaInPaper(Area areaInPaper) {
 		this.areaInPaper = areaInPaper;
-	}
-
-	public List<Section> getSections() {
-		return sections;
-	}
-
-	public void setSections(List<Section> sections) {
-		this.sections = sections;
 	}
 
 	public int getRequiredPinci() {
