@@ -14,6 +14,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.easytnt.commons.entity.share.ValueObject;
 import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.paper.ExamPaper;
+import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;
 
@@ -34,6 +35,8 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 	private Area areaInPaper;
 
 	private List<PositionOfItemInArea> itemAreas;
+
+	private List<Item> items;
 
 	private List<Section> sections;
 
@@ -175,6 +178,13 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 	public void setItemAreas(List<PositionOfItemInArea> itemAreas) {
 		this.itemAreas = itemAreas;
 	}
-	
-	
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
 }
