@@ -80,7 +80,7 @@ public class GradingTaskControllerTest extends AbstractControllerTest {
 		Section section = new Section();
 		section.setTitle("二、填空题");
 		section.setCaption("二、填空题");
-		area.bindSection(section);
+		//area.bindSection(section);
 		GradeTask task = GradeTask.createOfficialGradeTask(r1, area);
 		
 		when(refereesService.getCurrentReferees()).thenReturn(r1);

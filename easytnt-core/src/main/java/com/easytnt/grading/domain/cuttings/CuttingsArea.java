@@ -39,6 +39,8 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 
 	private List<PositionOfItemInArea> itemAreas;
 
+	private List<Item> items;
+
 	private int requiredPinci = 1; // 必须执行的评判次数
 
 	private Float maxerror; // 最大误差值
@@ -192,6 +194,13 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 	public void setItemAreas(List<PositionOfItemInArea> itemAreas) {
 		this.itemAreas = itemAreas;
 	}
-	
-	
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
 }

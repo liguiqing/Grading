@@ -100,23 +100,21 @@
 									width: data.areaInPaper.width,
 									height: data.areaInPaper.height
 								},
-								itemAreas:[]
+								items:[]
 						};
 						CuttingsSolution.cutTo.push(cut);
 						
 						for(var k = 0; k < data.itemAreas.length; k++) {
 							var itemArea = data.itemAreas[k];
 							var item = {
-									item: {
 										id: itemArea.id,
 										title: itemArea.title,
 										fullScore: itemArea.fullScore,
 										seriesScore: itemArea.seriesScore,
 										interval: itemArea.interval,
 										validValues: itemArea.validValues.split(',')
-									}
 							};
-							cut.itemAreas.push(item);
+							cut.items.push(item);
 						}
 					}
 				}
