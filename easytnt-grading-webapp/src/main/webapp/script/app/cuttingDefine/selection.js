@@ -427,9 +427,9 @@
 			
 			//选中某一个元素，取消其他元素的选中效果(取消助托点)
 			selection.select_element = function(element) {
-				selection.show_resize_points(selection.currentElement);
+				selection.show_resize_points(element);
 				//鼠标停止改变元素位置的时候显示出最后的位置坐标
-				selection.show_msg(selection.currentElement);
+				selection.show_msg(element);
 				selection.show_size();
 			};
 			

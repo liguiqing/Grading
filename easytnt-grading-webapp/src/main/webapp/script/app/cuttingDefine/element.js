@@ -60,12 +60,19 @@
 						if($(element.view).width() >= 1) {
 							// 改变当前处理元素值
 							selection.record_current_element(element);
-							// 选中当前元素，其余元素都取消选中,隐藏助托点
-							selection.select_element(element);
 							//保存上一个元素的数据
 							element.save_preview_element_data();
+							// 选中当前元素，其余元素都取消选中,隐藏助托点
+							selection.select_element(element);
 							//显示当前元素的数据
 							element.show_data();
+							
+							// 显示选区当前宽高tip
+							selection.show_size();
+							// 改变宽高tip中的值
+							selection.change_size_tip();
+							// 显示位置信息
+							selection.show_msg(selection.currentElement);
 							selection.showSize = true;
 						}
 					},
@@ -207,7 +214,6 @@
 			};
 			
 			// 显示当前选中元素的数据值
-			// 这里涉及到将前一个选中元素的数据保存到其数据域中
 			element.show_data = function(createSubData) {
 				if(createSubData) {
 					var subData = create_sub_question_data();
