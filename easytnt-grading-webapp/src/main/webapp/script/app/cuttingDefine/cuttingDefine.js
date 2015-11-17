@@ -13,9 +13,6 @@
 				kk();
 				//切割入口
 				entrance();
-				//初始化底部工具栏按钮状态
-				initBtnStatus();
-				initEvent();
 			};
 			
 			function entrance() {
@@ -26,6 +23,10 @@
 				}else {//编辑操作
 					doEdit();
 				}
+				
+				//初始化底部工具栏按钮状态
+				initBottomBarBtnStatus();
+				initBottomBarBtnEvent();
 			}
 			
 			//进行新建试卷初始化
@@ -41,7 +42,7 @@
 			}
 			
 			//初始化底部工具栏中按钮点击事件
-			function initEvent() {
+			function initBottomBarBtnEvent() {
 				//保存，将试卷数据转化为固定格式的json，并传递到后台
 				$('#saveBtn').click(function() {
 					stage_unsaved_element();
@@ -311,7 +312,7 @@
 			}
 			
 			//根据examObj初始化底部上翻下翻按钮状态
-			function initBtnStatus() {
+			function initBottomBarBtnStatus() {
 				//根据examobj中的试卷答题卡数量创建对应每一张答题卡的超链接
 				var arr = window.examObj.answerCardCuttingTemplates;
 				if(arr.length == 0) {
