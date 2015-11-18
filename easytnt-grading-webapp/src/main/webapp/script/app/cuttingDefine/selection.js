@@ -12,7 +12,7 @@
 			selection.previousElement = null///前一个被选中的元素， 用于保存数据
 			selection.answerCardImageIdx = 0; //答题卡图片索引
 			selection.elements = [];//已经添加到内容中的元素
-			
+			selection.selectedList = [];//已经被选中的元素列表
 			//目标控件
 			selection.target = target;
 			
@@ -179,8 +179,6 @@
 						
 						//初始化刚创建的元素大小
 						selection.init_element_size(currentX, currentY);
-						
-						selection.select_element(selection.currentElement);
 					});
 					
 					//完成选区
@@ -193,8 +191,6 @@
 						
 						// 在鼠标移动过程中才对该元素宽高进行控制，所以，需要将该无效元素去掉
 						if($(selection.currentElement.view).width() < 50) {
-							//用户选择了其他元素就需要将上一个选中的元素数据进行保存
-							selection.currentElement.save_preview_element_data();
 							//隐藏题目信息框
 							$('.control-content').css({
 								display: 'none'
@@ -208,6 +204,8 @@
 							}
 							selection.currentElement.del();
 						}else {
+							//创建成功，选中当前元素
+							selection.select_element(selection.currentElement);
 							//这里需要判断是否恢复鼠标形状,排除拖拽
 							var cursor = $(target).css('cursor');
 							if(!selection.intersect(currentX, currentY) || cursor == 'crosshair') {
@@ -223,9 +221,6 @@
 							}
 							//显示当前设置的元素的数据
 							selection.currentElement.show_data();
-							//保存上一次操作的节点数据
-							//selection.currentElement.save_preview_element_data();
-							
 						}
 						
 						//清理当前类的mousemove mouseup事件
@@ -234,6 +229,22 @@
 					});
 				});
 			};
+			
+			//将当前选中元素加入到选中列表中
+			selection.addToSelectedList = function(element, e) {
+				//如果点击的是
+				
+				
+				if(selection.selectedList.indexOf(element) == -1) {
+					selection.selectedList.push(element);
+				}
+			};
+
+			//从选中列表中移除元素
+			selection.removeFromSelectedList = function(element) {
+				selection.selectedList.remove(element);
+				element.del();
+			}
 			
 			// 元素数据面板可拖动
 			selection.make_element_data_panel_draggable = function() {
