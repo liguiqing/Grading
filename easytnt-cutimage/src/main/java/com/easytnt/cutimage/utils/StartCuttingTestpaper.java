@@ -3,11 +3,15 @@
  */
 package com.easytnt.cutimage.utils;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,8 +103,13 @@ public class StartCuttingTestpaper implements Runnable {
 
 				@Override
 				public void visit(FileInfo fileInfo) {
-					if (isTiff(fileInfo)) {
-						counter.add();
+					if (isDatFile(fileInfo)) {
+						try {
+							counter.add(FileUtils.readLines(fileInfo.getFilePath().toFile()).size());
+						} catch (Exception e) {
+							log.error(ThrowableParser.toString(e));
+							e.printStackTrace();
+						}
 					}
 				}
 			});
@@ -130,37 +139,63 @@ public class StartCuttingTestpaper implements Runnable {
 	}
 
 	private void publishTask(final Disruptor<StudentTestPaperAnswerCardEvent> cuttingDisruptor) throws Exception {
-		final int temlateNum = cuttingsSolution.getDesignFor().getAnswerCardImageNum();
 		final String rootDir = cuttingsSolution.getDesignFor().getStudentAnserCardRootPath();
 		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(rootDir);
 		directoryScanner.scan(new VisitorFile() {
-			private ArrayList<String> paths = new ArrayList<>();
-
 			@Override
 			public void visit(FileInfo fileInfo) {
-				if (isTiff(fileInfo)) {
-					paths.add(fileInfo.getFilePath().toString());
-				}
-
-				if (paths.size() == temlateNum) {
-					StudentTestPaperAnswerCardEvent event = new StudentTestPaperAnswerCardEvent();
-					event.setFilePaths(paths).setRootDir(rootDir).setCuttingsSolution(cuttingsSolution);
-					cuttingDisruptor.publishEvent(new StudentTestPaperAnswerCardEventTranslator(event));
-					paths = new ArrayList<>();
+				if (isDatFile(fileInfo)) {
+					List<String> studentInfos = null;
+					try {
+						studentInfos = FileUtils.readLines(fileInfo.getFilePath().toFile());
+					} catch (Exception e) {
+						log.error(ThrowableParser.toString(e));
+						e.printStackTrace();
+					}
+					for (String studentInfo : studentInfos) {
+						StudentTestPaperAnswerCardEvent event = createStudentTestPaperAnswerCardEvent(rootDir,
+								fileInfo.getFilePath().getParent(), studentInfo);
+						cuttingDisruptor.publishEvent(new StudentTestPaperAnswerCardEventTranslator(event));
+					}
 				}
 			}
 		});
 	}
 
-	private boolean isTiff(FileInfo fileInfo) {
-		return fileInfo.getFilePath().toString().toLowerCase().endsWith(".tif");
+	private StudentTestPaperAnswerCardEvent createStudentTestPaperAnswerCardEvent(String rootDir, Path parentPath,
+			String studentInfo) {
+		StudentTestPaperAnswerCardEvent event = new StudentTestPaperAnswerCardEvent();
+		event.setFilePaths(createSourceImagePath(parentPath, studentInfo)).setRootDir(rootDir)
+				.setCuttingsSolution(cuttingsSolution).setStudentId(getStudentId(studentInfo));
+		return event;
+	}
+
+	private List<String> createSourceImagePath(Path parentPath, String studentInfo) {
+		// 海云天的文件解析通过这个完成
+		ArrayList<String> paths = new ArrayList<>();
+		String[] infos = studentInfo.split(";");
+		int imageNum = Integer.parseInt(infos[0]);
+		int size = imageNum + 15;
+		for (int i = 15; i < size; i++) {
+			paths.add(parentPath.resolve(Paths.get(infos[i])).toString());
+		}
+		return paths;
+	}
+
+	private String getStudentId(String studentInfo) {
+		String[] infos = studentInfo.split(";");
+		return infos[1];
+	}
+
+	private boolean isDatFile(FileInfo fileInfo) {
+		return fileInfo.getFilePath().toString().toLowerCase().endsWith(".dat");
 	}
 
 	private class Counter {
 		private int num = 0;
 
-		public void add() {
-			num++;
+		public void add(int num) {
+			this.num += num;
 		}
 
 		public int getCounter() {
