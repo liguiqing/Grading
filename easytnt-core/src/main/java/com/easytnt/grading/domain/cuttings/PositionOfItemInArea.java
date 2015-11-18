@@ -22,62 +22,70 @@ import com.easytnt.grading.domain.share.Area;
  * @author 李贵庆 2015年10月24日
  * @version 1.0
  **/
-public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea>{
-	
-	private Item item;
-	
-	private Section section;
-	
+public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea> {
+	private Long id;
+
+	private String name;
+
 	private Area areaIn;
-	
+
 	private Float[] validValues;
-	
+
 	private Float fullScore;
-	
+
 	private boolean seriesScore;// 是否连续给分
-	
+
 	private double interval;// 如果连续给分的给分区间
-	
-	public PositionOfItemInArea(Item item,Section section,Area areaIn) {
+
+	private CuttingsArea cuttingsArea;
+
+	/************* 暂时不要 **********/
+	private Item item;
+
+	private Section section;
+
+	/************* 暂时不要 **********/
+
+	public PositionOfItemInArea(Item item, Section section, Area areaIn) {
 		this.areaIn = areaIn;
 		this.section = section;
 		this.areaIn = areaIn;
 	}
-	
-	public PositionOfItemInArea(Item item,Section section,Area areaIn,Float[] validValues) {
+
+	public PositionOfItemInArea(Item item, Section section, Area areaIn, Float[] validValues) {
 		this.areaIn = areaIn;
 		this.section = section;
 		this.areaIn = areaIn;
 		this.validValues = validValues;
 	}
-	
+
 	public boolean isEffectiveScore(Float score) {
-		return score.compareTo(this.getMinPoint()) >= 0
-				&& score.compareTo(getMaxPoint()) <= 0;
+		return score.compareTo(this.getMinPoint()) >= 0 && score.compareTo(getMaxPoint()) <= 0;
 	}
-	
+
 	public void genValidValues(String validscoredot) {
 		String[] values = validscoredot.split(",");
-		if(values.length > 0) {
+		if (values.length > 0) {
 			Float[] scores = new Float[values.length];
 			int i = 0;
-			for(String value:values) {
+			for (String value : values) {
 				scores[i++] = NumberUtils.parseNumber(value, Float.class);
 			}
-			if(!this.isEffectiveScore(scores[scores.length-1])) {
+			if (!this.isEffectiveScore(scores[scores.length - 1])) {
 				throw new IllegalArgumentException(validscoredot + "不在有效分范围内");
 			}
-			
+
 			this.validValues = scores;
 		}
 	}
+
 	public String genValidscoredot(Float[] validValues) {
-		if(validValues.length > 0) {
+		if (validValues.length > 0) {
 			StringBuffer sb = new StringBuffer();
-			for(Float value:validValues) {
+			for (Float value : validValues) {
 				sb.append(value).append(",");
 			}
-			sb.deleteCharAt(sb.length()-1);
+			sb.deleteCharAt(sb.length() - 1);
 			return sb.toString();
 		}
 		return null;
@@ -90,7 +98,7 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea>{
 	public Float getMaxPoint() {
 		return this.item.getMaxPoint();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(this.item).append(this.section).toHashCode();
@@ -109,15 +117,15 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea>{
 	public String toString() {
 		return new ToStringBuilder(this).append(this.section).append(this.item).append(this.areaIn).build();
 	}
-	
+
 	@Override
 	public boolean sameValueAs(PositionOfItemInArea other) {
 		return this.equals(other);
 	}
-	
-	//以下功能为ORM或者自动构造使用，非此慎用
+
+	// 以下功能为ORM或者自动构造使用，非此慎用
 	public PositionOfItemInArea() {
-		
+
 	}
 
 	public Item getItem() {
@@ -174,6 +182,38 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea>{
 
 	public void setFullScore(Float fullScore) {
 		this.fullScore = fullScore;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getValidscoredot() {
+		return genValidscoredot(this.validValues);
+	}
+
+	public void setValidscoredot(String validscoredot) {
+		genValidValues(validscoredot);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CuttingsArea getCuttingsArea() {
+		return cuttingsArea;
+	}
+
+	public void setCuttingsArea(CuttingsArea cuttingsArea) {
+		this.cuttingsArea = cuttingsArea;
 	}
 
 }

@@ -30,9 +30,9 @@ import com.easytnt.grading.domain.share.Area;
 public class CuttingsArea implements ValueObject<CuttingsArea> {
 
 	private Long id;
-	
+
 	private String name;
-	
+
 	private ExamPaper paper;
 
 	private Area areaInPaper;
@@ -43,11 +43,11 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 
 	private int requiredPinci = 1; // 必须执行的评判次数
 
-	private Float maxerror; // 最大误差值
+	private Float maxerror = 0f; // 最大误差值
 
-	private int answerCardImageIdx;// 答题卡图片位置
-	
-	private Float fullScore;
+	private int answerCardImageIdx = 0;// 答题卡图片位置
+
+	private Float fullScore = 0f;
 
 	public Float getFullScore() {
 		return fullScore;
@@ -65,7 +65,7 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 	public void addItemDefinition(PositionOfItemInArea itemArea) {
 		if (this.itemAreas == null)
 			this.itemAreas = new ArrayList<>();
-		this.itemAreas.add(itemArea);		
+		this.itemAreas.add(itemArea);
 	}
 
 	public Subject subjectOf() {
@@ -74,12 +74,12 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 			return sections.get(0).getSubject();
 		return null;
 	}
-	
-	public List<Section> getSections(){
-		if(this.itemAreas != null ) {
+
+	public List<Section> getSections() {
+		if (this.itemAreas != null) {
 			ArrayList<Section> sections = new ArrayList<>();
-			for(PositionOfItemInArea area:itemAreas) {
-				if(!sections.contains(area.getSection())) {
+			for (PositionOfItemInArea area : itemAreas) {
+				if (!sections.contains(area.getSection())) {
 					sections.add(area.getSection());
 				}
 			}
@@ -87,18 +87,18 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 		}
 		return null;
 	}
-	
-	public void validate(){
-		Iterator<PositionOfItemInArea> iterItem =  itemAreas.iterator();
+
+	public void validate() {
+		Iterator<PositionOfItemInArea> iterItem = itemAreas.iterator();
 		float itemFullScores = 0;
-		while(iterItem.hasNext()){
+		while (iterItem.hasNext()) {
 			PositionOfItemInArea item = iterItem.next();
 			itemFullScores += item.getFullScore();
 		}
-		if(this.fullScore == null){
+		if (this.fullScore == null) {
 			throw new UnsupportedOperationException("试题分数为空");
 		}
-		if(itemFullScores > this.fullScore){
+		if (itemFullScores > this.fullScore) {
 			throw new UnsupportedOperationException("给分点大于试题分数");
 		}
 	}
