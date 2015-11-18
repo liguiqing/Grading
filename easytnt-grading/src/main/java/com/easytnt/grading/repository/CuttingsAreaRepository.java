@@ -4,10 +4,12 @@
  **/
 package com.easytnt.grading.repository;
 
+import java.util.List;
+
 import com.easytnt.commons.entity.repository.Repository;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 
-/** 
+/**
  * <pre>
  * 
  * </pre>
@@ -17,6 +19,5 @@ import com.easytnt.grading.domain.cuttings.CuttingsArea;
  **/
 public interface CuttingsAreaRepository extends Repository<CuttingsArea, Long> {
 
+	public List<CuttingsArea> listCuttingsAreaOfInPaper(Long paperId);
 }
-
-

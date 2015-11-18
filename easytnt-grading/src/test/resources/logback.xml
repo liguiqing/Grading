@@ -58,31 +58,31 @@
 	</logger>
 
 	<logger name="org.hibernate" additivity="false">
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<!--TRACE -->
 	<logger name="org.hibernate.type.descriptor.sql.BasicBinder"
 		additivity="false">
-		<level value="error" />
+		<level value="debug" />
 		<appender-ref ref='ASYNC' />
 	</logger>
 	<logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
-		additivity="error">
+		additivity="debug">
 		<level value="debug" />
 		<appender-ref ref='ASYNC' />
 	</logger>
 	<logger name="org.hibernate.SQL" additivity="false">
-		<level value="error" />
+		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="org.hibernate.engine.QueryParameters" additivity="false">
-		<level value="ERROR" />
+		<level value="debug" />
 		<appender-ref ref='ASYNC' />
 	</logger>
 	<logger name="org.hibernate.engine.query.HQLQueryPlan"
 		additivity="false">
-		<level value="ERROR" />
+		<level value="debug" />
 		<appender-ref ref='ASYNC' />
 	</logger>
 	<logger name="org.freemarker"

@@ -591,7 +591,7 @@
 		<mockito.version>1.9.5</mockito.version>
 		<powermock.version>1.6.2</powermock.version>
 		<ehcache.version>2.6.6</ehcache.version>
-		<mysql.version>5.1.34</mysql.version>
+		<mysql.version>5.1.37</mysql.version>
 		<druid.version>1.0.15</druid.version>
 		<shiro.version>1.2.3</shiro.version>
 		<project.build.sourceVersion>1.7</project.build.sourceVersion>

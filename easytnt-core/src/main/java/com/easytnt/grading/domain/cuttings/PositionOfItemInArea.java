@@ -27,15 +27,15 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea> {
 
 	private String name;
 
-	private Area areaIn;
+	private Area areaIn = new Area();
 
 	private Float[] validValues;
 
 	private Float fullScore;
 
-	private boolean seriesScore;// 是否连续给分
+	private boolean seriesScore = true;// 是否连续给分
 
-	private double interval;// 如果连续给分的给分区间
+	private Float interval = 0f;// 如果连续给分的给分区间
 
 	private CuttingsArea cuttingsArea;
 
@@ -71,9 +71,9 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea> {
 			for (String value : values) {
 				scores[i++] = NumberUtils.parseNumber(value, Float.class);
 			}
-			if (!this.isEffectiveScore(scores[scores.length - 1])) {
-				throw new IllegalArgumentException(validscoredot + "不在有效分范围内");
-			}
+			// if (!this.isEffectiveScore(scores[scores.length - 1])) {
+			// throw new IllegalArgumentException(validscoredot + "不在有效分范围内");
+			// }
 
 			this.validValues = scores;
 		}
@@ -168,11 +168,11 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea> {
 		this.seriesScore = seriesScore;
 	}
 
-	public double getInterval() {
+	public Float getInterval() {
 		return interval;
 	}
 
-	public void setInterval(double interval) {
+	public void setInterval(Float interval) {
 		this.interval = interval;
 	}
 

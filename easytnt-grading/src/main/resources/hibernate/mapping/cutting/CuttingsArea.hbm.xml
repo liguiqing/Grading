@@ -17,7 +17,7 @@
 		<property name="fullScore" type="java.lang.Float">
 			<column name="fullscore" />
 		</property>
-		
+
 		<property name="maxerror" type="java.lang.Float">
 			<column name="maxerror" />
 		</property>
@@ -27,7 +27,7 @@
 		<property name="answerCardImageIdx" type="java.lang.Integer">
 			<column name="answerCardImageIdx" />
 		</property>
-	
+
 		<component name="areaInPaper" class="com.easytnt.grading.domain.share.Area"
 			lazy="true">
 			<property name="left" column="[left]" type="java.lang.Integer" />
@@ -40,6 +40,12 @@
 			class="com.easytnt.grading.domain.paper.ExamPaper" column="paperid"
 			cascade="none">
 		</many-to-one>
-		
+
+		<bag name="itemAreas" table="papersubiteminfo" cascade="all-delete-orphan"
+			 fetch="join" lazy="false">
+			<key column="itemid" />
+			<one-to-many
+				class="com.easytnt.grading.domain.cuttings.PositionOfItemInArea" />
+		</bag>
 	</class>
 </hibernate-mapping>
