@@ -116,7 +116,7 @@ public class DispatcherConcreator {
 				section.setTitle(rs.getString("itemname"));
 				section.setCaption(rs.getString("itemcaption"));
 				section.setFullScore(rs.getFloat("fullscore"));				
-				area.bindSection(section);
+				//area.bindSection(section);
 				
 				setSectionItems(section);
 				
