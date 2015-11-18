@@ -39,7 +39,7 @@ public class CuttingImage {
 
 	private long diquId;// 地区ID
 	private long kcId;// 考场ID
-	private String studentName;//
+	private String studentId;//
 
 	private String cuttingRootPath;// 切割块存放的位置
 	private ArrayList<BufferedImage> bufferedImages = new ArrayList<>();
@@ -50,6 +50,7 @@ public class CuttingImage {
 	}
 
 	private void init() {
+		this.studentId = event.getStudentId();
 		setDqIdAndKcId();
 		setCuttingRootPath();
 	}
@@ -70,10 +71,6 @@ public class CuttingImage {
 		} catch (Exception e) {
 			this.kcId = 0L;
 		}
-
-		studentName = filePath.getFileName().toString();
-		int idx = studentName.indexOf(".");
-		studentName = idx == -1 ? studentName : studentName.substring(0, idx);
 	}
 
 	private void setCuttingRootPath() {
@@ -149,7 +146,7 @@ public class CuttingImage {
 	private String createSaveFilePath(Long itemId) throws Exception {
 		StringBuffer saveFilePath = new StringBuffer();
 		saveFilePath.append(cuttingRootPath).append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/")
-				.append(diquId).append("/").append(kcId).append("/").append(itemId).append("/").append(studentName)
+				.append(diquId).append("/").append(kcId).append("/").append(itemId).append("/").append(studentId)
 				.append(".png");
 		Path path = Paths.get(saveFilePath.toString());
 		if (!Files.exists(path.getParent())) {
@@ -166,11 +163,11 @@ public class CuttingImage {
 	private CutImageInfo createCutImageInfo(Long itemId) {
 		StringBuffer imagePath = new StringBuffer();
 		imagePath.append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/").append(diquId).append("/")
-				.append(kcId).append("/").append(itemId).append("/").append(studentName).append(".png");
+				.append(kcId).append("/").append(itemId).append("/").append(studentId).append(".png");
 		CutImageInfo cutImageInfo = new CutImageInfo();
 		cutImageInfo.setPaperId(event.getCuttingsSolution().getDesignFor().getPaperId()).setDiquId(diquId)
 				.setRoomId(kcId).setVirtualroomId(kcId).setItemId(itemId).setImagePath(imagePath.toString())
-				.setStudentId(Long.parseLong(studentName));
+				.setStudentId(Long.parseLong(studentId));
 		return cutImageInfo;
 	}
 

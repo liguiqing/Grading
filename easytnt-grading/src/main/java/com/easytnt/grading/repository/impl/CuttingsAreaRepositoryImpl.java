@@ -3,6 +3,9 @@
  */
 package com.easytnt.grading.repository.impl;
 
+import java.util.List;
+
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.easytnt.commons.entity.repository.HibernateRepository;
@@ -23,6 +26,14 @@ public class CuttingsAreaRepositoryImpl extends HibernateRepository<CuttingsArea
 	@Override
 	protected Class<CuttingsArea> getEntityClass() {
 		return CuttingsArea.class;
+	}
+
+	@Override
+	public List<CuttingsArea> listCuttingsAreaOfInPaper(Long paperId) {
+		String hql = "from CuttingsArea where paper.id=" + paperId;
+		Query q = this.getCurrentSession().createQuery(hql);
+		List<CuttingsArea> cuttingsAreas = q.list();
+		return cuttingsAreas;
 	}
 
 }

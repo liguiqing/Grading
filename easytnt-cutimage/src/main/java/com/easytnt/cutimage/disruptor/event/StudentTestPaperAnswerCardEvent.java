@@ -21,6 +21,7 @@ import com.lmax.disruptor.EventTranslator;
  */
 public class StudentTestPaperAnswerCardEvent {
 
+	private String studentId;
 	private CuttingsSolution cuttingsSolution;
 
 	private String rootDir;
@@ -62,6 +63,15 @@ public class StudentTestPaperAnswerCardEvent {
 		return rootDir;
 	}
 
+	public String getStudentId() {
+		return studentId;
+	}
+
+	public StudentTestPaperAnswerCardEvent setStudentId(String studentId) {
+		this.studentId = studentId;
+		return this;
+	}
+
 	public StudentTestPaperAnswerCardEvent setRootDir(String rootDir) {
 		if (!rootDir.endsWith("/") && !rootDir.endsWith("\\")) {
 			rootDir += "/";
@@ -84,6 +94,7 @@ public class StudentTestPaperAnswerCardEvent {
 		this.filePaths = obj.filePaths;
 		this.rootDir = obj.rootDir;
 		this.cuttingsSolution = obj.cuttingsSolution;
+		this.studentId = obj.studentId;
 	}
 
 	public static final EventFactory<StudentTestPaperAnswerCardEvent> FACTORY = new EventFactory<StudentTestPaperAnswerCardEvent>() {

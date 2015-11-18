@@ -86,29 +86,24 @@
 		</property>
 		<property name="mappingResources">
 			<list>
-				 <value>hibernate/mapping/exam/Subject.hbm.xml</value>
-				 <value>hibernate/mapping/exam/Exam.hbm.xml</value>
-				 <value>hibernate/mapping/grade/Teacher.hbm.xml</value>
-				 <value>hibernate/mapping/paper/ExamPaper.hbm.xml</value>
-				 <value>hibernate/mapping/paper/Item.hbm.xml</value>
-				 <value>hibernate/mapping/paper/Section.hbm.xml</value>
-				 <value>hibernate/mapping/paper/PaperCard.hbm.xml</value>
-				 <value>hibernate/mapping/exam/SubjectExam.hbm.xml</value>
-				 <value>hibernate/mapping/room/District.hbm.xml</value>
-				 <value>hibernate/mapping/cutting/CuttingsArea.hbm.xml</value>
+				<value>hibernate/mapping/exam/Subject.hbm.xml</value>
+				<value>hibernate/mapping/exam/Exam.hbm.xml</value>
+				<value>hibernate/mapping/grade/Teacher.hbm.xml</value>
+				<value>hibernate/mapping/paper/ExamPaper.hbm.xml</value>
+				<value>hibernate/mapping/paper/Item.hbm.xml</value>
+				<value>hibernate/mapping/paper/Section.hbm.xml</value>
+				<value>hibernate/mapping/paper/PaperCard.hbm.xml</value>
+				<value>hibernate/mapping/exam/SubjectExam.hbm.xml</value>
+				<value>hibernate/mapping/room/District.hbm.xml</value>
+				<value>hibernate/mapping/cutting/CuttingsArea.hbm.xml</value>
+				<value>hibernate/mapping/cutting/PositionOfItemInArea.hbm.xml</value>
 			</list>
 		</property>
 	</bean>
-	
-	<!--
-	<bean id="dynamicHibernateTemplate" class="com.cntest.common.repository.DynamicHibernateTemplate">
-		<property name="sessionFactory" ref="sessionFactory"></property>
-		<property name="fileNames">
-			<list>
-				<value>classpath:hibernate/query/query-*.xml</value>
-			</list>
-		</property>
-	</bean>
-    -->
+
+	<!-- <bean id="dynamicHibernateTemplate" class="com.cntest.common.repository.DynamicHibernateTemplate"> 
+		<property name="sessionFactory" ref="sessionFactory"></property> <property 
+		name="fileNames"> <list> <value>classpath:hibernate/query/query-*.xml</value> 
+		</list> </property> </bean> -->
 
 </beans>

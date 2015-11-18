@@ -19,16 +19,23 @@
 		<property name="fullScore" type="java.lang.Float">
 			<column name="fullscore" />
 		</property>
-		
-		
+		<property name="interval" type="java.lang.Float">
+			<column name="[interval]" />
+		</property>
+		<property name="seriesScore" type="java.lang.Boolean">
+			<column name="seriesScore" />
+		</property>
 
-		<component name="areaInPaper" class="com.easytnt.grading.domain.share.Area"
+		<component name="areaIn" class="com.easytnt.grading.domain.share.Area"
 			lazy="true">
 			<property name="left" column="[left]" type="java.lang.Integer" />
 			<property name="top" column="top" type="java.lang.Integer" />
 			<property name="width" column="width" type="java.lang.Integer" />
 			<property name="height" column="height" type="java.lang.Integer" />
 		</component>
+
+		<many-to-one name="cuttingsArea" column="itemid"
+			class="com.easytnt.grading.domain.cuttings.CuttingsArea" cascade="none" />
 
 	</class>
 </hibernate-mapping>
