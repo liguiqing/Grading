@@ -453,6 +453,16 @@
 				<version>${shiro.version}</version>
 				<scope>compile</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>${poi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml</artifactId>
+				<version>${poi.version}</version>
+			</dependency>			
 		</dependencies>
 	</dependencyManagement>
 
@@ -594,6 +604,7 @@
 		<mysql.version>5.1.34</mysql.version>
 		<druid.version>1.0.15</druid.version>
 		<shiro.version>1.2.3</shiro.version>
+		<poi.version>3.9</poi.version>
 		<project.build.sourceVersion>1.7</project.build.sourceVersion>
 		<project.build.targetVersion>1.7</project.build.targetVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
