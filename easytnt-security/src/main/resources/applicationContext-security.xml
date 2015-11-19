@@ -166,11 +166,7 @@
 			<value>
 				/css/** = anon
 				/script/** = anon
-				/500 = anon
-				/401 = anon
-				/403= anon
-				/404 = anon
-				/405 = anon
+				/exp/** = anon
 				/sso/login = cas
 				/login = kaptchar,authc
 				/** = sessionTimeout,user
@@ -185,5 +181,7 @@
 		depends-on="lifecycleBeanPostProcessor">
 		<property name="proxyTargetClass" value="true"></property>
 	</bean>
+	
+	<bean class="com.easytnt.security.PasswordEncryptor"></bean>	
 	
 </beans>

@@ -1,20 +1,18 @@
 package com.easytnt.grading.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.dialect.TeradataDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.commons.entity.service.AbstractEntityService;
-import com.easytnt.grading.domain.exam.Exam;
 import com.easytnt.grading.domain.grade.Teacher;
-import com.easytnt.grading.repository.ExamRepository;
 import com.easytnt.grading.repository.TeacherRepository;
-import com.easytnt.grading.service.ExamService;
 import com.easytnt.grading.service.TeacherService;
+import com.easytnt.security.PasswordEncryptor;
 
 /**
  * 科目的具体操作服务实现类
@@ -26,6 +24,9 @@ import com.easytnt.grading.service.TeacherService;
 public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
 		implements TeacherService {
 
+	@Autowired
+	private PasswordEncryptor passwordEncryptor;
+	
 	private TeacherRepository teacherRepository;
 
 	public TeacherServiceImpl() {
@@ -43,6 +44,22 @@ public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
 	@Transactional(readOnly=true)
 	public void query(Query<Teacher> query){
 		this.teacherRepository.query(query);
+	}
+	
+	@Override
+	@Transactional
+	public void create(Teacher teacher) {
+		encryptPassword(teacher);
+		super.create(teacher);
+		
+	}
+	
+	private void encryptPassword(Teacher teacher) {
+		String password = teacher.getTeacherPassord();
+		if(password == null)
+			password = teacher.getTeacherAccount();
+		String newPassword =  passwordEncryptor.encrypt(password, teacher.getTeacherAccount());
+		teacher.setTeacherPassord(newPassword);
 	}
 	
 	@Override
@@ -70,5 +87,7 @@ public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
 	@Override
 	public void resetPassword(Teacher teacher) {
 		teacher.resetPassord();
+		encryptPassword(teacher);
+		this.teacherRepository.update(teacher);
 	}
 }
