@@ -420,7 +420,7 @@
 				//显示宽高提示框
 				selection.change_size_tip();
 				//显示位置信息
-				selection.show_msg(selection.currentElement);
+				selection.show_msg();
 				//设置中间的4个助托点居中
 				resize.position_middle_point();
 			};

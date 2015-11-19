@@ -39,7 +39,10 @@
 				$(element.view).remove();
 				//隐藏无效dom的宽高tip
 				$(selection.target).find('.size').css({display : 'none'});
-				
+				//如果当前数据信息提示框显示，就隐藏,元素被删除了，显示数据就没有意义了
+				$(selection.target).find('.control-content').css({
+					display: 'none'
+				});
 				//恢复鼠标形状
 				$(selection.target).css({
 					cursor : 'default'
@@ -63,16 +66,7 @@
 							//保存上一个元素的数据
 							element.save_preview_element_data();
 							// 选中当前元素，其余元素都取消选中,隐藏助托点
-							selection.select_element(element);
-							//显示当前元素的数据
-							element.show_data();
-							
-							// 显示选区当前宽高tip
-							selection.show_size();
-							// 改变宽高tip中的值
-							selection.change_size_tip();
-							// 显示位置信息
-							selection.show_msg(selection.currentElement);
+							selection.select_element(element, e);
 							selection.showSize = true;
 						}
 					},
@@ -86,7 +80,7 @@
 						// 改变宽高tip中的值
 						selection.change_size_tip();
 						// 显示位置信息
-						selection.show_msg(selection.currentElement);
+						selection.show_msg();
 					},
 					onStopDrag: function() {
 						selection.showSize = false;
@@ -215,10 +209,16 @@
 			
 			// 显示当前选中元素的数据值
 			element.show_data = function(createSubData) {
+				//这里经过select_element方法处理后，会存在取消选中元素的情况，需要判断
+				if(!selection.currentElement) {
+					return;
+				}
 				if(createSubData) {
 					var subData = create_sub_question_data();
 					element.data.itemAreas.push(subData);
 				}
+				//调整题目信息框位置
+				element.position_question_panel();
 				//显示对象中的数据到信息框上
 				element.show_with_element_data(createSubData);
 			};
@@ -281,6 +281,9 @@
 			
 			//重新调整题目信息框位置
 			element.position_question_panel = function(flag) {
+				if(!selection.currentElement) {
+					return;
+				}
 				var target = $('.control-content');
 				var display = $(target).css('display');
 				// 获取当前元素的相对位置

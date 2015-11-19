@@ -204,8 +204,6 @@
 							}
 							selection.currentElement.del();
 						}else {
-							//创建成功，选中当前元素
-							selection.select_element(selection.currentElement);
 							//这里需要判断是否恢复鼠标形状,排除拖拽
 							var cursor = $(target).css('cursor');
 							if(!selection.intersect(currentX, currentY) || cursor == 'crosshair') {
@@ -219,8 +217,9 @@
 									selection.currentElement.make_element_editable();
 								}
 							}
-							//显示当前设置的元素的数据
-							selection.currentElement.show_data();
+							//创建成功，选中当前元素
+							selection.select_element(selection.currentElement, e);
+							selection.show_data();
 						}
 						
 						//清理当前类的mousemove mouseup事件
@@ -230,21 +229,13 @@
 				});
 			};
 			
-			//将当前选中元素加入到选中列表中
-			selection.addToSelectedList = function(element, e) {
-				//如果点击的是
-				
-				
-				if(selection.selectedList.indexOf(element) == -1) {
-					selection.selectedList.push(element);
+			//显示当前元素的题目信息
+			selection.show_data = function() {
+				if(selection.currentElement) {
+					//显示当前设置的元素的数据
+					selection.currentElement.show_data();
 				}
 			};
-
-			//从选中列表中移除元素
-			selection.removeFromSelectedList = function(element) {
-				selection.selectedList.remove(element);
-				element.del();
-			}
 			
 			// 元素数据面板可拖动
 			selection.make_element_data_panel_draggable = function() {
@@ -437,11 +428,82 @@
 			};
 			
 			//选中某一个元素，取消其他元素的选中效果(取消助托点)
-			selection.select_element = function(element) {
-				selection.show_resize_points(element);
+			selection.select_element = function(element, e) {
+				var isCtrl = e.ctrlKey;
+				//是单选
+				if(!isCtrl) {
+					//清空选中列表
+					selection.selectedList.length = 0;
+					//隐藏其他被选中元素的八个助托点，表示取消其他元素的选中状态
+					selection.hideSiblingsResizePoints(element.view);
+					//将当前选中元素添加到选中列表中
+					selection.selectedList.push(element);
+					//显示当前元素的8个助托点
+					selection.show_resize_points(element);
+				} else {
+					selection.hideQuestionInfo();
+					//多选有可能是取消选择的情况
+					if(selection.isElementSelected(element)) {//选中则取消选中
+						selection.unSelectElement(element);
+					}else {
+						//将当前选中元素添加到选中列表中
+						selection.selectedList.push(element);
+						//显示当前元素的8个助托点
+						selection.show_resize_points(element);
+					}
+				}
 				//鼠标停止改变元素位置的时候显示出最后的位置坐标
-				selection.show_msg(element);
+				selection.show_msg();
+				selection.change_size_tip();
 				selection.show_size();
+			};
+			
+			//取消某元素的选中
+			selection.unSelectElement = function(element) {
+				//1.隐藏当前元素的八个助托点
+				selection.hideResizePoints(element.view);
+				//2.从选中列表中移除该元素
+				selection.selectedList.remove(element);
+			};
+			
+			//取消显示题目信息框
+			selection.hideQuestionInfo = function() {
+				selection.currentElement = null;
+				//隐藏无效dom的宽高tip
+				$(selection.target).find('.size').css({display : 'none'});
+				//隐藏题目信息框
+				$(selection.target).find('.control-content').css({
+					display: 'none'
+				});
+			};
+			
+			//判断元素当前是否是选中状态，根据元素的8个助托点来判断，如果显示，则为选中
+			selection.isElementSelected = function(element) {
+				var isSelected = false;
+				var display = $(element.view).find('.point').css('display');
+				if(display == 'block') {
+					isSelected = true;
+				}
+				
+				return isSelected;
+			};
+			
+			//取消其他被选中的元素所显示的8个助托点
+			selection.hideSiblingsResizePoints = function(view) {
+				var els = $(view).siblings('.element');
+				$(els).each(function() {
+					selection.hideResizePoints(this);
+				});
+			};
+			
+			//隐藏当前元素的8个助托点，取消对当前元素的选中
+			selection.hideResizePoints = function(view) {
+				var ps = $(view).find('.point');
+				$(ps).each(function() {
+					$(this).css({
+						display : 'none'
+					});
+				});
 			};
 			
 			//显示八个助托点，方便改变元素大小
@@ -453,19 +515,13 @@
 						display : 'inline-block'
 					});
 				});
-				
-				var els = $(element.view).siblings('.element');
-				$(els).each(function() {
-					var ps = $(this).find('.point');
-					$(ps).each(function() {
-						$(this).css({
-							display : 'none'
-						});
-					});
-				});
 			}
 			
-			selection.show_msg = function(element) {
+			selection.show_msg = function() {
+				var element = selection.currentElement;
+				if(!element) {
+					return;
+				}
 				var view = element.view;
 				var x = view.offsetLeft;
 				var y = view.offsetTop;
@@ -505,10 +561,9 @@
 			
 			//显示提示框位置
 			selection.show_size = function() {
-				if(!selection.showSize) {
+				if(!selection.showSize || !selection.currentElement) {
 					return;
 				}
-				
 				var x = selection.getOffsetLeft(selection.currentElement.view) - selection.getOffsetLeft(selection.target);
 				var y = selection.getOffsetTop(selection.currentElement.view) - selection.getOffsetTop(selection.target)-20;//20为提示框高度
 				var display = $('.size').css('display');
@@ -605,7 +660,7 @@
 			
 			//改变宽高提示框的值
 			selection.change_size_tip = function() {
-				if(!selection.showSize) {
+				if(!selection.showSize || !selection.currentElement) {
 					return;
 				}
 				
@@ -818,11 +873,6 @@
 					if(keyCode == 46) {
 						if(selection.currentElement) {
 							selection.currentElement.del();
-							
-							//如果当前数据信息提示框显示，就隐藏,元素被删除了，显示数据就没有意义了
-							$(selection.target).find('.control-content').css({
-								display: 'none'
-							});
 						}
 					}
 				});
