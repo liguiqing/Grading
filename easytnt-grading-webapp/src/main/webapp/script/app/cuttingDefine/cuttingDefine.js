@@ -13,9 +13,7 @@
 				kk();
 				//切割入口
 				entrance();
-				//初始化底部工具栏按钮状态
-				initBtnStatus();
-				initEvent();
+				
 			};
 			
 			function entrance() {
@@ -30,6 +28,10 @@
 					}else {//编辑操作
 						doEdit();
 					}
+					
+					//初始化底部工具栏按钮状态
+					initBottomBarBtnStatus();
+					initBottomBarBtnEvent();
 				});
 			}
 			
@@ -41,11 +43,12 @@
 			//进行编辑操作,默认恢复第一张答题卡数据
 			function doEdit() {
 				var selection = window.examObj.examPapers[0];
-				selection.recover();
+				//selection.recover();
+				recoverSelection(selection);
 			}
 			
 			//初始化底部工具栏中按钮点击事件
-			function initEvent() {
+			function initBottomBarBtnEvent() {
 				//保存，将试卷数据转化为固定格式的json，并传递到后台
 				$('#saveBtn').click(function() {
 					stage_unsaved_element();
@@ -53,6 +56,15 @@
 					var data = buildData();
 					//提交保存
 					saveData(data);
+				});
+				
+				//对齐按钮，针对选中的元素，距离该元素位置范围[-15%, 15%]*width之间的元素自动按照该元素位置和宽度进行对齐操作
+				$('#alignBtn').click(function() {
+					//得到当前选中的元素
+					var element = window.selection.currentElement;
+					if(element) {
+						selection.alignElements(element);
+					}
 				});
 				
 				//答题卡页面点击事件
@@ -100,21 +112,24 @@
 									width: data.areaInPaper.width,
 									height: data.areaInPaper.height
 								},
-								items:[]
+								itemAreas:[]
 						};
 						CuttingsSolution.cutTo.push(cut);
 						
 						for(var k = 0; k < data.itemAreas.length; k++) {
 							var itemArea = data.itemAreas[k];
+							if(!$.isArray(itemArea.validValues)){
+								itemArea.validValues=itemArea.validValues.split(',');
+							}
 							var item = {
 										id: itemArea.id,
-										title: itemArea.title,
+										name: itemArea.title,
 										fullScore: itemArea.fullScore,
 										seriesScore: itemArea.seriesScore,
 										interval: itemArea.interval,
-										validValues: itemArea.validValues.split(',')
+										validValues: itemArea.validValues
 							};
-							cut.items.push(item);
+							cut.itemAreas.push(item);
 						}
 					}
 				}
@@ -148,7 +163,7 @@
 				            rotate: 0,
 				            url: "/grading/static/css/images/shijuan2.jpg"
 				        }]
-				    },
+				    }/*,
 				    cutTo: [{
 				        id: 0,
 				        name: 1,
@@ -159,13 +174,12 @@
 				            height: 102
 				        },
 				        itemAreas: [{
-				            item: {
-				                title: 2,
-				                fullScore: 5.0,
-				                validValues: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
-				                seriesScore: true,
-				                interval: 1.0
-				            }
+				        	id:1,
+				        	name: 2,
+			                fullScore: 6.0,
+			                validValues: [0.0, 2.0, 4.0, 6.0],
+			                seriesScore: true,
+			                interval: 2.0
 				        }],
 				        requiredPinci: 1,
 				        maxerror: 1.0,
@@ -182,19 +196,18 @@
 				            height: 145
 				        },
 				        itemAreas: [{
-				            item: {
-				                title: 2,
-				                fullScore: 6.0,
-				                validValues: [0.0, 2.0, 4.0, 6.0],
-				                seriesScore: true,
-				                interval: 2.0
-				            }
+				        	id:1,
+				        	name: 2,
+			                fullScore: 6.0,
+			                validValues: [0.0, 2.0, 4.0, 6.0],
+			                seriesScore: true,
+			                interval: 2.0
 				        }],
 				        requiredPinci: 1,
 				        maxerror: 1.0,
 				        answerCardImageIdx: 1,
 				        fullScore: 10.0
-				    }]
+				    }]*/
 				}
 				
 				
@@ -205,40 +218,44 @@
 				//答题卡数据
 				var selections = [];
 				var index = -1; 
-				for(var i = 0; i < data.cutTo.length; i++) {
-					var cut = data.cutTo[i];
-					index = cut.answerCardImageIdx;
-					//当前selection如果没有被创建，就新建一个
-					var selection = selections[index];
-					if(selection == undefined) {
-						selection = Selection.newInstance('.image-content');
-						window.selection = selection;
-						selection.answerCardImageIdx = index;
-						selections[index] = selection;
+				if(data.cutTo){
+					for(var i = 0; i < data.cutTo.length; i++) {
+						var cut = data.cutTo[i];
+						index = cut.answerCardImageIdx;
+						//当前selection如果没有被创建，就新建一个
+						var selection = selections[index];
+						if(selection == undefined) {
+							selection = Selection.newInstance('.image-content');
+							window.selection = selection;
+							selection.answerCardImageIdx = index;
+							selections[index] = selection;
+						}
+						
+						//创建题目信息
+						var element = Element.newInstance();
+						element.data = {
+								id: cut.id,
+								name: cut.name,// 题号
+								answerCardImageIdx :cut.answerCardImageIdx,//答题卡位置
+								requiredPinci: cut.requiredPinci,//评次
+								maxerror: cut.maxerror,//误差
+								fullScore: cut.fullScore,// 满分值
+								areaInPaper: cut.areaInPaper,
+								itemAreas:[]// 小题定义
+						};
+						
+						//创建小题信息
+						for(var j = 0; j < cut.itemAreas.length; j++) {
+							var itemArea = cut.itemAreas[j];
+							itemArea.seriesScore = itemArea.seriesScore ? 1 : 0;//转换为select的值
+							itemArea.title = itemArea.name;//转换为select的值
+							element.data.itemAreas.push(itemArea);
+						}
+						
+						selection.elements.push(element);
 					}
-					
-					//创建题目信息
-					var element = Element.newInstance();
-					element.data = {
-							id: cut.id,
-							name: cut.name,// 题号
-							answerCardImageIdx :cut.answerCardImageIdx,//答题卡位置
-							requiredPinci: cut.requiredPinci,//评次
-							maxerror: cut.maxerror,//误差
-							fullScore: cut.fullScore,// 满分值
-							areaInPaper: cut.areaInPaper,
-							itemAreas:[]// 小题定义
-					};
-					
-					//创建小题信息
-					for(var j = 0; j < cut.itemAreas.length; j++) {
-						var itemArea = cut.itemAreas[j].item;
-						itemArea.seriesScore = itemArea.seriesScore ? 1 : 0;//转换为select的值
-						element.data.itemAreas.push(itemArea);
-					}
-					
-					selection.elements.push(element);
 				}
+				
 				
 				examObj.examPapers = selections;
 				window.examObj = examObj;
@@ -301,7 +318,7 @@
 			}
 			
 			//根据examObj初始化底部上翻下翻按钮状态
-			function initBtnStatus() {
+			function initBottomBarBtnStatus() {
 				//根据examobj中的试卷答题卡数量创建对应每一张答题卡的超链接
 				var arr = window.examObj.answerCardCuttingTemplates;
 				if(arr.length == 0) {
@@ -314,7 +331,7 @@
 							currentCls = ' currentPage';
 						}
 						html += '<a class="examPage'+currentCls+'" href="javascript:void(0)">' 
-							+ (arr[i].index+1) + '</a>';
+							+ (Number(arr[i].index)+1) + '</a>';
 					}
 					$('.clearfix').append($(html));
 				}
