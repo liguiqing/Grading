@@ -40,10 +40,10 @@ public class ExamPaperController {
 	@Autowired(required = false)
 	private ExamPaperService examPaperService;
 	
-	@Value("img\\sample")
+	@Value("${easytnt.exampaper.card.sample.path}")
 	private String imgDir;
 	
-	@RequestMapping(value = "/onCreateExamPaper",method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView onCreateExamPaper(@RequestBody ExamPaper examPaper)
 					throws Exception {
 		logger.debug("URL /examPaper Method POST ", examPaper);
