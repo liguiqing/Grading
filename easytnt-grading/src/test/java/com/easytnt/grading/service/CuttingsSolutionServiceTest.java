@@ -39,17 +39,15 @@ public class CuttingsSolutionServiceTest {
 
 	@Test
 	public void saveCuttingArea() throws Exception {
-
 		ExamPaper paper = new ExamPaper();
 		paper.setPaperId(3L);
+		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		cuttingsSolution.setDesignFor(paper);
+		cuttingsSolution.newCuttingsDefines(createCuttingsArea(null, "name1", 1));
+		service.saveCuttingsSolution(cuttingsSolution);
+	}
 
-		PositionOfItemInArea item = new PositionOfItemInArea();
-		item.setName("name1");
-		item.setFullScore(10f);
-		item.setValidValues(new Float[] { 0f, 5f, 10f });
-		item.setSeriesScore(false);
-		item.setInterval(2f);
-
+	private CuttingsArea createCuttingsArea(Long id, String name, int idx) {
 		Area area = new Area();
 		area.setTop(10);
 		area.setLeft(10);
@@ -57,17 +55,29 @@ public class CuttingsSolutionServiceTest {
 		area.setHeight(10);
 
 		CuttingsArea cuttingArea = new CuttingsArea();
+		if (id != null) {
+			cuttingArea.setId(id);
+		}
 		cuttingArea.setAreaInPaper(area);
-		cuttingArea.setName("abc");
+		cuttingArea.setName(name);
 		cuttingArea.setFullScore(10f);
-		cuttingArea.addItemDefinition(item);
 		cuttingArea.setMaxerror(3f);
 
-		CuttingsSolution cuttingsSolution = new CuttingsSolution();
-		cuttingsSolution.setDesignFor(paper);
-		cuttingsSolution.newCuttingsDefines(cuttingArea);
+		cuttingArea.addItemDefinition(createPositionOfItemInArea(name + "-" + idx));
+		cuttingArea.addItemDefinition(createPositionOfItemInArea(name + "-1" + (idx + 1)));
+		cuttingArea.addItemDefinition(createPositionOfItemInArea(name + "-1" + (idx + 2)));
 
-		service.saveCuttingsSolution(cuttingsSolution);
+		return cuttingArea;
+	}
+
+	private PositionOfItemInArea createPositionOfItemInArea(String name) {
+		PositionOfItemInArea item = new PositionOfItemInArea();
+		item.setName(name);
+		item.setFullScore(10f);
+		item.setValidValues(new Float[] { 0f, 5f, 10f });
+		item.setSeriesScore(false);
+		item.setInterval(2f);
+		return item;
 	}
 
 	@Test
