@@ -20,4 +20,6 @@ import com.easytnt.grading.domain.cuttings.CuttingsArea;
 public interface CuttingsAreaRepository extends Repository<CuttingsArea, Long> {
 
 	public List<CuttingsArea> listCuttingsAreaOfInPaper(Long paperId);
+
+	public void deletePositionOfItemInAreas();
 }

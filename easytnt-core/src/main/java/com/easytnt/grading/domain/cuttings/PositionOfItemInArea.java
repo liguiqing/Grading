@@ -13,6 +13,7 @@ import com.easytnt.commons.entity.share.ValueObject;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * <pre>
@@ -37,6 +38,7 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea> {
 
 	private Float interval = 0f;// 如果连续给分的给分区间
 
+	@JsonIgnore
 	private CuttingsArea cuttingsArea;
 
 	/************* 暂时不要 **********/
@@ -59,9 +61,10 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea> {
 		this.validValues = validValues;
 	}
 
-	public boolean isEffectiveScore(Float score) {
-		return score.compareTo(this.getMinPoint()) >= 0 && score.compareTo(getMaxPoint()) <= 0;
-	}
+	// public boolean isEffectiveScore(Float score) {
+	// return score.compareTo(this.getMinPoint()) >= 0 &&
+	// score.compareTo(getMaxPoint()) <= 0;
+	// }
 
 	public void genValidValues(String validscoredot) {
 		String[] values = validscoredot.split(",");
@@ -91,13 +94,13 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea> {
 		return null;
 	}
 
-	public Float getMinPoint() {
-		return this.item.getMinPoint();
-	}
-
-	public Float getMaxPoint() {
-		return this.item.getMaxPoint();
-	}
+	// public Float getMinPoint() {
+	// return this.item.getMinPoint();
+	// }
+	//
+	// public Float getMaxPoint() {
+	// return this.item.getMaxPoint();
+	// }
 
 	@Override
 	public int hashCode() {

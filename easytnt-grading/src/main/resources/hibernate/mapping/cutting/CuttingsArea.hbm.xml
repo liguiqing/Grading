@@ -42,7 +42,7 @@
 		</many-to-one>
 
 		<bag name="itemAreas" table="papersubiteminfo" cascade="all-delete-orphan"
-			 fetch="join" lazy="false">
+			 fetch="join" lazy="false" inverse="false">
 			<key column="itemid" />
 			<one-to-many
 				class="com.easytnt.grading.domain.cuttings.PositionOfItemInArea" />

@@ -169,11 +169,11 @@
 				/exp/** = anon
 				/sso/login = cas
 				/login = kaptchar,authc
-				/** = sessionTimeout,user
+				/** = anon
 			</value>
 		</property>
 	</bean>
-
+<!-- /** = sessionTimeout,user -->
 	<!-- Shiro生命周期处理器 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 	<bean

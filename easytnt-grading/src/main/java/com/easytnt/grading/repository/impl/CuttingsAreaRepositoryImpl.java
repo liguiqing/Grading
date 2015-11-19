@@ -36,4 +36,11 @@ public class CuttingsAreaRepositoryImpl extends HibernateRepository<CuttingsArea
 		return cuttingsAreas;
 	}
 
+	@Override
+	public void deletePositionOfItemInAreas() {
+		String hql = "delete from PositionOfItemInArea where cuttingsArea is null";
+		Query q = this.getCurrentSession().createQuery(hql);
+		q.executeUpdate();
+	}
+
 }

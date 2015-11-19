@@ -21,8 +21,9 @@
 				var paperId=$('#paperId').val();
 				var url='/cuttingDefine/get/'+examId+'/'+paperId;
 				ajaxWrapper.getJson(url,{},{},function(data){
+					console.log(data)
 					//准备试卷信息
-					recoverPaper();
+					recoverPaper(data.cuttingsSolution);
 					if(window.examObj.examPapers.length == 0) {//保存操作
 						doCreate();
 					}else {//编辑操作
@@ -77,11 +78,25 @@
 			
 			//保存题目数据
 			function saveData(data) {
-				var url = "/cuttingDefine/savetest";
+				var url = "/cuttingDefine/save";
 				console.info(data);
 				ajaxWrapper.postJson(url,data,'',function(data) {
-					alert(data);
+					dialog.fadedialog(getOpts("保存成功!"));
 				});
+			}
+			
+			function getOpts(message){
+				var DialogSize = {SM:'sm',MD:'md',LG:'lg'};
+				var opts = {
+						size : DialogSize.SM,
+						header : {
+							show : true,
+							text : "操作提示"
+						},
+						iconInfo:'error',
+						tipText :message
+					};
+				return opts;
 			}
 			
 			//构建提交到后台的json数据对象
@@ -100,7 +115,7 @@
 						var element = selection.elements[j];
 						var data = element.data;
 						var cut = {
-								id: data.id,
+								//id: data.id,
 								name: data.name,
 								answerCardImageIdx: data.answerCardImageIdx,
 								requiredPinci: data.requiredPinci,
@@ -114,6 +129,9 @@
 								},
 								itemAreas:[]
 						};
+						if(data.id != 0){
+							cut.id=data.id;
+						}
 						CuttingsSolution.cutTo.push(cut);
 						
 						for(var k = 0; k < data.itemAreas.length; k++) {
@@ -122,7 +140,7 @@
 								itemArea.validValues=itemArea.validValues.split(',');
 							}
 							var item = {
-										id: itemArea.id,
+										//id: itemArea.id,
 										name: itemArea.title,
 										fullScore: itemArea.fullScore,
 										seriesScore: itemArea.seriesScore,
@@ -148,7 +166,17 @@
 			}
 			
 			//恢复整个试卷内容
-			function recoverPaper() {
+			function recoverPaper(data) {
+				if(data.designFor.answerCardCuttingTemplates){
+					var size =data.designFor.answerCardCuttingTemplates.length;
+					for(var i=0;i<size;i++){
+						var url= data.designFor.answerCardCuttingTemplates[i].url;
+						data.designFor.answerCardCuttingTemplates[i].url=window.app.rootPath+url;
+					}
+					
+				}
+				
+				/*
 				var data = {
 				    designFor: {
 				        paperId: 1,
@@ -207,8 +235,8 @@
 				        maxerror: 1.0,
 				        answerCardImageIdx: 1,
 				        fullScore: 10.0
-				    }]*/
-				}
+				    }]
+				}*/
 				
 				
 				//试卷数据

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingsSolution;
 import com.easytnt.grading.service.CuttingTestpaperService;
+import com.easytnt.grading.service.CuttingsSolutionService;
 import com.google.gson.Gson;
 
 /**
@@ -28,6 +29,8 @@ import com.google.gson.Gson;
 public class CuttingDefineController {
 	@Autowired(required = false)
 	private CuttingTestpaperService cuttingTestpaperService;
+	@Autowired(required = false)
+	private CuttingsSolutionService cuttingsSolutionService;
 
 	@RequestMapping(value = "/{examId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView index(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
@@ -38,12 +41,13 @@ public class CuttingDefineController {
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ModelAndView save(@RequestBody CuttingsSolution cuttingsSolution) throws Exception {
+		cuttingsSolutionService.saveCuttingsSolution(cuttingsSolution);
 		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
 
 	@RequestMapping(value = "/get/{examId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView get(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
-		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
 		return ModelAndViewFactory.newModelAndViewFor("").with("cuttingsSolution", cuttingsSolution).build();
 	}
 

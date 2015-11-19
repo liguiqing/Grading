@@ -47,6 +47,16 @@ public class CuttingsSolutionServiceTest {
 		service.saveCuttingsSolution(cuttingsSolution);
 	}
 
+	@Test
+	public void updateCuttingArea() throws Exception {
+		ExamPaper paper = new ExamPaper();
+		paper.setPaperId(3L);
+		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		cuttingsSolution.setDesignFor(paper);
+		cuttingsSolution.newCuttingsDefines(createCuttingsArea(17L, "name2", 1));
+		service.saveCuttingsSolution(cuttingsSolution);
+	}
+
 	private CuttingsArea createCuttingsArea(Long id, String name, int idx) {
 		Area area = new Area();
 		area.setTop(10);

@@ -35,7 +35,7 @@
 		</component>
 
 		<many-to-one name="cuttingsArea" column="itemid"
-			class="com.easytnt.grading.domain.cuttings.CuttingsArea" cascade="none" />
+			class="com.easytnt.grading.domain.cuttings.CuttingsArea" cascade="all" />
 
 	</class>
 </hibernate-mapping>
