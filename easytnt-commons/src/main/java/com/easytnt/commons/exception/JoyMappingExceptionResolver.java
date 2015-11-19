@@ -35,6 +35,7 @@ public class JoyMappingExceptionResolver extends SimpleMappingExceptionResolver 
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 		logger.error("System Exception for ：{}", ex);
+		
 		String viewName = determineViewName(ex, request);
 		if (!(request.getHeader("accept").indexOf("application/json") > -1
 				|| (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").indexOf("XMLHttpRequest") > -1) || (request
@@ -60,12 +61,13 @@ public class JoyMappingExceptionResolver extends SimpleMappingExceptionResolver 
 
 				writer.write(json);
 				writer.flush();
+				
 			} catch (IOException e) {
 				logger.error(ThrowableParser.toString(e));
 			} finally {
 
 			}
+			return null;
 		}
-		return getModelAndView("/404", ex, request);
 	}
 }
