@@ -183,5 +183,5 @@
 	</bean>
 	
 	<bean class="com.easytnt.security.PasswordEncryptor"></bean>	
-	
+	<bean class="com.easytnt.security.ShiroService"></bean>
 </beans>

@@ -38,6 +38,7 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 
 	@Override
 	public CuttingsSolution getCuttingsSolutionWithPaperId(Long paperId) {
+		
 		List<CuttingsArea> cuttingsAreas = cuttingsAreaRepository.listCuttingsAreaOfInPaper(paperId);
 		return null;
 	}
