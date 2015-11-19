@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-11-3 13:21:23 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.easytnt.security.sso.SsoUserDetails" table="sso_user">
+        <id name="ssoUserId" type="java.lang.Long">
+            <column name="ssouser_id" />
+            <generator class="identity" />
+        </id>
+        <property name="ssoAccount" column="sso_account" type="java.lang.String"></property>
+        <property name="ssoPassword" column="sso_password" type="java.lang.String"></property>
+        <property name="enabled" column="enabled" type="java.lang.Integer"></property>
+    </class>
+</hibernate-mapping>

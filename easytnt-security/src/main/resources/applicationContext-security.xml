@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:aop="http://www.springframework.org/schema/aop"
@@ -38,7 +38,7 @@
 		<property name="authorizationCacheName" value="authorizationCache" />
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
 		<!-- 请修改sql属性值 -->
-		<!-- <property name="Sql" value="select name as user_name,code as user_pwd,1 as enabled from survey_users where name=?"/>-->
+		<property name="Sql" value="SELECT 	sso_account AS user_name,sso_password AS user_pwd,enabled  FROM sso_user WHERE sso_account=?"/>
 	</bean>
 	
 	<!-- cas 登录实现 -->
@@ -110,9 +110,9 @@
 		<!-- <property name="rememberMeManager" ref="rememberMeManager"/> -->
 		<property name="authenticator" ref="authenticator"></property>
 		<property name="realms">
-			<list>
-			    <ref bean="casRealm" />
+			<list>			    
 				<ref bean="dbRealm" />
+				<ref bean="casRealm" />
 			</list>
 		</property>
 	</bean>
@@ -164,16 +164,22 @@
 		</property>
 		<property name="filterChainDefinitions">
 			<value>
-				/css/** = anon
-				/script/** = anon
+				/static/css/** = anon
+				/static/script/** = anon
 				/exp/** = anon
+				/examPaper/** = anon
+				/config/** = anon
+				/subject/** = anon
+				/subjectExam/** = anon
+				/teacher/** = anon
+				/monitor/** = anon
 				/sso/login = cas
 				/login = kaptchar,authc
-				/** = anon
+				/** = sessionTimeout,user
 			</value>
 		</property>
 	</bean>
-<!-- /** = sessionTimeout,user -->
+
 	<!-- Shiro生命周期处理器 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 	<bean

@@ -98,7 +98,7 @@
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="org.apache.shiro" additivity="false">
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="com.easytnt">
@@ -109,5 +109,4 @@
 		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>
-
 </configuration>

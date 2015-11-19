@@ -30,12 +30,26 @@ public class LoginController {
 	public ModelAndView onLogin() throws Exception {
 		logger.debug("URL /login Method Get");
 
-		return ModelAndViewFactory.newModelAndViewFor("/").build();
+		return ModelAndViewFactory.newModelAndViewFor("/login").build();
 	}
 	
-	@RequestMapping(value = "/loginSuccess",method=RequestMethod.GET)
+	@RequestMapping(value = "/login/success",method=RequestMethod.GET)
 	public ModelAndView onLoginSuccess() throws Exception {
-		logger.debug("URL /loginSuccess Method Get");
+		logger.debug("URL /login/success Method Get");
+
+		return ModelAndViewFactory.newModelAndViewFor("/config?page=subject").build();
+	}
+	
+	@RequestMapping(value = "/locked",method=RequestMethod.PUT)
+	public ModelAndView onLocked() throws Exception {
+		logger.debug("URL /locked Method Get");
+
+		return ModelAndViewFactory.newModelAndViewFor("/config?page=subject").build();
+	}
+	
+	@RequestMapping(value = "/logout",method=RequestMethod.PUT)
+	public ModelAndView onLogout() throws Exception {
+		logger.debug("URL /logout Method Get");
 
 		return ModelAndViewFactory.newModelAndViewFor("/config?page=subject").build();
 	}
