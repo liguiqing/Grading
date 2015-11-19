@@ -97,6 +97,7 @@
 				<value>hibernate/mapping/room/District.hbm.xml</value>
 				<value>hibernate/mapping/cutting/CuttingsArea.hbm.xml</value>
 				<value>hibernate/mapping/cutting/PositionOfItemInArea.hbm.xml</value>
+				<value>hibernate/mapping/user/SsoUser.hbm.xml</value>
 			</list>
 		</property>
 	</bean>

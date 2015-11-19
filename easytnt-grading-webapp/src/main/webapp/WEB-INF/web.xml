@@ -158,7 +158,7 @@
 	</servlet-mapping>    
 	-->
 	<welcome-file-list>
- 	    <welcome-file>/index</welcome-file>
+ 	    <welcome-file>/login</welcome-file>
 	</welcome-file-list>
 	<error-page>
 		<error-code>401</error-code>
