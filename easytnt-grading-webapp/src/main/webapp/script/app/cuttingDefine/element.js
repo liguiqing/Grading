@@ -15,6 +15,19 @@
 				
 			};
 			
+			//根据x轴坐标和宽度进行对齐操作
+			element.align = function(left, width) {
+				//设置数据域中的值
+				element.data.areaInPaper.left = left;
+				element.data.areaInPaper.width = width;
+				
+				//修改页面上的位置
+				$(element.view).css({
+					left: left + 'px',
+					width: width + 'px'
+				});
+			}
+			
 			//选区删除
 			//1.删除选区列表中对应的当前元素
 			//2.从试卷面板中移除已经画出的选区
@@ -31,6 +44,8 @@
 				$(selection.target).css({
 					cursor : 'default'
 				});
+				
+				selection.currentElement = null;
 			}
 
 			// 让元素可以拖动
@@ -45,12 +60,20 @@
 						if($(element.view).width() >= 1) {
 							// 改变当前处理元素值
 							selection.record_current_element(element);
-							// 选中当前元素，其余元素都取消选中,隐藏助托点
-							selection.select_element(element);
 							//保存上一个元素的数据
 							element.save_preview_element_data();
+							// 选中当前元素，其余元素都取消选中,隐藏助托点
+							selection.select_element(element);
 							//显示当前元素的数据
 							element.show_data();
+							
+							// 显示选区当前宽高tip
+							selection.show_size();
+							// 改变宽高tip中的值
+							selection.change_size_tip();
+							// 显示位置信息
+							selection.show_msg(selection.currentElement);
+							selection.showSize = true;
 						}
 					},
 					onDrag : function(e) {
@@ -64,6 +87,9 @@
 						selection.change_size_tip();
 						// 显示位置信息
 						selection.show_msg(selection.currentElement);
+					},
+					onStopDrag: function() {
+						selection.showSize = false;
 					}
 				});
 			};
@@ -188,7 +214,6 @@
 			};
 			
 			// 显示当前选中元素的数据值
-			// 这里涉及到将前一个选中元素的数据保存到其数据域中
 			element.show_data = function(createSubData) {
 				if(createSubData) {
 					var subData = create_sub_question_data();

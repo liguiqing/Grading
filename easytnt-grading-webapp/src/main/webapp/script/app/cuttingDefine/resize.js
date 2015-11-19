@@ -10,15 +10,14 @@
 			resize.left = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.showSize = true;
 					selection.prevent_event(e);
-					selection.record_current_element(resize.target);
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
 					var y = position.y;
 					$(document).mousemove(function(e) {
 						selection.prevent_event(e);
-						
 						if(isResize) {//开始拖动
 							var position = selection.get_current_position(e);
 							var currentX = position.x;
@@ -44,6 +43,7 @@
 					});
 
 					$(document).mouseup(function() {
+						selection.showSize = false;
 						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
@@ -57,8 +57,8 @@
 			resize.right = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.showSize = true;
 					selection.prevent_event(e);
-					selection.record_current_element(resize.target);
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
@@ -86,6 +86,7 @@
 					});
 
 					$(document).mouseup(function() {
+						selection.showSize = false;
 						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
@@ -99,8 +100,8 @@
 			resize.up = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.showSize = true;
 					selection.prevent_event(e);
-					selection.record_current_element(resize.target);
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
@@ -133,6 +134,7 @@
 					});
 
 					$(document).mouseup(function() {
+						selection.showSize = false;
 						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
@@ -146,8 +148,8 @@
 			resize.down = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.showSize = true;
 					selection.prevent_event(e);
-					selection.record_current_element(resize.target);
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
@@ -175,6 +177,7 @@
 					});
 
 					$(document).mouseup(function() {
+						selection.showSize = false;
 						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
@@ -188,8 +191,8 @@
 			resize.leftUp = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.showSize = true;
 					selection.prevent_event(e);
-					selection.record_current_element(resize.target);
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
@@ -241,6 +244,7 @@
 					});
 
 					$(document).mouseup(function() {
+						selection.showSize = false;
 						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
@@ -254,8 +258,8 @@
 			resize.rightUp = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.showSize = true;
 					selection.prevent_event(e);
-					selection.record_current_element(resize.target);
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
@@ -296,6 +300,7 @@
 					});
 
 					$(document).mouseup(function() {
+						selection.showSize = false;
 						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
@@ -309,8 +314,8 @@
 			resize.leftDown = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.showSize = true;
 					selection.prevent_event(e);
-					selection.record_current_element(resize.target);
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
@@ -353,6 +358,7 @@
 					});
 
 					$(document).mouseup(function() {
+						selection.showSize = false;
 						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');
@@ -366,8 +372,8 @@
 			resize.rightDown = function(ui) {
 				var isResize = false;
 				$(ui).mousedown(function(e) {
+					selection.showSize = true;
 					selection.prevent_event(e);
-					selection.record_current_element(resize.target);
 					isResize = true;
 					var position = selection.get_current_position(e);
 					var x = position.x;
@@ -396,6 +402,7 @@
 					});
 
 					$(document).mouseup(function() {
+						selection.showSize = false;
 						selection.prevent_event(e);
 						isResize = false;
 						$(document).unbind('mousemove');

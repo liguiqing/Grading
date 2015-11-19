@@ -12,6 +12,7 @@ import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingsSolution;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.repository.CuttingsAreaRepository;
+import com.easytnt.grading.repository.ExamPaperRepository;
 import com.easytnt.grading.service.CuttingsSolutionService;
 
 /**
@@ -25,6 +26,8 @@ import com.easytnt.grading.service.CuttingsSolutionService;
 public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	@Autowired(required = false)
 	private CuttingsAreaRepository cuttingsAreaRepository;
+	@Autowired(required = false)
+	private ExamPaperRepository examPaperRepository;
 
 	@Override
 	public void saveCuttingsSolution(CuttingsSolution cuttingsSolution) {
@@ -38,8 +41,12 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 
 	@Override
 	public CuttingsSolution getCuttingsSolutionWithPaperId(Long paperId) {
+		ExamPaper paper = examPaperRepository.get(paperId);
 		List<CuttingsArea> cuttingsAreas = cuttingsAreaRepository.listCuttingsAreaOfInPaper(paperId);
-		return null;
+		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		cuttingsSolution.setDesignFor(paper);
+		cuttingsSolution.setCutTo(cuttingsAreas);
+		return cuttingsSolution;
 	}
 
 }

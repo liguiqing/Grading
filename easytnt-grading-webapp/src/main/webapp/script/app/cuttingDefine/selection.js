@@ -53,6 +53,56 @@
 				}
 			}
 			
+			//针对选中的元素，距离该元素位置范围[-15%, 15%]*width之间的元素自动按照该元素位置和宽度进行对齐操作
+			selection.alignElements = function(element) {
+				var position = selection.getPosition(element);
+				var range = selection.getRange(position);
+				
+				var siblingElement = null;
+				var elementPosition = {};
+				for(var i = 0; i < selection.elements.length; i++) {
+					siblingElement = selection.elements[i];
+					if(element != siblingElement) {
+						elementPosition = selection.getPosition(siblingElement);
+						if(elementPosition.left >= range.min 
+								&& elementPosition.left <= range.max) {
+							siblingElement.align(position.left, position.width);
+						}
+					}
+					
+				}
+			};
+			
+			//根据位置信息算出需要对齐的范围 width*[-15%, 15%]
+			selection.getRange = function(position) {
+				var minRange = parseInt(position.left - (position.width * 0.15));
+				minRange = minRange < 0 ? 0 : minRange;
+				
+				var parentWidth = $(selection.target)[0].scrollWidth;
+				var maxRange = parseInt(position.left + (position.width * 0.15));
+				maxRange = maxRange > parentWidth ? parentWidth : maxRange;
+				
+				return {
+					min: minRange,
+					max: maxRange
+				}
+			}
+			
+			//获取指定元素针对当前试卷的相对位置和宽高
+			selection.getPosition = function(element) {
+				var left = element.view.offsetLeft;
+				var top = element.view.offsetTop;
+				var width = $(element.view).width();
+				var height = $(element.view).height();
+				
+				return {
+					left: left,
+					top: top,
+					width: width,
+					height: height
+				};
+			};
+			
 			selection.add_exist_element = function(element){
 				//清空原来元素中设定的八个助托点,重新设置元素可编辑
 				$(element.view).empty();
@@ -91,8 +141,13 @@
 						return;
 					}
 					
-					//添加一个元素到内容中
+					//添加一个新元素到内容中
 					selection.add_element();
+					
+					//在进行创建元素时，需要对前一个元素数据进行保存
+					if(selection.previousElement) {
+						selection.previousElement.save_preview_element_data();
+					}
 					
 					//改变鼠标指针形状
 					$(this).css({
@@ -102,6 +157,7 @@
 					$(document).mousemove(function(e) {
 						//通过showSize控制鼠标事件是否对页面影响，鼠标按下时开启鼠标事件、鼠标弹起时取消鼠标事件
 						if(!selection.showSize) {
+							$(document).unbind('mousemove');
 							return;
 						}
 						
@@ -114,6 +170,7 @@
 						var cursor = $(selection.target).css('cursor');
 						//元素在创建过程中，完成元素创建之后才可以再设置元素大小
 						if(selection.intersect(currentX, currentY) && cursor != 'crosshair') {
+							$(document).unbind('mousemove');
 							return;
 						}
 						
@@ -134,38 +191,42 @@
 						var currentX = position.x;///相对于屏幕的位置，包括滚动条
 						var currentY = position.y;
 						
-						// 如果用户直接点击鼠标没有拖动，在鼠标按下时就创建了该元素
 						// 在鼠标移动过程中才对该元素宽高进行控制，所以，需要将该无效元素去掉
 						if($(selection.currentElement.view).width() < 50) {
-							if(selection.currentElement) {
-								selection.currentElement.save_preview_element_data();
-								//隐藏题目信息框
-								$('.control-content').css({
+							//用户选择了其他元素就需要将上一个选中的元素数据进行保存
+							selection.currentElement.save_preview_element_data();
+							//隐藏题目信息框
+							$('.control-content').css({
+								display: 'none'
+							});
+							
+							//隐藏上一个被选中的元素的助托点
+							if(selection.previousElement) {
+								$(selection.previousElement.view).find('.point').css({
 									display: 'none'
 								});
-								selection.currentElement.del();
 							}
-							return;
+							selection.currentElement.del();
+						}else {
+							//这里需要判断是否恢复鼠标形状,排除拖拽
+							var cursor = $(target).css('cursor');
+							if(!selection.intersect(currentX, currentY) || cursor == 'crosshair') {
+								//这里需要判断是否是拖动时点击触发
+								if(cursor != 'move') {//新建元素
+									//恢复鼠标形状
+									$(target).css({
+										cursor : 'default'
+									});
+									//为当前元素添加事件
+									selection.currentElement.make_element_editable();
+								}
+							}
+							//显示当前设置的元素的数据
+							selection.currentElement.show_data();
+							//保存上一次操作的节点数据
+							//selection.currentElement.save_preview_element_data();
+							
 						}
-						
-						//这里需要判断是否恢复鼠标形状，如果是拖拽触发就不恢复
-						var cursor = $(target).css('cursor');
-						if(selection.intersect(currentX, currentY) && cursor != 'crosshair') {
-							return;
-						}
-						//这里需要判断是否是拖动时点击触发
-						if(cursor != 'move') {//新建元素
-							//恢复鼠标形状
-							$(target).css({
-								cursor : 'default'
-							});
-							//为当前元素添加事件
-							selection.currentElement.make_element_editable();
-						}
-						
-						//显示当前设置的元素的数据
-						selection.currentElement.show_data();
-						
 						
 						//清理当前类的mousemove mouseup事件
 						$(document).unbind('mousemove');
@@ -366,8 +427,9 @@
 			
 			//选中某一个元素，取消其他元素的选中效果(取消助托点)
 			selection.select_element = function(element) {
-				selection.show_resize_points(selection.currentElement);
-				selection.show_msg(selection.currentElement);
+				selection.show_resize_points(element);
+				//鼠标停止改变元素位置的时候显示出最后的位置坐标
+				selection.show_msg(element);
 				selection.show_size();
 			};
 			
@@ -399,27 +461,23 @@
 				var width = $(view).width();
 				var height = $(view).height();
 				
-				element.data.x = Math.round(x);
-				element.data.y = Math.round(y);
-				element.data.width = Math.round(width);
-				element.data.height = Math.round(height);
+				element.data.x = parseInt(x);
+				element.data.y = parseInt(y);
+				element.data.width = parseInt(width);
+				element.data.height = parseInt(height);
 				
-				$('#left').text(x);
-				$('#top').text(y);
-				$('#width').text(width);
-				$('#height').text(height);
+				$('#left').text(element.data.x);
+				$('#top').text(element.data.y);
+				$('#width').text(element.data.width);
+				$('#height').text(element.data.height);
 				
 			};
 			
 			//添加一个元素到内容区中
 			selection.add_element = function() {
-				
 				var element = Element.newInstance();
-				
 				$(selection.target).append($(element.view));
-				
 				selection.record_current_element(element);
-				
 				selection.elements.push(selection.currentElement);
 			}
 			
