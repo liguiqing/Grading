@@ -162,8 +162,7 @@
             
 			
 			myTable.on('click','.cuttingDefine',function(e){
-				var sd = $(this).parent().parent().find('td:first a[data-rr-name="subjectName"]');
-				var testId = sd.attr('data-rr-testId');
+				var testId = $(this).attr('data-paperid');
 				window.open(window.app.rootPath+'cuttingDefine/1/'+testId);
 			}).on('click','tbody #newSubject',function(e){
 				currentSubject.isNew = true;
