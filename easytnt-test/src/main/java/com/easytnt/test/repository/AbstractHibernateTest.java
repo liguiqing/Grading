@@ -56,11 +56,12 @@ public abstract class AbstractHibernateTest extends AbstractRepositoryTest {
 		Configuration conf = new Configuration();
 		conf.configure("/hibernate.cfg.xml");
 		
-		if(hbmFiles == null)
-			throw new IllegalArgumentException();
-		
-		for(String file : hbmFiles) {
-			conf.addResource(file);
+		//if(hbmFiles == null)
+		//	throw new IllegalArgumentException();
+		if(hbmFiles != null && hbmFiles.length >0) {		
+			for(String file : hbmFiles) {
+				conf.addResource(file);
+		    }
 		}
 		
 		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(conf.getProperties()).buildServiceRegistry();

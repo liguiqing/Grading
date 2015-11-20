@@ -4,6 +4,10 @@
  **/
 package com.easytnt.commons.io;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 
 /** 
  * <pre>
@@ -15,20 +19,44 @@ package com.easytnt.commons.io;
  **/
 public class DefaultListDataSourceMapper implements ListDataSourceMapper {
 
-	private String[] heads = new String[0];
+	private HashMap<String,ListDataSourceMapperBean> heads = new HashMap<>();
 	
-	public DefaultListDataSourceMapper(String[] heads) {
-		this.heads = heads;
+	public DefaultListDataSourceMapper() {
+
+	}
+	
+	public DefaultListDataSourceMapper(String... headStrs) {
+		if(headStrs != null) {
+			int index = 1;
+			for(String s:headStrs) {
+				addMapper(s,index++);
+			}
+		}
+	}
+	
+	public DefaultListDataSourceMapper(Map<String,String> headMap) {
+		if(headMap != null) {
+			int index = 1;
+			Iterator<String> keys = headMap.keySet().iterator();
+			while(keys.hasNext()) {
+				addMapper(keys.next(),index++);
+			}
+		}
+	}
+	
+	public void addMapper(String targetName,int seq) {
+		heads.put(targetName,new ListDataSourceMapperBean(targetName,seq));
+	}
+	
+	public void addMapper(ListDataSourceMapperBean mapperBean) {
+		heads.put(mapperBean.getTargetName(),mapperBean);
 	}
 	
 	@Override
-	public int getColIndex(String targetName) throws Exception {
-		for(int i = 0;i<heads.length;i++) {
-			String head = this.heads[i];
-			if(head.equalsIgnoreCase(targetName)) {
-				return i+1;
-			}
-		}
+	public int getColIndex(String targetName){
+		ListDataSourceMapperBean mapperBean = this.heads.get(targetName);
+		if(mapperBean != null)
+			return mapperBean.getSeq();
 		return -1;
 	}
 

@@ -18,6 +18,6 @@ public interface ListDataSourceMapper {
 	 * @return 大于０的整数，找不到，返回-1;
 	 * 
 	 */
-	public int getColIndex(String targetName) throws Exception; 
+	public int getColIndex(String targetName); 
 	 
 }

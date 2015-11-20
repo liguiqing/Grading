@@ -38,7 +38,7 @@ public class FileListDataSourceFactory implements ListDataSourceFactory {
 	private void parseBody() throws Exception {
 		if(this.reader == null) {
 			String fileName = this.dataSource.getName();
-			if(fileName.endsWith("xls")) {
+			if(fileName.endsWith("xls") || fileName.endsWith("xlsx") || fileName.endsWith(".csv")) {
 				this.reader = new ExcleSourceReader(this.dataSource);
 			}else if(fileName.endsWith("dbf")) {
 				this.reader = new DbfDataSourceReader(this.dataSource);

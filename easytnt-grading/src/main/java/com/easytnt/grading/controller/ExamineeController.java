@@ -131,7 +131,7 @@ public class ExamineeController {
 			}
 		}
 		
-		examineeService.imports(new DefaultListDataSourceMapper(mapper), reader);
+		examineeService.imports(new DefaultListDataSourceMapper(), reader);
 		//先放在Session里，以后在处理 TODO
 		request.getSession().removeAttribute(ListDataSourceReader.class.getName());
 		

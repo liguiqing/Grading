@@ -48,18 +48,18 @@ public class ExcleSourceReader implements ListDataSourceReader {
 	//打开数据源
 	@Override
 	public void open() throws Exception {
-		//判断能否正确解析文件，是否是想要的文件解析内容
-		if(!is.markSupported()){
-			is = new PushbackInputStream(is,8);
+		// 判断能否正确解析文件，是否是想要的文件解析内容
+		if (!is.markSupported()) {
+			is = new PushbackInputStream(is, 8);
 		}
-		if (POIFSFileSystem.hasPOIFSHeader(is)) {//2003  
-			workBook = new HSSFWorkbook(is);  
-       }else if (POIXMLDocument.hasOOXMLHeader(is)) {//2007  
-    	   //各种出错，所以手动进行装箱操作
-    	   XSSFWorkbook temp = new XSSFWorkbook(is);  
-    	   workBook = temp;
-    	   sheet = workBook.getSheetAt(0);
-       }
+		if (POIFSFileSystem.hasPOIFSHeader(is)) {// 2003
+			workBook = new HSSFWorkbook(is);
+		} else if (POIXMLDocument.hasOOXMLHeader(is)) {// 2007
+			// 各种出错，所以手动进行装箱操作
+			XSSFWorkbook temp = new XSSFWorkbook(is);
+			workBook = temp;
+		}
+		sheet = workBook.getSheetAt(0);
 	}
 
 	//获取某行数据
@@ -89,7 +89,8 @@ public class ExcleSourceReader implements ListDataSourceReader {
 		
 		//第一行是表头，所以应该从第二行开始读取
 		Row thisRow = sheet.getRow(row + 1);
-		if(thisRow.getPhysicalNumberOfCells() <= col){
+		//POI对excel列计数是从零开始的，所以col要-1
+		if(thisRow.getPhysicalNumberOfCells() < col - 1){
 			throw new IndexOutOfBoundsException();
 		}
 		Cell cell = thisRow.getCell(col);

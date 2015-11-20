@@ -56,6 +56,7 @@ CREATE TABLE `paper_card` (
   `card_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `paper_id` bigint(20) COMMENT '关联到paper_info' ,
   `card_seq` int(2) COMMENT '答题卡图片顺序' ,
+  `rotate` int(3) DEFAULT '0' COMMENT '答题卡图片旋转角度 0-360' ,
   `path` varchar(255) COMMENT '答题卡存储的相对路径',
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='试卷答题卡原图信息';
