@@ -23,34 +23,33 @@ import com.easytnt.test.repository.AbstractHibernateTest;
 
 
 public class ExamineeRepositoryHibernateImplTest extends AbstractHibernateTest{
-
 	
 	private ExamineeRepositoryHibernateImpl repository;
 	
+	private JdbcTemplate jdbcTemplate;
+	
 	@Before
 	public void before()throws Exception{
-		initHibernate(null);
-		repository =  new ExamineeRepositoryHibernateImpl();
-		repository.setSessionFactory01(sessionFactory);
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:applicationContext.xml","classpath*:applicationContext-ds.xml"});
+		SpringContextUtil sp = new SpringContextUtil();
+		sp.setApplicationContext(context);
+		jdbcTemplate = SpringContextUtil.getBean("jdbcTemplate");
+		jdbcTemplate.getDataSource().getConnection().setAutoCommit(true);
 	}
 	@Test
 	public void testSave()throws Exception{
 		ListDataMapperMocker mapper = new ListDataMapperMocker();
 		ListDataSourceReaderMocker reader = new ListDataSourceReaderMocker();
-		this.beginTransaction();
+		//this.beginTransaction();
 		ExamineeDataImpoirtor tor=null;
 		try{
-			ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:applicationContext.xml","classpath*:applicationContext-ds.xml"});
-			SpringContextUtil sp = new SpringContextUtil();
-			sp.setApplicationContext(context);
-			JdbcTemplate jt = SpringContextUtil.getBean("jdbcTemplate");
-			tor = new ExamineeDataImpoirtor(jt,getSession(),mapper,reader);
+			tor = new ExamineeDataImpoirtor(jdbcTemplate,null,mapper,reader);
 			tor.doImport();
 		}catch(Exception e){
 			assertTrue(e instanceof IndexOutOfBoundsException);
 		}
 		assertTrue(tor.getErrorDatas().size()==1);
-		this.commit();
+		//this.commit();
 	}
 	@Test
 	public void testFileSave()throws Exception{

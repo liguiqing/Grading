@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,16 +15,30 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.easytnt.commons.io.ListDataSourceMapper;
 import com.easytnt.commons.io.ListDataSourceReader;
 import com.easytnt.grading.domain.room.District;
+import com.easytnt.grading.domain.room.Room;
 import com.easytnt.grading.domain.room.School;
 
 
-
+/** 
+ * <pre>
+ * 考区
+ * </pre>
+ * 
+ * @author 李贵庆 2015年11月20日
+ * @version 1.0
+ **/
 public class ExamineeDataImpoirtor{
     
 	private ListDataSourceMapper mapper;
@@ -33,12 +48,15 @@ public class ExamineeDataImpoirtor{
 	private int colindex = 0;
 	private Map<String,Long> longMap = new HashMap<String,Long>();
 	private Map<Integer,String[]> errorDatas = new HashMap<Integer,String[]>();
-	private static SimpleDateFormat sdf  = new SimpleDateFormat("yyyyMMdd");;
+	private static SimpleDateFormat sdf  = new SimpleDateFormat("yyyyMMdd");
+	
 	private JdbcTemplate jdbcTemplate;
 	
-	private District curDistrict;
+	private DistrictTable curDistrict;
 	
-	private School curSchool;
+	private SchoolTable curSchool;
+	
+	private RoomTable curRoom;
 	
 	public ExamineeDataImpoirtor(JdbcTemplate jdbcTemplate,Session session,ListDataSourceMapper mapper, ListDataSourceReader reader){
 		this.session = session;
@@ -46,19 +64,24 @@ public class ExamineeDataImpoirtor{
 		this.reader = reader;
 		this.jdbcTemplate = jdbcTemplate;
 	}
+	
+	public Map<Integer, String[]> getErrorDatas() {
+		return errorDatas;
+	}
+	
 	public void doImport() throws Exception{
 		reader.open();
 		try{
 			for(int i=1;;i++){
-				Map<String,Object> paramMap = getParam(i,mapper,reader);
+				//Map<String,Object> paramMap = getParam(i,mapper,reader);
 				//this.row = reader.get(i);
 				importDistrict(i);
-				importSchool(session,paramMap);
-				importRoom(session,paramMap);
-				importStudentAndExaminne(false,session,paramMap);
-				if(examinneIsNull(paramMap)){
-					errorDatas.put(i, reader.get(i));
-				}
+				importSchool(i);
+				//importRoom(session,paramMap);
+				//importStudentAndExaminne(false,session,paramMap);
+				//if(examinneIsNull(paramMap)){
+				//	errorDatas.put(i, reader.get(i));
+				//}
 			}
 		}catch(IndexOutOfBoundsException e){
 			importStudentAndExaminne(true,null,null);
@@ -68,66 +91,123 @@ public class ExamineeDataImpoirtor{
 		}
 		
 	}
+	
 	private void clearSql(){
 		sql=sql.delete(0, sql.length());
 		
 	}
-	/**
-	 * 插入并得到区的ID
-	 * @param session
-	 * @param paramMap
-	 * @return
-	 */
-	private Long importDistrict(){
-		if(districtIsNull()){
-			return null;
+	
+
+	private void  importDistrict(int index)throws Exception{
+		if(!districtIsMapped()){
+			return ;
 		}
 		
+		String district_name =  reader.get(index, mapper.getColIndex("district_name"));
+		String district_number = reader.get(index, mapper.getColIndex("district_number"));
+		if("".equals(district_name) && "".equals(district_number)){
+			return ;
+		}
 		
-		String key = paramMap.get("district_number")+"_"+paramMap.get("district_name");
-		if(longMap.get(key)==null){
-			getDistrict(paramMap,key);
-		}
-		return longMap.get(key);
-	}
-	/**
-	 * 查询内存或数据库中是否存在，否则进行插入
-	 * @param paramMap
-	 */
-	private void getDistrict(int index){
-		clearSql();
-		sql.append(" select district_id from district where district_name = ? and district_number = ? ");
-		String str = sql.toString();
-		List list = session.createSQLQuery(str)
-				.setString(0, reader.get(index,mapper.getColIndex("district_name")))
-				.setString(1, reader.get(index,mapper.getColIndex("district_number"))).list();
-		clearSql();
-		if(list.size()>0){
-			longMap.put(key, ((BigInteger)list.get(0)).longValue());
-		}else{
-			clearSql();
-			sql.append(" insert into district(district_name,district_number) values (?,?);");
-			session.createSQLQuery(sql.toString())
-					.setString(0, (String)paramMap.get("district_name"))
-					.setString(1, (String)paramMap.get("district_number")).executeUpdate();
-			list = session.createSQLQuery(str)
-					.setString(0, (String)paramMap.get("district_name"))
-					.setString(1, (String)paramMap.get("district_number")).list();
-			longMap.put(key, ((BigInteger)list.get(0)).longValue());
-			clearSql();
+		if(this.curDistrict == null) {
+			Long district_Id = getDistrictFromDb(district_name, district_number);			
+			if(district_Id != null) {
+				newCurDistrict(district_Id,district_name,district_number);
+			}else {
+				district_Id = insertDistrictTable(district_name,district_number);
+				newCurDistrict(district_Id,district_name,district_number);
+			}
+			
+		}else {
+			if(!districtExists(district_name,district_number)) {
+				Long district_Id = insertDistrictTable(district_name,district_number);
+				newCurDistrict(district_Id,district_name,district_number);
+			}		
 		}
 	}
-	private Long importSchool(Session session,Map<String,Object> paramMap){
-		if(schoolIsNull(paramMap)){
-			return null;
-		}
-		Long districtId = importDistrict();
-		String key = districtId+"_"+paramMap.get("school_code")+"_"+paramMap.get("school_name");
-		if(longMap.get(key)==null){
-			getSchool(paramMap,districtId,key);
-		}
-		return longMap.get(key);
+	
+	private boolean districtIsMapped(){
+		return mapper.getColIndex("district_number") > 0 || mapper.getColIndex("district_name") > 0;
 	}
+
+	
+	private boolean districtExists(String district_name, String district_number) {
+		if(curDistrict != null && curDistrict.district_name.equals(district_name) && this.curDistrict.district_name.equals(district_number)) {
+			return true;
+		}
+		return false;
+	}
+	
+	private Long getDistrictFromDb(String district_name,String district_number) {
+		return selectIdFrom(curDistrict.selectSql,"district_Id",district_name,district_number);
+	}
+	
+	private Long insertDistrictTable(String district_name,String district_number) {
+		return insertInto(curDistrict.insertSql,district_name,district_number);
+	}
+	
+	private void newCurDistrict(Long district_id,String district_name,String district_number) {
+		this.curDistrict = new DistrictTable();
+		this.curDistrict.district_id = district_id;
+		this.curDistrict.district_name = district_name;
+		this.curDistrict.district_number = district_number;
+	}
+	
+	private void importSchool(int index) throws Exception{
+		if(!schoolIsMapped()){
+			return ;
+		}
+		
+		String school_code =  reader.get(index, mapper.getColIndex("school_code"));
+		String school_name = reader.get(index, mapper.getColIndex("school_name"));
+		if("".equals(school_name) && "".equals(school_code)){
+			return ;
+		}
+		
+		if(this.curDistrict == null) {
+			Long school_id = getSchoolFromDb(school_name, school_code);			
+			if(school_id != null) {
+				newCurSchool(school_id,school_name,school_code);
+			}else {
+				school_id = insertSchoolTable(school_name,school_code);
+				newCurSchool(school_id,school_name,school_code);
+			}
+			
+		}else {
+			if(!schoolExists(school_name,school_code)) {
+				Long school_id = insertSchoolTable(school_name,school_code);
+				newCurSchool(school_id,school_name,school_code);
+			}		
+		}
+	}
+	
+	
+	private boolean schoolIsMapped(){
+		return mapper.getColIndex("school_name") > 0 || mapper.getColIndex("school_code") > 0;
+	}
+	
+	private boolean schoolExists(String school_name, String school_code) {
+		if(this.curSchool != null && this.curSchool.school_name.equals(school_name) && this.curSchool.school_code.equals(school_code)) {
+			return true;
+		}
+		return false;
+	}
+	
+	private Long getSchoolFromDb(String district_name,String district_number) {
+		return selectIdFrom(this.curSchool.selectSql,"district_Id",district_name,district_number);
+	}
+	
+	private Long insertSchoolTable(String district_name,String district_number) {
+		return insertInto(this.curSchool.insertSql,district_name,district_number);
+	}
+	
+	private void newCurSchool(Long school_id,String district_name,String district_number) {
+		this.curDistrict = new DistrictTable();
+		this.curDistrict.district_id = school_id;
+		this.curDistrict.district_name = district_name;
+		this.curDistrict.district_number = district_number;
+	}
+	
 	/**
 	 * 查询内存或数据库中是否存在，否则进行插入
 	 * @param paramMap
@@ -217,7 +297,7 @@ public class ExamineeDataImpoirtor{
 			return;
 		}
 		Map<String,Object> examinnemap = new LinkedHashMap<String,Object>();
-		examinnemap.put("school_id", longToBigInteger(importSchool(session,paramMap)));
+		//examinnemap.put("school_id", longToBigInteger(importSchool()));
 		examinnemap.put("room_id", longToBigInteger(importRoom(session,paramMap)));
 		examinnemap.put("seating_number", paramMap.get("seating_number"));
 		examinnemap.put("examinne_name", paramMap.get("examinne_name"));
@@ -243,7 +323,7 @@ public class ExamineeDataImpoirtor{
 			examinneList.get(i).put("student_id", studentIdList.get(i));
 		}
 		sql=" insert into examinne(school_id,term_test_id,room_id,seating_number,examinne_name,examinne_uuid,uuid_type,arts,clazz_name,clazz_code,student_id) " +
-		   		" values (?,1,?,?,?,?,?,?,?,?,?,) ";
+		   		" values (?,1,?,?,?,?,?,?,?,?,?) ";
 		addBean(sql,examinneList);
 	}
 	private BigInteger longToBigInteger(Long lo){
@@ -325,10 +405,9 @@ public class ExamineeDataImpoirtor{
 //	    paramMap.put("term_test_to", reader.get(i, colindex));
 	    return paramMap;
 	}
+
+
 	
-	private boolean districtIsNull(){
-		return mapper.getColIndex("district_number") >0 || mapper.getColIndex("district_name") > 0;
-	}
 	private boolean schoolIsNull(Map<String,Object> paramMap){
 		boolean isTrue = true;
 		isTrue= isTrue && paramMap.get("school_name")==null;
@@ -350,9 +429,40 @@ public class ExamineeDataImpoirtor{
 		isTrue= isTrue && (paramMap.get("examinne_name") ==null || paramMap.get("examinne_uuid") ==null);
 		return isTrue;
 	}
-	public Map<Integer, String[]> getErrorDatas() {
-		return errorDatas;
+	
+	private Long selectIdFrom(final String sql,final String idField,final Object... params) {
+		return this.jdbcTemplate.query(sql,params, new ResultSetExtractor<Long>() {
+			@Override
+			public Long extractData(ResultSet rs)
+					throws SQLException, DataAccessException {
+				if(rs.next()) {
+					return rs.getLong(idField);
+				}
+				return null;
+			}				
+		});		
 	}
+	
+	private Long insertInto(final String sql,final Object... params) {
+		KeyHolder keyHolder  = new GeneratedKeyHolder();
+		this.jdbcTemplate.update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con)
+					throws SQLException {
+				
+				PreparedStatement ps=con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+		        for(int index = 0;index<params.length;index++) {
+		        	ps.setObject(index+1, params[index]);
+		        }
+				return ps;
+			}
+			
+		}, keyHolder );
+
+		return keyHolder.getKey().longValue();
+	}
+
 	
 	public List<Integer> addBean(String sql,List<Map<String,Object>> expList) throws SQLException {   
 	       final List<Map<String,Object>> tempexpList = expList;    
@@ -381,6 +491,39 @@ public class ExamineeDataImpoirtor{
 	          
 	       return list;   
 	          
+	}
+	
+	public static class DistrictTable{
+		private Long district_id;
+		private String district_number;
+		private String district_name;
+		private static String insertSql = "insert into district(district_name,district_number) values (?,?)";
+		private static String selectSql = "select district_id from district where district_name = ? and district_number = ?";
+	}
+	
+	public static class SchoolTable{
+		private Long school_id;
+		private String school_code;
+		private String school_name;
+		private static String insertSql = "insert into school(school_name,school_code,district_id) values (?,?,?)";
+		private static String selectSql = " select school_id from school where school_name =?  and school_code =? and district_id=?";
+	}
+	
+	public static class RoomTable{
+		private Long room_id;
+		private int room_number;
+		private static String insertSql = " insert into room (room_number) values (?)";
+		private static String selectSql = "select room_id from room where room_number = ?";
+	}
+	
+	public static class StudentTable{
+		private Long student_id;
+		private static String insertSql = "insert into student(student_number,student_name,gender,nation,birthday) values (?,?,?,?,?)";
+	}
+	
+	public static class ExaminneTable{
+		private Long examinne_id;
+		private static String insertSql = "insert into examinne(school_id,term_test_id,room_id,seating_number,examinne_name,examinne_uuid,uuid_type,arts,clazz_name,clazz_code,student_id) values (?,?,?,?,?,?,?,?,?,?,?) ";
 	}
 	
 }
