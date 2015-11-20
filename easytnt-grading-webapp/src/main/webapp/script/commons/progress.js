@@ -4,6 +4,7 @@
 	define(dps, function($, ajaxwrapper) {
 
 		var Progress = function() {
+			var me = this;
 			var $template = $("<div></div>").addClass("progress");
 			var $bar = $("<div></div>", {
 				"role" : "progressbar",
@@ -48,7 +49,7 @@
 					} else {
 						opts.data.completed = completed;
 						setTimeout(function() {
-							_progress.createProcess();
+							me.createProcess();
 						}, 3000);
 					}
 				});
@@ -56,7 +57,12 @@
 
 		}
 
-		var _progress = new Progress();
-		return _progress;
+		return o = {
+			init : function(opts) {
+				var _progress = new Progress();
+				_progress.init(opts);
+				return _progress;
+			}
+		};
 	});
 })();
