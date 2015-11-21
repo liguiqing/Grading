@@ -38,11 +38,14 @@ public class RetryLimitedCredentialsMatcher extends HashedCredentialsMatcher {
 	@Override
 	public boolean doCredentialsMatch(AuthenticationToken token,AuthenticationInfo info) {
 		String username = (String) token.getPrincipal();
-		AtomicInteger retryTimes = getRetryTimes(username);
-		logger.debug("User {} try login {} times",username,retryTimes.get());
-		if(retryTimes.incrementAndGet() > this.retryLimited) {
-			throw new ExcessiveAttemptsException();
+		if(retryLimited > 0) {
+			AtomicInteger retryTimes = getRetryTimes(username);
+			logger.debug("User {} try login {} times",username,retryTimes.get());
+			if(retryTimes.incrementAndGet() > this.retryLimited) {
+				throw new ExcessiveAttemptsException();
+			}		
 		}
+
 		boolean matches = super.doCredentialsMatch(token, info);
 		if(matches) {
 			retryCatche.remove(username);
@@ -60,6 +63,14 @@ public class RetryLimitedCredentialsMatcher extends HashedCredentialsMatcher {
 		}
 		
 		return retryTimes;
+	}
+
+	public int getRetryLimited() {
+		return retryLimited;
+	}
+
+	public void setRetryLimited(int retryLimited) {
+		this.retryLimited = retryLimited;
 	}
 }
 

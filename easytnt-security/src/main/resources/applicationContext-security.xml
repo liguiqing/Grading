@@ -18,7 +18,7 @@
             http://www.springframework.org/schema/jee/spring-jee.xsd
             http://www.springframework.org/schema/util
        		http://www.springframework.org/schema/util/spring-util.xsd">
-
+	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<bean id="shiroCacheMgr" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManager" ref="cacheManager"/>
 	</bean>
@@ -27,9 +27,13 @@
 	<bean id="credentialsMatcher" class="com.easytnt.security.shiro.authc.RetryLimitedCredentialsMatcher">
 		<constructor-arg ref="shiroCacheMgr" index="0"/>
 		<constructor-arg value="passwordRtryCache" index="1"/>
+		<property name="hashAlgorithmName" value="${shiro.password.algorithmName}" />
+		<property name="hashIterations" value="${shiro.password.hashIterations}" />
+		<property name="retryLimited" value="-1"></property>
+		<property name="storedCredentialsHexEncoded" value="true" />
 	</bean>
-	<!-- 数据库查询登录实现 -->
-	<bean id="dbRealm" class="com.easytnt.security.shiro.realm.ComefromDbRealm">
+	<!-- 评卷老师实现 -->
+	<bean id="ssoRealm" class="com.easytnt.security.shiro.realm.ComefromDbRealm">
 		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
 		<property name="cachingEnabled" value="true" />
 		<property name="authenticationCachingEnabled" value="true" />
@@ -40,7 +44,17 @@
 		<!-- 请修改sql属性值 -->
 		<property name="Sql" value="SELECT 	sso_account AS user_name,sso_password AS user_pwd,enabled  FROM sso_user WHERE sso_account=?"/>
 	</bean>
-	
+	<bean id="teacherRealm" class="com.easytnt.security.shiro.realm.ComefromDbRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
+		<property name="cachingEnabled" value="true" />
+		<property name="authenticationCachingEnabled" value="true" />
+		<property name="authenticationCacheName" value="authenticationCache" />
+		<property name="authorizationCachingEnabled" value="true" />
+		<property name="authorizationCacheName" value="authorizationCache" />
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<!-- 请修改sql属性值 -->
+		<property name="Sql" value="SELECT teacher_account AS user_name,teacher_passord AS user_pwd, 1 AS enabled  FROM teacher_info WHERE teacher_account=?"/>
+	</bean>	
 	<!-- cas 登录实现 -->
 	<bean id="casRealm" class="org.apache.shiro.cas.CasRealm">
 		<property name="casServerUrlPrefix" value="${shiro.sso.server.url}"/>
@@ -111,7 +125,8 @@
 		<property name="authenticator" ref="authenticator"></property>
 		<property name="realms">
 			<list>			    
-				<ref bean="dbRealm" />
+				<ref bean="teacherRealm" />
+				<ref bean="ssoRealm" />
 				<ref bean="casRealm" />
 			</list>
 		</property>
@@ -130,14 +145,22 @@
 		<property name="defaultRedirectUrl" value="/login" />
 	</bean>	
 	
+	<!--
 	<bean id="authcFilter" class="com.easytnt.security.shiro.web.filter.authc.GoogleKapthcaFormAuthenticationFilter">
+		<property name="enabled" value="${shiro.login.captcha}" />
 		<property name="usernameParam" value="username" />
 		<property name="passwordParam" value="password" />
 		<property name="rememberMeParam" value="rememberMe" />
 		<property name="loginUrl" value="/login"></property>
 		<property name="failureKeyAttribute" value="${shiro.failure.key}" />
 	</bean>
-
+    -->
+ 	<bean id="authcFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
+		<property name="usernameParam" value="username" />
+		<property name="passwordParam" value="password" />
+		<property name="rememberMeParam" value="rememberMe" />
+		<property name="loginUrl" value="/login"></property>
+	</bean>   
 	<bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
 		<property name="failureUrl" value="${shiro.sso.login.url}" />
 	</bean>	
@@ -151,7 +174,7 @@
 	<!-- Shiro的Web过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
-		<property name="successUrl" value="/loginSuccess" />
+		<property name="successUrl" value="/login/success" />
 		<property name="loginUrl" value="/login" />
 		<property name="unauthorizedUrl" value="/unauthorized" />
 		<property name="filters">
@@ -167,14 +190,8 @@
 				/static/css/** = anon
 				/static/script/** = anon
 				/exp/** = anon
-				/examPaper/** = anon
-				/config/** = anon
-				/subject/** = anon
-				/subjectExam/** = anon
-				/teacher/** = anon
-				/monitor/** = anon
 				/sso/login = cas
-				/login = kaptchar,authc
+				/login = authc
 				/** = sessionTimeout,user
 			</value>
 		</property>
