@@ -168,11 +168,13 @@
 				/static/script/** = anon
 				/exp/** = anon
 				/examPaper/** = anon
+				/progress/** = anon
 				/config/** = anon
 				/subject/** = anon
 				/subjectExam/** = anon
 				/teacher/** = anon
 				/monitor/** = anon
+				/cuttingDefine/** = anon
 				/sso/login = cas
 				/login = kaptchar,authc
 				/** = sessionTimeout,user

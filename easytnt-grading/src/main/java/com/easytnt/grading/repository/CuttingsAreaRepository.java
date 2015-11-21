@@ -22,4 +22,6 @@ public interface CuttingsAreaRepository extends Repository<CuttingsArea, Long> {
 	public List<CuttingsArea> listCuttingsAreaOfInPaper(Long paperId);
 
 	public void deletePositionOfItemInAreas();
+
+	public void deleteCuttingAreaInPaper(Long paperId);
 }

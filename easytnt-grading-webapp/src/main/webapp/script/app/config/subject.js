@@ -1,6 +1,6 @@
 (function(){
 	"use strict";
-	define(['jquery','ajaxwrapper','ui', 'dialog','intense'],function($,ajaxWrapper,ui,dialog,intense){
+	define(['jquery','ajaxwrapper','ui', 'dialog','intense','../../commons/progress'],function($,ajaxWrapper,ui,dialog,intense,progress){
 		var subjectExam = function(){
 			this.testId=undefined;
 			this.desc={};
@@ -161,9 +161,28 @@
 			};
             
 			
-			myTable.on('click','.cuttingDefine',function(e){
-				var testId = $(this).attr('data-paperid');
-				window.open(window.app.rootPath+'cuttingDefine/1/'+testId);
+			myTable.on('click','.cuttingPaper',function(e){
+				var $container=$(this).parent();
+				var paperId = $(this).attr('data-paperid');
+				var url = '/cuttingDefine/cutting/'+paperId;
+				ajaxWrapper.getJson(url,{},{},function(){
+					var _html=$container.html();
+					$container.empty();
+					var param={
+							container : $container,
+							entry : 'CuttingTestpaperService',
+							finishedCallBack : function() {
+								$container.html(_html);
+							},
+							data : {
+								paperId : paperId
+							}
+					};
+					progress.init(param);
+				});
+			}).on('click','.cuttingDefine',function(e){
+				var paperId = $(this).attr('data-paperid');
+				window.open(window.app.rootPath+'cuttingDefine/1/'+paperId);
 			}).on('click','tbody #newSubject',function(e){
 				currentSubject.isNew = true;
 				currentSubject.row = $(this).parent().parent();

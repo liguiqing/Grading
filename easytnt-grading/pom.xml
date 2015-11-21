@@ -42,6 +42,12 @@
 		</dependency>
 		<dependency>
 			<groupId>com.easytnt</groupId>
+			<artifactId>easytnt-cutimage</artifactId>
+			<version>1.0.0.SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.easytnt</groupId>
 			<artifactId>easytnt-core</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 			<scope>compile</scope>
