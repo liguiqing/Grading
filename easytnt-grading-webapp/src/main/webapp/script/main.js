@@ -89,6 +89,7 @@ var config = {
 		"jquery" : jqueryPath,
 		"easyui" : "lib/jquery/jquery.easyui.min",
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
+		"bootstrapSlider" : "lib/bootstrap/plugins/bootstrap-slider/bootstrap-slider",
 		"chart" : "lib/highcharts/highcharts",
 		"smartWizard" : "lib/smartWizard/jquery.smartWizard",
 		"dialog":"commons/dialog",

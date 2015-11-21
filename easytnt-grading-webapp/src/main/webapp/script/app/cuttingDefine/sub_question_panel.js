@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', 'easyui' ];
-	define(deps, function($, easyui) {
+	var deps = [ 'jquery' ];
+	define(deps, function($) {
 		
 		/*小题面板*/
 		//如果是遍历小题集合，需要传递index

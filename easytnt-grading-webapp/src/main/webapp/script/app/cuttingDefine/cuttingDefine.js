@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', 'ajaxwrapper', 'dialog',"easyui", "./selection", "./examObj", "./element"];
-	define(deps, function($, ajaxWrapper, dialog,easyui, Selection, ExamObj, Element) {
+	var deps = [ 'jquery', 'ajaxwrapper', 'dialog',"easyui", "./selection", "./examObj", "./element",'bootstrapSlider'];
+	define(deps, function($, ajaxWrapper, dialog,easyui, Selection, ExamObj, Element,bootstrapSlider) {
 		var obj = function() {
 			var me = this;
 			this.render = function() {
@@ -66,6 +66,11 @@
 					var val = $(this).text();
 					var index = Number(val) - 1;
 					jumpTo(this, index);
+				});
+				
+				//初始化缩放组件拖动事件
+				$('.sliderui').change(function(data){
+					console.info(data.value.newValue);
 				});
 			}
 			
@@ -313,7 +318,28 @@
 			
 			//根据examObj初始化底部上翻下翻按钮状态
 			function initBottomBarBtnStatus() {
-				//根据examobj中的试卷答题卡数量创建对应每一张答题卡的超链接
+				//初始化分页组件
+				initPageNums();
+				//初始化缩放组件
+				initSliderBar();
+			}
+			
+			//初始化缩放slider控件
+			function initSliderBar() {
+				$(".sliderui").slider();
+//				$(".slider-enabled").click(function() {
+//					if(this.checked) {
+//						$(this).siblings(".sliderui").slider("enable");
+//					}
+//					else {
+//						$(this).siblings(".sliderui").slider("disable");
+//					}
+//				});
+			}
+			
+			//初始化分页
+			//根据examobj中的试卷答题卡数量创建对应每一张答题卡的超链接
+			function initPageNums() {
 				var arr = window.examObj.answerCardCuttingTemplates;
 				if(arr.length == 0) {
 					throw new Error('异常，试卷无答题卡!');

@@ -6,6 +6,11 @@
 <#include "./CuttingDefineUI.ftl">
 <#import "/taglib/commons/status.ftl" as footer> 
   <@footer.status>
+  	<ul class="pull-left">
+  		<span>缩放</span>
+		<input class="sliderui" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="50" data-slider-enabled="false"/>
+  	</ul>
+  
     <ul class="pull-right">
     	<div class="clearfix">
 			<input id="saveBtn" class="btn btn-default btn-sm" type="button" value="保存" style="color:black;">
