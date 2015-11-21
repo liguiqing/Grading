@@ -146,7 +146,7 @@
 					
 					//在进行创建元素时，需要对前一个元素数据进行保存
 					if(selection.previousElement) {
-						selection.previousElement.save_preview_element_data();
+						selection.currentElement.save_preview_element_data();
 					}
 					
 					//改变鼠标指针形状
@@ -219,7 +219,6 @@
 							}
 							//创建成功，选中当前元素
 							selection.select_element(selection.currentElement, e);
-							selection.show_data();
 						}
 						
 						//清理当前类的mousemove mouseup事件
@@ -432,30 +431,42 @@
 				var isCtrl = e.ctrlKey;
 				//是单选
 				if(!isCtrl) {
-					//清空选中列表
-					selection.selectedList.length = 0;
-					//隐藏其他被选中元素的八个助托点，表示取消其他元素的选中状态
-					selection.hideSiblingsResizePoints(element.view);
-					//将当前选中元素添加到选中列表中
-					selection.selectedList.push(element);
-					//显示当前元素的8个助托点
-					selection.show_resize_points(element);
+					selection.singleSelectElement(element);
 				} else {
-					selection.hideQuestionInfo();
-					//多选有可能是取消选择的情况
-					if(selection.isElementSelected(element)) {//选中则取消选中
-						selection.unSelectElement(element);
-					}else {
-						//将当前选中元素添加到选中列表中
-						selection.selectedList.push(element);
-						//显示当前元素的8个助托点
-						selection.show_resize_points(element);
-					}
+					selection.multiSelectElement(element);
 				}
+				
 				//鼠标停止改变元素位置的时候显示出最后的位置坐标
 				selection.show_msg();
 				selection.change_size_tip();
 				selection.show_size();
+				selection.show_data();
+			};
+			
+			//实现对元素的多选
+			selection.multiSelectElement = function(element) {
+				selection.hideQuestionInfo();
+				//多选有可能是取消选择的情况
+				if(selection.isElementSelected(element)) {//选中则取消选中
+					selection.unSelectElement(element);
+				}else {
+					//将当前选中元素添加到选中列表中
+					selection.selectedList.push(element);
+					//显示当前元素的8个助托点
+					selection.show_resize_points(element);
+				}
+			};
+			
+			//实现对元素的单选
+			selection. singleSelectElement = function(element) {
+				//清空选中列表
+				selection.selectedList.length = 0;
+				//隐藏其他被选中元素的八个助托点，表示取消其他元素的选中状态
+				selection.hideSiblingsResizePoints(element.view);
+				//将当前选中元素添加到选中列表中
+				selection.selectedList.push(element);
+				//显示当前元素的8个助托点
+				selection.show_resize_points(element);
 			};
 			
 			//取消某元素的选中
@@ -871,9 +882,14 @@
 					var e=e||event;
 					var keyCode = e.keyCode || e.which || e.charCode;
 					if(keyCode == 46) {
-						if(selection.currentElement) {
-							selection.currentElement.del();
+						if(selection.selectedList.length != 0) {
+							for(var i = 0; i < selection.selectedList.length; i++) {
+								selection.selectedList[i].del();
+							}
 						}
+						
+						//将所选元素删除之后直接清空选中列表
+						selection.selectedList.length = 0;
 					}
 				});
 			};
