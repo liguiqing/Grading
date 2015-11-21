@@ -1,7 +1,5 @@
 package com.easytnt.grading.repository;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import com.easytnt.commons.entity.repository.Repository;
 import com.easytnt.commons.io.ListDataSourceMapper;
 import com.easytnt.commons.io.ListDataSourceReader;
@@ -16,5 +14,5 @@ import com.easytnt.grading.domain.room.Examinee;
  * @version 1.0
  **/
 public interface ExamineeRepository extends Repository<Examinee,Long>{
-	int insertImports(JdbcTemplate jdbcTemplate,ListDataSourceMapper mapper, ListDataSourceReader reader) throws Exception;
+	int insertImports(ListDataSourceMapper mapper, ListDataSourceReader reader) throws Exception;
 }

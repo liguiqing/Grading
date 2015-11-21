@@ -30,6 +30,7 @@ import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.controller.formbean.DataSourceMapperFormBean;
 import com.easytnt.grading.domain.grade.Teacher;
+import com.easytnt.grading.domain.room.Examinee;
 import com.easytnt.grading.service.ExamineeService;
 
 
@@ -59,14 +60,16 @@ public class ExamineeController {
 		MenuGroup configMenuGroup = MenuGroupFactory.getInstance().getConfigMenuGroup();
 		configMenuGroup.activedMenuByIndex(2);
 		rightMenuGroup.activedMenuByIndex(3);
-		Query<Teacher> query = new QueryBuilder().newQuery(1,10,new HashMap());
-		query.rows(202);
+		Query<Examinee> query = new QueryBuilder().newQuery(1,10,new HashMap());
+		//query.rows(202);
 		String[] dataSourceFields = new String[0];
 		//先放在Session里，以后在处理 TODO
 		ListDataSourceReader reader = (ListDataSourceReader)request.getSession().getAttribute(ListDataSourceReader.class.getName());
 		if(reader != null) {
 			dataSourceFields = reader.getFields();
 		}
+		
+		examineeService.query(query);
 
 		//TODO
 		int i= 0 ;

@@ -72,7 +72,7 @@ public abstract class AbstractEntityService <T,PK extends Serializable> {
 	
 	@Transactional(readOnly=true)
 	public void query(Query<T> query){
-		//TODO in SubClass
+		this.repository.query(query);
 	}
 	
 	
