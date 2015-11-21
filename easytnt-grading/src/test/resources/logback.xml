@@ -73,11 +73,11 @@
 		<appender-ref ref='ASYNC' />
 	</logger>
 	<logger name="org.hibernate.SQL" additivity="false">
-		<level value="debug" />
+		<level value="error" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="org.hibernate.engine.QueryParameters" additivity="false">
-		<level value="debug" />
+		<level value="error" />
 		<appender-ref ref='ASYNC' />
 	</logger>
 	<logger name="org.hibernate.engine.query.HQLQueryPlan"
@@ -100,11 +100,11 @@
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="com.easytnt">
-		<level value="debug" />
+		<level value="error" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="com.easytnt.exception">
-		<level value="debug" />
+		<level value="error" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 

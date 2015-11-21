@@ -36,32 +36,17 @@ public class ExamineeRepositoryHibernateImplTest extends AbstractHibernateTest{
 		jdbcTemplate = SpringContextUtil.getBean("jdbcTemplate");
 		jdbcTemplate.getDataSource().getConnection().setAutoCommit(true);
 	}
-	@Test
-	public void testSave()throws Exception{
-		ListDataMapperMocker mapper = new ListDataMapperMocker();
-		ListDataSourceReaderMocker reader = new ListDataSourceReaderMocker();
-		//this.beginTransaction();
-		ExamineeDataImpoirtor tor=null;
-		try{
-			tor = new ExamineeDataImpoirtor(jdbcTemplate,null,mapper,reader);
-			tor.doImport();
-		}catch(Exception e){
-			assertTrue(e instanceof IndexOutOfBoundsException);
-		}
-		assertTrue(tor.getErrorDatas().size()==1);
-		//this.commit();
-	}
+
 	@Test
 	public void testFileSave()throws Exception{
 		Map<String,String> valueMap = new LinkedHashMap<String,String>();
-		valueMap.put("student_number", "学号");
+		valueMap.put("examinne_uuid", "准考证号");
 		valueMap.put("student_name", "姓名");
+		valueMap.put("student_number", "学号");
 		valueMap.put("gender", "性别");
 		valueMap.put("nation", "民族");
 		valueMap.put("birthday", "出生日期");
-		valueMap.put("seating_number", "座位");
-		valueMap.put("examinne_uuid", "准考证号");
-		valueMap.put("uuid_type", "身份证");
+
 		valueMap.put("arts", "文理科标志");
 		valueMap.put("clazz_name", "班级名称");
 		valueMap.put("clazz_code", "班级代码");
@@ -70,31 +55,23 @@ public class ExamineeRepositoryHibernateImplTest extends AbstractHibernateTest{
 		valueMap.put("school_code", "学校代码");
 		valueMap.put("district_number", "区县代码");
 		valueMap.put("district_name", "区县名称");
+		DefaultListDataSourceMapper mapper = new DefaultListDataSourceMapper();
+		mapper.addMapper("examinne_uuid", 1);
+		mapper.addMapper("student_name", 2);
+		mapper.addMapper("student_number", 6);
+		mapper.addMapper("arts", 7);
+		mapper.addMapper("nation", 8);
+		mapper.addMapper("clazz_name", 10);
+		mapper.addMapper("clazz_code", 9);
+		mapper.addMapper("school_code", 11);
+		mapper.addMapper("school_name", 12);
+		mapper.addMapper("district_number", 13);
+		mapper.addMapper("district_name", 14);
+		
 		File f = new File(this.getClass().getResource("").getPath());
 		File f1 = new File(f.toPath()+"\\学生导入.xls");
 		File f2 = new File(f.toPath()+"\\学生导入.xls");
-		DefaultListDataSourceMapper mapper = new DefaultListDataSourceMapper(valueMap);
-		ExcleSourceReader reader = new ExcleSourceReader(f1);
-		ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:applicationContext.xml","classpath*:applicationContext-ds.xml"});
-		SpringContextUtil sp = new SpringContextUtil();
-		sp.setApplicationContext(context);
-		JdbcTemplate jt = SpringContextUtil.getBean("jdbcTemplate");
 		
-		this.beginTransaction();
-		try{
-			new ExamineeDataImpoirtor(jt,getSession(),mapper,reader).doImport();
-			new ExamineeDataImpoirtor(jt,getSession(),mapper,new ExcleSourceReader(f2)).doImport();
-		}catch(Exception e){
-			e.printStackTrace();
-			assertTrue(e instanceof IndexOutOfBoundsException);
-		}
-
-		try{
-			new ExamineeDataImpoirtor(jt,getSession(),mapper,new ExcleSourceReader(f2)).doImport();
-		}catch(Exception e){
-			e.printStackTrace();
-			assertTrue(e instanceof IndexOutOfBoundsException);
-		}
-		this.commit();
+		new ExamineeDataImpoirtor(jdbcTemplate,mapper,new ExcleSourceReader(f2)).doImport();
 	}
 }

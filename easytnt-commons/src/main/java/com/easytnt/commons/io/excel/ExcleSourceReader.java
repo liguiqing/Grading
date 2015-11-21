@@ -9,7 +9,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,10 +19,16 @@ import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.easytnt.commons.io.ListDataSourceReader;
 import com.easytnt.commons.util.Closer;
@@ -34,6 +42,9 @@ import com.easytnt.commons.util.Closer;
  * @version 1.0
  **/
 public class ExcleSourceReader implements ListDataSourceReader {
+	private Logger logger =  LoggerFactory.getLogger(ExcleSourceReader.class);
+	
+	private  static String DATE_OUTPUT_PATTERNS = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
 	private InputStream is;
 	
@@ -83,6 +94,10 @@ public class ExcleSourceReader implements ListDataSourceReader {
 	//获取某行某列数据
 	@Override
 	public String get(int row, int col) throws Exception {
+		logger.info("Get From [{},{}]",row,col);
+		if(col == -1)
+			return null;
+		
 		if(sheet.getPhysicalNumberOfRows() <= row +1 ){
 			throw new IndexOutOfBoundsException();
 		}
@@ -93,9 +108,49 @@ public class ExcleSourceReader implements ListDataSourceReader {
 		if(thisRow.getPhysicalNumberOfCells() < col - 1){
 			throw new IndexOutOfBoundsException();
 		}
-		Cell cell = thisRow.getCell(col);
-		return cell.getStringCellValue();
+		Cell cell = thisRow.getCell(col-1);
+		if(cell == null)
+			return null;
+		
+		return getCellValue(cell);
 	}
+	
+	private String getCellValue(Cell cell) {
+		String ret;
+		switch (cell.getCellType()) {
+		case Cell.CELL_TYPE_BLANK:
+			ret = "";
+			break;
+		case Cell.CELL_TYPE_BOOLEAN:
+			ret = String.valueOf(cell.getBooleanCellValue());
+			break;
+		case Cell.CELL_TYPE_ERROR:
+			ret = null;
+			break;
+		case Cell.CELL_TYPE_FORMULA:
+			Workbook wb = cell.getSheet().getWorkbook();
+			CreationHelper crateHelper = wb.getCreationHelper();
+			FormulaEvaluator evaluator = crateHelper.createFormulaEvaluator();
+			ret = getCellValue(evaluator.evaluateInCell(cell));
+			break;
+		case Cell.CELL_TYPE_NUMERIC:
+			if (DateUtil.isCellDateFormatted(cell)) {
+				Date theDate = cell.getDateCellValue();
+				ret = new SimpleDateFormat().format(theDate);
+			} else {
+				ret = NumberToTextConverter.toText(cell.getNumericCellValue());
+			}
+			break;
+		case Cell.CELL_TYPE_STRING:
+			ret = cell.getRichStringCellValue().getString();
+			break;
+		default:
+			ret = null;
+		}
+
+		return ret; // 有必要自行trim
+	}
+
 
 	//关闭数据源
 	@Override

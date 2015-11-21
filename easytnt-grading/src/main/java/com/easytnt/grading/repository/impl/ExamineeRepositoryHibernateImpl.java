@@ -9,21 +9,18 @@ import com.easytnt.commons.io.ListDataSourceReader;
 import com.easytnt.grading.domain.room.Examinee;
 import com.easytnt.grading.repository.ExamineeRepository;
 
-@SuppressWarnings("rawtypes")
 @Repository
 public class ExamineeRepositoryHibernateImpl extends HibernateRepository<Examinee,Long> implements ExamineeRepository {
-	
-	
-	
-	//读取数据
+
 	@Override
-	public int insertImports(JdbcTemplate jdbcTemplate,ListDataSourceMapper mapper, ListDataSourceReader reader) throws Exception {
-		new ExamineeDataImpoirtor(jdbcTemplate,this.getCurrentSession(),mapper,reader).doImport();
+	public int insertImports(JdbcTemplate jdbcTemplate,ListDataSourceMapper mapper, 
+			ListDataSourceReader reader) throws Exception {
+		new ExamineeDataImpoirtor(jdbcTemplate,mapper,reader).doImport();
 		return 0;
 	}
+	
 	@Override
-	protected Class getEntityClass() {
-		// TODO Auto-generated method stub
+	protected Class<Examinee> getEntityClass() {
 		return Examinee.class;
 	}
 }

@@ -45,14 +45,44 @@ public class ExamineeDataImpoirtorTest {
 	@Test
 	public void testDoImports() throws Exception{
 		ListDataSourceMapper mapper = mock(ListDataSourceMapper.class);
+		ListDataSourceReader reader = mock(ListDataSourceReader.class);
+		
 		when(mapper.getColIndex("district_name")).thenReturn(1);
 		when(mapper.getColIndex("district_number")).thenReturn(2);
-		ListDataSourceReader reader = mock(ListDataSourceReader.class);
 		when(reader.get(1, 1)).thenReturn("1区");
 		when(reader.get(1, 2)).thenReturn("1");
+		
+		when(mapper.getColIndex("school_name")).thenReturn(3);
+		when(mapper.getColIndex("school_code")).thenReturn(4);
+		when(reader.get(1, 3)).thenReturn("学校１");
+		when(reader.get(1, 4)).thenReturn("school_code1");
+		
+		when(mapper.getColIndex("room_number")).thenReturn(5);
+		when(reader.get(1, 5)).thenReturn("1");
+		
+		when(mapper.getColIndex("student_number")).thenReturn(6);
+		when(mapper.getColIndex("examinne_uuid")).thenReturn(6);
+		when(reader.get(1, 6)).thenReturn("1111111");
+		when(mapper.getColIndex("student_name")).thenReturn(7);
+		when(mapper.getColIndex("examinne_name")).thenReturn(7);
+		when(reader.get(1, 7)).thenReturn("Jim Paul");
+		when(mapper.getColIndex("gender")).thenReturn(8);
+		when(reader.get(1, 8)).thenReturn("male");
+		when(mapper.getColIndex("birthday")).thenReturn(9);
+		when(reader.get(1, 9)).thenReturn("2015-01-05");
+		when(mapper.getColIndex("arts")).thenReturn(10);
+		when(reader.get(1, 10)).thenReturn("0");
+		when(mapper.getColIndex("clazz_name")).thenReturn(11);
+		when(reader.get(1, 11)).thenReturn("1班");
+		when(mapper.getColIndex("clazz_code")).thenReturn(12);
+		when(reader.get(1, 12)).thenReturn("051");
+		when(mapper.getColIndex("seating_number")).thenReturn(13);
+		when(reader.get(1, 13)).thenReturn("12");
+		
+		
 		when(reader.get(2, 1)).thenThrow(IndexOutOfBoundsException.class);
-		ExamineeDataImpoirtor importor = new ExamineeDataImpoirtor(jdbcTemplate,null,mapper,reader);
-		expectedException.expect(IndexOutOfBoundsException.class);
+		ExamineeDataImpoirtor importor = new ExamineeDataImpoirtor(jdbcTemplate,mapper,reader);
+		//expectedException.expect(IndexOutOfBoundsException.class);
 		importor.doImport();
 		System.out.print("+++++++++++++++++++++++++++++++++++++++");
 	}
