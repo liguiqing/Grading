@@ -84,8 +84,8 @@ public class ExamPaperController {
 	}
 	
 	
-	@RequestMapping(value="/{examPaperId}",method = RequestMethod.POST)
-	public ModelAndView onAddPaperCard(@PathVariable Long examPaperId,MultipartHttpServletRequest request)
+	@RequestMapping(value="/{examPaperId}/{rotate}",method = RequestMethod.POST)
+	public ModelAndView onAddPaperCard(@PathVariable Long examPaperId,@PathVariable Integer rotate,MultipartHttpServletRequest request)
 					throws Exception {
 		logger.debug("URL /examPaper Method onAddPaperCard "+imgDir);
 		Iterator<String> it = request.getFileNames();
@@ -94,8 +94,7 @@ public class ExamPaperController {
 			MultipartFile mfile = request.getFile(fileName);
 			File cardFile  = FileUtil.inputStreamToFile(mfile.getInputStream(),mfile.getOriginalFilename());
 			ExamPaper examPaper = examPaperService.load(examPaperId);
-			examPaperService.addPaperCardTo(examPaper, cardFile);
-			
+			examPaperService.addPaperCardTo(examPaper, cardFile,rotate);
 		}else {
 			throw new IllegalArgumentException("无效的文件名");
 		}

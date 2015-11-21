@@ -139,7 +139,7 @@ DROP TABLE IF EXISTS  `examinne`;
 CREATE TABLE `examinne` (
   `examinne_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `student_id` bigint(20) COMMENT '学生ID',
-  `term_test_id` bigint(20) NOT NULL COMMENT '考试ID',
+  `term_test_id` bigint(20) COMMENT '考试ID',
   `school_id` bigint(20) COMMENT '考生所在学校ID',  
   `room_id` bigint(20) COMMENT '考场ID',
   `seating_number` int(8) COMMENT '座位号',  

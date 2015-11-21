@@ -189,7 +189,7 @@
 					location.reload();
 				}}];
 				var message=
-					'<form id="uploadForm"  method="POST" action="" enctype="multipar/form-data">'+
+					'<form id="uploadForm"  method="POST" action="" enctype="multipar/form-data"> '+
 			    	   '<div class="input-group file-preview">'+
 				    	'<input type="text" class="form-control file-preview-filename" disabled="disabled">'+
 				    	'<div class="input-group-btn"> '+
@@ -206,6 +206,12 @@
 						    '</button>'+
 					    '</div>'+
 				       '</div>'+
+				       '<div class="form-group" style="margin-top:15px">'+
+					    '<label for="`rotate`" class="col-sm-offset-6 col-sm-3 control-label">旋转角度</label>'+
+					    '<div class="col-sm-3">'+
+					      '<input type="text" class="form-control" id="rotate" data-rr-type="number" placeholder="旋转角度">'+
+					    '</div>'+
+					  '</div><div class="clearfix">'+				       
 				  '</form>';
 				var modal = ui.modal("图片上传",message,'md',btns);
 				ui.fileUpload(modal);
@@ -218,7 +224,12 @@
 					if($('div.file-preview-filename').val() == 0){
 						return;
 					}
-					ajaxWrapper.upload('examPaper/'+paperId,
+					var rotate = $('#rotate').val() * 1;
+					if(isNaN(rotate)){
+						rotate = 0;
+					}
+						
+					ajaxWrapper.upload('examPaper/'+paperId +"/" +rotate,
 							'fileName',
 							{beforeMsg:{tipText:".",show:false},
 							 successMsg:{tipText:"上传成功",show:true}},

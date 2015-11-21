@@ -17,7 +17,7 @@ public interface ExamPaperService extends EntityService<ExamPaper, Long> {
 	
 	void deletePaperCardFor(Long paperId, PaperCard paperCard);
 
-	void addPaperCardTo(ExamPaper examPaper, File cardFile);
+	void addPaperCardTo(ExamPaper examPaper, File cardFile,int rotate);
 
 	File getPaperCardFile(ExamPaper examPaper,Long cardId);
 	

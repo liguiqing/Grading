@@ -88,7 +88,7 @@ public class ExamPaperServiceImpl extends AbstractEntityService<ExamPaper, Long>
 
 	@Transactional
 	@Override
-	public void addPaperCardTo(ExamPaper examPaper, File cardFile) {
+	public void addPaperCardTo(ExamPaper examPaper, File cardFile,int rotate) {
 		File root = new File(this.cardImagePath);
 		if(!root.exists())
 			root.mkdir();
@@ -102,6 +102,7 @@ public class ExamPaperServiceImpl extends AbstractEntityService<ExamPaper, Long>
 		File file = new File(root + path);
 		FileUtil.copyTo(cardFile, file);
 		paperCard.setPath(path);
+		paperCard.setRotate(rotate);
 	}
 
 	@Transactional(readOnly=true)
