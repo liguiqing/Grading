@@ -118,7 +118,7 @@ public class StartCuttingTestpaper implements Runnable {
 			log.error(ThrowableParser.toString(e));
 		}
 
-		return counter.getCounter() / cuttingsSolution.getDesignFor().getAnswerCardImageNum();
+		return counter.getCounter();
 	}
 
 	private Disruptor<StudentTestPaperAnswerCardEvent> createCuttingDisruptor(CountDownLatch countDownLatch) {

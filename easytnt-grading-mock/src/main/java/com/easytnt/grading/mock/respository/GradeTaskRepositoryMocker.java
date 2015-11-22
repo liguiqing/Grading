@@ -96,6 +96,12 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 		
 	}
 
+	@Override
+	public void selectTaskOf(Long subjectId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 

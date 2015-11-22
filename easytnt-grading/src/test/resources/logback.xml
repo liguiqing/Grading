@@ -107,5 +107,4 @@
 		<level value="error" />
 		<appender-ref ref="ASYNC" />
 	</logger>
-
 </configuration>

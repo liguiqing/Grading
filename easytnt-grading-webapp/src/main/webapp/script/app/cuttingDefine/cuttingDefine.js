@@ -130,7 +130,7 @@
 								itemAreas:[]
 						};
 						if(data.id != 0){
-							cut.id=data.id;
+							//cut.id=data.id;
 						}
 						CuttingsSolution.cutTo.push(cut);
 						
@@ -262,7 +262,7 @@
 						//创建题目信息
 						var element = Element.newInstance();
 						element.data = {
-								id: cut.id,
+								//id: cut.id,
 								name: cut.name,// 题号
 								answerCardImageIdx :cut.answerCardImageIdx,//答题卡位置
 								requiredPinci: cut.requiredPinci,//评次

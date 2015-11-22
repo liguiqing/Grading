@@ -2,7 +2,6 @@ package com.easytnt.grading.service.impl;
 
 import java.util.List;
 
-import org.hibernate.dialect.TeradataDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

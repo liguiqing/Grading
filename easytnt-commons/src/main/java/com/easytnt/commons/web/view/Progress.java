@@ -23,7 +23,7 @@ public class Progress {
 		this.text = text;
 		Double percent = completed * 1.0 / total * 100;
 		this.percent = percent.intValue();
-		this.finished = total == completed;
+		this.finished = total <= completed;
 	}
 
 	public int getTotal() {

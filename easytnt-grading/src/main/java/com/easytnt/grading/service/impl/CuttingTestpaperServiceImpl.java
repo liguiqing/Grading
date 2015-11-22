@@ -5,13 +5,18 @@ package com.easytnt.grading.service.impl;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.easytnt.commons.web.view.Progress;
 import com.easytnt.commons.web.view.ProgressListener;
+import com.easytnt.cutimage.utils.StartCuttingTestpaper;
+import com.easytnt.grading.domain.cuttings.CuttingsSolution;
 import com.easytnt.grading.service.CuttingTestpaperService;
+import com.easytnt.grading.service.CuttingsSolutionService;
 import com.easytnt.importpaper.bean.CountContainer;
 import com.easytnt.importpaper.bean.CountContainerMgr;
+import com.easytnt.thread.EasytntExecutor;
 
 /**
  * <pre>
@@ -23,6 +28,9 @@ import com.easytnt.importpaper.bean.CountContainerMgr;
 @Service("CuttingTestpaperService")
 public class CuttingTestpaperServiceImpl implements CuttingTestpaperService, ProgressListener {
 
+	@Autowired(required = false)
+	private CuttingsSolutionService cuttingsSolutionService;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -30,7 +38,10 @@ public class CuttingTestpaperServiceImpl implements CuttingTestpaperService, Pro
 	 */
 	@Override
 	public void cutting(long paperId) {
-
+		// DataSource ds = SpringContextUtil.getBean("ds");
+		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		StartCuttingTestpaper cuttingService = new StartCuttingTestpaper(cuttingsSolution, null);
+		EasytntExecutor.instance().getExecutorService().submit(cuttingService);
 	}
 
 	@Override
@@ -46,8 +57,14 @@ public class CuttingTestpaperServiceImpl implements CuttingTestpaperService, Pro
 			totalNum = 100;
 			complateNum = 20;
 		} else {
-			text = complateNum + "/" + totalNum;
+			text = "正在切割 " + complateNum + "/" + totalNum;
 		}
+
+		if (isOver) {
+			CountContainerMgr.getInstance().remove(key);
+		}
+		// int completed = Integer.parseInt(params.get("completed"));
+
 		Progress progress = new Progress(complateNum, totalNum, text);
 		return progress;
 	}

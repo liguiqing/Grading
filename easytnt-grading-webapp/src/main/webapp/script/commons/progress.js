@@ -57,12 +57,13 @@
 
 		}
 
-		return o = {
+		var  o = {
 			init : function(opts) {
 				var _progress = new Progress();
 				_progress.init(opts);
 				return _progress;
 			}
 		};
+		return o;
 	});
 })();

@@ -21,3 +21,4 @@ public interface TeacherService extends EntityService<Teacher, Long> {
 
 	public List<Teacher> findSubjectTeachers(Subject subject);
 }
+

@@ -11,3 +11,4 @@
         <property name="oid" column="test_oid"></property>
     </class>
 </hibernate-mapping>
+

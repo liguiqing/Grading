@@ -36,13 +36,12 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	@Override
 	public void saveCuttingsSolution(CuttingsSolution cuttingsSolution) {
 		ExamPaper paper = cuttingsSolution.getDesignFor();
+		cuttingsAreaRepository.deleteCuttingAreaInPaper(paper.getPaperId());
 		List<CuttingsArea> cuttingsAreas = cuttingsSolution.getCutTo();
 		for (CuttingsArea cuttingsArea : cuttingsAreas) {
 			cuttingsArea.setPaper(paper);
 			cuttingsAreaRepository.saveOrUpdate(cuttingsArea);
 		}
-
-		cuttingsAreaRepository.deletePositionOfItemInAreas();
 	}
 
 	@Override
@@ -66,17 +65,32 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 
 		Set<PaperCard> paperCards = paper.getPaperCards();
 		ArrayList<AnswerCardCuttingTemplate> answerCardCuttingTemplates = new ArrayList<>();
+		int idx = 0;
 		for (PaperCard paperCard : paperCards) {
 			AnswerCardCuttingTemplate template = new AnswerCardCuttingTemplate();
 			template.setUrl("examPaper/" + paperId + "/" + paperCard.getCardId());
 			template.setIndex(paperCard.getCardSeq() - 1);
+
+			// 转换角度设置
+			int rotate = 90;
+			if (idx++ == 0) {
+				rotate = -90;
+			}
+			template.setRotate(rotate);
+
 			answerCardCuttingTemplates.add(template);
 		}
 
 		paper.setSubjectExam(null);
 		paper.setSections(null);
 		paper.setPaperCards(null);
+
+		// 设置原图路径
+		paper.setStudentAnserCardRootPath("D:/test/tif/lizong");
+		// 设置切割路径
 		paper.setAnswerCardCuttingTemplates(answerCardCuttingTemplates);
+		paper.setCuttingRootPath("D:/test/cuttingImage");
+
 		return paper;
 	}
 
