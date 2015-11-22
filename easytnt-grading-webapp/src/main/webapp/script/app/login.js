@@ -2,9 +2,13 @@
 	"use strict";
 	define( ['jquery','ajax'],function($,point){
 		var o = function(){
-			
+			$('#username').focus();
 		};
-
-		return new o();
+		return{
+			render:function(){
+				return new o();
+			}
+		};
+		
 	});
 })();

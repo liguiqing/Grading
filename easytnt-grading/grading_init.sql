@@ -124,6 +124,18 @@ CREATE TABLE `teacher_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8 COMMENT='评卷教师信息';
 DROP TABLE IF EXISTS  `student`;
 
+DROP TABLE IF EXISTS  `grade_task`;
+CREATE TABLE `grade_task` (
+  `task_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `teacher_id` bigint(20) NOT NULL COMMENT '评卷员',
+  `item_id` bigint(20) NOT NULL COMMENT '切割块',
+  `task_type` varchar(8) DEFAULT NULL COMMENT '评卷任务类型',
+  `task_status` varchar(8) DEFAULT NULL COMMENT '评卷任务状态',
+  PRIMARY KEY (`task_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8 COMMENT='评卷任务';
+
+DROP TABLE IF EXISTS  `student`;
+
 DROP TABLE IF EXISTS  `student`;
 CREATE TABLE `student` (
   `student_id` bigint(20) NOT NULL AUTO_INCREMENT,

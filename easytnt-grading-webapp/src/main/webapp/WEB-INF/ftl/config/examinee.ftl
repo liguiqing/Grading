@@ -5,11 +5,11 @@
     <#import "/taglib/commons/pager.ftl" as page > 
     <@page.pager pager=query css="margin:0;text-align:left;"/>
     </div>
-    <#else>
-    <div class="col-md-6" style="padding-left:0px;"></div>
-    <div class="col-md-6" style="padding-right:0px;">
+    </#if>
+    
+    <div class="col-md-5" style="padding-right:0px;">
 	  <form id="uploadForm"  method="POST" action="" enctype="multipar/form-data" class="form-inline">
-	    <div class="col-md-offset-2 col-md-10 input-group file-preview">
+	    <div class="col-md-offset-1 col-md-11 input-group file-preview">
 	      <input type="text" class="form-control file-preview-filename" disabled="disabled">
 	      <div class="input-group-btn"> 
 		    <button type="button" class="btn btn-default file-preview-clear" style="display:none;">
@@ -17,7 +17,7 @@
 		    </button>
 		    <div class="btn btn-default file-preview-input" >
 		      <span class="glyphicon glyphicon-folder-open"></span>
-		      <span class="file-preview-input-title">选择报名库文件</span>
+		      <span class="file-preview-input-title">选择报名库</span>
 		      <input id="fileName" type="file" name="fileName" style="display:none;">
 		    </div>
 		    <button type="type" class="btn btn-default " id="upload">
@@ -30,7 +30,6 @@
 	    </div>
 	  </form>
     </div>
-    </#if>
   </div>
   <br>
   <hr >

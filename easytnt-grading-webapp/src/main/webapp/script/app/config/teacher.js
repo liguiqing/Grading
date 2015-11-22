@@ -106,6 +106,7 @@
 			var myForm = new editorForm($form);
 			ui.pretty($form);
 			ui.pretty(myTable.prev());
+			
 			var self = this;
 			var currentTeacher = {
 				isNew:false,

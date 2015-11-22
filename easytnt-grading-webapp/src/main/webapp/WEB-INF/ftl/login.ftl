@@ -13,7 +13,7 @@
 							  <div class="form-group">
 							    <label for="account" class="col-sm-4 control-label">账号</label>
 							    <div class="col-sm-6">
-							      <input type="text" class="form-control" id="account" name="username" placeholder="账号">
+							      <input type="text" class="form-control" id="username" name="username" placeholder="账号">
 							    </div>
 							  </div>
 							  <div class="form-group">

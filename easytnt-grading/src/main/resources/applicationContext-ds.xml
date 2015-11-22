@@ -89,6 +89,8 @@
 				<value>hibernate/mapping/exam/Subject.hbm.xml</value>
 				<value>hibernate/mapping/exam/Exam.hbm.xml</value>
 				<value>hibernate/mapping/grade/Teacher.hbm.xml</value>
+				<value>hibernate/mapping/grade/GradeTask.hbm.xml</value>
+				<value>hibernate/mapping/grade/Referees.hbm.xml</value>				
 				<value>hibernate/mapping/paper/ExamPaper.hbm.xml</value>
 				<value>hibernate/mapping/paper/Item.hbm.xml</value>
 				<value>hibernate/mapping/paper/Section.hbm.xml</value>

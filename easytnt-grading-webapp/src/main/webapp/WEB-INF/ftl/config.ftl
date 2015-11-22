@@ -1,5 +1,5 @@
 <#import "/taglib/html.ftl" as doc> 
-<@doc.html entryjs="config" title="评卷设置" css=["pager","config","bootstrap/bootstrap-select","bootstrap/iCheck/all"]>
+<@doc.html entryjs="${js!'config'}" title="评卷设置" css=["pager","config","bootstrap/bootstrap-select","bootstrap/iCheck/all"]>
   <#import "/taglib/commons/navigation.ftl" as nav>
   <@nav.navigation menus=[] menus2=menus2/>
   <div class="workspace ">

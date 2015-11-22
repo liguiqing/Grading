@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-11-9 10:57:59 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.easytnt.grading.domain.grade.Referees" table="teacher_info">
+		<id name="id" type="java.lang.Long">
+			<column name="teacher_id" />
+			<generator class="identity" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="teacher_name" />
+		</property>
+	</class>
+</hibernate-mapping>

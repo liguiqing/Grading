@@ -66,6 +66,7 @@ public class ExamineeController {
 		//先放在Session里，以后在处理 TODO
 		ListDataSourceReader reader = (ListDataSourceReader)request.getSession().getAttribute(ListDataSourceReader.class.getName());
 		if(reader != null) {
+			reader.open();
 			dataSourceFields = reader.getFields();
 		}
 		

@@ -59,6 +59,8 @@ public class ExcleSourceReader implements ListDataSourceReader {
 	//打开数据源
 	@Override
 	public void open() throws Exception {
+		if(this.sheet != null)
+			return;
 		// 判断能否正确解析文件，是否是想要的文件解析内容
 		if (!is.markSupported()) {
 			is = new PushbackInputStream(is, 8);
@@ -98,12 +100,12 @@ public class ExcleSourceReader implements ListDataSourceReader {
 		if(col == -1)
 			return null;
 		
-		if(sheet.getPhysicalNumberOfRows() <= row +1 ){
+		if(sheet.getPhysicalNumberOfRows() <= row){
 			throw new IndexOutOfBoundsException();
 		}
 		
 		//第一行是表头，所以应该从第二行开始读取
-		Row thisRow = sheet.getRow(row + 1);
+		Row thisRow = sheet.getRow(row);
 		//POI对excel列计数是从零开始的，所以col要-1
 		if(thisRow.getPhysicalNumberOfCells() < col - 1){
 			throw new IndexOutOfBoundsException();
@@ -160,7 +162,7 @@ public class ExcleSourceReader implements ListDataSourceReader {
 
 	@Override
 	public String[] getFields() throws Exception {
-		return this.get(1);
+		return this.get(0);
 	}
 
 }
