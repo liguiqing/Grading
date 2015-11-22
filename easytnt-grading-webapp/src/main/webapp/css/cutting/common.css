@@ -43,13 +43,14 @@ html,body{
 }
 
 .image-content {
-	position:relative;
+	position: relative;
+	display: inline-block;
 }
 
 .control-content {
-	width :330px;
-	position:absolute;
-	z-index:101;/*浮在选区上面*/
+	width: 330px;
+	position: absolute;
+	z-index: 101;/*浮在选区上面*/
 }
 
 .size {
@@ -119,4 +120,9 @@ td.table-label {
 
 .element {
     box-sizing: content-box;
+}
+
+/*slider被选中的样式*/
+.slider-selection {
+	background: #BABABA none repeat scroll 0 0;
 }

@@ -8,7 +8,7 @@
     <link href="${request.contextPath}/static/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/font-awesome.min.css" />
     <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/bootstrap-datetimepicker.css"/>
-    <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/bootstrap-slider/slider.css"/>
+    <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/bootstrap-slider/bootstrap.slider.v4.css"/>
 	<link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap/buttons/buttons.css"/>
     <link rel="stylesheet" href="${request.contextPath}/static/css/main.css"/>
     <link rel="stylesheet" href="${request.contextPath}/static/css/dialog.css"/>

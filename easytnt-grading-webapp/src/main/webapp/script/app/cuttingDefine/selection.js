@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery',"easyui", "./element" ];
-	define(deps, function($,easyui, Element) {
+	var deps = [ 'jquery', "./element" ];
+	define(deps, function($, Element) {
 		//选区组件
 		function Selection(target) {
 			var selection = this;
@@ -13,6 +13,9 @@
 			selection.answerCardImageIdx = 0; //答题卡图片索引
 			selection.elements = [];//已经添加到内容中的元素
 			selection.selectedList = [];//已经被选中的元素列表
+			selection.scaleRate = 1;//缩放倍数默认不缩放
+			selection.orignalWidth = 0;//试卷原始宽度
+			selection.orignalHeight = 0;//试卷原始高度
 			//目标控件
 			selection.target = target;
 			
@@ -25,6 +28,27 @@
 				selection.btn_style();
 				selection.init_event();
 				selection.make_element_data_panel_draggable();
+			};
+			
+			//根据缩放倍数改变布局和元素位置
+			selection.updateLayoutByScale = function() {
+				//改变元素位置
+				selection.updateElementsPosition();
+			};
+			
+			//更改元素的位置(坐标宽高)
+			selection.updateElementsPosition = function(){
+				for(var i = 0; i < selection.elements.length; i++) {
+					selection.elements[i].updatePosition();
+				}
+			};
+			
+			//更改整个试卷的宽高
+			selection.changeExamPagerSize = function() {
+				var width = selection.orignalWidth * selection.scaleRate;
+				var height = selection.orignalHeight * selection.scaleRate;
+				$(selection.target).find('img').attr('width', width);
+				$(selection.target).find('img').attr('height', height);
 			};
 			
 			//恢复某一页答题卡的内容
@@ -313,11 +337,11 @@
 				if (top < 0) {
 					top = 0;
 				}
-				if (left + width > $(target).parent()[0].scrollWidth) {
-					left = $(target).parent()[0].scrollWidth - width;
+				if (left + width > $(target).width()) {
+					left = $(target).width() - width;
 				}
-				if (top + height > $(target).parent()[0].scrollHeight) {
-					top = $(target).parent()[0].scrollHeight - height;
+				if (top + height > $(target).height()) {
+					top = $(target).height() - height;
 				}
 				
 				var position = {
@@ -441,11 +465,16 @@
 				selection.change_size_tip();
 				selection.show_size();
 				selection.show_data();
+				if(element.resize) {
+					element.resize.position_middle_point();
+				}
 			};
 			
 			//实现对元素的多选
 			selection.multiSelectElement = function(element) {
+				selection.currentElement = null;
 				selection.hideQuestionInfo();
+				selection.hideSizePanel();
 				//多选有可能是取消选择的情况
 				if(selection.isElementSelected(element)) {//选中则取消选中
 					selection.unSelectElement(element);
@@ -457,8 +486,31 @@
 				}
 			};
 			
+			//隐藏宽高提示框
+			selection.hideSizePanel = function() {
+				//隐藏无效dom的宽高tip
+				$(selection.target).find('.size').css({display : 'none'});
+			}
+			
+			//取消对所有元素的选中
+			selection.unSelectAll = function() {
+				selection.currentElement = null;
+				selection.previousElement = null;
+				selection.selectedList.length = 0;
+				selection.hideQuestionInfo();
+				selection.hideSizePanel();
+				selection.hideAllPoints();
+			};
+			
+			//隐藏所有助托点，取消选中任何一个元素
+			selection.hideAllPoints = function() {
+				$(selection.target).find('.point').css({
+					display: 'none'
+				});
+			};
+			
 			//实现对元素的单选
-			selection. singleSelectElement = function(element) {
+			selection.singleSelectElement = function(element) {
 				//清空选中列表
 				selection.selectedList.length = 0;
 				//隐藏其他被选中元素的八个助托点，表示取消其他元素的选中状态
@@ -479,9 +531,6 @@
 			
 			//取消显示题目信息框
 			selection.hideQuestionInfo = function() {
-				selection.currentElement = null;
-				//隐藏无效dom的宽高tip
-				$(selection.target).find('.size').css({display : 'none'});
 				//隐藏题目信息框
 				$(selection.target).find('.control-content').css({
 					display: 'none'
@@ -797,6 +846,18 @@
 				return url;
 			};
 
+			selection.saveOrignalExamSize = function(img) {
+				$(img).on('load', function() {
+					selection.orignalWidth = $(img).width();
+					selection.orignalHeight = $(img).height();
+					
+					//更改各个元素的位置
+					selection.updateLayoutByScale();
+					//更改整个试卷的宽高
+					selection.changeExamPagerSize();
+				});
+			}
+			
 			//初始化试卷内容，添加选框宽高提示框，添加题目信息框
 			selection.initUI = function() {
 				//1.初始化试卷内容
@@ -807,8 +868,10 @@
 					throw new Error('获取答题卡图片地址失败!');
 				}
 				
-				$(img).attr('src', imageUrl);
 				$(selection.target).append(img);
+				$(img).attr('src', imageUrl);
+				//将试卷原始大小保存起来，后面缩放需要使用到
+				selection.saveOrignalExamSize($(img));
 				
 				//2.添加宽高提示框
 				var html = '<div class="size" style="display:none;">'

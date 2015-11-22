@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', "easyui" ];
-	define(deps, function($,easyui) {
+	var deps = [ 'jquery' ];
+	define(deps, function($) {
 		function Resize(target) {
 			var resize = this;
 			resize.target = target;

@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', 'ajaxwrapper', 'dialog',"easyui", "./selection", "./examObj", "./element",'bootstrapSlider'];
-	define(deps, function($, ajaxWrapper, dialog,easyui, Selection, ExamObj, Element,bootstrapSlider) {
+	var deps = [ 'jquery', 'ajaxwrapper', 'dialog', "./selection", "./examObj", "./element",'bootstrapSlider'];
+	define(deps, function($, ajaxWrapper, dialog, Selection, ExamObj, Element,bootstrapSlider) {
 		var obj = function() {
 			var me = this;
 			this.render = function() {
@@ -70,7 +70,15 @@
 				
 				//初始化缩放组件拖动事件
 				$('.sliderui').change(function(data){
-					console.info(data.value.newValue);
+					//缩放时不选中任何一个元素，所以需要先把之前选中的元素数据保存
+					stage_unsaved_element();
+					selection.unSelectAll();
+					//更改元素缩放倍数
+					selection.scaleRate = (data.value.newValue / 100);
+					//更改各个元素的位置
+					selection.updateLayoutByScale();
+					//更改整个试卷的宽高
+					selection.changeExamPagerSize();
 				});
 			}
 			
@@ -148,67 +156,232 @@
 			//恢复整个试卷内容
 			function recoverPaper() {
 				var data = {
-				    designFor: {
-				        paperId: 1,
-				        answerCardImageNum: 0,
-				        answerCardCuttingTemplates: [{
-				            index: 0,
-				            rotate: 0,
-				            url: "/grading/static/css/images/shijuan.jpg"
-				        },
-				        {
-				            index: 1,
-				            rotate: 0,
-				            url: "/grading/static/css/images/shijuan2.jpg"
-				        }]
-				    },
-				    cutTo: [{
-				        id: 0,
-				        name: 1,
-				        areaInPaper: {
-				            left: 244,
-				            top: 119,
-				            width: 191,
-				            height: 102
-				        },
-				        itemAreas: [{
-				            item: {
-				                title: 2,
-				                fullScore: 5.0,
-				                validValues: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
-				                seriesScore: true,
-				                interval: 1.0
-				            }
-				        }],
-				        requiredPinci: 1,
-				        maxerror: 1.0,
-				        answerCardImageIdx: 0,
-				        fullScore: 10.0
-				    },
-				    {
-				        id: 0,
-				        name: 1,
-				        areaInPaper: {
-				            left: 257,
-				            top: 259,
-				            width: 236,
-				            height: 145
-				        },
-				        itemAreas: [{
-				            item: {
-				                title: 2,
-				                fullScore: 6.0,
-				                validValues: [0.0, 2.0, 4.0, 6.0],
-				                seriesScore: true,
-				                interval: 2.0
-				            }
-				        }],
-				        requiredPinci: 1,
-				        maxerror: 1.0,
-				        answerCardImageIdx: 1,
-				        fullScore: 10.0
-				    }]
-				}
+					    designFor: {
+					        paperId: 1,
+					        answerCardImageNum: 0,
+					        answerCardCuttingTemplates: [{
+					            index: 0,
+					            rotate: 0,
+					            url: "/grading/static/css/images/shijuan.jpg"
+					        },
+					        {
+					            index: 1,
+					            rotate: 0,
+					            url: "/grading/static/css/images/shijuan2.jpg"
+					        }]
+					    },
+					    cutTo: [{
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 244,
+					            top: 119,
+					            width: 191,
+					            height: 102
+					        },
+					        itemAreas: [{
+					            item: {
+					                title: 2,
+					                fullScore: 5.0,
+					                validValues: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
+					                seriesScore: true,
+					                interval: 1.0
+					            }
+					        }],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 0,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 505,
+					            top: 63,
+					            width: 271,
+					            height: 136
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 0,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 998,
+					            top: 258,
+					            width: 268,
+					            height: 114
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 0,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 257,
+					            top: 259,
+					            width: 236,
+					            height: 145
+					        },
+					        itemAreas: [{
+					            item: {
+					                title: 2,
+					                fullScore: 6.0,
+					                validValues: [0.0, 2.0, 4.0, 6.0],
+					                seriesScore: true,
+					                interval: 2.0
+					            }
+					        }],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 770,
+					            top: 340,
+					            width: 184,
+					            height: 128
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 557,
+					            top: 622,
+					            width: 291,
+					            height: 157
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 0,
+					            top: 0,
+					            width: 0,
+					            height: 0
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 1254,
+					            top: 818,
+					            width: 650,
+					            height: 304
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 637,
+					            top: 1393,
+					            width: 712,
+					            height: 312
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 2280,
+					            top: 1200,
+					            width: 886,
+					            height: 620
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 1888,
+					            top: 216,
+					            width: 350,
+					            height: 272
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 0,
+					            top: 0,
+					            width: 0,
+					            height: 0
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        areaInPaper: {
+					            left: 351,
+					            top: 996,
+					            width: 477,
+					            height: 274
+					        },
+					        itemAreas: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    }]
+					};
 				//试卷数据
 				var examObj = ExamObj.newInstance();
 				examObj.paperId = data.designFor.paperId;
@@ -327,14 +500,14 @@
 			//初始化缩放slider控件
 			function initSliderBar() {
 				$(".sliderui").slider();
-//				$(".slider-enabled").click(function() {
-//					if(this.checked) {
-//						$(this).siblings(".sliderui").slider("enable");
-//					}
-//					else {
-//						$(this).siblings(".sliderui").slider("disable");
-//					}
-//				});
+				$(".slider-enabled").click(function() {
+					if(this.checked) {
+						$(this).siblings(".sliderui").slider("enable");
+					}
+					else {
+						$(this).siblings(".sliderui").slider("disable");
+					}
+				});
 			}
 			
 			//初始化分页
@@ -367,6 +540,8 @@
 				}else {//跳转到其他答题卡页面
 					stage_unsaved_element();
 					var selection = window.examObj.examPapers[index];
+					//设置当前缩放倍数等于当前设置的缩放倍数
+					selection.scaleRate = window.examObj.examPapers[curIndex].scaleRate;
 					//如果是不存在的就直接创建一个
 					if(selection == undefined) {
 						initSelection(index);
@@ -375,6 +550,7 @@
 						
 					}
 					
+					//更改当前选中元素样式
 					resetCurrentPageStyle(target);
 				}
 			}
