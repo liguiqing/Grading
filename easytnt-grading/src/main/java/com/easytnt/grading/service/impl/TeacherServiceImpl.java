@@ -24,7 +24,7 @@ import com.easytnt.security.PasswordEncryptor;
 public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
 		implements TeacherService {
 
-	@Autowired
+	@Autowired(required=false)
 	private PasswordEncryptor passwordEncryptor;
 	
 	private TeacherRepository teacherRepository;
@@ -58,7 +58,7 @@ public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
 		String password = teacher.getTeacherPassord();
 		if(password == null)
 			password = teacher.getTeacherAccount();
-		String newPassword =  passwordEncryptor.encrypt(password, teacher.getTeacherAccount());
+		String newPassword =  passwordEncryptor==null?password:passwordEncryptor.encrypt(password, teacher.getTeacherAccount());
 		teacher.setTeacherPassord(newPassword);
 	}
 	
