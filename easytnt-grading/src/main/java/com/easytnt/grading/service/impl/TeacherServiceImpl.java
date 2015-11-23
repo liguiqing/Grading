@@ -21,12 +21,11 @@ import com.easytnt.security.PasswordEncryptor;
  *
  */
 @Service
-public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
-		implements TeacherService {
+public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>implements TeacherService {
 
-	@Autowired
+	@Autowired(required = false)
 	private PasswordEncryptor passwordEncryptor;
-	
+
 	private TeacherRepository teacherRepository;
 
 	public TeacherServiceImpl() {
@@ -39,33 +38,32 @@ public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
 		super.setRepository(repository);
 	}
 
-
-	
-	@Transactional(readOnly=true)
-	public void query(Query<Teacher> query){
+	@Transactional(readOnly = true)
+	public void query(Query<Teacher> query) {
 		this.teacherRepository.query(query);
 	}
-	
+
 	@Override
 	@Transactional
 	public void create(Teacher teacher) {
 		encryptPassword(teacher);
 		super.create(teacher);
-		
+
 	}
-	
+
 	private void encryptPassword(Teacher teacher) {
 		String password = teacher.getTeacherPassord();
-		if(password == null)
+		if (password == null)
 			password = teacher.getTeacherAccount();
-		String newPassword =  passwordEncryptor.encrypt(password, teacher.getTeacherAccount());
+		String newPassword = passwordEncryptor == null ? password
+				: passwordEncryptor.encrypt(password, teacher.getTeacherAccount());
 		teacher.setTeacherPassord(newPassword);
 	}
-	
+
 	@Override
 	@Transactional
 	public void update(Teacher teacher) {
-		if(teacher.getTeacherId() == null)
+		if (teacher.getTeacherId() == null)
 			throw new UnsupportedOperationException("组长主唯一标识不能为空");
 		Teacher t = this.load(teacher.getTeacherId());
 		t.copyNameFrom(teacher);
@@ -74,11 +72,11 @@ public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
 	@Override
 	@Transactional
 	public void create(Teacher teacher, int amount) {
-		int seq = this.teacherRepository.selectMaxSeqOf(teacher.getSubject().getId(),teacher.getLeader());
-		teacher.genAccount(seq); 
-		logger.debug("科目{} 最新账号是：{}",teacher.getSubject().getSubjectCode(),teacher.getTeacherAccount());
+		int seq = this.teacherRepository.selectMaxSeqOf(teacher.getSubject().getId(), teacher.getLeader());
+		teacher.genAccount(seq);
+		logger.debug("科目{} 最新账号是：{}", teacher.getSubject().getSubjectCode(), teacher.getTeacherAccount());
 		List<Teacher> teachers = teacher.cloneTimes(amount);
-		for(Teacher t:teachers) {
+		for (Teacher t : teachers) {
 			this.create(t);
 		}
 	}
@@ -91,13 +89,13 @@ public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
 		this.teacherRepository.update(teacher);
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	@Override
 	public Teacher findTeacher(String account) {
 		return this.teacherRepository.selectTeacherAnHisTask(account);
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	@Override
 	public List<Teacher> findSubjectTeachers(Subject subject) {
 		return this.teacherRepository.selectTeachersOfSubject(subject.getId());

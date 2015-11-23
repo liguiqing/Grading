@@ -21,3 +21,4 @@
 			<column name="path" />
 		</property>
 	</class>
+</hibernate-mapping>

@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import com.easytnt.grading.domain.room.District;
+import com.easytnt.security.sso.SsoUserDetails;
 
 @ContextConfiguration(locations= {"classpath:applicationContext.xml","classpath*:applicationContext-*.xml"})
 public class HiberConfiguationTest  extends AbstractTransactionalJUnit4SpringContextTests{
@@ -33,13 +34,7 @@ public class HiberConfiguationTest  extends AbstractTransactionalJUnit4SpringCon
 		assertNotNull(sessionFactoryMock);
 		Session session = sessionFactoryMock.openSession();
 		assertNotNull(session);
-		District district = new District(100);
-		session.beginTransaction();
-		session.save(district);
-		assertNotNull(district.getId());
-		assertTrue(district.getId() > 0);
-		session.delete(district);
-		session.getTransaction().commit();
+		session.load(SsoUserDetails.class, 1L);
 	}
 
 }
