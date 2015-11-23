@@ -243,7 +243,7 @@ CREATE TABLE `papersubiteminfo` (
   `width` int(4) DEFAULT NULL   COMMENT '在切割块相对宽度，最小值0',
   `height` int(4) DEFAULT NULL COMMENT'在切割块相对高度，最小值0',
   `right` int(4) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `paperimport`;
 CREATE TABLE `paperimport` (
@@ -310,3 +310,4 @@ CREATE TABLE `lastscore` (
   `scoretype` int(11) DEFAULT NULL COMMENT '最终得分时的评次',
   `delmark` int(11) DEFAULT NULL COMMENT '删除标记:-1为删除,大于0正常'
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='最终成绩信息表，每个切割图片完成评卷后需要在此记录关信息';
+

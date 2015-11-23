@@ -3,9 +3,13 @@
  */
 package com.easytnt.cutimage;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+
+import javax.imageio.ImageIO;
 
 import org.junit.Test;
 
@@ -30,6 +34,14 @@ import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.Util;
+
+import ij.IJ;
+import ij.ImageJ;
+import ij.ImagePlus;
+import ij.gui.Roi;
+import ij.io.Opener;
+import ij.process.ImageProcessor;
+import net.coobird.thumbnailator.Thumbnails;
 
 /**
  * <pre>
@@ -211,5 +223,71 @@ public class CuttingImageTest {
 		area.setAnswerCardImageIdx(answerCardImageIdx);
 		area.setAreaInPaper(new Area(left, top, width, height));
 		return area;
+	}
+
+	@Test
+	public void ReadImage() throws Exception {
+		String url = "D:/test/tif/lizong/01/222000027";
+		String name = "00000001.Tif";
+		Opener opener = new Opener();
+		ImagePlus imagePlus = opener.openTiff(url, name);
+		ImageProcessor ip = imagePlus.getChannelProcessor();
+		imagePlus.getProcessor();
+		// imagePlus.show();
+		// System.out.println();
+		BufferedImage image = imagePlus.getBufferedImage();
+		BufferedImage tempImage = Thumbnails.of(image).size(500, 500).asBufferedImage();
+		ImageIO.write(tempImage, "png", new File("D:/test/test.png"));
+	}
+
+	@Test
+	public void opentImage() throws Exception {
+
+		// int width = 400;
+		// int height = 400;
+		// ImageProcessor ip = new ByteProcessor(width, height);
+		// String title = "My new image";
+		// ImagePlus imp = new ImagePlus(title, ip);
+		// imp.show();
+
+		ImagePlus imagePlus = IJ.openImage("D:/test/1.Tif");
+		// // imagePlus.show();
+		ImageProcessor ip = imagePlus.getChannelProcessor();
+		Roi roi = new Roi(30, 40, 100, 100); // x, y, width, height of the
+												// rectangle
+		ip.setRoi(roi);
+		ip.setValue(255);
+		ip.fill();
+
+		double angle = 45;
+		ip.setInterpolate(true); // bilinear
+		ip.rotate(45);
+
+		imagePlus.updateAndDraw();
+		imagePlus.show();
+		// ip.flipHorizontal();
+		// //
+		// ip.flipVertical();
+		// //
+		// // ip.rotateLeft();
+		// ip.setInterpolate(true);
+		// ip.rotate(90);
+		//
+		// // Roi roi = new Roi(0, 0, 50, 50);
+		// // imagePlus.setRoi(roi);
+		//
+		// // BufferedImage imageBuf = roi.getMask().getBufferedImage();
+		//
+		// ImageIO.write(ip.getBufferedImage(), "png", new
+		// File("d:/test/myTest.png"));
+
+		System.out.println();
+	}
+
+	@Test
+	public void start() throws Exception {
+		// ImageJ imageJ = new ImageJ();
+		ImageJ.main(null);
+		System.out.println();
 	}
 }

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.cutimage.disruptor.event.StudentTestPaperAnswerCardEvent;
-import com.easytnt.cutimage.utils.CuttingImage;
+import com.easytnt.cutimage.utils.ImageJCuttingImage;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;
 
@@ -31,9 +31,9 @@ public class CuttingImageHandler
 	@Override
 	public void onEvent(StudentTestPaperAnswerCardEvent event) throws Exception {
 		log.debug("开始切割....");
-		CuttingImage cuttingImage = new CuttingImage(event);
-
+		// CuttingImage cuttingImage = new CuttingImage(event);
 		// CuttingImageService service = new CuttingImageService(event);
+		ImageJCuttingImage cuttingImage = new ImageJCuttingImage(event);
 		try {
 			cuttingImage.cutting();
 			// service.cutting();
