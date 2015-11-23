@@ -4,7 +4,7 @@
     <ul><li>正为<a href="javascript:void(0);">${teacher.teacherAccount}<b>[${teacher.teacherName!}]</b></a>分配<b>${subject.name}</b>评卷任务</li></ul>
   </div>
 </div>
-<div class="row" style="display:none;">  
+<div class="row" style="display:none;">
   <div class="col-md-12">
 	<ul class="list-group">
 	  <li class="list-group-item">

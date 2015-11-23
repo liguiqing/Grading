@@ -28,7 +28,7 @@
 		  	    <#else>
 		  	      <td><a href="javascript:void(0)">${usedPaper.sections ?size}</a></td>
 		  	    </#if>
-		  	    <td ><a href="${request.contextPath}/task/assignto/subject/${result.subject.id}/${usedPaper.paperId}">分配任务</a></td>
+		  	    <td ><a href="${request.contextPath}/task/assignto/${result.subject.id}/${usedPaper.paperId}">分配任务</a></td>
 		  	    <td data-rr-paperId="${usedPaper.paperId}" >${usedPaper.fullScore}</td>
 		  	    <td>${usedPaper.objectivityScore}</td>
 		  	    <td>${usedPaper.subjectivityScore}</td>

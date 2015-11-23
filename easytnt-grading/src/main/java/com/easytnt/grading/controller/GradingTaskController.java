@@ -86,7 +86,7 @@ public class GradingTaskController {
 				.with("page","workerTask").build();
 	}
 	
-	@RequestMapping(value = "/assignto/subject/{subjectId}/{paperId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/assignto/{subjectId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView onSubjectTask(@PathVariable Long subjectId,@PathVariable Long paperId) throws Exception {
 		logger.debug("URL /teacher/assignto/{} Method GET ",subjectId);
 		MenuGroup topRightMenuGroup = MenuGroupFactory.getInstance().getTopRightMenuGroup();
@@ -98,16 +98,39 @@ public class GradingTaskController {
 		Subject subject = subjectService.load(subjectId);
 		List<Teacher> teachers = teacherService.findSubjectTeachers(subject);
 		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
-		
 		return ModelAndViewFactory.newModelAndViewFor("/config")
 				.with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus())
 				.with("menus3", configMenuGroup.getMenus())
+				.with("paperId",paperId)
 				.with("subject",subject)
 				.with("teachers",teachers)
 				.with("cuttingsSolution",cuttingsSolution)
 				.with("js", "config/subjectTask")
 				.with("page","subjectTask").build();
+	}
+	
+	@RequestMapping(value = "/assignto/{cuttoId}/{teacherId}", method = RequestMethod.POST)
+	public ModelAndView onSubjectTaskAssignto(@PathVariable Long cuttoId,
+			@PathVariable Long teacherId) throws Exception {
+		logger.debug("URL /teacher/assignto/{}/{} Method POST ",cuttoId,teacherId);
+		
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
+	
+	@RequestMapping(value = "/unassignto/{cuttoId}/{teacherId}", method = RequestMethod.DELETE)
+	public ModelAndView onTaskUnAssignto(@PathVariable Long cuttoId,
+			@PathVariable Long teacherId) throws Exception {
+		logger.debug("URL /teacher/unassignto/{}/{} Method DELETE ",cuttoId,teacherId);
+		
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
+	
+	@RequestMapping(value = "/assigned/{cuttoId}", method = RequestMethod.GET)
+	public ModelAndView onSubjectTaskAssigned(@PathVariable Long cuttoId) throws Exception {
+		logger.debug("URL /teacher/assigned/{} Method GET ",cuttoId);
+		
+		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)

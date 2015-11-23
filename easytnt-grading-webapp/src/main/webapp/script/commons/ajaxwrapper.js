@@ -135,7 +135,7 @@
 					method : Method.POST
 				});					
 			},
-			send:function(url,data,dataType,contentType,messages,callback){
+			send:function(url,data,dataType,contentType,method,messages,callback){
 				doAjax({
 					url : url,
 					data : data||{},

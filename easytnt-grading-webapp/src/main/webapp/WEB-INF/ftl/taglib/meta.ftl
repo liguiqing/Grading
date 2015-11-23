@@ -1,4 +1,3 @@
-
     <meta charset="utf-8" />   
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
@@ -26,5 +25,3 @@
     <script src="${request.contextPath}/static/script/lib/bootstrap/respond.min.js"></script>
     <script src="${request.contextPath}/static/script/lib/bootstrap/html5shiv.js"></script>
     <![endif]-->
-
-
