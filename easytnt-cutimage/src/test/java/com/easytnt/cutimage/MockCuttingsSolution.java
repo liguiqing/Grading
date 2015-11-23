@@ -51,7 +51,7 @@ public class MockCuttingsSolution {
 		template.setIndex(0).setRotate(-90);
 		answerCardCuttingTemplates.add(template);
 		template = new AnswerCardCuttingTemplate();
-		template.setIndex(0).setRotate(90);
+		template.setIndex(1).setRotate(90);
 		answerCardCuttingTemplates.add(template);
 
 		ExamPaper examPaper = new ExamPaper();

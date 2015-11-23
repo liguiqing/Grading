@@ -5,7 +5,6 @@ package com.easytnt.cutimage.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -33,48 +32,13 @@ import net.coobird.thumbnailator.Thumbnails;
  * @author liuyu
  *
  */
-public class CuttingImage {
+public class CuttingImage extends BaseCuttingImage {
 	private Logger log = LoggerFactory.getLogger(CuttingImage.class);
-	private StudentTestPaperAnswerCardEvent event;
 
-	private long diquId;// 地区ID
-	private long kcId;// 考场ID
-	private String studentId;//
-
-	private String cuttingRootPath;// 切割块存放的位置
 	private ArrayList<BufferedImage> bufferedImages = new ArrayList<>();
 
 	public CuttingImage(StudentTestPaperAnswerCardEvent event) {
-		this.event = event;
-		init();
-	}
-
-	private void init() {
-		this.studentId = event.getStudentId();
-		setDqIdAndKcId();
-		setCuttingRootPath();
-	}
-
-	private void setDqIdAndKcId() {
-		Path rootDir = Paths.get(event.getRootDir());
-		Path filePath = Paths.get(event.getFilePaths().get(0));
-		int rootDirNum = rootDir.getNameCount();
-		String dqIdStr = filePath.getName(rootDirNum).toString();
-		String kcIdStr = filePath.getName(rootDirNum + 1).toString();
-		try {
-			this.diquId = Integer.parseInt(dqIdStr);
-		} catch (Exception e) {
-			this.diquId = 1;
-		}
-		try {
-			this.kcId = Long.parseLong(kcIdStr);
-		} catch (Exception e) {
-			this.kcId = 0L;
-		}
-	}
-
-	private void setCuttingRootPath() {
-		cuttingRootPath = event.getCuttingsSolution().getDesignFor().getCuttingRootPath();
+		super(event);
 	}
 
 	private void createBufferedImages() throws Exception {
@@ -126,6 +90,7 @@ public class CuttingImage {
 		}
 	}
 
+	@Override
 	public void cutting() throws Exception {
 
 		createBufferedImages();// 读取图片buffer
@@ -143,32 +108,9 @@ public class CuttingImage {
 		event.setCutImageInfos(cutImageInfos);
 	}
 
-	private String createSaveFilePath(Long itemId) throws Exception {
-		StringBuffer saveFilePath = new StringBuffer();
-		saveFilePath.append(cuttingRootPath).append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/")
-				.append(diquId).append("/").append(kcId).append("/").append(itemId).append("/").append(studentId)
-				.append(".png");
-		Path path = Paths.get(saveFilePath.toString());
-		if (!Files.exists(path.getParent())) {
-			Files.createDirectories(path.getParent());
-		}
-		return saveFilePath.toString();
-	}
-
 	private void cutting(String savePath, BufferedImage bufferImage, Area area) throws Exception {
 		Thumbnails.of(bufferImage).sourceRegion(area.getLeft(), area.getTop(), area.getWidth(), area.getHeight())
 				.size(area.getWidth(), area.getHeight()).toFile(savePath);
-	}
-
-	private CutImageInfo createCutImageInfo(Long itemId) {
-		StringBuffer imagePath = new StringBuffer();
-		imagePath.append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/").append(diquId).append("/")
-				.append(kcId).append("/").append(itemId).append("/").append(studentId).append(".png");
-		CutImageInfo cutImageInfo = new CutImageInfo();
-		cutImageInfo.setPaperId(event.getCuttingsSolution().getDesignFor().getPaperId()).setDiquId(diquId)
-				.setRoomId(kcId).setVirtualroomId(kcId).setItemId(itemId).setImagePath(imagePath.toString())
-				.setStudentId(Long.parseLong(studentId));
-		return cutImageInfo;
 	}
 
 }
