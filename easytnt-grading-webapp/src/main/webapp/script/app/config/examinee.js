@@ -11,10 +11,15 @@
 				return false;
 			});
 			$('#upload').click(function(){
-				if($('div.file-preview-filename').val() == 0){
+				if($('input.file-preview-filename').val().length == 0){
 					return;
 				}
-				ajaxWrapper.upload('examinee/upload','fileName',{beforeMsg:{tipText:"",show:true},successMsg:{tipText:"上传成功",show:true}});
+				
+				ajaxWrapper.upload('examinee/upload','fileName',
+						{beforeMsg:{tipText:"",show:true},successMsg:{tipText:"上传成功",show:true}},
+						function(){
+							window.location.reload();
+						});
 			});
 			
 			this.query = function(pager){

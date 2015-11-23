@@ -23,15 +23,20 @@
 		
 		<property name="mappingResources">
 			<list>
-				 <value>hibernate/mapping/exam/Subject.hbm.xml</value>
-				 <value>hibernate/mapping/exam/Exam.hbm.xml</value>
-				 <value>hibernate/mapping/grade/Teacher.hbm.xml</value>
-				 <value>hibernate/mapping/paper/ExamPaper.hbm.xml</value>
-				 <value>hibernate/mapping/paper/Item.hbm.xml</value>
-				 <value>hibernate/mapping/paper/Section.hbm.xml</value>
-				 <value>hibernate/mapping/paper/PaperCard.hbm.xml</value>
-				 <value>hibernate/mapping/exam/SubjectExam.hbm.xml</value>
-				 <value>hibernate/mapping/room/District.hbm.xml</value>
+				<value>hibernate/mapping/exam/Subject.hbm.xml</value>
+				<value>hibernate/mapping/exam/Exam.hbm.xml</value>
+				<value>hibernate/mapping/grade/Teacher.hbm.xml</value>
+				<value>hibernate/mapping/grade/GradeTask.hbm.xml</value>
+				<value>hibernate/mapping/grade/Referees.hbm.xml</value>				
+				<value>hibernate/mapping/paper/ExamPaper.hbm.xml</value>
+				<value>hibernate/mapping/paper/Item.hbm.xml</value>
+				<value>hibernate/mapping/paper/Section.hbm.xml</value>
+				<value>hibernate/mapping/paper/PaperCard.hbm.xml</value>
+				<value>hibernate/mapping/exam/SubjectExam.hbm.xml</value>
+				<value>hibernate/mapping/room/District.hbm.xml</value>
+				<value>hibernate/mapping/cutting/CuttingsArea.hbm.xml</value>
+				<value>hibernate/mapping/cutting/PositionOfItemInArea.hbm.xml</value>
+				<value>hibernate/mapping/user/SsoUser.hbm.xml</value>
 			</list>
 		</property>
 	</bean>

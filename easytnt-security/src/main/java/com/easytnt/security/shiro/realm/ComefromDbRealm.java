@@ -38,7 +38,7 @@ import com.easytnt.security.UserDetails;
 public class ComefromDbRealm extends AuthorizingRealm {
 	private Logger logger = LoggerFactory.getLogger(ComefromDbRealm.class);
 
-	private String sql = "select user_name,user_pwd,enabled from tb_user where user_name+?";
+	private String sql = "select user_name,user_pwd,enabled from tb_user where user_name=?";
 
 	private String userNameField = "user_name";
 

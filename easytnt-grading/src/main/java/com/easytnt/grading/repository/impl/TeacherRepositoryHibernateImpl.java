@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -30,17 +31,13 @@ public class TeacherRepositoryHibernateImpl extends HibernateRepository<Teacher,
 		return ((Double)o).intValue();
 	}
 	
-	//根据科目查询教师信息
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Teacher> getTeacherSname(Long subject_id) {
-		String hql = " from Teacher t where t.subject.id= "+subject_id;
-		Query q = this.getCurrentSession().createQuery(hql);
-		List<Teacher> tlist = q.list();
-		if(tlist.size()>0){
-			return tlist;
-		}
-		return null;
+	public List<Teacher> selectTeachersOfSubject(Long subjectId) {
+		Criteria criteria = this.getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("subject.id", subjectId));
+		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		criteria.addOrder(Order.desc("leader"));
+		return criteria.list();
 	}
 	
 	@Override
@@ -73,5 +70,14 @@ public class TeacherRepositoryHibernateImpl extends HibernateRepository<Teacher,
 	@Override
 	protected Class<Teacher> getEntityClass() {
 		return Teacher.class;
+	}
+
+	@Override
+	public Teacher selectTeacherAnHisTask(String teacherAccount) {
+		Criteria criteria = this.getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("teacherAccount", teacherAccount));
+		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		Teacher t = (Teacher)criteria.uniqueResult();
+		return t;
 	}
 }

@@ -18,6 +18,29 @@
 	 color:#fff;
 }
 
+.config-panel .list-group-item .navbar-nav a:HOVER{
+    background-color: #fff;
+    color:#c5c5c5;
+}
+
+.config-panel .list-task .control-label.leader{
+	color:#a94442;
+}
+
+.config-panel .list-group-item .navbar-nav a{
+	font-size:12pt;
+	color:#000;
+	padding:0px 30px 0 0 ;
+}
+
+.config-panel .list-group-item .navbar-nav .list-group-item-success{
+	margin:0px 15px 0 0 ;
+}
+
+.config-panel .list-group-item .navbar-nav.navbar-right{
+	margin:0px 15px 0 0 ;
+}
+
 .config-panel .navbar-nav a:HOVER,.config-panel .config-actived a{
 	 color:#000;
 }
@@ -46,6 +69,11 @@
 
 .subject-container,.worker-container{
 	overflow:auto;
+}
+
+.subject-container>.row{
+	margin-left:0px;
+	margin-right:0px;
 }
 
 .subject-container .doing{

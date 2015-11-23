@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-11-9 10:57:59 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.easytnt.grading.domain.grade.GradeTask" table="task">
+		<id name="taskId" type="java.lang.Long">
+			<column name="task_id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="genBy" column="cuttings_id"
+			class="com.easytnt.grading.domain.cuttings.CuttingsArea" fetch="join" lazy="false" cascade="none">
+		</many-to-one>
+		<many-to-one name="assignedTo" column="referees_id"
+			class="com.easytnt.grading.domain.grade.Referees" fetch="join" lazy="false" cascade="none">
+		</many-to-one>		
+		
+	</class>
+</hibernate-mapping>

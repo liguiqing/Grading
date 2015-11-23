@@ -2,7 +2,7 @@
   <table class="table table-striped table-bordered ">
   	<thead class="bg-primary">
   	  <tr>
-  	    <th>科目</th><th>试卷量</th><th>答题卡原图</th><th>切割块</th><th>满分</th><th>客观题满分</th><th>主观题满分</th><th>切割试卷</th><th>导入情况</th><#--<th>删除</th>-->
+  	    <th>科目</th><th>试卷量</th><th>答题卡原图</th><th>切割块</th><th>分配任务</th><th>满分</th><th>客观题满分</th><th>主观题满分</th><th>导入情况</th><#--<th>删除</th>-->
   	  </tr>
   	</thead>
   	<tbody>
@@ -28,16 +28,13 @@
 		  	    <#else>
 		  	      <td><a href="javascript:void(0)">${usedPaper.sections ?size}</a></td>
 		  	    </#if>
+		  	    <td ><a href="${request.contextPath}/task/assignto/subject/${result.subject.id}/${usedPaper.paperId}">分配任务</a></td>
 		  	    <td data-rr-paperId="${usedPaper.paperId}" >${usedPaper.fullScore}</td>
 		  	    <td>${usedPaper.objectivityScore}</td>
 		  	    <td>${usedPaper.subjectivityScore}</td>
-		  	    <td style="width:300px;"><i data-paperid="${usedPaper.paperId}" class="cuttingPaper glyphicon glyphicon-scissors" style="cursor: pointer;" ></i></td>
 		  	    </#list>
 	  	    </#if>
-	  	    <td class="doing">
-	  	    &nbsp;
-	  	    <i class=" icon-remove" style="cursor: pointer;"></i>
-	  	    </td>
+	  	    <td class="doing"><i class=" icon-remove" style="cursor: pointer;"></i></td>
 	  	    <#--
 	  	    <td>
 	  	    <a href="javascript:void(0)" id="removeSubject"><i class="icon-minus"></i></a></td>-->
@@ -45,7 +42,7 @@
 	  	</#list>
   	</#if>	    	
   	  <tr class="bg-warning">
-  	    <td><a href="javascript:void(0)" id="newSubject"><i class="icon-plus"></i></a></td><td>0</td><td></td><td><a href="javascript:void(0)">设计切割方案</a></td><td>0</td><td>0</td><td>0</td><td></td><td class="doing"></td>
+  	    <td><a href="javascript:void(0)" id="newSubject"><i class="icon-plus"></i></a></td><td>0</td><td></td><td><a href="javascript:void(0)">设计切割方案</a></td><td></td><td>0</td><td>0</td><td>0</td><td class="doing"></td>
   	  </tr>
   	</tbody>
   </table>

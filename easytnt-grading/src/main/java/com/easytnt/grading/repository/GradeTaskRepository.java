@@ -17,6 +17,5 @@ import com.easytnt.grading.domain.grade.GradeTask;
  **/
 public interface GradeTaskRepository extends Repository<GradeTask, Long> {
 
+	public void selectTaskOf(Long subjectId);
 }
-
-

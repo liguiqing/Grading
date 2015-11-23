@@ -1,3 +1,4 @@
+
 package com.easytnt.grading.repository;
 import java.util.List;
 
@@ -11,10 +12,11 @@ import com.easytnt.grading.domain.grade.Teacher;
  *
  */
 public interface TeacherRepository extends Repository<Teacher, Long> {
-	
-	//根据科目名称查询教师信息
-	public List<Teacher> getTeacherSname(Long subject_id);
 
 	int selectMaxSeqOf(Long subjectId, int leader);
+
+	public Teacher selectTeacherAnHisTask(String account);
+
+	public List<Teacher> selectTeachersOfSubject(Long id);
 	
 }

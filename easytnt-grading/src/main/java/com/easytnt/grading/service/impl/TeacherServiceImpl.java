@@ -2,13 +2,13 @@ package com.easytnt.grading.service.impl;
 
 import java.util.List;
 
-import org.hibernate.dialect.TeradataDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.commons.entity.service.AbstractEntityService;
+import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.grade.Teacher;
 import com.easytnt.grading.repository.TeacherRepository;
 import com.easytnt.grading.service.TeacherService;
@@ -89,5 +89,17 @@ public class TeacherServiceImpl extends AbstractEntityService<Teacher, Long>
 		teacher.resetPassord();
 		encryptPassword(teacher);
 		this.teacherRepository.update(teacher);
+	}
+
+	@Transactional(readOnly=true)
+	@Override
+	public Teacher findTeacher(String account) {
+		return this.teacherRepository.selectTeacherAnHisTask(account);
+	}
+
+	@Transactional(readOnly=true)
+	@Override
+	public List<Teacher> findSubjectTeachers(Subject subject) {
+		return this.teacherRepository.selectTeachersOfSubject(subject.getId());
 	}
 }

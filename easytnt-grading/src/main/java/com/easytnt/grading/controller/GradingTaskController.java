@@ -19,14 +19,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.ui.Menu;
+import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingsImage;
+import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
+import com.easytnt.grading.domain.grade.Teacher;
 import com.easytnt.grading.domain.paper.Section;
+import com.easytnt.grading.service.CuttingsSolutionService;
 import com.easytnt.grading.service.GradeTaskService;
 import com.easytnt.grading.service.RefereesService;
+import com.easytnt.grading.service.SubjectService;
+import com.easytnt.grading.service.TeacherService;
 
 /**
  * <pre>
@@ -47,6 +54,61 @@ public class GradingTaskController {
 
 	@Autowired(required = false)
 	private GradeTaskService taskService;
+	
+	@Autowired(required = false)
+	private TeacherService teacherService;
+	
+	@Autowired(required = false)
+	private SubjectService subjectService;
+	
+	@Autowired(required = false)
+	private CuttingsSolutionService cuttingsSolutionService;
+	
+	@RequestMapping(value = "/assignto/{subjectId}", method = RequestMethod.GET)
+	public ModelAndView onWorkerTask(@PathVariable Long subjectId,@RequestParam String worker) throws Exception {
+		logger.debug("URL /teacher/assignto/{} Method GET ",subjectId);
+		MenuGroup topRightMenuGroup = MenuGroupFactory.getInstance().getTopRightMenuGroup();
+		MenuGroup rightMenuGroup = MenuGroupFactory.getInstance().getRightMenuGroup();
+		MenuGroup configMenuGroup = MenuGroupFactory.getInstance().getConfigMenuGroup();
+		configMenuGroup.activedMenuByIndex(3);
+		rightMenuGroup.activedMenuByIndex(3); 
+		
+		Teacher teacher = teacherService.findTeacher(worker);
+		Subject subject = subjectService.load(subjectId);
+		
+		return ModelAndViewFactory.newModelAndViewFor("/config")
+				.with("menus2", topRightMenuGroup.getMenus())
+				.with("rightSideMenu", rightMenuGroup.getMenus())
+				.with("menus3", configMenuGroup.getMenus())
+				.with("teacher", teacher)
+				.with("subject",subject)
+				.with("js", "config/workerTask")
+				.with("page","workerTask").build();
+	}
+	
+	@RequestMapping(value = "/assignto/subject/{subjectId}/{paperId}", method = RequestMethod.GET)
+	public ModelAndView onSubjectTask(@PathVariable Long subjectId,@PathVariable Long paperId) throws Exception {
+		logger.debug("URL /teacher/assignto/{} Method GET ",subjectId);
+		MenuGroup topRightMenuGroup = MenuGroupFactory.getInstance().getTopRightMenuGroup();
+		MenuGroup rightMenuGroup = MenuGroupFactory.getInstance().getRightMenuGroup();
+		MenuGroup configMenuGroup = MenuGroupFactory.getInstance().getConfigMenuGroup();
+		configMenuGroup.activedMenuByIndex(3);
+		rightMenuGroup.activedMenuByIndex(3); 
+		
+		Subject subject = subjectService.load(subjectId);
+		List<Teacher> teachers = teacherService.findSubjectTeachers(subject);
+		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		
+		return ModelAndViewFactory.newModelAndViewFor("/config")
+				.with("menus2", topRightMenuGroup.getMenus())
+				.with("rightSideMenu", rightMenuGroup.getMenus())
+				.with("menus3", configMenuGroup.getMenus())
+				.with("subject",subject)
+				.with("teachers",teachers)
+				.with("cuttingsSolution",cuttingsSolution)
+				.with("js", "config/subjectTask")
+				.with("page","subjectTask").build();
+	}
 
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)
 	public ModelAndView onGetTask(@PathVariable Long taskId) throws Exception {

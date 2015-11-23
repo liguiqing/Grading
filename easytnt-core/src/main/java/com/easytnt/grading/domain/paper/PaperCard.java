@@ -27,6 +27,8 @@ public class PaperCard implements Entity<PaperCard> {
 	
 	private String path;
 	
+	private Integer rotate;
+	
 	public PaperCard(ExamPaper paper){
 		this.paper = paper;
 	}
@@ -87,6 +89,13 @@ public class PaperCard implements Entity<PaperCard> {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+	
+	public Integer getRotate() {
+		return rotate;
+	}
+	public void setRotate(Integer rotate) {
+		this.rotate = rotate;
 	}
 	
 }

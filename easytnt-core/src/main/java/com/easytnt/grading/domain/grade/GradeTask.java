@@ -97,8 +97,7 @@ public class GradeTask implements ValueObject<GradeTask> {
 	}
 	
 	public int getTotal() {
-		//TODO
-		return 12223;
+		return 0;
 	}
 	
 
@@ -132,6 +131,16 @@ public class GradeTask implements ValueObject<GradeTask> {
 
 	//以下功能为ORM或者自动构造使用，非此慎用
 	public GradeTask() {}
+	
+	private Long taskId;
+
+	public Long getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
+	}
 
 	public CuttingsArea getArea() {
 		return genBy;
