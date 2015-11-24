@@ -4,6 +4,8 @@
  **/
 package com.easytnt.grading.service;
 
+import java.util.List;
+
 import com.easytnt.commons.entity.service.EntityService;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
@@ -37,6 +39,12 @@ public interface GradeTaskService extends EntityService<GradeTask, Long> {
 
 	void itemError(Long taskId, Referees referees,String reason)
 			throws Exception;
+
+	void newTasckFor(Long cuttoId, Long teacherId);
+
+	void removeTasckFor(Long cuttoId, Long teacherId);
+
+	List<GradeTask> getTaskOf(Long cuttoId);
 
 }
 

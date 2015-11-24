@@ -21,7 +21,7 @@ public interface RefereesService  extends EntityService<Referees, Long>{
 	 * 得到当前登录的评卷员
 	 * @return
 	 */
-	Referees getCurrentReferees();
+	Referees getCurrentReferees() throws Exception;
 }
 
 

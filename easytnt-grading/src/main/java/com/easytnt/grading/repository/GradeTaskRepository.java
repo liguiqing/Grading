@@ -4,6 +4,8 @@
  **/
 package com.easytnt.grading.repository;
 
+import java.util.List;
+
 import com.easytnt.commons.entity.repository.Repository;
 import com.easytnt.grading.domain.grade.GradeTask;
 
@@ -17,5 +19,7 @@ import com.easytnt.grading.domain.grade.GradeTask;
  **/
 public interface GradeTaskRepository extends Repository<GradeTask, Long> {
 
-	public void selectTaskOf(Long subjectId);
+	public GradeTask findRefereesTask(Long cuttoId, Long refereesId);
+
+	public List<GradeTask> findGenTasks(Long cuttoId);
 }

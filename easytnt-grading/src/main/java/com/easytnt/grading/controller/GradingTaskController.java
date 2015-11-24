@@ -93,7 +93,7 @@ public class GradingTaskController {
 		MenuGroup rightMenuGroup = MenuGroupFactory.getInstance().getRightMenuGroup();
 		MenuGroup configMenuGroup = MenuGroupFactory.getInstance().getConfigMenuGroup();
 		configMenuGroup.activedMenuByIndex(3);
-		rightMenuGroup.activedMenuByIndex(3); 
+		rightMenuGroup.activedMenuByIndex(3);
 		
 		Subject subject = subjectService.load(subjectId);
 		List<Teacher> teachers = teacherService.findSubjectTeachers(subject);
@@ -114,7 +114,7 @@ public class GradingTaskController {
 	public ModelAndView onSubjectTaskAssignto(@PathVariable Long cuttoId,
 			@PathVariable Long teacherId) throws Exception {
 		logger.debug("URL /teacher/assignto/{}/{} Method POST ",cuttoId,teacherId);
-		
+		taskService.newTasckFor(cuttoId,teacherId);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 	
@@ -122,15 +122,15 @@ public class GradingTaskController {
 	public ModelAndView onTaskUnAssignto(@PathVariable Long cuttoId,
 			@PathVariable Long teacherId) throws Exception {
 		logger.debug("URL /teacher/unassignto/{}/{} Method DELETE ",cuttoId,teacherId);
-		
+		taskService.removeTasckFor(cuttoId,teacherId);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 	
 	@RequestMapping(value = "/assigned/{cuttoId}", method = RequestMethod.GET)
 	public ModelAndView onSubjectTaskAssigned(@PathVariable Long cuttoId) throws Exception {
 		logger.debug("URL /teacher/assigned/{} Method GET ",cuttoId);
-		
-		return ModelAndViewFactory.newModelAndViewFor().build();
+		List<GradeTask> thisTasks =  taskService.getTaskOf(cuttoId);
+		return ModelAndViewFactory.newModelAndViewFor().with("tasks", thisTasks).build();
 	}
 
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)

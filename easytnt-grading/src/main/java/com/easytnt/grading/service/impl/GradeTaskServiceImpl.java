@@ -4,6 +4,8 @@
  **/
 package com.easytnt.grading.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.easytnt.commons.entity.service.AbstractEntityService;
 import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.dispatcher.DispathcerManager;
+import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
+import com.easytnt.grading.repository.CuttingsAreaRepository;
 import com.easytnt.grading.repository.CuttingsImageGradeRecordRepository;
 import com.easytnt.grading.repository.GradeTaskRepository;
+import com.easytnt.grading.repository.RefereesRepository;
 import com.easytnt.grading.service.GradeTaskService;
 
 /**
@@ -37,6 +42,12 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 
 	@Autowired(required = false)
 	private CuttingsImageGradeRecordRepository gradeRecordRepository;
+	
+	@Autowired
+	private RefereesRepository refereesRepository;
+	
+	@Autowired
+	private	CuttingsAreaRepository cuttingsAreaRepository;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -106,6 +117,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	}
 
 	@Override
+	@Transactional
 	public boolean recoverUndo(GradeTask task) {
 		Referees referees = task.getAssignedTo();
 		CuttingsImageGradeRecord gradeRecord = gradeRecordRepository.findUndoRecordOf(task);
@@ -114,6 +126,28 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	@Transactional
+	public void newTasckFor(Long cuttoId, Long refereesId) {
+		Referees referees = this.refereesRepository.load(refereesId);
+		CuttingsArea genBy = this.cuttingsAreaRepository.load(cuttoId);
+		GradeTask task = GradeTask.createOfficialGradeTask(referees, genBy);
+		this.taskRepository.save(task);
+	}
+
+	@Override
+	@Transactional
+	public void removeTasckFor(Long cuttoId, Long refereesId) {
+		GradeTask task = this.taskRepository.findRefereesTask(cuttoId, refereesId);
+		this.taskRepository.delete(task);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<GradeTask> getTaskOf(Long cuttoId) {
+		return this.taskRepository.findGenTasks(cuttoId);
 	}
 
 }

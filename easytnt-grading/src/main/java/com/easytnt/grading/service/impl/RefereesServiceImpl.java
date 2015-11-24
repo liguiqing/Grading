@@ -11,6 +11,8 @@ import com.easytnt.commons.entity.service.AbstractEntityService;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.repository.RefereesRepository;
 import com.easytnt.grading.service.RefereesService;
+import com.easytnt.security.ShiroService;
+import com.easytnt.security.UserDetails;
 
 /** 
  * <pre>
@@ -24,13 +26,17 @@ import com.easytnt.grading.service.RefereesService;
 @Service
 public class RefereesServiceImpl extends AbstractEntityService<Referees, Long> implements
 		RefereesService {
-
-	
+	@Autowired
 	private RefereesRepository refereesRepository;
 	
+	@Autowired
+	private ShiroService shiroService;
+	
 	@Override
-	public Referees getCurrentReferees() {
-		// TODO Auto-generated method stub
+	public Referees getCurrentReferees() throws Exception{
+		UserDetails user = shiroService.getUser();
+		//TODO
+		//refereesRepository.findReferessBy
 		return  null;
 	}
 

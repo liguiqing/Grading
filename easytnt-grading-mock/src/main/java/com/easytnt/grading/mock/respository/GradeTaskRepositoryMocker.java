@@ -97,9 +97,15 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 	}
 
 	@Override
-	public void selectTaskOf(Long subjectId) {
+	public GradeTask findRefereesTask(Long cuttoId, Long refereesId) {
 		// TODO Auto-generated method stub
-		
+		return null;
+	}
+
+	@Override
+	public List<GradeTask> findGenTasks(Long l) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
