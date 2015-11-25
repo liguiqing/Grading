@@ -90,6 +90,8 @@ public class SubjectExamController {
 				oldExamPaper.setFullScore(newExamPaper.getFullScore());
 				oldExamPaper.setObjectivityScore(newExamPaper.getObjectivityScore());
 				oldExamPaper.setSubjectivityScore(newExamPaper.getSubjectivityScore());
+				oldExamPaper.setCuttingRootPath(newExamPaper.getCuttingRootPath());
+				oldExamPaper.setStudentAnserCardRootPath(newExamPaper.getStudentAnserCardRootPath());
 				resultSet.add(oldExamPaper);
 			}
 		}

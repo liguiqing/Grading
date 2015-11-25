@@ -49,6 +49,8 @@ CREATE TABLE `paper_info` (
   `full_score` float(5,2) COMMENT '试卷满分',
   `subjectivity_score` float(5,2) COMMENT '试卷主观题满分',
   `objectivity_score` float(5,2) COMMENT '试卷客观题满分',
+  `cutting_root_path`  varchar(128) COMMENT '切割图片保存路劲',
+  `paper_card_root_path`  varchar(128) COMMENT '学生答题卡图片路劲',
   PRIMARY KEY (`paper_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='试卷信息定义';
 

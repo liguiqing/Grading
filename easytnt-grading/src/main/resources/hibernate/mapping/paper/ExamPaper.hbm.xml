@@ -25,6 +25,13 @@
 		<property name="name" type="java.lang.String">
 			<column name="paper_name" />
 		</property>
+		<property name="cuttingRootPath" type="java.lang.String">
+			<column name="cutting_root_path" />
+		</property>
+		<property name="studentAnserCardRootPath" type="java.lang.String">
+			<column name="paper_card_root_path" />
+		</property>				
+		
 		<component name="paperType" class="com.easytnt.grading.domain.paper.PaperType" lazy="true">
             <property name="typeName" column="paper_type" type="java.lang.String"/>
         </component>

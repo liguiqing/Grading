@@ -1,5 +1,7 @@
 package com.easytnt.grading.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ import com.easytnt.commons.entity.cqrs.QueryBuilder;
 import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.exam.Subject;
+import com.easytnt.grading.domain.exam.SubjectExam;
 import com.easytnt.grading.service.SubjectExamService;
 import com.easytnt.grading.service.SubjectService;
 
@@ -39,8 +42,9 @@ public class SubjectController {
 		MenuGroup configMenuGroup = MenuGroupFactory.getInstance().getConfigMenuGroup();
 		configMenuGroup.activedMenuByIndex(1);
 		rightMenuGroup.activedMenuByIndex(3);
+		List<SubjectExam> exams = subjectExamService.list();
 		return ModelAndViewFactory.newModelAndViewFor("/config")
-				.with("resultList", subjectExamService.list())
+				.with("resultList", exams)
 				.with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus())
 				.with("menus3", configMenuGroup.getMenus())

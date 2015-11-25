@@ -32,9 +32,12 @@
 		  	    <td data-rr-paperId="${usedPaper.paperId}" >${usedPaper.fullScore}</td>
 		  	    <td>${usedPaper.objectivityScore}</td>
 		  	    <td>${usedPaper.subjectivityScore}</td>
+		  	    <input type="hidden" name="cuttingRootPath" value="${usedPaper.cuttingRootPath!}">
+	  	        <input type="hidden" name="studentAnserCardRootPath" value="${usedPaper.studentAnserCardRootPath!}">
 		  	    </#list>
 	  	    </#if>
 	  	    <td class="doing"><i class=" icon-remove" style="cursor: pointer;"></i></td>
+
 	  	    <#--
 	  	    <td>
 	  	    <a href="javascript:void(0)" id="removeSubject"><i class="icon-minus"></i></a></td>-->
@@ -47,40 +50,52 @@
   	</tbody>
   </table>
   <div class="subject-editor">
-	<div class="col-md-4"></div>
-	<form class="form-horizontal col-md-4">
+	<div class="col-md-3"></div>
+	<form class="form-horizontal col-md-6">
 	  <div class="form-group">
-	    <label for="subjectName" class="col-sm-4 control-label">科目名称</label>
-	    <div class="col-sm-8">
+	    <label for="subjectName" class="col-sm-5 control-label">科目名称</label>
+	    <div class="col-sm-7">
 	      <input type="text" class="form-control" id="name" placeholder="科目名称">
 	      <input type="hidden" class="form-control" id="subjectCode">
 	      <input type="hidden" class="form-control" id="testId">
 	    </div>
 	  </div>
 	  <div class="form-group">
-	    <label for="fullScore" class="col-sm-4 control-label">满分</label>
-	    <div class="col-sm-8">
+	    <label for="fullScore" class="col-sm-5 control-label">满分</label>
+	    <div class="col-sm-7">
 	      <input type="text" class="form-control" id="fullScore" data-rr-type="number" placeholder="科目满分">
 	    </div>
 	  </div>
 	  <div class="form-group">
-	    <label for="objectivityScore" class="col-sm-4 control-label">客观题满分</label>
-	    <div class="col-sm-8">
+	    <label for="objectivityScore" class="col-sm-5 control-label">客观题满分</label>
+	    <div class="col-sm-7">
 	      <input type="text" class="form-control" id="objectivityScore" data-rr-type="number" placeholder="客观题满分">
 	    </div>
 	  </div>
 	  <div class="form-group">
-	    <label for="`subjectivityScore`" class="col-sm-4 control-label">主观题满分</label>
-	    <div class="col-sm-8">
+	    <label for="`subjectivityScore`" class="col-sm-5 control-label">主观题满分</label>
+	    <div class="col-sm-7">
 	      <input type="text" class="form-control" id="subjectivityScore" data-rr-type="number" placeholder="主观题满分">
 	    </div>
-	  </div>	  	  
+	  </div>
+	  <div class="form-group">
+	    <label for="`cuttingRootPath`" class="col-sm-5 control-label">切割图片保存路径</label>
+	    <div class="col-sm-7">
+	      <input type="text" class="form-control" id="cuttingRootPath" name="cuttingRootPath" data-rr-type="string" placeholder="切割图片保存路径">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="`studentAnserCardRootPath`" class="col-sm-5 control-label">答题卡图片路径</label>
+	    <div class="col-sm-7">
+	      <input type="text" class="form-control" id="studentAnserCardRootPath" data-rr-type="string" placeholder="答题卡图片路径">
+	    </div>
+	  </div>	  	  	  	  
 	  <div class="form-group">
 	    <div class="col-sm-offset-3 col-sm-9">
 	      <button type="submit" class="btn btn-default">保存</button>
 	    </div>
 	  </div>
 	</form>
-	<div class="col-md-4"></div>
+	<div class="col-md-3"></div>
   </div>	
 </div>
