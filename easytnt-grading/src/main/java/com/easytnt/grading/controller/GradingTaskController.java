@@ -5,6 +5,7 @@
 package com.easytnt.grading.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -130,7 +131,14 @@ public class GradingTaskController {
 	public ModelAndView onSubjectTaskAssigned(@PathVariable Long cuttoId) throws Exception {
 		logger.debug("URL /teacher/assigned/{} Method GET ",cuttoId);
 		List<GradeTask> thisTasks =  taskService.getTaskOf(cuttoId);
-		return ModelAndViewFactory.newModelAndViewFor().with("tasks", thisTasks).build();
+		ArrayList<HashMap<String,Long>> cuttingTasks = new ArrayList<HashMap<String,Long>>();
+		for(GradeTask task:thisTasks) {
+			HashMap<String,Long> hm = new HashMap<>();
+			hm.put("cutTo",task.getGenBy().getId());
+			hm.put("teacher",task.getAssignedTo().getId());
+			cuttingTasks.add(hm);
+		}
+		return ModelAndViewFactory.newModelAndViewFor().with("tasks", cuttingTasks).build();
 	}
 
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)

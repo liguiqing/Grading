@@ -8,10 +8,9 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
-import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.commons.entity.repository.HibernateRepository;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.repository.GradeTaskRepository;
@@ -24,6 +23,7 @@ import com.easytnt.grading.repository.GradeTaskRepository;
  * @author 李贵庆 2015年11月24日
  * @version 1.0
  **/
+@Repository
 public class GradeTaskRepositoryHibernateImpl extends
 		HibernateRepository<GradeTask, Long> implements GradeTaskRepository {
 
@@ -44,7 +44,7 @@ public class GradeTaskRepositoryHibernateImpl extends
 	@Override
 	public List<GradeTask> findGenTasks(Long cuttoId) {
 		Criteria criteria = this.getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("taskId", cuttoId));
+		criteria.add(Restrictions.eq("genBy.id", cuttoId));
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		return criteria.list();
 	}
