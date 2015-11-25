@@ -70,14 +70,8 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 			AnswerCardCuttingTemplate template = new AnswerCardCuttingTemplate();
 			template.setUrl("examPaper/" + paperId + "/" + paperCard.getCardId());
 			template.setIndex(paperCard.getCardSeq() - 1);
-
 			// 转换角度设置
-			int rotate = 90;
-			if (idx++ == 0) {
-				rotate = -90;
-			}
-			template.setRotate(rotate);
-
+			template.setRotate(paperCard.getRotate());
 			answerCardCuttingTemplates.add(template);
 		}
 
