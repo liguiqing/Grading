@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.grade.GradeTask;
+import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
@@ -41,13 +42,13 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 	}
 	
 	private void createTask() {
-		CuttingsArea area = dispatcherConcreator.getCuttingsDefineds().get(0);
-		
-		for(Long id=1l;id<=10;id++) {
-			GradeTask task = GradeTask.createOfficialGradeTask(refereesRepository.load(id), area);
-			
-			tasks.put(id, task);
-		}
+//		CuttingsArea area = dispatcherConcreator.getCuttingsDefineds().get(0);
+//		
+//		for(Long id=1l;id<=10;id++) {
+//			GradeTask task = GradeTask.createOfficialGradeTask(refereesRepository.load(id), area);
+//			
+//			tasks.put(id, task);
+//		}
 	}
 	
 	@Override
@@ -104,6 +105,12 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 
 	@Override
 	public List<GradeTask> findGenTasks(Long l) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<GradeTask> findRefereesTasks(Referees referees) {
 		// TODO Auto-generated method stub
 		return null;
 	}

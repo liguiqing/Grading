@@ -44,11 +44,7 @@
 				    		$outer.find('div.row').show();
 				    	}
 				});
-				
 			});
-			
-			
-			
 		};
 	
 		function setWorkspaceWH(){

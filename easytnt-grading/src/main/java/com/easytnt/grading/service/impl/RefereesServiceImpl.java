@@ -35,9 +35,8 @@ public class RefereesServiceImpl extends AbstractEntityService<Referees, Long> i
 	@Override
 	public Referees getCurrentReferees() throws Exception{
 		UserDetails user = shiroService.getUser();
-		//TODO
-		//refereesRepository.findReferessBy
-		return  null;
+		Referees referess = refereesRepository.findRefereesByCode(user.getUserName());
+		return  referess;
 	}
 
 }

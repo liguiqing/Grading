@@ -83,6 +83,12 @@ public class RefereesRepositoryMocker implements RefereesRepository {
 		
 	}
 
+	@Override
+	public Referees findRefereesByCode(String userName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
 
 

@@ -23,6 +23,8 @@ import com.easytnt.grading.domain.cuttings.CuttingsImage;
 public class Referees {
 
 	private String name;
+
+	private String code;
 	
 	private Dispatcher dispatcher;
 	
@@ -157,7 +159,7 @@ public class Referees {
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(this.name).toHashCode();
+		return new HashCodeBuilder().append(this.code).toHashCode();
 	}
 	
     @Override
@@ -166,12 +168,12 @@ public class Referees {
 			return false;
 		Referees other = (Referees)o;
 		
-		return new EqualsBuilder().append(this.name,other.name).isEquals();
+		return new EqualsBuilder().append(this.code,other.code).isEquals();
 	}
 	
     @Override
 	public String toString() {
-		return new ToStringBuilder(this).append(this.name).build();
+		return new ToStringBuilder(this).append(this.name).append(this.code).build();
 	}
     
     //以下功能为ORM或者自动构造使用，非此慎用
@@ -195,6 +197,14 @@ public class Referees {
 	
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

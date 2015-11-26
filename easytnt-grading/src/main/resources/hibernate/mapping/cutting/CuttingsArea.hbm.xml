@@ -30,10 +30,10 @@
 
 		<component name="areaInPaper" class="com.easytnt.grading.domain.share.Area"
 			lazy="true">
-			<property name="left" column="[left]" type="java.lang.Integer" />
-			<property name="top" column="top" type="java.lang.Integer" />
-			<property name="width" column="width" type="java.lang.Integer" />
-			<property name="height" column="height" type="java.lang.Integer" />
+			<property name="left" column="[left]" not-null="false" type="java.lang.Integer" />
+			<property name="top" column="top" not-null="false" type="java.lang.Integer" />
+			<property name="width" column="width" not-null="false" type="java.lang.Integer" />
+			<property name="height" column="height" not-null="false" type="java.lang.Integer" />
 		</component>
 
 		<many-to-one name="paper"

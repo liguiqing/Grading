@@ -17,6 +17,8 @@ import com.easytnt.grading.domain.grade.Referees;
  **/
 public interface RefereesRepository extends Repository<Referees, Long> {
 
+	Referees findRefereesByCode(String userName);
+
 }
 
 

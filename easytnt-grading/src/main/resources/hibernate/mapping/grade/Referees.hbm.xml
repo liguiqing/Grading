@@ -11,5 +11,8 @@
 		<property name="name" type="java.lang.String">
 			<column name="teacher_name" />
 		</property>
+		<property name="code" type="java.lang.String">
+			<column name="teacher_account" />
+		</property>		
 	</class>
 </hibernate-mapping>

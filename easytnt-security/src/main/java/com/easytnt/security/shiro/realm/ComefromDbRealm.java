@@ -7,6 +7,7 @@ package com.easytnt.security.shiro.realm;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -25,7 +26,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
+import com.easytnt.security.DefaultUserRole;
 import com.easytnt.security.UserDetails;
+import com.easytnt.security.UserRole;
 
 /**
  * <pre>
@@ -51,6 +54,8 @@ public class ComefromDbRealm extends AuthorizingRealm {
 	private int enabledValue = 1;
 
 	private ResultSetExtractor<UserDetails> userExctractor;
+	
+	private String[] roles = new String[] {};
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -91,15 +96,21 @@ public class ComefromDbRealm extends AuthorizingRealm {
 
 				final String _username = rs.getString(userNameField);
 				final String _password = rs.getString(passwordField);
+				
+				final ArrayList<UserRole> myRoles  = new ArrayList<>();
+				for(String s:roles) {
+					myRoles.add(new DefaultUserRole(s));
+				}
 
 				UserDetails user = new UserDetails() {
 					private String userName = _username;
 
 					private String credentials = _password;
+					
+					private ArrayList<UserRole> rs  = myRoles;
 
 					@Override
 					public String getUserName() {
-
 						return this.userName;
 					}
 
@@ -133,8 +144,23 @@ public class ComefromDbRealm extends AuthorizingRealm {
 						return this.userName;
 					}
 
-				};
+					@Override
+					public UserRole[] getRoles() {
+						return (UserRole[]) rs.toArray();
+					}
 
+					@Override
+					public boolean roleOf(String roleName) {
+						for(UserRole ur:this.rs) {
+							if(ur.sameRole(roleName)) {
+								return true;
+							}
+						}
+						return false;
+					}
+					
+				};
+				
 				return user;
 			}
 
@@ -174,4 +200,10 @@ public class ComefromDbRealm extends AuthorizingRealm {
 	public void setUserExctractor(ResultSetExtractor<UserDetails> userExctractor) {
 		this.userExctractor = userExctractor;
 	}
+
+	public void setRoles(String[] roles) {
+		this.roles = roles;
+	}
+	
+	
 }

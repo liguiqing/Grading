@@ -4,6 +4,9 @@
  **/
 package com.easytnt.grading.repository.impl;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.easytnt.commons.entity.repository.HibernateRepository;
@@ -25,6 +28,14 @@ public class RefereesRepositoryHibernateImpl extends HibernateRepository<Referee
 	@Override
 	protected Class<Referees> getEntityClass() {
 		return Referees.class;
+	}
+
+	@Override
+	public Referees findRefereesByCode(String userName) {
+		Criteria criteria = this.getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("code",userName));
+		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		return (Referees) criteria.uniqueResult();
 	}
 
 }

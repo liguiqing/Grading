@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.easytnt.commons.entity.repository.HibernateRepository;
 import com.easytnt.grading.domain.grade.GradeTask;
+import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.repository.GradeTaskRepository;
 
 /** 
@@ -45,6 +46,14 @@ public class GradeTaskRepositoryHibernateImpl extends
 	public List<GradeTask> findGenTasks(Long cuttoId) {
 		Criteria criteria = this.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("genBy.id", cuttoId));
+		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		return criteria.list();
+	}
+
+	@Override
+	public List<GradeTask> findRefereesTasks(Referees referees) {
+		Criteria criteria = this.getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("assignedTo.id", referees.getId()));
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		return criteria.list();
 	}

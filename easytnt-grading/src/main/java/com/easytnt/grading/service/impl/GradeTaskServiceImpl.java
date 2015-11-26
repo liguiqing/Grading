@@ -150,4 +150,9 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		return this.taskRepository.findGenTasks(cuttoId);
 	}
 
+	@Override
+	public List<GradeTask> getTaskOf(Referees referees) {
+		return this.taskRepository.findRefereesTasks(referees);
+	}
+
 }

@@ -72,6 +72,8 @@ public class GradeTask implements ValueObject<GradeTask> {
 	}
 	
 	public boolean isFinished() {
+		if(this.status == null)
+			this.status = TaskStatus.Ready;
 		return this.status.equals(TaskStatus.Finish);
 	}
 	

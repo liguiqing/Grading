@@ -26,4 +26,9 @@ public interface UserDetails {
 	<T> T getSource();
 
 	<T> boolean sourceOf(T t);
+	
+	UserRole[] getRoles();
+	
+	boolean roleOf(String roleName);
+	
 }

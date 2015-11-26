@@ -45,6 +45,8 @@ public interface GradeTaskService extends EntityService<GradeTask, Long> {
 	void removeTasckFor(Long cuttoId, Long teacherId);
 
 	List<GradeTask> getTaskOf(Long cuttoId);
+	
+	List<GradeTask> getTaskOf(Referees referees);
 
 }
 

@@ -40,6 +40,11 @@
 		<property name="authenticationCacheName" value="authenticationCache" />
 		<property name="authorizationCachingEnabled" value="true" />
 		<property name="authorizationCacheName" value="authorizationCache" />
+		<property name="roles">
+		  <list>
+		      <value>ADMIN</value>
+		  </list>
+		</property>
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
 		<!-- 请修改sql属性值 -->
 		<property name="Sql" value="SELECT 	sso_account AS user_name,sso_password AS user_pwd,enabled  FROM sso_user WHERE sso_account=?"/>
@@ -52,6 +57,11 @@
 		<property name="authorizationCachingEnabled" value="true" />
 		<property name="authorizationCacheName" value="authorizationCache" />
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="roles">
+		  <list>
+		      <value>REFEREES</value>
+		  </list>
+		</property>		
 		<!-- 请修改sql属性值 -->
 		<property name="Sql" value="SELECT teacher_account AS user_name,teacher_passord AS user_pwd, 1 AS enabled  FROM teacher_info WHERE teacher_account=?"/>
 	</bean>	

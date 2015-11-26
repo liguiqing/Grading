@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.easytnt.commons.entity.repository.Repository;
 import com.easytnt.grading.domain.grade.GradeTask;
+import com.easytnt.grading.domain.grade.Referees;
 
 /** 
  * <pre>
@@ -22,4 +23,6 @@ public interface GradeTaskRepository extends Repository<GradeTask, Long> {
 	public GradeTask findRefereesTask(Long cuttoId, Long refereesId);
 
 	public List<GradeTask> findGenTasks(Long cuttoId);
+
+	public List<GradeTask> findRefereesTasks(Referees referees);
 }

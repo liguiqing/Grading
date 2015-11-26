@@ -43,7 +43,10 @@ public class LoginController {
 	public ModelAndView onLoginSuccess() throws Exception {
 		logger.debug("URL /login/success Method Get");
 		UserDetails user = shiroService.getUser();
-		return ModelAndViewFactory.newModelAndViewFor("redirect:/config?page=subject").build();
+		String forward = "redirect:/config?page=subject";
+		if(user.roleOf("REFEREES"))
+			forward = "redirect:/task";
+		return ModelAndViewFactory.newModelAndViewFor(forward).build();
 	}
 	
 	@RequestMapping(value = "/locked",method=RequestMethod.PUT)

@@ -140,6 +140,17 @@ public class GradingTaskController {
 		}
 		return ModelAndViewFactory.newModelAndViewFor().with("tasks", cuttingTasks).build();
 	}
+	
+	@RequestMapping( method = RequestMethod.GET)
+	public ModelAndView onGetTask() throws Exception {
+		logger.debug("URL /task Method Get");
+		
+		Referees referees = refereesService.getCurrentReferees();
+		
+		List<GradeTask> tasks = taskService.getTaskOf(referees);
+		return ModelAndViewFactory.newModelAndViewFor("/task/taskList")
+				.with("tasks", tasks).build();
+	}
 
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)
 	public ModelAndView onGetTask(@PathVariable Long taskId) throws Exception {

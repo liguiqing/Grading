@@ -13,6 +13,16 @@
             http://www.springframework.org/schema/context/spring-context.xsd
             http://www.springframework.org/schema/jee 
             http://www.springframework.org/schema/jee/spring-jee.xsd">
+	<bean id="mockDispatcherStrategy"
+		class="com.easytnt.grading.dispatcher.impl.SinglePaperPriorDispatcherStrategy">
+		<constructor-arg type="int" value="1"></constructor-arg>
+	</bean>
+	<bean id="mockDispatcherConcreator"
+		class="com.easytnt.grading.mock.dispatcher.DispatcherConcreator"
+		init-method="initMethod">
+		<property name="dispathcerManager" ref="dispathcerManager"></property>
+		<property name="dispatcherStrategy" ref="mockDispatcherStrategy"></property>
+	</bean>
 <!-- 
 	<bean id="mockDispatcherStrategy"
 		class="com.easytnt.grading.dispatcher.impl.SinglePaperPriorDispatcherStrategy">

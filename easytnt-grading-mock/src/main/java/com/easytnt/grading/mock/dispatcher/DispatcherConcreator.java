@@ -26,6 +26,7 @@ import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.share.Area;
 import com.easytnt.grading.fetch.Fetcher;
+import com.easytnt.grading.repository.ExamPaperRepository;
 
 /** 
  * <pre>
@@ -45,33 +46,37 @@ public class DispatcherConcreator {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private List<CuttingsArea> cuttingsDefineds;
+	@Autowired
+	private ExamPaperRepository examPaperRepository;
 	
-	private ExamPaper cutFrom;
 	
 	public DispatcherConcreator() {
-		cutFrom = new ExamPaper();
-		cutFrom.setFullScore(150f);
-		cutFrom.setPaperId(10000010l);
 	}
 	
 	public void initMethod()throws Exception {
 		creatorMockDispatcher();
+		
 	}
 
 	private void creatorMockDispatcher() throws Exception {
 		logger.debug("Mock Dispatcher Concreat");
-	
-		this.cuttingsDefineds = getCuttingsArea();
-		if(this.cuttingsDefineds != null) {
-			for(CuttingsArea area:this.cuttingsDefineds) {
-				Fetcher fetcher = getFetherFor(area);
-				Dispatcher dispatcher = new DispatcherImpl(dispatcherStrategy,fetcher,1);
-				dispathcerManager.registerDispatcher(area, dispatcher);
+		List<ExamPaper> papers = examPaperRepository.list();
+		if(papers != null && papers.size() > 0) {
+			for(ExamPaper paper:papers) {
+				List<CuttingsArea> cuttingsDefineds = getCuttingsArea(paper);
+				if(cuttingsDefineds != null) {
+					for(CuttingsArea area:cuttingsDefineds) {
+						Fetcher fetcher = getFetherFor(area);
+						Dispatcher dispatcher = new DispatcherImpl(dispatcherStrategy,fetcher,1);
+						dispathcerManager.registerDispatcher(area, dispatcher);
 
-				logger.debug("Dispatcher for {} Registered",area);
+						logger.debug("Dispatcher for {} Registered",area);
+					}
+				}				
 			}
+
 		}
+
 		
 	}
 
@@ -83,9 +88,9 @@ public class DispatcherConcreator {
 		this.dispatcherStrategy = dispatcherStrategy;
 	}
 	
-	public List<CuttingsArea> getCuttingsDefineds(){
-		return this.cuttingsDefineds;
-	}
+//	public List<CuttingsArea> getCuttingsDefineds(){
+//		return this.cuttingsDefineds;
+//	}
 
 	private Fetcher getFetherFor(final CuttingsArea area) {
 		JdbcFetcher fetcher = new JdbcFetcher(area);
@@ -93,10 +98,9 @@ public class DispatcherConcreator {
 		return fetcher;
 	}
 	
-	private List<CuttingsArea> getCuttingsArea(){
-		Object[] args = new Object[] {this.cutFrom.getPaperId()};
-		final Subject subject  = new Subject();
-		subject.setId(100l);
+	private List<CuttingsArea> getCuttingsArea(final ExamPaper cutFrom){
+
+		Object[] args = new Object[] {cutFrom.getPaperId()};
 		
 		return jdbcTemplate.query("select * from paperiteminfo where paperid=?", args, new RowMapper<CuttingsArea>() {
 
@@ -110,7 +114,7 @@ public class DispatcherConcreator {
 				area.setId(rs.getLong("itemid"));
 				area.setMaxerror(rs.getFloat("maxerror"));
 				Section section = new Section();
-				section.setSubject(subject);
+//				/section.setSubject(subject);
 				section.setSectionId(rs.getLong("itemid"));
 				section.setPaper(cutFrom);
 				section.setTitle(rs.getString("itemname"));
