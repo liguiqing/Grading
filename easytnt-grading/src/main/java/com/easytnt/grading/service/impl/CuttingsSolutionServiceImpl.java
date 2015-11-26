@@ -79,11 +79,11 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 		paper.setSections(null);
 		paper.setPaperCards(null);
 
-		// 设置原图路径
-		paper.setStudentAnserCardRootPath("D:/test/tif/lizong");
-		// 设置切割路径
 		paper.setAnswerCardCuttingTemplates(answerCardCuttingTemplates);
-		paper.setCuttingRootPath("D:/test/cuttingImage");
+		// // 设置原图路径
+		// paper.setStudentAnserCardRootPath("D:/test/tif/lizong");
+		// // 设置切割路径
+		// paper.setCuttingRootPath("D:/test/cuttingImage");
 
 		return paper;
 	}
