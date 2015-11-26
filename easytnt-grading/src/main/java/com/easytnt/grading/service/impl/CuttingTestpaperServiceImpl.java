@@ -5,9 +5,12 @@ package com.easytnt.grading.service.impl;
 
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.easytnt.commons.util.SpringContextUtil;
 import com.easytnt.commons.web.view.Progress;
 import com.easytnt.commons.web.view.ProgressListener;
 import com.easytnt.cutimage.utils.StartCuttingTestpaper;
@@ -38,9 +41,9 @@ public class CuttingTestpaperServiceImpl implements CuttingTestpaperService, Pro
 	 */
 	@Override
 	public void cutting(long paperId) {
-		// DataSource ds = SpringContextUtil.getBean("ds");
+		DataSource ds = SpringContextUtil.getBean("ds");
 		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
-		StartCuttingTestpaper cuttingService = new StartCuttingTestpaper(cuttingsSolution, null);
+		StartCuttingTestpaper cuttingService = new StartCuttingTestpaper(cuttingsSolution, ds);
 		EasytntExecutor.instance().getExecutorService().submit(cuttingService);
 	}
 

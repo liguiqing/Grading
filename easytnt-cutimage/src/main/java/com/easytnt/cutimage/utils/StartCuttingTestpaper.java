@@ -71,7 +71,7 @@ public class StartCuttingTestpaper implements Runnable {
 
 	@Override
 	public void run() {
-
+		long b = System.currentTimeMillis();
 		CountDownLatch studentCountDownLatch = createStudentCountDownLatch();
 		Disruptor<StudentTestPaperAnswerCardEvent> cuttingDisruptor = createCuttingDisruptor(studentCountDownLatch);
 		try {
@@ -80,6 +80,9 @@ public class StartCuttingTestpaper implements Runnable {
 			cuttingDisruptor.shutdown();
 			saveService.clear();
 			countContainer.setIsOver(true);
+			long e = System.currentTimeMillis();
+			log.debug("[" + cuttingsSolution.getDesignFor().getPaperId() + "]且过完毕花费" + ((e - b) * 1.0 / 1000) + "秒!");
+			;
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(ThrowableParser.toString(e));
