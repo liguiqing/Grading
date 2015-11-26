@@ -1,3 +1,4 @@
+
 /**
  * <p><b>© </b></p>
  * 
@@ -5,6 +6,7 @@
 package com.easytnt.grading.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -54,111 +56,106 @@ public class GradingTaskController {
 
 	@Autowired(required = false)
 	private GradeTaskService taskService;
-	
+
 	@Autowired(required = false)
 	private TeacherService teacherService;
-	
+
 	@Autowired(required = false)
 	private SubjectService subjectService;
-	
+
 	@Autowired(required = false)
 	private CuttingsSolutionService cuttingsSolutionService;
-	
+
 	@RequestMapping(value = "/assignto/{subjectId}", method = RequestMethod.GET)
-	public ModelAndView onWorkerTask(@PathVariable Long subjectId,@RequestParam String worker) throws Exception {
-		logger.debug("URL /teacher/assignto/{} Method GET ",subjectId);
-		MenuGroup topRightMenuGroup = MenuGroupFactory.getInstance().getTopRightMenuGroup();
-		MenuGroup rightMenuGroup = MenuGroupFactory.getInstance().getRightMenuGroup();
-		MenuGroup configMenuGroup = MenuGroupFactory.getInstance().getConfigMenuGroup();
-		configMenuGroup.activedMenuByIndex(3);
-		rightMenuGroup.activedMenuByIndex(3); 
-		
-		Teacher teacher = teacherService.findTeacher(worker);
-		Subject subject = subjectService.load(subjectId);
-		
-		return ModelAndViewFactory.newModelAndViewFor("/config")
-				.with("menus2", topRightMenuGroup.getMenus())
-				.with("rightSideMenu", rightMenuGroup.getMenus())
-				.with("menus3", configMenuGroup.getMenus())
-				.with("teacher", teacher)
-				.with("subject",subject)
-				.with("js", "config/workerTask")
-				.with("page","workerTask").build();
-	}
-	
-	@RequestMapping(value = "/assignto/{subjectId}/{paperId}", method = RequestMethod.GET)
-	public ModelAndView onSubjectTask(@PathVariable Long subjectId,@PathVariable Long paperId) throws Exception {
-		logger.debug("URL /teacher/assignto/{} Method GET ",subjectId);
+	public ModelAndView onWorkerTask(@PathVariable Long subjectId, @RequestParam String worker) throws Exception {
+		logger.debug("URL /teacher/assignto/{} Method GET ", subjectId);
 		MenuGroup topRightMenuGroup = MenuGroupFactory.getInstance().getTopRightMenuGroup();
 		MenuGroup rightMenuGroup = MenuGroupFactory.getInstance().getRightMenuGroup();
 		MenuGroup configMenuGroup = MenuGroupFactory.getInstance().getConfigMenuGroup();
 		configMenuGroup.activedMenuByIndex(3);
 		rightMenuGroup.activedMenuByIndex(3);
-		
+
+		Teacher teacher = teacherService.findTeacher(worker);
+		Subject subject = subjectService.load(subjectId);
+
+		return ModelAndViewFactory.newModelAndViewFor("/config").with("menus2", topRightMenuGroup.getMenus())
+				.with("rightSideMenu", rightMenuGroup.getMenus()).with("menus3", configMenuGroup.getMenus())
+				.with("teacher", teacher).with("subject", subject).with("js", "config/workerTask")
+				.with("page", "workerTask").build();
+	}
+
+	@RequestMapping(value = "/assignto/{subjectId}/{paperId}", method = RequestMethod.GET)
+	public ModelAndView onSubjectTask(@PathVariable Long subjectId, @PathVariable Long paperId) throws Exception {
+		logger.debug("URL /teacher/assignto/{} Method GET ", subjectId);
+		MenuGroup topRightMenuGroup = MenuGroupFactory.getInstance().getTopRightMenuGroup();
+		MenuGroup rightMenuGroup = MenuGroupFactory.getInstance().getRightMenuGroup();
+		MenuGroup configMenuGroup = MenuGroupFactory.getInstance().getConfigMenuGroup();
+		configMenuGroup.activedMenuByIndex(3);
+		rightMenuGroup.activedMenuByIndex(3);
+
 		Subject subject = subjectService.load(subjectId);
 		List<Teacher> teachers = teacherService.findSubjectTeachers(subject);
 		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
-		return ModelAndViewFactory.newModelAndViewFor("/config")
-				.with("menus2", topRightMenuGroup.getMenus())
-				.with("rightSideMenu", rightMenuGroup.getMenus())
-				.with("menus3", configMenuGroup.getMenus())
-				.with("paperId",paperId)
-				.with("subject",subject)
-				.with("teachers",teachers)
-				.with("cuttingsSolution",cuttingsSolution)
-				.with("js", "config/subjectTask")
-				.with("page","subjectTask").build();
+		return ModelAndViewFactory.newModelAndViewFor("/config").with("menus2", topRightMenuGroup.getMenus())
+				.with("rightSideMenu", rightMenuGroup.getMenus()).with("menus3", configMenuGroup.getMenus())
+				.with("paperId", paperId).with("subject", subject).with("teachers", teachers)
+				.with("cuttingsSolution", cuttingsSolution).with("js", "config/subjectTask").with("page", "subjectTask")
+				.build();
 	}
-	
+
 	@RequestMapping(value = "/assignto/{cuttoId}/{teacherId}", method = RequestMethod.POST)
-	public ModelAndView onSubjectTaskAssignto(@PathVariable Long cuttoId,
-			@PathVariable Long teacherId) throws Exception {
-		logger.debug("URL /teacher/assignto/{}/{} Method POST ",cuttoId,teacherId);
-		taskService.newTasckFor(cuttoId,teacherId);
+	public ModelAndView onSubjectTaskAssignto(@PathVariable Long cuttoId, @PathVariable Long teacherId)
+			throws Exception {
+		logger.debug("URL /teacher/assignto/{}/{} Method POST ", cuttoId, teacherId);
+		taskService.newTasckFor(cuttoId, teacherId);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
+
 	@RequestMapping(value = "/unassignto/{cuttoId}/{teacherId}", method = RequestMethod.DELETE)
-	public ModelAndView onTaskUnAssignto(@PathVariable Long cuttoId,
-			@PathVariable Long teacherId) throws Exception {
-		logger.debug("URL /teacher/unassignto/{}/{} Method DELETE ",cuttoId,teacherId);
-		taskService.removeTasckFor(cuttoId,teacherId);
+	public ModelAndView onTaskUnAssignto(@PathVariable Long cuttoId, @PathVariable Long teacherId) throws Exception {
+		logger.debug("URL /teacher/unassignto/{}/{} Method DELETE ", cuttoId, teacherId);
+		taskService.removeTasckFor(cuttoId, teacherId);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
+
 	@RequestMapping(value = "/assigned/{cuttoId}", method = RequestMethod.GET)
 	public ModelAndView onSubjectTaskAssigned(@PathVariable Long cuttoId) throws Exception {
-		logger.debug("URL /teacher/assigned/{} Method GET ",cuttoId);
-		List<GradeTask> thisTasks =  taskService.getTaskOf(cuttoId);
-		return ModelAndViewFactory.newModelAndViewFor().with("tasks", thisTasks).build();
+		logger.debug("URL /teacher/assigned/{} Method GET ", cuttoId);
+		List<GradeTask> thisTasks = taskService.getTaskOf(cuttoId);
+		ArrayList<HashMap<String, Long>> cuttingTasks = new ArrayList<HashMap<String, Long>>();
+		for (GradeTask task : thisTasks) {
+			HashMap<String, Long> hm = new HashMap<>();
+			hm.put("cutTo", task.getGenBy().getId());
+			hm.put("teacher", task.getAssignedTo().getId());
+			cuttingTasks.add(hm);
+		}
+		return ModelAndViewFactory.newModelAndViewFor().with("tasks", cuttingTasks).build();
 	}
 
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)
 	public ModelAndView onGetTask(@PathVariable Long taskId) throws Exception {
 		logger.debug("URL /task/{} Method Get", taskId);
 		List<Menu> menus = new ArrayList<Menu>();
-		menus.add( new Menu("个人中心",""));
-		menus.add( new Menu("参考答案",""));
-		menus.add( new Menu("统计信息",""));
-		menus.add( new Menu("锁定屏幕",""));
-		menus.add( new Menu("退出",""));
-		
+		menus.add(new Menu("个人中心", ""));
+		menus.add(new Menu("参考答案", ""));
+		menus.add(new Menu("统计信息", ""));
+		menus.add(new Menu("锁定屏幕", ""));
+		menus.add(new Menu("退出", ""));
+
 		Referees referees = refereesService.getCurrentReferees();
 		GradeTask task = taskService.getTaskOf(taskId, referees);
-		taskService.recoverUndo(task); 
+		taskService.recoverUndo(task);
 		referees = task.getAssignedTo();
 
 		CuttingsImageGradeRecord gradeRecord = task.getAGradeRecord();
 		List<Section> sections = gradeRecord.getRecordFor().getSections();
-		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask")
-				.with("menus", menus)
-				.with("referees", referees)
-				.with("task", task)
-				.with("sections", sections).build();
+		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask").with("menus", menus)
+				.with("referees", referees).with("task", task).with("sections", sections).build();
 	}
 
 	/**
 	 * 读取切割图
+	 * 
 	 * @param taskId
 	 * @return
 	 * @throws Exception
@@ -169,11 +166,13 @@ public class GradingTaskController {
 		Referees referees = refereesService.getCurrentReferees();
 		CuttingsImageGradeRecord pieceGradeRecord = taskService.createImageGradeRecordBy(taskId, referees);
 		CuttingsImage cuttings = pieceGradeRecord.getRecordFor();
-		return ModelAndViewFactory.newModelAndViewFor().with("imgPath", cuttings.getImgPath()).with("imageId", cuttings.getImageId()).build();
+		return ModelAndViewFactory.newModelAndViewFor().with("imgPath", cuttings.getImgPath())
+				.with("imageId", cuttings.getImageId()).build();
 	}
 
 	/**
 	 * 给分
+	 * 
 	 * @param scores
 	 * @param taskId
 	 * @return
@@ -187,24 +186,26 @@ public class GradingTaskController {
 		taskService.itemScoring(taskId, referees, scores);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
+
 	/**
 	 * 回看已经评过某一记录
+	 * 
 	 * @param scores
 	 * @param taskId
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/{taskId}/review/{recordId}", method = RequestMethod.GET)
-	public ModelAndView onReview(@PathVariable Long taskId,@PathVariable Long recordId) throws Exception {
+	public ModelAndView onReview(@PathVariable Long taskId, @PathVariable Long recordId) throws Exception {
 		logger.debug("URL /task/{}/review/{} Method POST", taskId, recordId);
 		Referees referees = refereesService.getCurrentReferees();
-		
+
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
+
 	/**
 	 * 取消回看已经评过某一记录
+	 * 
 	 * @param scores
 	 * @param taskId
 	 * @return
@@ -218,9 +219,10 @@ public class GradingTaskController {
 		taskService.itemScoring(taskId, referees, scores);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
+
 	/**
 	 * 给分
+	 * 
 	 * @param scores
 	 * @param taskId
 	 * @return
@@ -233,17 +235,16 @@ public class GradingTaskController {
 		taskService.itemScoring(taskId, referees, scores);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
+
 	@RequestMapping(value = "/{taskId}/error", method = RequestMethod.POST)
-	public ModelAndView onError(@PathVariable Long taskId,@RequestParam String reason) throws Exception {
-		logger.debug("URL /task/{}/error Method POST,reason is {}", taskId,reason);
+	public ModelAndView onError(@PathVariable Long taskId, @RequestParam String reason) throws Exception {
+		logger.debug("URL /task/{}/error Method POST,reason is {}", taskId, reason);
 
 		Referees referees = refereesService.getCurrentReferees();
-		taskService.itemError(taskId, referees,reason);
+		taskService.itemError(taskId, referees, reason);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
-	
+
 	@RequestMapping(value = "/{taskId}/blank", method = RequestMethod.POST)
 	public ModelAndView onBlank(@PathVariable Long taskId) throws Exception {
 		logger.debug("URL /task/{}/error Method POST", taskId);

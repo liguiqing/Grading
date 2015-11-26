@@ -24,6 +24,10 @@ public class SubjectExamFormBean {
 	
 	private Float subjectivityScore;
 	
+	private String cuttingRootPath;// 切割图片保存路劲
+
+	private String studentAnserCardRootPath;// 学生答题卡图片路劲
+	
 	private Long testId;
 	
 	public SubjectExam toSubjectExam(int subjectCode) {
@@ -61,6 +65,22 @@ public class SubjectExamFormBean {
 	}
 	public void setTestId(Long testId) {
 		this.testId = testId;
+	}
+
+	public String getCuttingRootPath() {
+		return cuttingRootPath;
+	}
+
+	public void setCuttingRootPath(String cuttingRootPath) {
+		this.cuttingRootPath = cuttingRootPath;
+	}
+
+	public String getStudentAnserCardRootPath() {
+		return studentAnserCardRootPath;
+	}
+
+	public void setStudentAnserCardRootPath(String studentAnserCardRootPath) {
+		this.studentAnserCardRootPath = studentAnserCardRootPath;
 	}
 	
 	

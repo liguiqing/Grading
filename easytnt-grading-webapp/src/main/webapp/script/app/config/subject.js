@@ -12,6 +12,8 @@
 			this.fullScore = 0;
 			this.objectivityScore = 0;
 			this.subjectivityScore = 0;
+			this.cuttingRootPath = '';
+			this.studentAnserCardRootPath = '';
 		};
 		var subject = function(){
 			this.name = '';
@@ -22,6 +24,7 @@
 			this.examPaper = undefined,
 			this.isNew =  true,
 			this.show = function(examPaper,subject,subjectExam,isNew){
+				logger.log(examPaper);
 				for(var o in examPaper){
 					editorForm.find('#'+o).val(examPaper[o]);
 				}
@@ -78,7 +81,9 @@
 						subjectName :editorForm.find('#name').val(),
 						fullScore :editorForm.find('#fullScore').val(),
 						objectivityScore :editorForm.find('#objectivityScore').val(),
-						subjectivityScore :editorForm.find('#subjectivityScore').val()
+						subjectivityScore :editorForm.find('#subjectivityScore').val(),
+						cuttingRootPath :editorForm.find('#studentAnserCardRootPath').val(),
+						studentAnserCardRootPath :editorForm.find('#studentAnserCardRootPath').val()
 					};
 					ajaxWrapper.postJson("subjectExam",p,
 							{beforeMsg:{tipText:".",show:false},
@@ -128,6 +133,8 @@
 					e.fullScore = myForm.find('#fullScore').val();
 					e.objectivityScore = myForm.find('#objectivityScore').val();
 					e.subjectivityScore = myForm.find('#subjectivityScore').val();
+					e.cuttingRootPath = myForm.find('#cuttingRootPath').val();
+					e.studentAnserCardRootPath = myForm.find('#studentAnserCardRootPath').val();
 					se.testId=myForm.find('#testId').val();
 					se.subject = s;
 					se.usedPaper = [e];
@@ -150,9 +157,11 @@
 						s.name = sd.text();
 						s.subjectCode = sd.attr('data-rr-value');
 						se.testId = sd.attr('data-rr-testId');
-						e.fullScore = this.row.find('td:eq(4)').text();
-						e.objectivityScore = this.row.find('td:eq(5)').text();
-						e.subjectivityScore = this.row.find('td:eq(6)').text();
+						e.fullScore = this.row.find('td:eq(5)').text();
+						e.objectivityScore = this.row.find('td:eq(6)').text();
+						e.subjectivityScore = this.row.find('td:eq(7)').text();
+						e.cuttingRootPath = this.row.find(':hidden:eq(0)').val();
+						e.studentAnserCardRootPath = this.row.find(':hidden:eq(1)').val();
 						se.subject = s;
 						se.usedPaper = [e];
 					}
@@ -256,8 +265,6 @@
 			});
 		};
 		var elements = document.querySelectorAll( '.demo-image' );
-		logger.log(elements);
-		logger.log(elements.length);
 		if(elements!=undefined && elements.length!=0){
 			Intense( elements );
 		}

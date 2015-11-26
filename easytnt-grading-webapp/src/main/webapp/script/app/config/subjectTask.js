@@ -3,9 +3,7 @@
 	define(['jquery','ajaxwrapper','ui', 'dialog'],function($,ajax,ui,dialog){
 		var o = function(){
 			var $outer = $('div.subject-container');
-			ui.pretty($outer);
 			
-			$outer.find('div.row').show();
 			$outer.find(':checkbox').on('ifChecked',function(){
 				var teacherId = $(this).attr('data-tid');
 				var li = $(this).parents('li[data-cuttoid]');
@@ -29,16 +27,28 @@
 					    }
 			        });
 			});
-			
-			$outer.find('ul.list-task>li').each(function(){
+			var tasks = $outer.find('ul.list-task>li');
+			tasks.each(function(a){
 				var task = $(this);
 				var cuttoid = task.attr('data-cuttoid');
 				ajax.getJson('task/assigned/'+cuttoid,{},{beforeMsg:{show:false},
 				    successMsg:{show:false}},function(data){
-					
+				    	$.each(data.tasks,function(i,t){
+				    		var tc = task.find(':checkbox[data-tid='+t.teacher+']');
+				    		if(tc.size()){
+				    			tc[0].checked='checked';
+				    		}
+				    	});
+				    	ui.pretty(task);
+				    	if(tasks.size()==a+1){
+				    		$outer.find('div.row').show();
+				    	}
 				});
 				
 			});
+			
+			
+			
 		};
 	
 		function setWorkspaceWH(){
