@@ -69,6 +69,16 @@ public class ExamPaper implements Entity<ExamPaper> {
 		this.subjectivityScore = subjectivityScore;
 	}
 	
+	public ExamPaper(String name,Float fullScore,Float objectivityScore,Float subjectivityScore,
+			String cuttingRootPath,String studentAnserCardRootPath) {
+		this.name = name;
+		this.fullScore = fullScore;
+		this.objectivityScore = objectivityScore;
+		this.subjectivityScore = subjectivityScore;
+		this.cuttingRootPath = cuttingRootPath;
+		this.studentAnserCardRootPath = studentAnserCardRootPath;
+	}
+	
 	private void init() {
 		if (this.sections == null) {
 			this.sections = new LinkedHashSet<Section>();
@@ -308,9 +318,9 @@ public class ExamPaper implements Entity<ExamPaper> {
 	}
 
 	public void setCuttingRootPath(String cuttingRootPath) {
-		if (!cuttingRootPath.endsWith("/") && !cuttingRootPath.endsWith("\\")) {
-			cuttingRootPath += "/";
-		}
+//		if (!cuttingRootPath.endsWith("/") && !cuttingRootPath.endsWith("\\")) {
+//			cuttingRootPath += "/";
+//		}
 		this.cuttingRootPath = cuttingRootPath;
 	}
 

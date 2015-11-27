@@ -58,14 +58,16 @@ public class SubjectExam implements Entity<SubjectExam>{
 	}
     
     public static SubjectExam newSubjectExam(String subjectName,int subjectCode,Float fullScore,
-    		Float objectivityScore,Float subjectivityScore) {
+    		Float objectivityScore,Float subjectivityScore,
+    		String cuttingRootPath,String studentAnserCardRootPath) {
     	SubjectExam se = new SubjectExam();
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
     	Calendar now = Calendar.getInstance();  
     	se.oid = Long.valueOf(sdf.format(now.getTime()));
     	se.desc  =new ExamDesc(subjectName);
     	se.subject = new Subject(subjectName,subjectCode);
-    	ExamPaper paper = new ExamPaper(subjectName,fullScore,objectivityScore,subjectivityScore);
+    	ExamPaper paper = new ExamPaper(subjectName,fullScore,objectivityScore,subjectivityScore,
+    			cuttingRootPath,studentAnserCardRootPath);
     	se.addExamPapers(paper);
     	return se;
     }

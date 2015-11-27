@@ -32,7 +32,7 @@ public class SubjectExamFormBean {
 	
 	public SubjectExam toSubjectExam(int subjectCode) {
 		SubjectExam subjectExam = SubjectExam.newSubjectExam(this.subjectName, subjectCode, this.fullScore, 
-				this.objectivityScore, this.subjectivityScore);
+				this.objectivityScore, this.subjectivityScore,this.cuttingRootPath,this.studentAnserCardRootPath);
 		return subjectExam;
 	}
 	
