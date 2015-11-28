@@ -1,6 +1,8 @@
 package com.easytnt.grading.controller;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -64,12 +66,12 @@ public class ExamineeController {
 		//query.rows(202);
 		String[] dataSourceFields = new String[0];
 		//先放在Session里，以后在处理 TODO
-		ListDataSourceReader reader = (ListDataSourceReader)request.getSession().getAttribute(ListDataSourceReader.class.getName());
+		ListDataSourceReader reader = getDatasourceReader(request);
 		if(reader != null) {
 			reader.open();
 			dataSourceFields = reader.getFields();
+			reader.close();
 		}
-		
 		examineeService.query(query);
 
 		//TODO
@@ -105,40 +107,60 @@ public class ExamineeController {
 	public ModelAndView onUpload(MultipartHttpServletRequest request)throws Exception {
 		logger.debug("URL /upload Method POST ");
 		Iterator<String> it = request.getFileNames();
+		File file = null;
 		if(it.hasNext()) {
 			String fileName = it.next();
 			MultipartFile mfile = request.getFile(fileName);
-			File file = FileUtil.inputStreamToFile(mfile.getInputStream(),mfile.getOriginalFilename());
-			ListDataSourceFactory dataSourceFactory = new FileListDataSourceFactory(file);
+			file = FileUtil.inputStreamToFile(mfile.getInputStream(),mfile.getOriginalFilename());
+			//ListDataSourceFactory dataSourceFactory = new FileListDataSourceFactory(file);
 			//先放在Session里，以后在处理 TODO
-			request.getSession().setAttribute(ListDataSourceReader.class.getName(), dataSourceFactory.getReader());
+			request.getSession().setAttribute(ListDataSourceReader.class.getName(), file.toPath());
 			logger.debug(file.getAbsolutePath());
 		}else {
 			throw new IllegalArgumentException("无效的文件名");
 		}
 		
-		return ModelAndViewFactory.newModelAndViewFor().build();
+		return ModelAndViewFactory.newModelAndViewFor().with("filname",file==null?"":file.getName()).build();
 	}
 	
 	@RequestMapping(value="/importExaminee",method = RequestMethod.POST)
 	public ModelAndView importExaminee(@RequestBody DataSourceMapperFormBean[] mappedBeans,HttpServletRequest request)throws Exception {
 		logger.debug("URL /importExaminee Method POST ");
-		ListDataSourceReader reader = (ListDataSourceReader)request.getSession().getAttribute(ListDataSourceReader.class.getName());
-		String[] targetFields = reader.getFields();
-		String[] mapper = new String[mappedBeans.length];
-		int i = 0;
-		for(DataSourceMapperFormBean dsBean:mappedBeans) {
-			for(String field:targetFields) {
-				if(dsBean.getTargetName().equalsIgnoreCase(field)) {
-					mapper[i++] = dsBean.getFieldName();
+		ListDataSourceReader reader = getDatasourceReader(request);//(ListDataSourceReader)request.getSession().getAttribute(ListDataSourceReader.class.getName());
+		if(reader != null) {
+			reader.open();
+			String[] targetFields = reader.getFields();
+			String[] mapper = new String[mappedBeans.length];
+			int i = 0;
+			DefaultListDataSourceMapper mappered = new DefaultListDataSourceMapper();
+			Arrays.sort(mappedBeans,new Comparator<DataSourceMapperFormBean>() {
+
+				@Override
+				public int compare(DataSourceMapperFormBean o1,
+						DataSourceMapperFormBean o2) {
+					return o1.getSeq() - o2.getSeq();
 				}
+				
+			});
+			for(DataSourceMapperFormBean dsBean:mappedBeans) {
+				mappered.addMapper(dsBean.getFieldName(), dsBean.getSeq());
 			}
+			examineeService.imports(mappered, reader);
+			//先放在Session里，以后在处理 TODO
+			request.getSession().removeAttribute(ListDataSourceReader.class.getName());
 		}
 		
-		examineeService.imports(new DefaultListDataSourceMapper(), reader);
-		//先放在Session里，以后在处理 TODO
-		request.getSession().removeAttribute(ListDataSourceReader.class.getName());
+
 		
 		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
+	
+	private ListDataSourceReader getDatasourceReader(HttpServletRequest request)throws Exception{
+		String file = request.getSession().getAttribute(ListDataSourceReader.class.getName())+"";
+		if(file != null) {
+			ListDataSourceReader reader =  new FileListDataSourceFactory(new File(file)).getReader();
+			return reader;
+		}
+		return null;
 	}
 }

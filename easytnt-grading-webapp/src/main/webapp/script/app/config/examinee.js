@@ -22,6 +22,26 @@
 						});
 			});
 			
+			$('#imports').click(function(e){
+				var Mappers = [];
+				var i = 0;
+				$('#mapperForm select.selectpicker').each(function(){
+					var $m = $(this);
+					if($m.val() !=='-1'){
+						Mappers[i] = {};
+						Mappers[i]['fieldName'] = $m.attr('name');
+						Mappers[i]['targetName'] = $m.val();
+						Mappers[i]['seq'] = $m.find(':selected')[0].index;
+						i++;
+					}
+				});
+				ajaxWrapper.postJson('examinee/importExaminee',Mappers,
+						{beforeMsg:{tipText:"",show:true},successMsg:{tipText:"考生导入开始......",show:true}},
+						function(){
+							//window.location.reload();
+						});
+			});
+			
 			this.query = function(pager){
 				logger.log('examinee.query');
 				if(!pager){

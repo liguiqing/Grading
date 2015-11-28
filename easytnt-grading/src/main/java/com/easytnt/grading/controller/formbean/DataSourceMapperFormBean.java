@@ -28,6 +28,8 @@ public class DataSourceMapperFormBean {
 	private String fieldAlias;
 	
 	private String targetName;
+	
+	private int seq;
 
 	public String getFieldName() {
 		return fieldName;
@@ -51,6 +53,14 @@ public class DataSourceMapperFormBean {
 
 	public void setFieldAlias(String fieldAlias) {
 		this.fieldAlias = fieldAlias;
+	}
+
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 	
 }

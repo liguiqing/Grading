@@ -40,8 +40,11 @@ public class DbfDataSourceReader implements ListDataSourceReader {
 	//打开数据源
 	@Override
 	public void open() throws Exception {
-		reader = new DBFReader(is); 
-		dataList = new ArrayList<String[]>();
+		if(this.reader == null) {
+			reader = new DBFReader(is); 
+			dataList = new ArrayList<String[]>();
+		}
+
 	}
 
 	//获取某行数据
@@ -62,7 +65,8 @@ public class DbfDataSourceReader implements ListDataSourceReader {
 			String[] str = new String[records.length];
 			int i = 0;
 			for(Object o:records) {
-				str[i++] = o + "";
+				String s = o + "";
+				str[i++] = new String(s.getBytes("iso8859-1"),"gbk");
 			}
 			dataList.add(str);
 		}
@@ -72,11 +76,13 @@ public class DbfDataSourceReader implements ListDataSourceReader {
 	//获取某行某列数据
 	@Override
 	public String get(int row, int col) throws Exception {
+		if(col == -1)
+			return null;
 		String[] str = get(row);
-		if(str.length <= col){
+		if(str.length < col){
 			throw new IndexOutOfBoundsException();
 		}
-		return str[col];
+		return str[col-1];
 	}
 	
 	@Override

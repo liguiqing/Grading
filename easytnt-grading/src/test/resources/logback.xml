@@ -100,7 +100,7 @@
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="com.easytnt">
-		<level value="error" />
+		<level value="debug" />
 		<appender-ref ref="ASYNC" />
 	</logger>
 	<logger name="com.easytnt.exception">
