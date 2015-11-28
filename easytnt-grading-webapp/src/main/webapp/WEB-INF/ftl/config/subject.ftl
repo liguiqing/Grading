@@ -8,12 +8,12 @@
   	<tbody>
   	<#if resultList??>
 	  	<#list resultList as result>
-	  	  <tr>
+	  	  <tr data-list="true">
 	  	    <td><a href="javascript:void(0)" data-rr-name="subjectName" data-rr-value="${result.subject.subjectCode}" data-rr-testId="${result.testId}">${result.subject.name}</a></td>
 	  	    <td>0</td>
 	  	    <#if result.usedPaper??>
 		  	  <#list result.usedPaper as usedPaper>
-		  	    <td>
+		  	    <td data-rr-paperId="${usedPaper.paperId}">
 		  	    <section class="demos">
 		  	    <#if usedPaper.paperCards ??>
 		  	      <#list usedPaper.paperCards as paperCard>
@@ -34,7 +34,7 @@
 		  	    <td>${usedPaper.subjectivityScore}</td>
 		  	    <input type="hidden" name="cuttingRootPath" value="${usedPaper.cuttingRootPath!}">
 	  	        <input type="hidden" name="studentAnserCardRootPath" value="${usedPaper.studentAnserCardRootPath!}">
-	  	        <td style="width:300px;"><i data-paperid="${usedPaper.paperId}" class="cuttingPaper glyphicon glyphicon-scissors" style="cursor: pointer;" ></i></td>
+	  	        <td ><i data-paperid="${usedPaper.paperId}" title＝"切割" class="cuttingPaper glyphicon glyphicon-scissors" style="cursor: pointer;" ></i></td>
 		  	    </#list>
 	  	    </#if>
 	  	    <td class="doing"><i class=" icon-remove" style="cursor: pointer;"></i></td>
@@ -64,7 +64,7 @@
 	  <div class="form-group">
 	    <label for="fullScore" class="col-sm-5 control-label">满分</label>
 	    <div class="col-sm-7">
-	      <input type="text" class="form-control" id="fullScore" data-rr-type="number" placeholder="科目满分">
+	      <input type="text" class="form-control" id="fullScore" data-rr-type="number" placeholder="试卷满分">
 	    </div>
 	  </div>
 	  <div class="form-group">
@@ -82,13 +82,15 @@
 	  <div class="form-group">
 	    <label for="`cuttingRootPath`" class="col-sm-5 control-label">切割图片保存路径</label>
 	    <div class="col-sm-7">
-	      <input type="text" class="form-control" id="cuttingRootPath" name="cuttingRootPath" data-rr-type="string" placeholder="切割图片保存路径">
+	      <ul class="list-group" style="display:none;"><li class="list-group-item"></li></ul>
+	      <input type="text" class="form-control" id="cuttingRootPath" name="cuttingRootPath" data-rr-type="string" placeholder="切割图片在服务器的保存路径">
 	    </div>
 	  </div>
 	  <div class="form-group">
 	    <label for="`studentAnserCardRootPath`" class="col-sm-5 control-label">答题卡图片路径</label>
 	    <div class="col-sm-7">
-	      <input type="text" class="form-control" id="studentAnserCardRootPath" data-rr-type="string" placeholder="答题卡图片路径">
+	      <ul class="list-group" style="display:none;"><li class="list-group-item"></li></ul>
+	      <input type="text" class="form-control" id="studentAnserCardRootPath" data-rr-type="string" placeholder="答题卡图片在服务器的路径">
 	    </div>
 	  </div>	  	  	  	  
 	  <div class="form-group">

@@ -40,7 +40,7 @@ public class JdbcFetcher implements Fetcher {
 	@Override
 	public List<CuttingsImage> fetch(int amount) {
 		Object[] args = new Object[] {fetchFor.getId(),start,amount};
-		List<CuttingsImage> pcs = jdbcTemplate.query("select imagepath from paperimport where getmark is null and itemid=? limit ?, ?  ", args, new RowMapper<CuttingsImage>() {
+		List<CuttingsImage> pcs = jdbcTemplate.query("select imagepath from paperimport where getmark = 0 and itemid=? limit ?, ?  ", args, new RowMapper<CuttingsImage>() {
 
 			@Override
 			public CuttingsImage mapRow(ResultSet rs, int arg1)

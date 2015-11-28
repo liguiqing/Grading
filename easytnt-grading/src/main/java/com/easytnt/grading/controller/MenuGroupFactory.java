@@ -35,9 +35,9 @@ public class MenuGroupFactory {
 	}
 	
 	private  MenuGroupFactory() {
-    	topRightMenuGroup.appendMenu(new Menu("退    出","/logout"));
+    	topRightMenuGroup.appendMenu(new Menu("退    出","logout"));
     	
-    	workerTopMenuGroup.appendMenu(new Menu("退    出","/logout"));
+    	workerTopMenuGroup.appendMenu(new Menu("退    出","logout"));
     	
     	rightMenuGroup.appendMenu(new Menu("首    页","home"));
     	rightMenuGroup.appendMenu(new Menu("评    卷","task"));

@@ -77,12 +77,16 @@ public class CuttingsArea implements ValueObject<CuttingsArea> {
 
 	public List<Section> getSections() {
 		if (this.itemAreas != null) {
+			//临时实现方式
 			ArrayList<Section> sections = new ArrayList<>();
-			for (PositionOfItemInArea area : itemAreas) {
-				if (!sections.contains(area.getSection())) {
-					sections.add(area.getSection());
-				}
-			}
+			Section section = new Section();
+			section.setCaption(this.name);
+			sections.add(section);
+//			for (PositionOfItemInArea area : itemAreas) {
+//				if (!sections.contains(area.getSection())) {
+//					sections.add(area.getSection());
+//				}
+//			}
 			return sections;
 		}
 		return null;

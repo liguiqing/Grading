@@ -16,7 +16,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.Entity;
+import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingsImage;
+import com.easytnt.grading.domain.cuttings.PositionOfItemInArea;
 import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.room.Examinee;
@@ -89,35 +91,54 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 	 * @throws IllegalArgumentException 当小题分值不在有效范围内时抛出
 	 */
 	public void scoringForItems(Float[] scores) {
-		List<Section> sections = recordFor.getSections();
-		this.itemRecords = new HashSet<>();
+		CuttingsArea defined = this.recordFor.definedOf();
+		List<PositionOfItemInArea> items = defined.getItemAreas();
 		int i = 0;
 		StringBuilder sb = new StringBuilder();
-		for (Section section : sections) {
-			Set<Item> items = section.getItems();
-			for (Item item : items) {
-				Float score = 0f;
-				if( i < scores.length)
-					score = scores[i++];
-				if (item.isEffectiveScore(score)) {
-					ItemGradeRecord igr = new ItemGradeRecord(item,score);
-					itemRecords.add(igr);
-					
-				} else {
-					throw new IllegalArgumentException("无效的分值，"
-							+ section.getTitle() + " " + item.getTitle()
-							+ " 的有效分范围是[" + item.getMinPoint() + ","
-							+ item.getMaxPoint() + "]");
-				}
-				if(score <= score.intValue()) {
-					sb.append(score.intValue());
-				}else {
-					sb.append(score);
-				}
-				sb.append(",");
+		this.itemRecords = new HashSet<>();
+		for(PositionOfItemInArea item:items) {
+			Float score = 0f;
+			if( i < scores.length)
+				score = scores[i++];
+			ItemGradeRecord igr = new ItemGradeRecord(item.getItem(),score);
+			itemRecords.add(igr);
+			if(score <= score.intValue()) {
+				sb.append(score.intValue());
+			}else {
+				sb.append(score);
 			}
-
+			sb.append(",");
 		}
+//		
+//		List<Section> sections = recordFor.getSections();
+//		this.itemRecords = new HashSet<>();
+//		int i = 0;
+//		StringBuilder sb = new StringBuilder();
+//		for (Section section : sections) {
+//			Set<Item> items = section.getItems();
+//			for (Item item : items) {
+//				Float score = 0f;
+//				if( i < scores.length)
+//					score = scores[i++];
+//				if (item.isEffectiveScore(score)) {
+//					ItemGradeRecord igr = new ItemGradeRecord(item,score);
+//					itemRecords.add(igr);
+//					
+//				} else {
+//					throw new IllegalArgumentException("无效的分值，"
+//							+ section.getTitle() + " " + item.getTitle()
+//							+ " 的有效分范围是[" + item.getMinPoint() + ","
+//							+ item.getMaxPoint() + "]");
+//				}
+//				if(score <= score.intValue()) {
+//					sb.append(score.intValue());
+//				}else {
+//					sb.append(score);
+//				}
+//				sb.append(",");
+//			}
+//
+//		}
 		sb.deleteCharAt(sb.length()-1);
 		this.scorestr = sb.toString();
 	}

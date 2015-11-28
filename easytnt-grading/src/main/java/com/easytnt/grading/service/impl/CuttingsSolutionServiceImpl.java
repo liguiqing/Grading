@@ -36,6 +36,7 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	@Override
 	public void saveCuttingsSolution(CuttingsSolution cuttingsSolution) {
 		ExamPaper paper = cuttingsSolution.getDesignFor();
+		paper = examPaperRepository.load(paper.getPaperId());
 		cuttingsAreaRepository.deleteCuttingAreaInPaper(paper.getPaperId());
 		List<CuttingsArea> cuttingsAreas = cuttingsSolution.getCutTo();
 		for (CuttingsArea cuttingsArea : cuttingsAreas) {

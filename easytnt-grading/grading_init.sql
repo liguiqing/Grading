@@ -208,8 +208,8 @@ CREATE TABLE `district` (
 /**************原雷工设计****************/
 DROP TABLE IF EXISTS `paperiteminfo`;
 CREATE TABLE `paperiteminfo` (
+  `itemid` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '切割块id',
   `paperid` bigint(20) DEFAULT NULL COMMENT '考试用卷id，关联到paper_info.paper_id',
-  `itemid` bigint(20) DEFAULT NULL COMMENT '切割块id',
   `itemname` varchar(64) DEFAULT NULL  COMMENT '评卷时显示文字',
   `itemcaption` varchar(64) DEFAULT NULL  COMMENT '评卷时显示文字',
   `fullscore` float(5,2) DEFAULT NULL  COMMENT '大题满分，如20分，则为20.0',
@@ -232,19 +232,22 @@ CREATE TABLE `paperiteminfo` (
 
 DROP TABLE IF EXISTS `papersubiteminfo`;
 CREATE TABLE `papersubiteminfo` (
+  `subitemid`  bigint(20) NOT NULL AUTO_INCREMENT,
   `paperid` bigint(20) DEFAULT NULL COMMENT '考试用卷id，关联到paper_info.paper_id',
   `itemid` bigint(20) DEFAULT NULL COMMENT '切割块id',
-  `subitemid` bigint(11) DEFAULT NULL,
   `subitemname` varchar(64) COMMENT '评卷时显示文字',
   `fullscore` float(5,2) COMMENT '小题满分，如5分，则为5.0',
   `subitemcaption` varchar(64) DEFAULT NULL  COMMENT '评卷时显示文字',
   `validscoredot` varchar(255) DEFAULT NULL   COMMENT '小题给分串,以,号分隔，如1,2,3,4,5',
   `defaultviewtype` int(11) DEFAULT NULL,
+  `interval` int(11) DEFAULT NULL,
+  `seriesScore` int(11) DEFAULT NULL,  
   `left` int(4) DEFAULT NULL  COMMENT '在切割块中相对左边位置，最小值0',
   `top` int(4)  DEFAULT NULL  COMMENT '在切割块相对上边位置，最小值0',
   `width` int(4) DEFAULT NULL   COMMENT '在切割块相对宽度，最小值0',
   `height` int(4) DEFAULT NULL COMMENT'在切割块相对高度，最小值0',
-  `right` int(4) DEFAULT NULL
+  `right` int(4) DEFAULT NULL,
+  PRIMARY KEY (`subitemid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `paperimport`;

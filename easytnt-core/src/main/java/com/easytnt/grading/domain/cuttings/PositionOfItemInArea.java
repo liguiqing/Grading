@@ -94,13 +94,26 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea> {
 		return null;
 	}
 
-	// public Float getMinPoint() {
-	// return this.item.getMinPoint();
-	// }
-	//
-	// public Float getMaxPoint() {
-	// return this.item.getMaxPoint();
-	// }
+
+	public boolean isEffectiveScore(Float score) {
+		return score.compareTo(this.getMinPoint()) >= 0
+				&& score.compareTo(getMaxPoint()) <= 0;
+	}
+
+	public Float getMinPoint() {
+		Float[] allPoints = getAllPoints();
+		return allPoints[0];
+	}
+
+	public Float getMaxPoint() {
+		return fullScore;
+	}
+
+
+	public Float[] getAllPoints() {
+		// TODO
+		return new Float[] { 0f, 1f, 2f };
+	}
 
 	@Override
 	public int hashCode() {
@@ -140,6 +153,9 @@ public class PositionOfItemInArea implements ValueObject<PositionOfItemInArea> {
 	}
 
 	public Section getSection() {
+		if(this.section == null) {
+			//cuttingsArea.getSections()
+		}
 		return section;
 	}
 

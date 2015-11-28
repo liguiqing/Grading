@@ -27,10 +27,13 @@ import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.commons.io.FileUtil;
 import com.easytnt.commons.util.Closer;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
+import com.easytnt.grading.domain.cuttings.CuttingsSolution;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.PaperCard;
 import com.easytnt.grading.domain.paper.Section;
+import com.easytnt.grading.service.CuttingsSolutionService;
 import com.easytnt.grading.service.ExamPaperService;
+import com.easytnt.grading.service.impl.DispatcherConcreator;
 
 @Controller
 @RequestMapping(value = "/examPaper")
@@ -42,6 +45,20 @@ public class ExamPaperController {
 	
 	@Value("${easytnt.exampaper.card.sample.path}")
 	private String imgDir;
+	
+	@Autowired(required = false)
+	private CuttingsSolutionService cuttingsSolutionService;
+	
+	@Autowired(required = false)
+	private DispatcherConcreator dispatcherConcreator; 
+	
+	@RequestMapping(value = "/start/{paperId}", method = RequestMethod.POST)
+	public ModelAndView onGradingStart(@PathVariable Long paperId) throws Exception {
+		logger.debug("URL /subjectExam/start{} Method POST ", paperId);
+		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		dispatcherConcreator.start(cuttingsSolution.getCutTo());
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView onCreateExamPaper(@RequestBody ExamPaper examPaper)
@@ -123,6 +140,13 @@ public class ExamPaperController {
 		}finally{
 			Closer.close(iis);
 		}
+	}
+	
+	@RequestMapping(value="/count/{examPaperId}",method = RequestMethod.GET)
+	public ModelAndView onGetPaperCount(@PathVariable Long examPaperId,HttpServletResponse response)
+					throws Exception {
+		int paperCount = examPaperService.countPapers(examPaperId);
+		return ModelAndViewFactory.newModelAndViewFor().with("amount", paperCount).build();
 	}
 	
 	@RequestMapping(value="/{examPaperId}/section/{position}",method = RequestMethod.PUT)

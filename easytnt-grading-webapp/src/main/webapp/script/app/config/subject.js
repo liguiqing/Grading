@@ -169,6 +169,24 @@
 				}
 			};
             
+			myTable.find("tr[data-list]").each(function(i,n){
+				var row = $(this);
+				var paperId = row.find("td:eq(2)").attr('data-rr-paperId');
+				ajaxWrapper.getJson("examPaper/count/"+paperId,{},
+						{beforeMsg:{tipText:".",show:false},
+						 successMsg:{tipText:"",show:false}},
+						function(m){
+							if(m.status.success){
+								row.find('td:eq(1)').text(m.amount);
+								if(m.amount > 0){
+									row.find('td:last').removeClass("doing").addClass('completed')
+									   .find('i').removeClass('icon-remove').addClass('icon-ok')
+									   .parent().prev().find('i').removeClass('cuttingPaper')
+									   .addClass('icon-copy').attr('title','开始评卷');
+								}
+							}
+						});				
+			});
 			
 			myTable.on('click','.cuttingPaper',function(e){
 				var $container=$(this).parent();
@@ -246,8 +264,8 @@
 				$(modal.find('#uploadForm')).submit(function(){
 					return false;
 				});
-				var row = $(this).parent().parent().parent();
-				var paperId = row.find('td:eq(4)').attr('data-rr-paperId');
+				var row = $(this).parent().parent();
+				var paperId = row.attr('data-rr-paperId');
 				$(modal.find('#upload')).click(function(){
 					if($('div.file-preview-filename').val() == 0){
 						return;
@@ -281,7 +299,13 @@
 					$p.remove();
 				});
 				e.stopPropagation();
-			});
+			}).on('click','tbody tr td i.icon-copy',function(e){
+				var paperId = $(this).attr('data-paperid');
+				ajaxWrapper.postJson("examPaper/start/"+paperId,{},
+						{beforeMsg:{tipText:".",show:true},
+						successMsg:{tipText:"评卷启动成功",show:true}});			
+			});	
+			
 		};
 		var elements = document.querySelectorAll( '.demo-image' );
 		if(elements!=undefined && elements.length!=0){
@@ -295,7 +319,7 @@
 						show : true,
 						text : "操作提示"
 					},
-					iconInfo:'error',
+					iconInfo:'info',
 					tipText :message
 				};
 			return opts;

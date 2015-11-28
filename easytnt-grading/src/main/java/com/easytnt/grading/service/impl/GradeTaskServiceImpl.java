@@ -70,8 +70,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Override
 	@Transactional
 	public void itemScoring(Long taskId, Referees referees, Float[] scores) throws Exception {
-		GradeTask task = taskRepository.load(taskId);
-		referees = task.getAssignedTo();
+		GradeTask task = this.getTaskOf(taskId, referees);
 		CuttingsImageGradeRecord imageGradeRecord = referees.scoringForItems(scores);
 		logger.debug("Scoring ", imageGradeRecord);
 		task.increment();
@@ -82,7 +81,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Override
 	@Transactional
 	public void itemBlank(Long taskId, Referees referees) throws Exception {
-		GradeTask task = taskRepository.load(taskId);
+		GradeTask task = this.getTaskOf(taskId, referees);
 		referees = task.getAssignedTo();
 		CuttingsImageGradeRecord imageGradeRecord = referees.dealBlank();
 		logger.debug("Scoring ", imageGradeRecord);
@@ -107,8 +106,8 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Override
 	@Transactional
 	public CuttingsImageGradeRecord createImageGradeRecordBy(Long taskId, Referees referees) throws Exception {
-		GradeTask task = taskRepository.load(taskId);
-
+		GradeTask task = this.getTaskOf(taskId, referees);
+		task.setAssignedTo(referees);
 		CuttingsImageGradeRecord imageGradeRecord = task.getAssignedTo().fetchCuttings();
 		// 数据持久化处理
 		gradeRecordRepository.saveForFetching(imageGradeRecord);

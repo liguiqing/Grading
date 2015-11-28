@@ -94,7 +94,7 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 		query.setInteger(index++, record.spendTime());
 		query.setString(index++, memo==null?"":memo);
 		query.setString(index++, markStr);
-		query.setLong(index++, record.getRecordFor().definedOf().subjectOf().getId());
+		query.setLong(index++, 0l);
 		query.setLong(index++, record.genId());
 		query.setString(index, record.getRecordFor().getImgPath());
 		query.executeUpdate();

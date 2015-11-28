@@ -8,11 +8,11 @@
     <div class="panel-body" style="overflow: auto;">
       <#list sections as section>  
       <div class="form-group section-title">
-        <label class="col-sm-6 col-md-6 col-lg-6 control-label " >${section.caption!}</label>
+        <label class="col-sm-6 col-md-6 col-lg-6 control-label " >${section.name!}</label>
       </div>
-      <#if section.items??>
-        <#list section.items as item>
-          <@pointInputGroup point={"name":item.caption,"label":item.caption,"disabled":"","from":item.minPoint,"to":item.maxPoint,"validScores":item.validValues} position=item.area/>
+      <#if section.itemAreas??>
+        <#list section.itemAreas as item>
+          <@pointInputGroup point={"name":item.name,"label":item.name,"disabled":"","from":item.minPoint,"to":item.maxPoint,"validScores":item.validValues} position=item.area/>
         </#list>
       </#if>
       </#list>  

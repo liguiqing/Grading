@@ -13,4 +13,6 @@ import com.easytnt.grading.domain.paper.ExamPaper;
  **/
 public interface ExamPaperRepository extends Repository<ExamPaper, Long> {
 
+	int countPapersFor(Long examPaperId);
+
 }

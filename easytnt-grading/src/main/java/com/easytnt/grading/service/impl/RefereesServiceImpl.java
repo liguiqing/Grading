@@ -4,6 +4,8 @@
  **/
 package com.easytnt.grading.service.impl;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +34,17 @@ public class RefereesServiceImpl extends AbstractEntityService<Referees, Long> i
 	@Autowired
 	private ShiroService shiroService;
 	
+	//临时实现方式
+	private static HashMap<String,Referees> workedReferess = new HashMap<>();
+	
 	@Override
 	public Referees getCurrentReferees() throws Exception{
 		UserDetails user = shiroService.getUser();
-		Referees referess = refereesRepository.findRefereesByCode(user.getUserName());
-		return  referess;
+		if(workedReferess.get(user.getUserName()) == null) {
+			Referees referess = refereesRepository.findRefereesByCode(user.getUserName());
+			workedReferess.put(user.getUserName(), referess);
+		}
+		return  workedReferess.get(user.getUserName());
 	}
 
 }

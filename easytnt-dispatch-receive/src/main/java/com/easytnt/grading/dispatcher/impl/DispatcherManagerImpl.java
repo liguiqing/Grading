@@ -32,6 +32,11 @@ public class DispatcherManagerImpl implements DispathcerManager {
 	@Override
 	public void registerDispatcher(CuttingsArea area,Dispatcher dispatcher) throws Exception{
 		logger.debug("Register Dispatcher For {} ",area.toString());
+		
+		if(dispatcherPool.containsKey(area)) {
+			return;
+		}
+		
 		dispatcherPool.put(area,dispatcher);
 		dispatcher.start();
 	}

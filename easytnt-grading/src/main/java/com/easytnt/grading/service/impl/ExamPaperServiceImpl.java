@@ -97,7 +97,6 @@ public class ExamPaperServiceImpl extends AbstractEntityService<ExamPaper, Long>
 		examPaperRepository.save(examPaper);
 		
 		String path =  File.separator +examPaper.getPaperOid() + 
-				File.separator+paperCard.getCardId() + 
 				File.separator + cardFile.getName();
 		File file = new File(root + path);
 		FileUtil.copyTo(cardFile, file);
@@ -123,6 +122,11 @@ public class ExamPaperServiceImpl extends AbstractEntityService<ExamPaper, Long>
 			file= new File(this.cardImagePath + paperCard.getPath());
 		}
 		return file;
+	}
+
+	@Override
+	public int countPapers(Long examPaperId) {
+		return this.examPaperRepository.countPapersFor(examPaperId);
 	}
 	
 

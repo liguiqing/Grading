@@ -22,4 +22,12 @@
 	
 	<bean id="dispathcerManager" class="com.easytnt.grading.dispatcher.impl.DispatcherManagerImpl"></bean>
 	
+	<bean id="dispatcherStrategy" class="com.easytnt.grading.dispatcher.impl.SinglePaperPriorDispatcherStrategy">
+		<constructor-arg type="int" value="1"></constructor-arg>
+	</bean>	
+	
+	<bean id="dispatcherConcreator" class="com.easytnt.grading.service.impl.DispatcherConcreator">
+		<property name="dispathcerManager" ref="dispathcerManager"></property>
+		<property name="dispatcherStrategy" ref="dispatcherStrategy"></property>
+	</bean>		
 </beans>

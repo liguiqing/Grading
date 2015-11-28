@@ -27,6 +27,16 @@ public class ExamPaperRepositoryHibernateImpl extends HibernateRepository<ExamPa
 	protected Class<ExamPaper> getEntityClass() {
 		return ExamPaper.class;
 	}
+
+	@Override
+	public int countPapersFor(Long examPaperId) {
+		String sql = "SELECT COUNT(studentoid) total FROM  (SELECT studentoid FROM paperimport where paperid = ? GROUP BY paperid,studentoid)  AS a  ";
+		Query query = this.getCurrentSession().createSQLQuery(sql);
+		query.setLong(0, examPaperId);
+		int total = 0;
+		total = ((Number)query.uniqueResult()).intValue();
+		return total;
+	}
 	
 	
 }

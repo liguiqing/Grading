@@ -20,5 +20,7 @@ public interface ExamPaperService extends EntityService<ExamPaper, Long> {
 	void addPaperCardTo(ExamPaper examPaper, File cardFile,int rotate);
 
 	File getPaperCardFile(ExamPaper examPaper,Long cardId);
+
+	int countPapers(Long examPaperId);
 	
 }

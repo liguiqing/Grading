@@ -3,8 +3,6 @@ package com.easytnt.grading.controller;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.controller.formbean.SubjectExamFormBean;
-import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.exam.SubjectExam;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.service.SubjectExamService;
@@ -34,20 +29,6 @@ public class SubjectExamController {
 	
 	@Autowired(required = false)
 	private SubjectService subjectService;
-	
-//	@RequestMapping(method = RequestMethod.POST)
-//	public ModelAndView onCreateSubjectExam(@RequestBody SubjectExam subjectExam)
-//					throws Exception {
-//		logger.debug("URL /subjectExam Method POST ", subjectExam);
-//		int maxSubjectCode = subjectService.getMaxCode();
-//		subjectExam.getSubject().setSubjectCode(subjectService.getMaxCode());
-//		for(ExamPaper ep:subjectExam.getUsedPaper()){
-//			ep.addSubjectExams(subjectExam);
-//			subjectExam.addExamPapers(ep);
-//		}
-//		subjectExamService.create(subjectExam);
-//		return ModelAndViewFactory.newModelAndViewFor("/exam/editExam").build();
-//	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView onCreateSubjectExam(@RequestBody SubjectExamFormBean formBean)
@@ -77,11 +58,12 @@ public class SubjectExamController {
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ModelAndView onDeleteSubjectExam(@RequestBody SubjectExam subjectExam)
 					throws Exception {
-		logger.debug("URL /subject Method DELETE ", subjectExam);
+		logger.debug("URL /subjectExam Method DELETE ", subjectExam);
 		subjectExam = subjectExamService.load(subjectExam.getTestId());
 		subjectExamService.delete(subjectExam);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
+
 	
 	private Set<ExamPaper> getNewSet(Set<ExamPaper> oldSet,Set<ExamPaper> newSet){
 		Set<ExamPaper> resultSet = new LinkedHashSet<ExamPaper>();
