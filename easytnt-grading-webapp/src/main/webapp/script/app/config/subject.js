@@ -160,8 +160,8 @@
 						e.fullScore = this.row.find('td:eq(5)').text();
 						e.objectivityScore = this.row.find('td:eq(6)').text();
 						e.subjectivityScore = this.row.find('td:eq(7)').text();
-						e.cuttingRootPath = this.row.find(':hidden:eq(0)').val();
-						e.studentAnserCardRootPath = this.row.find(':hidden:eq(1)').val();
+						e.cuttingRootPath = this.row.find(':hidden[name=cuttingRootPath]').val();
+						e.studentAnserCardRootPath = this.row.find(':hidden[name=studentAnserCardRootPath]').val();
 						se.subject = s;
 						se.usedPaper = [e];
 					}
