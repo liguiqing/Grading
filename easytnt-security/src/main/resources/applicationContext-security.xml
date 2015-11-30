@@ -180,7 +180,7 @@
 		<property name="loginUrl" value="/login"></property>
 		<property name="failureKeyAttribute" value="${shiro.failure.key}" />
 	</bean>
-
+	<bean id="backLogoutFilter" class="com.easytnt.security.shiro.web.filter.LogoutAndBackToUrlFilter"></bean>
 	<!-- Shiro的Web过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
@@ -193,6 +193,7 @@
 				<entry key="cas" value-ref="casFilter" />			
 				<entry key="kaptchar" value-ref="kaptchaFilter" />
 				<entry key="sessionTimeout" value-ref="sessionTimeout" />
+				<entry key="backlogout" value-ref="backLogoutFilter" />
 			</util:map>
 		</property>
 		<property name="filterChainDefinitions">
@@ -202,6 +203,7 @@
 				/exp/** = anon
 				/sso/login = cas
 				/login = authc
+				/logout = backlogout
 				/** = sessionTimeout,user
 			</value>
 		</property>
