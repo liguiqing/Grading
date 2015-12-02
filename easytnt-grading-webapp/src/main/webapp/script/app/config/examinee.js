@@ -47,7 +47,14 @@
 				if(!pager){
 					pager = _pager.concreator.init();
 	        	}
-				//TODO query
+				var messageObj = {beforeMsg:{tipText:"",show:true},successMsg:{show:false}};
+				var url = "examinee/query/"+pager.pageNum+"/"+pager.pageSize;
+				ajaxWrapper.getHtml(url,{},messageObj,function(html){
+					var myTable = $('.table');
+					myTable.find('tbody tr').remove();
+					var $html = $(html);
+					myTable.find('tbody').append($html.find('tbody tr')); 
+				});				
 			};
 			
 			//加入页码块

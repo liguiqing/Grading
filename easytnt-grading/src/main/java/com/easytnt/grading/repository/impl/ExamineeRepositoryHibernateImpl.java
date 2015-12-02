@@ -65,7 +65,7 @@ public class ExamineeRepositoryHibernateImpl extends HibernateRepository<Examine
 				map.put("examinneUuid", rs.getString("examinne_uuid"));
 				map.put("studentNumber", rs.getString("student_number"));
 				map.put("clazzName", rs.getString("clazz_name"));
-				map.put("clazzCode", rs.getString("examinne_name"));
+				map.put("clazzCode", rs.getString("clazz_code"));
 				return map;
 			}
 		});

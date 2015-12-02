@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -122,6 +123,16 @@ public class ExamineeController {
 		
 		return ModelAndViewFactory.newModelAndViewFor().with("filname",file==null?"":file.getName()).build();
 	}
+	
+	@RequestMapping(value="/query/{page}/{size}",method = RequestMethod.GET)
+	public ModelAndView onQueryTeacher(@PathVariable int page,@PathVariable int size,HttpServletRequest request)
+					throws Exception {
+		logger.debug("URL /Teacher/query/{}/{} Method GET ", page,size);
+        Query<Examinee> query = new QueryBuilder().newQuery(page,size,request.getParameterMap());
+        examineeService.query(query);
+		return ModelAndViewFactory.newModelAndViewFor("/examinee/examineeList").with("query",query)
+				.with("totalPage",query.getTotalPage()).build();
+	}	
 	
 	@RequestMapping(value="/importExaminee",method = RequestMethod.POST)
 	public ModelAndView importExaminee(@RequestBody DataSourceMapperFormBean[] mappedBeans,HttpServletRequest request)throws Exception {
