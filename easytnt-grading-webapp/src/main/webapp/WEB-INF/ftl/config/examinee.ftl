@@ -5,8 +5,16 @@
     <#import "/taglib/commons/pager.ftl" as page > 
     <@page.pager pager=query css="margin:0;text-align:left;"/>
     </div>
-    </#if>
-    
+    <div class="col-md-5" style="padding-right:0px;">
+      <form id="reImport"  method="POST" action=""  class="form-inline">
+	    <div class="col-md-offset-8 col-md-4 form-group">  
+		    <button type="button" class="btn btn-default " id="reimports">
+		      <span class="icon icon-reply"></span>重新导入
+		    </button>		    
+		</div>        
+      </form>
+    </div>
+    <#else>
     <div class="col-md-5" style="padding-right:0px;">
 	  <form id="uploadForm"  method="POST" action="" enctype="multipar/form-data" class="form-inline">
 	    <div class="col-md-offset-1 col-md-11 input-group file-preview">
@@ -20,20 +28,33 @@
 		      <span class="file-preview-input-title">选择报名库</span>
 		      <input id="fileName" type="file" name="fileName" style="display:none;">
 		    </div>
-		    <button type="type" class="btn btn-default " id="upload">
+		    <button type="button" class="btn btn-default " id="upload">
 		      <span class="glyphicon glyphicon-upload"></span>上传
 		    </button>
-		    <button type="type" class="btn btn-default " id="imports">
+		    <button type="button" class="btn btn-default " id="imports">
 		      <span class="icon icon-random"></span>导入
 		    </button>		    
 		  </div>
 	    </div>
 	  </form>
     </div>
+    </#if>
   </div>
   <br>
   <hr >
-  
+  <#if query.results??>
+    <table class="table table-striped table-bordered ">
+  	<thead class="bg-primary">
+  	  <tr>
+  	    <th>姓名</th><th>准考证号</th><th>学号</th><th>班级</th>
+  	  </tr>
+  	</thead>
+  	<tbody>
+	<#assign examinees=query.results >
+	<#include "/examinee/examineeRow.ftl">  	
+  	</tbody>
+  	</table>
+  <#else>
   <form id="mapperForm"  method="POST" action="" class="form-horizontal form-edit">
   <#assign rows = 0>
   <#list mappeds as mp>
@@ -58,4 +79,5 @@
     </div>
   </#if>
   </form>
+  </#if>
 </div>
