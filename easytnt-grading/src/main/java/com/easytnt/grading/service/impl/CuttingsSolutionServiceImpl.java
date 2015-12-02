@@ -81,6 +81,11 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 		paper.setPaperCards(null);
 
 		paper.setAnswerCardCuttingTemplates(answerCardCuttingTemplates);
+		String cuttingRootPath = paper.getCuttingRootPath();
+		if (!cuttingRootPath.endsWith("/") && !cuttingRootPath.endsWith("\\")) {
+			cuttingRootPath += "/";
+			paper.setCuttingRootPath(cuttingRootPath);
+		}
 		// // 设置原图路径
 		// paper.setStudentAnserCardRootPath("D:/test/tif/lizong");
 		// // 设置切割路径
