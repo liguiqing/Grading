@@ -1,6 +1,6 @@
 (function(){
 	"use strict";
-	define( ['jquery','ajax'],function($,point){
+	define( ['jquery','ajax'],function($,ajax){
 		var o = function(){
 			$('#username').focus();
 		};

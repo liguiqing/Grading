@@ -113,19 +113,19 @@
     <!-- bean name view resolver -->
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="3"/>   
     <bean id="exceptionResolver" class="com.easytnt.commons.exception.JoyMappingExceptionResolver">
-        <property name="defaultErrorView" value="404" />
+        <property name="defaultErrorView" value="err/404" />
         <property name="exceptionMappings">
             <props>
-	            <prop key="java.lang.exception">/500</prop>
+	            <prop key="java.lang.exception">err/500</prop>
             </props>
         </property>
         <property name="statusCodes">
             <props>
-              <prop key="/500">500</prop>
-              <prop key="/401">401</prop>
-              <prop key="/403">403</prop>
-              <prop key="/404">404</prop>
-              <prop key="/405">405</prop>
+              <prop key="err/500">500</prop>
+              <prop key="err/401">401</prop>
+              <prop key="err/403">403</prop>
+              <prop key="err/404">404</prop>
+              <prop key="err/405">405</prop>
             </props>
         </property>
     </bean>
