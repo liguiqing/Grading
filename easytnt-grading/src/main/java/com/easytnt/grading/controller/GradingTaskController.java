@@ -11,6 +11,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,6 +66,9 @@ public class GradingTaskController {
 	
 	@Autowired(required = false)
 	private CuttingsSolutionService cuttingsSolutionService;
+	
+	@Value("${easytnt.img.server}")
+	private String imgServer="http://localhost:8888";
 	
 	@RequestMapping(value = "/assignto/{subjectId}", method = RequestMethod.GET)
 	public ModelAndView onWorkerTask(@PathVariable Long subjectId,@RequestParam String worker) throws Exception {
@@ -177,6 +181,7 @@ public class GradingTaskController {
 				.with("menus", menus)
 				.with("referees", referees)
 				.with("task", task)
+				.with("imgServer", imgServer)
 				.with("sections", sections).build();
 	}
 

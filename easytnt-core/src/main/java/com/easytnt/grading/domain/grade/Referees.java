@@ -55,8 +55,12 @@ public class Referees {
 		if(iAmFree()) {
 			if(this.dispatcher != null) {
 				CuttingsImage cuttings = this.dispatcher.getFor(this);
+				if(cuttings== null)
+				    throw new IllegalAccessException("任务已经完成");
 				this.recordingNow = cuttings.createRecord(this);
-			}			
+			}else {
+				throw new IllegalAccessException("任务还没有开始");
+			}
 		}
 		return this.recordingNow;
 	}

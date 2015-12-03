@@ -31,7 +31,7 @@ public class RefereesServiceImpl extends AbstractEntityService<Referees, Long> i
 	@Autowired
 	private RefereesRepository refereesRepository;
 	
-	@Autowired
+	@Autowired(required=false)
 	private ShiroService shiroService;
 	
 	//临时实现方式
@@ -40,11 +40,14 @@ public class RefereesServiceImpl extends AbstractEntityService<Referees, Long> i
 	@Override
 	public Referees getCurrentReferees() throws Exception{
 		UserDetails user = shiroService.getUser();
-		if(workedReferess.get(user.getUserName()) == null) {
+		if(user.getSource() == null) {
+			
+		//if(workedReferess.get(user.getUserName()) == null) {
 			Referees referess = refereesRepository.findRefereesByCode(user.getUserName());
-			workedReferess.put(user.getUserName(), referess);
+			//workedReferess.put(user.getUserName(), referess);
+			user.sourceOf(referess);
 		}
-		return  workedReferess.get(user.getUserName());
+		return user.getSource();
 	}
 
 }

@@ -53,8 +53,6 @@ public class ExamineeController {
 	@Autowired(required = false)
 	private ExamineeService examineeService;
 	
-	@Value("${easytnt.img.sample.dir}")
-	private String imgDir;
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView onGet(HttpServletRequest request)throws Exception {
 		logger.debug("URL /examinee Method GET ");

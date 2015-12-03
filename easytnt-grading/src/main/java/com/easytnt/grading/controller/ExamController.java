@@ -1,9 +1,5 @@
 package com.easytnt.grading.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -21,10 +17,7 @@ import com.easytnt.commons.entity.cqrs.QueryBuilder;
 import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.exam.Exam;
-import com.easytnt.grading.domain.exam.ExamDesc;
 import com.easytnt.grading.service.ExamService;
-import com.easytnt.grading.service.SubjectExamService;
-import com.easytnt.grading.service.SubjectService;
 
 @Controller
 @RequestMapping(value = "/exam")
