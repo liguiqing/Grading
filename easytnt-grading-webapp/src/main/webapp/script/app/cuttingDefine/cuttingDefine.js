@@ -21,7 +21,7 @@
 				var paperId=$('#paperId').val();
 				var url='/cuttingDefine/get/'+examId+'/'+paperId;
 				ajaxWrapper.getJson(url,{},{},function(data){
-					console.log(data)
+					//console.log(data)
 					//准备试卷信息
 					recoverPaper(data.cuttingsSolution);
 					if(window.examObj.examPapers.length == 0) {//保存操作
@@ -102,11 +102,11 @@
 			//构建提交到后台的json数据对象
 			function buildData() {
 				var CuttingsSolution = {
-						designFor: {
+						paper: {
 							paperId: window.examObj.paperId,
 							answerCardCuttingTemplates : window.examObj.answerCardCuttingTemplates,
 						},
-						cutTo: []
+						cuttingDefines: []
 				};
 				
 				for(var i = 0; i < window.examObj.examPapers.length; i++) {
@@ -121,21 +121,21 @@
 								requiredPinci: data.requiredPinci,
 								maxerror: data.maxerror,
 								fullScore: data.fullScore,
-								areaInPaper: {
-									left: data.areaInPaper.left,
-									top: data.areaInPaper.top,
-									width: data.areaInPaper.width,
-									height: data.areaInPaper.height
+								area: {
+									left: data.area.left,
+									top: data.area.top,
+									width: data.area.width,
+									height: data.area.height
 								},
-								itemAreas:[]
+								giveScorePoints:[]
 						};
 						if(data.id != 0){
 							//cut.id=data.id;
 						}
 						CuttingsSolution.cutTo.push(cut);
 						
-						for(var k = 0; k < data.itemAreas.length; k++) {
-							var itemArea = data.itemAreas[k];
+						for(var k = 0; k < data.giveScorePoints.length; k++) {
+							var itemArea = data.giveScorePoints[k];
 							if(!$.isArray(itemArea.validValues)){
 								itemArea.validValues=itemArea.validValues.split(',');
 							}
@@ -147,7 +147,7 @@
 										interval: itemArea.interval,
 										validValues: itemArea.validValues
 							};
-							cut.itemAreas.push(item);
+							cut.giveScorePoints.push(item);
 						}
 					}
 				}
@@ -168,10 +168,10 @@
 			//恢复整个试卷内容
 			function recoverPaper(data) {
 				if(data.designFor.answerCardCuttingTemplates){
-					var size =data.designFor.answerCardCuttingTemplates.length;
+					var size =data.paper.answerCardCuttingTemplates.length;
 					for(var i=0;i<size;i++){
-						var url= data.designFor.answerCardCuttingTemplates[i].url;
-						data.designFor.answerCardCuttingTemplates[i].url=window.app.rootPath+url;
+						var url= data.paper.answerCardCuttingTemplates[i].url;
+						data.paper.answerCardCuttingTemplates[i].url=window.app.rootPath+url;
 					}
 					
 				}
@@ -241,14 +241,14 @@
 				
 				//试卷数据
 				var examObj = ExamObj.newInstance();
-				examObj.paperId = data.designFor.paperId;
-				examObj.answerCardCuttingTemplates = data.designFor.answerCardCuttingTemplates;
+				examObj.paperId = data.paper.paperId;
+				examObj.answerCardCuttingTemplates = data.paper.answerCardCuttingTemplates;
 				//答题卡数据
 				var selections = [];
 				var index = -1; 
-				if(data.cutTo){
-					for(var i = 0; i < data.cutTo.length; i++) {
-						var cut = data.cutTo[i];
+				if(data.cuttingDefines){
+					for(var i = 0; i < data.cuttingDefines.length; i++) {
+						var cut = data.cuttingDefines[i];
 						index = cut.answerCardImageIdx;
 						//当前selection如果没有被创建，就新建一个
 						var selection = selections[index];
@@ -268,16 +268,16 @@
 								requiredPinci: cut.requiredPinci,//评次
 								maxerror: cut.maxerror,//误差
 								fullScore: cut.fullScore,// 满分值
-								areaInPaper: cut.areaInPaper,
-								itemAreas:[]// 小题定义
+								area: cut.area,
+								giveScorePoints:[]// 小题定义
 						};
 						
 						//创建小题信息
-						for(var j = 0; j < cut.itemAreas.length; j++) {
-							var itemArea = cut.itemAreas[j];
+						for(var j = 0; j < cut.giveScorePoints.length; j++) {
+							var itemArea = cut.giveScorePoints[j];
 							itemArea.seriesScore = itemArea.seriesScore ? 1 : 0;//转换为select的值
 							itemArea.title = itemArea.name;//转换为select的值
-							element.data.itemAreas.push(itemArea);
+							element.data.giveScorePoints.push(itemArea);
 						}
 						
 						selection.elements.push(element);

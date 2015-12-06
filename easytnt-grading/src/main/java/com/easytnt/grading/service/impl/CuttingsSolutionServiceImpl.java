@@ -35,14 +35,14 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 
 	@Override
 	public void saveCuttingsSolution(CuttingsSolution cuttingsSolution) {
-		ExamPaper paper = cuttingsSolution.getDesignFor();
+		ExamPaper paper = cuttingsSolution.getPaper();
 		paper = examPaperRepository.load(paper.getPaperId());
 		cuttingsAreaRepository.deleteCuttingAreaInPaper(paper.getPaperId());
-		List<CuttingsArea> cuttingsAreas = cuttingsSolution.getCutTo();
-		for (CuttingsArea cuttingsArea : cuttingsAreas) {
-			cuttingsArea.setPaper(paper);
-			cuttingsAreaRepository.saveOrUpdate(cuttingsArea);
-		}
+		// List<CuttingsArea> cuttingsAreas = cuttingsSolution.getCutTo();
+		// for (CuttingsArea cuttingsArea : cuttingsAreas) {
+		// cuttingsArea.setPaper(paper);
+		// cuttingsAreaRepository.saveOrUpdate(cuttingsArea);
+		// }
 	}
 
 	@Override
@@ -50,14 +50,12 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 		ExamPaper paper = getPaper(paperId);
 		List<CuttingsArea> cuttingsAreas = getCuttingsAreas(paperId);
 		CuttingsSolution cuttingsSolution = new CuttingsSolution();
-		cuttingsSolution.setDesignFor(paper);
-		cuttingsSolution.setCutTo(cuttingsAreas);
+		cuttingsSolution.setPaper(paper);
 		return cuttingsSolution;
 	}
 
 	private List<CuttingsArea> getCuttingsAreas(Long paperId) {
 		List<CuttingsArea> cuttingsAreas = cuttingsAreaRepository.listCuttingsAreaOfInPaper(paperId);
-
 		return cuttingsAreas;
 	}
 

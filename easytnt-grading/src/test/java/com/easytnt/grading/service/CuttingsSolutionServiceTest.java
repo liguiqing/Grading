@@ -42,8 +42,9 @@ public class CuttingsSolutionServiceTest {
 		ExamPaper paper = new ExamPaper();
 		paper.setPaperId(3L);
 		CuttingsSolution cuttingsSolution = new CuttingsSolution();
-		cuttingsSolution.setDesignFor(paper);
-		cuttingsSolution.newCuttingsDefines(createCuttingsArea(null, "name1", 1));
+		// cuttingsSolution.setDesignFor(paper);
+		// cuttingsSolution.newCuttingsDefines(createCuttingsArea(null, "name1",
+		// 1));
 		service.saveCuttingsSolution(cuttingsSolution);
 	}
 
@@ -52,8 +53,9 @@ public class CuttingsSolutionServiceTest {
 		ExamPaper paper = new ExamPaper();
 		paper.setPaperId(3L);
 		CuttingsSolution cuttingsSolution = new CuttingsSolution();
-		cuttingsSolution.setDesignFor(paper);
-		cuttingsSolution.newCuttingsDefines(createCuttingsArea(17L, "name2", 1));
+		// cuttingsSolution.setDesignFor(paper);
+		// cuttingsSolution.newCuttingsDefines(createCuttingsArea(17L, "name2",
+		// 1));
 		service.saveCuttingsSolution(cuttingsSolution);
 	}
 
