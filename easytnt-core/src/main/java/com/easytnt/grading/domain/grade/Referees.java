@@ -5,6 +5,8 @@
 
 package com.easytnt.grading.domain.grade;
 
+import java.util.Collection;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -129,6 +131,12 @@ public class Referees {
 		this.recordingNow.finish();
 		this.lastFinishedRecord  = this.recordingNow;
 		return this.recordingNow;
+	}
+	
+	public boolean inDoneTaskList(Collection<CuttingsImage> cuttings) {
+		return  cuttings.contains(this.recordingNow) 
+				|| cuttings.contains(this.lastFinishedRecord) 
+				|| cuttings.contains(this.waittingRecord);
 	}
 	
 	public boolean inDoneTaskList(CuttingsImage cuttingsimage) {

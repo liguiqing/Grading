@@ -25,6 +25,8 @@ public interface PinciQueue {
 	
 	CuttingsImage get(Referees referees);
 	
+	PinciQueue prev();
+	
 	int size();
 	
 	boolean isEmpty();

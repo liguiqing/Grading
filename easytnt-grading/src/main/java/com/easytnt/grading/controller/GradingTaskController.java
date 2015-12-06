@@ -165,7 +165,7 @@ public class GradingTaskController {
 		menus.add( new Menu("参考答案",""));
 		menus.add( new Menu("统计信息",""));
 		menus.add( new Menu("锁定屏幕",""));
-		menus.add( new Menu("退出",""));
+		menus.add( new Menu("退出","logout"));
 		
 		Referees referees = refereesService.getCurrentReferees();
 		GradeTask task = taskService.getTaskOf(taskId, referees);

@@ -27,5 +27,7 @@ public interface DispatcherStrategy {
 	 * @throws 当pince为null时 throws 
 	 */
 	PinciQueue getDispatcherQueue(List<PinciQueue> pincis);
+	
+	void setPinci(int pinci);
 }
 

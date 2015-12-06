@@ -5,6 +5,7 @@
 
 package com.easytnt.grading.domain.grade;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -37,7 +38,7 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 
 	private CuttingsImage recordFor;
 	
-	private Set<ItemGradeRecord> itemRecords;
+	private List<ItemGradeRecord> itemRecords;
 
 	private Date startTime;
 
@@ -69,6 +70,7 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 	public Float calScore() {
 		Float score = 0f;
 		if(this.isFinished() && this.isValid()) {
+			//暂时的处理方法 
 			for(ItemGradeRecord itemRecord:this.itemRecords) {
 				score += itemRecord.getScored();
 			}
@@ -95,12 +97,13 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 		List<PositionOfItemInArea> items = defined.getItemAreas();
 		int i = 0;
 		StringBuilder sb = new StringBuilder();
-		this.itemRecords = new HashSet<>();
+		this.itemRecords = new ArrayList<>();
 		for(PositionOfItemInArea item:items) {
 			Float score = 0f;
 			if( i < scores.length)
 				score = scores[i++];
 			ItemGradeRecord igr = new ItemGradeRecord(item.getItem(),score);
+			igr.recordedBy(this.referees);
 			itemRecords.add(igr);
 			if(score <= score.intValue()) {
 				sb.append(score.intValue());
@@ -109,36 +112,6 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 			}
 			sb.append(",");
 		}
-//		
-//		List<Section> sections = recordFor.getSections();
-//		this.itemRecords = new HashSet<>();
-//		int i = 0;
-//		StringBuilder sb = new StringBuilder();
-//		for (Section section : sections) {
-//			Set<Item> items = section.getItems();
-//			for (Item item : items) {
-//				Float score = 0f;
-//				if( i < scores.length)
-//					score = scores[i++];
-//				if (item.isEffectiveScore(score)) {
-//					ItemGradeRecord igr = new ItemGradeRecord(item,score);
-//					itemRecords.add(igr);
-//					
-//				} else {
-//					throw new IllegalArgumentException("无效的分值，"
-//							+ section.getTitle() + " " + item.getTitle()
-//							+ " 的有效分范围是[" + item.getMinPoint() + ","
-//							+ item.getMaxPoint() + "]");
-//				}
-//				if(score <= score.intValue()) {
-//					sb.append(score.intValue());
-//				}else {
-//					sb.append(score);
-//				}
-//				sb.append(",");
-//			}
-//
-//		}
 		sb.deleteCharAt(sb.length()-1);
 		this.scorestr = sb.toString();
 	}
@@ -250,11 +223,11 @@ public class CuttingsImageGradeRecord implements Entity<CuttingsImageGradeRecord
 		this.finishTime = finishTime;
 	}
 
-	public Set<ItemGradeRecord> getItemRecords() {
+	public List<ItemGradeRecord> getItemRecords() {
 		return itemRecords;
 	}
 
-	public void setItemRecords(Set<ItemGradeRecord> itemRecords) {
+	public void setItemRecords(List<ItemGradeRecord> itemRecords) {
 		this.itemRecords = itemRecords;
 	}
 

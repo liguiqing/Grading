@@ -14,6 +14,7 @@ import com.easytnt.commons.entity.service.AbstractEntityService;
 import com.easytnt.grading.dispatcher.Dispatcher;
 import com.easytnt.grading.dispatcher.DispathcerManager;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
@@ -62,6 +63,10 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		if (task.isFinished())
 			throw new IllegalAccessException("评卷任务已经完成");
 		task.setAssignedTo(referees);
+		int total = taskRepository.countTaskTotal(taskId);
+		int assignedToTotal = taskRepository.countAssignedTotal(taskId,referees.getId());
+		task.setTaskTotal(total);
+		task.setAssignedToTotal(assignedToTotal);
 		Dispatcher dispatcher = dispathcerManager.getDispatcherFor(task.getArea());
 		task.useDispatcher(dispatcher);
 		return task;
@@ -76,6 +81,18 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		task.increment();
 		// 数据持久化处理
 		gradeRecordRepository.saveForScoring(imageGradeRecord);
+		
+		CuttingsImage cuttings = imageGradeRecord.getRecordFor();
+		if(cuttings.isFinish()) {
+			Float fScore = cuttings.calScore();
+			if(fScore>=0) {
+				gradeRecordRepository.saveLastScore(imageGradeRecord,fScore);
+			}else {
+				logger.info("add {} to leader queue ",cuttings);
+				//dispathcerManager.
+			}
+		}
+		//imageGradeRecord.
 	}
 
 	@Override

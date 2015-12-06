@@ -5,6 +5,7 @@
 package com.easytnt.grading.repository.impl;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -77,6 +78,24 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 	@Override
 	public void saveForError(CuttingsImageGradeRecord record) {
 		saveGradeRecord(record,"E");
+	}
+	
+	@Override
+	public void saveLastScore(CuttingsImageGradeRecord record,Float score) {
+		String insertLastScore = "INSERT INTO lastscore (paperid,kemuoid,virtualroomid,studentoid,itemid,score,postdatetime, scoretype,delmark)"
+				+ " SELECT a.paperid,a.kemuoid,a.virtualroomid,a.studentoid,a.itemid,?,?,1,0 "
+				+ " FROM scoreinfolog a LEFT JOIN  paperimport b ON b.studentoid=a.studentoid AND b.itemid=a.itemid AND b.paperid=a.paperid AND b.kemuoid=a.kemuoid AND b.paperid=a.paperid"
+				+ " WHERE a.teacheroid=? AND a.itemid=? AND a.pingci=? AND b.imagepath=?";
+		Query query =  getCurrentSession().createSQLQuery(insertLastScore);
+		int index = 0;
+		CuttingsImage cuttings = record.getRecordFor();
+		query.setFloat(index++, score);
+		query.setTimestamp(index++,Calendar.getInstance().getTime());
+		query.setLong(index++, record.getReferees().getId());
+		query.setLong(index++, cuttings.definedOf().getId());
+		query.setInteger(index++, record.getPinci());
+		query.setString(index++, cuttings.getImgPath());
+		query.executeUpdate();
 	}
 	
 	private void saveGradeRecord(CuttingsImageGradeRecord record,String markStr) {

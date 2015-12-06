@@ -51,7 +51,8 @@ public class DispatcherConcreator {
 		if(cuttingsDefineds != null) {
 			for(CuttingsArea area:cuttingsDefineds) {
 				Fetcher fetcher = getFetherFor(area);
-				Dispatcher dispatcher = new DispatcherImpl(dispatcherStrategy,fetcher,1);
+				dispatcherStrategy.setPinci(area.getRequiredPinci());
+				Dispatcher dispatcher = new DispatcherImpl(dispatcherStrategy,fetcher,area.getRequiredPinci());
 				dispathcerManager.registerDispatcher(area, dispatcher);
 				logger.debug("Dispatcher for {} Registered",area);
 			}

@@ -70,9 +70,16 @@ public class DispatcherImpl implements Dispatcher {
 		}
 		this.dispatcherStrategy = dispatcherStrategy;
 		this.pinci = new ArrayList<>();
+		PinciQueueImpl prev = null;
 		for(int i=0;i<pinci;i++) {
-			this.pinci.add(new PinciQueueImpl());
+			prev = new PinciQueueImpl(i+1,prev);
+			this.pinci.add(prev);
 		}
+		//多评时要多创建一个评次队列用于多评完成不满足最小误差值的评分
+		if(pinci > 2) {
+			this.pinci.add(new PinciQueueImpl(pinci+1,prev));
+		}
+		
 		this.fetcher = new LockBlockFetcherProxy(fetcher);
 		
 	}
@@ -96,9 +103,7 @@ public class DispatcherImpl implements Dispatcher {
 		moveToNext(cuttings);
 		
 		logger.debug(cuttings.toString());
-		
 		return cuttings;
-
 	}
 	
 	@Override
