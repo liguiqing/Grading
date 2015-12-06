@@ -61,7 +61,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 
 		if (task.isFinished())
 			throw new IllegalAccessException("评卷任务已经完成");
-
+		task.setAssignedTo(referees);
 		Dispatcher dispatcher = dispathcerManager.getDispatcherFor(task.getArea());
 		task.useDispatcher(dispatcher);
 		return task;
@@ -70,7 +70,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Override
 	@Transactional
 	public void itemScoring(Long taskId, Referees referees, Float[] scores) throws Exception {
-		GradeTask task = this.getTaskOf(taskId, referees);
+		GradeTask task = this.taskRepository.load(taskId);
 		CuttingsImageGradeRecord imageGradeRecord = referees.scoringForItems(scores);
 		logger.debug("Scoring ", imageGradeRecord);
 		task.increment();
@@ -81,7 +81,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Override
 	@Transactional
 	public void itemBlank(Long taskId, Referees referees) throws Exception {
-		GradeTask task = this.getTaskOf(taskId, referees);
+		GradeTask task = this.taskRepository.load(taskId);
 		referees = task.getAssignedTo();
 		CuttingsImageGradeRecord imageGradeRecord = referees.dealBlank();
 		logger.debug("Scoring ", imageGradeRecord);
@@ -94,7 +94,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Transactional
 	public void itemError(Long taskId, Referees referees,String reason) throws Exception {
 		GradeTask task = taskRepository.load(taskId);
-		referees = task.getAssignedTo();
+		//referees = task.getAssignedTo();
 
 		CuttingsImageGradeRecord imageGradeRecord  = referees.dealError(reason);
 		logger.debug("Scoring ", imageGradeRecord);
@@ -106,9 +106,9 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	@Override
 	@Transactional
 	public CuttingsImageGradeRecord createImageGradeRecordBy(Long taskId, Referees referees) throws Exception {
-		GradeTask task = this.getTaskOf(taskId, referees);
-		task.setAssignedTo(referees);
-		CuttingsImageGradeRecord imageGradeRecord = task.getAssignedTo().fetchCuttings();
+		//GradeTask task = this.getTaskOf(taskId, referees);
+		//task.setAssignedTo(referees);
+		CuttingsImageGradeRecord imageGradeRecord = referees.fetchCuttings();
 		// 数据持久化处理
 		gradeRecordRepository.saveForFetching(imageGradeRecord);
 

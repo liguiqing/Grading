@@ -108,6 +108,8 @@ public class ComefromDbRealm extends AuthorizingRealm {
 					private String credentials = _password;
 					
 					private ArrayList<UserRole> rs  = myRoles;
+					
+					private Object source ;
 
 					@Override
 					public String getUserName() {
@@ -131,11 +133,12 @@ public class ComefromDbRealm extends AuthorizingRealm {
 
 					@Override
 					public <T> T getSource() {
-						return null;
+						return (T)this.source;
 					}
 
 					@Override
 					public <T> boolean sourceOf(T t) {
+						this.source = t;
 						return true;
 					}
 

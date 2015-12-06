@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 import javax.sql.DataSource;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
@@ -28,6 +29,9 @@ import com.easytnt.commons.util.SpringContextUtil;
 		,"classpath*:applicationContext-tx.xml","classpath*:applicationContext-app.xml"})
 public class ConfigurationTest extends AbstractJUnit4SpringContextTests {
 
+	@Value("${easytnt.img.server}")
+	private String imgServer="http://localhost:8888";
+	
 	@Test
 	public void test()throws Exception{
 		JdbcTemplate jt = SpringContextUtil.getBean("jdbcTemplate");
@@ -36,6 +40,7 @@ public class ConfigurationTest extends AbstractJUnit4SpringContextTests {
 		DataSource ds  = SpringContextUtil.getBean("ds");
 		
 		assertNotNull(ds);
+		assertNotEquals("${easytnt.img.server}",imgServer);
 	}
 }
 
