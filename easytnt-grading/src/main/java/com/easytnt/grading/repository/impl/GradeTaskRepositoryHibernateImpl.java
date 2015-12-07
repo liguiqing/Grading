@@ -4,9 +4,11 @@
  **/
 package com.easytnt.grading.repository.impl;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -56,6 +58,25 @@ public class GradeTaskRepositoryHibernateImpl extends
 		criteria.add(Restrictions.eq("assignedTo.id", referees.getId()));
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		return criteria.list();
+	}
+
+	@Override
+	public int countTaskTotal(Long taskId) {
+		String sql = "SELECT COUNT(a.imagepath) total FROM paperimport a INNER JOIN grade_task b ON a.itemid=b.item_id WHERE b.task_id=?";
+		Query query = getCurrentSession().createSQLQuery(sql);
+		query.setLong(0, taskId);
+		BigInteger o = (BigInteger)query.uniqueResult();
+		return o.intValue();
+	}
+
+	@Override
+	public int countAssignedTotal(Long taskId, Long refereesId) {
+		String sql = "SELECT COUNT(a.itemid) FROM scoreinfolog a INNER JOIN grade_task b ON a.itemid=b.item_id  WHERE b.task_id=? AND teacheroid=?";
+		Query query = getCurrentSession().createSQLQuery(sql);
+		query.setLong(0, taskId);
+		query.setLong(1, refereesId);
+		BigInteger o = (BigInteger)query.uniqueResult();
+		return o.intValue();
 	}
 
 }

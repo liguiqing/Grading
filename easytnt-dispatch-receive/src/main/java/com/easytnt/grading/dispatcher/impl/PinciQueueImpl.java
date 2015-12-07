@@ -5,6 +5,7 @@
 package com.easytnt.grading.dispatcher.impl;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,6 +28,17 @@ public class PinciQueueImpl implements PinciQueue {
 	
 	private AtomicInteger queueSize = new AtomicInteger(0);
 	
+	private int myPinci = 1;
+	
+	private PinciQueue prev;
+	
+	public PinciQueueImpl() {}
+	
+	public PinciQueueImpl(int myPinci,PinciQueue prev) {
+		this.myPinci = myPinci;
+		this.prev = prev;
+	}
+	
 	@Override
 	public void put(Collection<CuttingsImage> cuttingses) {
 		this.queueSize.addAndGet(cuttingses.size());
@@ -41,18 +53,20 @@ public class PinciQueueImpl implements PinciQueue {
 	
 	@Override
 	public CuttingsImage get(Referees referees) {
-		CuttingsImage cuttings = this.queue.poll();
-		if(cuttings == null)
-			return null;
-		
-		if(referees.inDoneTaskList(cuttings)) {
-			this.queue.offerLast(cuttings);
-			return this.get(referees);
-		}else {
-			this.queueSize.decrementAndGet();
-			return cuttings;
+		Iterator<CuttingsImage> it = this.queue.iterator();
+		while(it.hasNext()) {
+			CuttingsImage cuttings = it.next();
+			if(!cuttings.hasRefereedBy(referees)) {
+				this.queue.remove(cuttings);
+				return cuttings;
+			}
+		}
+	
+		if(this.prev != null) {
+			return this.prev.get(referees);	
 		}
 		
+		return null;
 	}
 	
 	@Override
@@ -76,6 +90,15 @@ public class PinciQueueImpl implements PinciQueue {
 		listenner.on(this);
 	}
 	
+	@Override
+	public String toString() {
+		return myPinci + " and current size " + this.size();
+	}
+
+	@Override
+	public PinciQueue prev() {
+		return this.prev;
+	}
 }
 
 

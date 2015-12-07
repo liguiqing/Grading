@@ -6,14 +6,9 @@
 package com.easytnt.grading.dispatcher.impl;
 
 import java.util.List;
-import java.util.Queue;
-
-
-
 
 import com.easytnt.grading.dispatcher.DispatcherStrategy;
 import com.easytnt.grading.dispatcher.PinciQueue;
-import com.easytnt.grading.share.ImgCuttings;
 
 /** 
  * <pre>
@@ -48,6 +43,11 @@ public class SinglePaperPriorDispatcherStrategy implements DispatcherStrategy {
 			}
 		}
 		return pincis.get(maxPinci-1);
+	}
+
+	@Override
+	public void setPinci(int pinci) {
+		this.maxPinci = pinci;
 	}
 
 }

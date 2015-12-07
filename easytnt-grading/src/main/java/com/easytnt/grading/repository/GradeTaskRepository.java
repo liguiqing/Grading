@@ -25,4 +25,8 @@ public interface GradeTaskRepository extends Repository<GradeTask, Long> {
 	public List<GradeTask> findGenTasks(Long cuttoId);
 
 	public List<GradeTask> findRefereesTasks(Referees referees);
+
+	public int countTaskTotal(Long taskId);
+
+	public int countAssignedTotal(Long taskId, Long refereesId);
 }

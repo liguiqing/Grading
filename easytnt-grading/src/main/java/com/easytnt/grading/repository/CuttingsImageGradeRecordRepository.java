@@ -30,4 +30,6 @@ public interface CuttingsImageGradeRecordRepository extends
 
 	void saveForError(CuttingsImageGradeRecord imageGradeRecord);
 
+	void saveLastScore(CuttingsImageGradeRecord record,Float score);
+
 }

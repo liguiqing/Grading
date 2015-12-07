@@ -36,6 +36,8 @@ public class GradeTask implements ValueObject<GradeTask> {
 	
 	private int assignedToTotal = 0;
 	
+	private int taskTotal = 0;
+	
 	public static GradeTask createOfficialGradeTask(Referees referees,CuttingsArea genBy) {
 		return new GradeTask(referees,genBy,TaskType.Official);
 	}
@@ -186,6 +188,18 @@ public class GradeTask implements ValueObject<GradeTask> {
 
 	public void setRefereesTotal(int refereesTotal) {
 		this.assignedToTotal = refereesTotal;
+	}
+
+	public int getTaskTotal() {
+		return taskTotal;
+	}
+
+	public void setTaskTotal(int taskTotal) {
+		this.taskTotal = taskTotal;
+	}
+
+	public void setAssignedToTotal(int assignedToTotal) {
+		this.assignedToTotal = assignedToTotal;
 	}
 	
 }

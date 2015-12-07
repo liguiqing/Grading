@@ -115,6 +115,18 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 		return null;
 	}
 
+	@Override
+	public int countTaskTotal(Long taskId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int countAssignedTotal(Long taskId, Long id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
 
 
