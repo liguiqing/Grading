@@ -135,10 +135,10 @@
 				
 				//设置当前元素的位置
 				$(element.view).css({
-					left: element.data.areaInPaper.left + 'px',
-					top: element.data.areaInPaper.top + 'px',
-					width: element.data.areaInPaper.width + 'px',
-					height: element.data.areaInPaper.height + 'px'
+					left: element.data.area.left + 'px',
+					top: element.data.area.top + 'px',
+					width: element.data.area.width + 'px',
+					height: element.data.area.height + 'px'
 				});
 				
 				//让当前元素可以编辑

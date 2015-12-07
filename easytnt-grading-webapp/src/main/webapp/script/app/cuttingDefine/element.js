@@ -16,7 +16,7 @@
 			
 			//根据缩放倍数更改当前元素的位置
 			element.updatePosition = function() {
-				var position = element.data.areaInPaper;
+				var position = element.data.area;
 				var scaleRate = selection.scaleRate;
 				//修改页面上元素的显示位置
 				element.updateViewPosition(position, scaleRate);
@@ -24,7 +24,7 @@
 			
 			//更改当前元素数据区坐标值
 			element.updateDataPosition = function(position, scaleRate) {
-				element.data.areaInPaper = {
+				element.data.area = {
 						left: position.left * scaleRate,
 						top: position.top * scaleRate,
 						width: position.width * scaleRate,
@@ -45,8 +45,8 @@
 			//根据x轴坐标和宽度进行对齐操作
 			element.align = function(left, width) {
 				//设置数据域中的值
-				element.data.areaInPaper.left = left;
-				element.data.areaInPaper.width = width;
+				element.data.area.left = left;
+				element.data.area.width = width;
 				
 				//修改页面上的位置
 				$(element.view).css({
@@ -338,7 +338,7 @@
 				}
 				if(createSubData) {
 					var subData = create_sub_question_data();
-					element.data.itemAreas.push(subData);
+					element.data.giveScorePoints.push(subData);
 				}
 				//调整题目信息框位置
 				element.position_question_panel();
@@ -374,21 +374,21 @@
 				var width = $(questionPanel).find('#width').text();
 				var height = $(questionPanel).find('#height').text();
 				
-				//元素areaInPaper存实际坐标值
+				//元素area存实际坐标值
 				var scaleRate = selection.scaleRate;
 				
 				el.data.name = name;
 				el.data.fullScore = fullScore;
 				el.data.requiredPinci = requiredPinci;
 				el.data.maxerror = maxerror;
-				el.data.areaInPaper.left = parseInt(left / scaleRate);
-				el.data.areaInPaper.top = parseInt(top / scaleRate);
-				el.data.areaInPaper.width = parseInt(width / scaleRate);
-				el.data.areaInPaper.height = parseInt(height / scaleRate);
+				el.data.area.left = parseInt(left / scaleRate);
+				el.data.area.top = parseInt(top / scaleRate);
+				el.data.area.width = parseInt(width / scaleRate);
+				el.data.area.height = parseInt(height / scaleRate);
 				// 获取小题信息
 				var subQuestionPanels = $(questionPanel).find('.subQuestionPanel');
 				
-				el.data.itemAreas.length = 0;
+				el.data.giveScorePoints.length = 0;
 				// 重新填入小题信息
 				var subQuestionPanel = null;
 				for(var i = 0; i < subQuestionPanels.length; i++) {
@@ -401,7 +401,7 @@
 					
 					var subData = create_sub_question_data(title, subFullScore, 
 							seriesScore, interval, validValues);
-					el.data.itemAreas.push(subData);
+					el.data.giveScorePoints.push(subData);
 				}
 			};
 			
@@ -451,7 +451,7 @@
 				$('#maxerror').val(element.data.maxerror);
 				
 				var panel = null;
-				var subDatas = element.data.itemAreas;
+				var subDatas = element.data.giveScorePoints;
 				
 				//删除其中空元素
 				for(var i = 0; i < subDatas.length; i++) {
@@ -511,14 +511,14 @@
 			data.requiredPinci = 1;//评次
 			data.maxerror = 1;//误差
 			data.fullScore = 10;// 满分值
-			data.areaInPaper = {
+			data.area = {
 					left: 0,// 相对图片的x轴坐标
 					top: 0, // 相对图片的y轴坐标
 					width: 0, // 所选区域的宽度
 					height: 0// 所选区域的高度
 			};
 			
-			data.itemAreas = [];// 小题定义
+			data.giveScorePoints = [];// 小题定义
 			return data;
 		}
 
