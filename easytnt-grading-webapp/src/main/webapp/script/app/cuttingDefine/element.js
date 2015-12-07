@@ -12,14 +12,41 @@
 			element.make_element_editable = function() {
 				element.make_draggable();
 				element.make_resizable();
-				
 			};
+			
+			//根据缩放倍数更改当前元素的位置
+			element.updatePosition = function() {
+				var position = element.data.areaInPaper;
+				var scaleRate = selection.scaleRate;
+				//修改页面上元素的显示位置
+				element.updateViewPosition(position, scaleRate);
+			}
+			
+			//更改当前元素数据区坐标值
+			element.updateDataPosition = function(position, scaleRate) {
+				element.data.areaInPaper = {
+						left: position.left * scaleRate,
+						top: position.top * scaleRate,
+						width: position.width * scaleRate,
+						height: position.height * scaleRate
+				}
+			}
+			
+			//更改当前元素页面上显示的坐标位置
+			element.updateViewPosition = function(position, scaleRate) {
+				$(element.view).css({
+					left: position.left * scaleRate,
+					top: position.top * scaleRate,
+					width: position.width * scaleRate,
+					height: position.height * scaleRate
+				});
+			}
 			
 			//根据x轴坐标和宽度进行对齐操作
 			element.align = function(left, width) {
 				//设置数据域中的值
-				element.data.area.left = left;
-				element.data.area.width = width;
+				element.data.areaInPaper.left = left;
+				element.data.areaInPaper.width = width;
 				
 				//修改页面上的位置
 				$(element.view).css({
@@ -39,7 +66,10 @@
 				$(element.view).remove();
 				//隐藏无效dom的宽高tip
 				$(selection.target).find('.size').css({display : 'none'});
-				
+				//如果当前数据信息提示框显示，就隐藏,元素被删除了，显示数据就没有意义了
+				$(selection.target).find('.control-content').css({
+					display: 'none'
+				});
 				//恢复鼠标形状
 				$(selection.target).css({
 					cursor : 'default'
@@ -48,8 +78,102 @@
 				selection.currentElement = null;
 			}
 
-			// 让元素可以拖动
+			//让元素可以拖动
 			element.make_draggable = function() {
+				var target = element.view;
+				//设置拖拽样式
+				element.set_drag_style(target);
+				
+				$(target).mousedown(function(e) {
+					selection.prevent_event(e);
+					if($(element.view).width() >= 1) {
+						// 改变当前处理元素值
+						selection.record_current_element(element);
+						//保存上一个元素的数据
+						element.save_preview_element_data();
+						// 选中当前元素，其余元素都取消选中,隐藏助托点
+						selection.select_element(element, e);
+						selection.showSize = true;
+					}
+					
+					$(this).css({
+						cursor : 'move'
+					});
+					var draggable = true;
+					var startX = e.pageX;
+					var startY = e.pageY;
+					$(document).mousemove(function(e) {
+						selection.prevent_event(e);
+						if(draggable) {//可以进行拖动操作
+							var currentX = e.pageX;
+							var currentY = e.pageY;
+							var distanceX = currentX - startX;
+							var distanceY = currentY - startY;
+							element.position_drag_element(target, distanceX, distanceY);
+
+							//限制数据栏显示位置，不超出整个试卷范围
+							element.position_question_panel();
+							// 显示选区当前宽高tip
+							selection.show_size();
+							// 改变宽高tip中的值
+							selection.change_size_tip();
+							// 显示位置信息
+							selection.show_msg();
+							
+							startX = currentX;
+							startY = currentY;
+						}
+					});
+
+					$(document).mouseup(function() {
+						selection.prevent_event(e);
+						selection.showSize = false;
+						draggable = false;
+						$(this).css({
+							cursor : 'move'
+						});
+						$(document).unbind('mousemove');
+						$(document).unbind('mouseup');
+					});
+
+				});
+			};
+			
+			//修改拖动样式
+			element.set_drag_style = function(target) {
+				$(target).mouseover(function() {
+					$(this).css({
+						cursor : 'move'
+					});
+				});
+				$(target).mouseout(function() {
+					$(this).css({
+						cursor : 'default'
+					});
+				});
+			};
+			
+			//调整拖动过程中元素位置
+			element.position_drag_element = function(target, distanceX, distanceY) {
+				var x = $(target)[0].offsetLeft;
+				var y = $(target)[0].offsetTop;
+
+				var left = x + distanceX;
+				var top = y + distanceY;
+				var width = $(target).outerWidth();
+				var height = $(target).outerHeight();
+				
+				//容错处理
+				var position = selection.restrain_question_panel(left, top, width, height);
+				
+				$(target).css({
+					left : position.left + 'px',
+					top : position.top + 'px'
+				});
+			};
+			
+			// 让元素可以拖动
+			element.make_draggable1 = function() {
 				// 可拖拽
 				$(element.view).draggable(true);
 
@@ -63,16 +187,7 @@
 							//保存上一个元素的数据
 							element.save_preview_element_data();
 							// 选中当前元素，其余元素都取消选中,隐藏助托点
-							selection.select_element(element);
-							//显示当前元素的数据
-							element.show_data();
-							
-							// 显示选区当前宽高tip
-							selection.show_size();
-							// 改变宽高tip中的值
-							selection.change_size_tip();
-							// 显示位置信息
-							selection.show_msg(selection.currentElement);
+							selection.select_element(element, e);
 							selection.showSize = true;
 						}
 					},
@@ -86,7 +201,7 @@
 						// 改变宽高tip中的值
 						selection.change_size_tip();
 						// 显示位置信息
-						selection.show_msg(selection.currentElement);
+						selection.show_msg();
 					},
 					onStopDrag: function() {
 						selection.showSize = false;
@@ -211,14 +326,22 @@
 				
 				// 设置中间的4个助托点居中
 				resize.position_middle_point();
+				//缩放需要重新设定中间点的位置,所以需要用到resize.position_middle_point
+				element.resize = resize;
 			};
 			
 			// 显示当前选中元素的数据值
 			element.show_data = function(createSubData) {
+				//这里经过select_element方法处理后，会存在取消选中元素的情况，需要判断
+				if(!selection.currentElement) {
+					return;
+				}
 				if(createSubData) {
 					var subData = create_sub_question_data();
 					element.data.itemAreas.push(subData);
 				}
+				//调整题目信息框位置
+				element.position_question_panel();
 				//显示对象中的数据到信息框上
 				element.show_with_element_data(createSubData);
 			};
@@ -251,14 +374,17 @@
 				var width = $(questionPanel).find('#width').text();
 				var height = $(questionPanel).find('#height').text();
 				
+				//元素areaInPaper存实际坐标值
+				var scaleRate = selection.scaleRate;
+				
 				el.data.name = name;
 				el.data.fullScore = fullScore;
 				el.data.requiredPinci = requiredPinci;
 				el.data.maxerror = maxerror;
-				el.data.area.left = left;
-				el.data.area.top = top;
-				el.data.area.width = width;
-				el.data.area.height = height;
+				el.data.areaInPaper.left = parseInt(left / scaleRate);
+				el.data.areaInPaper.top = parseInt(top / scaleRate);
+				el.data.areaInPaper.width = parseInt(width / scaleRate);
+				el.data.areaInPaper.height = parseInt(height / scaleRate);
 				// 获取小题信息
 				var subQuestionPanels = $(questionPanel).find('.subQuestionPanel');
 				
@@ -281,6 +407,9 @@
 			
 			//重新调整题目信息框位置
 			element.position_question_panel = function(flag) {
+				if(!selection.currentElement) {
+					return;
+				}
 				var target = $('.control-content');
 				var display = $(target).css('display');
 				// 获取当前元素的相对位置
@@ -382,7 +511,7 @@
 			data.requiredPinci = 1;//评次
 			data.maxerror = 1;//误差
 			data.fullScore = 10;// 满分值
-			data.area = {
+			data.areaInPaper = {
 					left: 0,// 相对图片的x轴坐标
 					top: 0, // 相对图片的y轴坐标
 					width: 0, // 所选区域的宽度

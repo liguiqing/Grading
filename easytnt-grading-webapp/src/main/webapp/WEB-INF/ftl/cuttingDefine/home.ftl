@@ -6,12 +6,6 @@
 <#include "./CuttingDefineUI.ftl">
 <#import "/taglib/commons/status.ftl" as footer> 
   <@footer.status>
-    <ul class="pull-left">
-    	<div class="clearfix">
-			<input id="saveBtn" class="btn btn-default btn-sm" type="button" value="保存" style="color:black;">
-			<input id="alignBtn" class="btn btn-default btn-sm" type="button" value="对齐" style="color:black;">
-		</div>
-    </ul>
     <ul class="pull-right">
     	<div class="clearfix">
     		<span>缩放</span>
