@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery',"easyui", "./element" ];
-	define(deps, function($,easyui, Element) {
+	var deps = [ 'jquery', "./element" ];
+	define(deps, function($, Element) {
 		//选区组件
 		function Selection(target) {
 			var selection = this;
@@ -12,7 +12,10 @@
 			selection.previousElement = null///前一个被选中的元素， 用于保存数据
 			selection.answerCardImageIdx = 0; //答题卡图片索引
 			selection.elements = [];//已经添加到内容中的元素
-			
+			selection.selectedList = [];//已经被选中的元素列表
+			selection.scaleRate = 1;//缩放倍数默认不缩放
+			selection.orignalWidth = 0;//试卷原始宽度
+			selection.orignalHeight = 0;//试卷原始高度
 			//目标控件
 			selection.target = target;
 			
@@ -25,6 +28,27 @@
 				selection.btn_style();
 				selection.init_event();
 				selection.make_element_data_panel_draggable();
+			};
+			
+			//根据缩放倍数改变布局和元素位置
+			selection.updateLayoutByScale = function() {
+				//改变元素位置
+				selection.updateElementsPosition();
+			};
+			
+			//更改元素的位置(坐标宽高)
+			selection.updateElementsPosition = function(){
+				for(var i = 0; i < selection.elements.length; i++) {
+					selection.elements[i].updatePosition();
+				}
+			};
+			
+			//更改整个试卷的宽高
+			selection.changeExamPagerSize = function() {
+				var width = selection.orignalWidth * selection.scaleRate;
+				var height = selection.orignalHeight * selection.scaleRate;
+				$(selection.target).find('img').attr('width', width);
+				$(selection.target).find('img').attr('height', height);
 			};
 			
 			//恢复某一页答题卡的内容
@@ -111,10 +135,10 @@
 				
 				//设置当前元素的位置
 				$(element.view).css({
-					left: element.data.area.left + 'px',
-					top: element.data.area.top + 'px',
-					width: element.data.area.width + 'px',
-					height: element.data.area.height + 'px'
+					left: element.data.areaInPaper.left + 'px',
+					top: element.data.areaInPaper.top + 'px',
+					width: element.data.areaInPaper.width + 'px',
+					height: element.data.areaInPaper.height + 'px'
 				});
 				
 				//让当前元素可以编辑
@@ -146,7 +170,7 @@
 					
 					//在进行创建元素时，需要对前一个元素数据进行保存
 					if(selection.previousElement) {
-						selection.previousElement.save_preview_element_data();
+						selection.currentElement.save_preview_element_data();
 					}
 					
 					//改变鼠标指针形状
@@ -179,8 +203,6 @@
 						
 						//初始化刚创建的元素大小
 						selection.init_element_size(currentX, currentY);
-						
-						selection.select_element(selection.currentElement);
 					});
 					
 					//完成选区
@@ -193,8 +215,6 @@
 						
 						// 在鼠标移动过程中才对该元素宽高进行控制，所以，需要将该无效元素去掉
 						if($(selection.currentElement.view).width() < 50) {
-							//用户选择了其他元素就需要将上一个选中的元素数据进行保存
-							selection.currentElement.save_preview_element_data();
 							//隐藏题目信息框
 							$('.control-content').css({
 								display: 'none'
@@ -221,11 +241,8 @@
 									selection.currentElement.make_element_editable();
 								}
 							}
-							//显示当前设置的元素的数据
-							selection.currentElement.show_data();
-							//保存上一次操作的节点数据
-							//selection.currentElement.save_preview_element_data();
-							
+							//创建成功，选中当前元素
+							selection.select_element(selection.currentElement, e);
 						}
 						
 						//清理当前类的mousemove mouseup事件
@@ -233,6 +250,14 @@
 						$(document).unbind('mouseup');
 					});
 				});
+			};
+			
+			//显示当前元素的题目信息
+			selection.show_data = function() {
+				if(selection.currentElement) {
+					//显示当前设置的元素的数据
+					selection.currentElement.show_data();
+				}
 			};
 			
 			// 元素数据面板可拖动
@@ -312,11 +337,11 @@
 				if (top < 0) {
 					top = 0;
 				}
-				if (left + width > $(target).parent()[0].scrollWidth) {
-					left = $(target).parent()[0].scrollWidth - width;
+				if (left + width > $(target).width()) {
+					left = $(target).width() - width;
 				}
-				if (top + height > $(target).parent()[0].scrollHeight) {
-					top = $(target).parent()[0].scrollHeight - height;
+				if (top + height > $(target).height()) {
+					top = $(target).height() - height;
 				}
 				
 				var position = {
@@ -426,11 +451,119 @@
 			};
 			
 			//选中某一个元素，取消其他元素的选中效果(取消助托点)
-			selection.select_element = function(element) {
-				selection.show_resize_points(element);
+			selection.select_element = function(element, e) {
+				var isCtrl = e.ctrlKey;
+				//是单选
+				if(!isCtrl) {
+					selection.singleSelectElement(element);
+				} else {
+					selection.multiSelectElement(element);
+				}
+				
 				//鼠标停止改变元素位置的时候显示出最后的位置坐标
-				selection.show_msg(element);
+				selection.show_msg();
+				selection.change_size_tip();
 				selection.show_size();
+				selection.show_data();
+				if(element.resize) {
+					element.resize.position_middle_point();
+				}
+			};
+			
+			//实现对元素的多选
+			selection.multiSelectElement = function(element) {
+				selection.currentElement = null;
+				selection.hideQuestionInfo();
+				selection.hideSizePanel();
+				//多选有可能是取消选择的情况
+				if(selection.isElementSelected(element)) {//选中则取消选中
+					selection.unSelectElement(element);
+				}else {
+					//将当前选中元素添加到选中列表中
+					selection.selectedList.push(element);
+					//显示当前元素的8个助托点
+					selection.show_resize_points(element);
+				}
+			};
+			
+			//隐藏宽高提示框
+			selection.hideSizePanel = function() {
+				//隐藏无效dom的宽高tip
+				$(selection.target).find('.size').css({display : 'none'});
+			}
+			
+			//取消对所有元素的选中
+			selection.unSelectAll = function() {
+				selection.currentElement = null;
+				selection.previousElement = null;
+				selection.selectedList.length = 0;
+				selection.hideQuestionInfo();
+				selection.hideSizePanel();
+				selection.hideAllPoints();
+			};
+			
+			//隐藏所有助托点，取消选中任何一个元素
+			selection.hideAllPoints = function() {
+				$(selection.target).find('.point').css({
+					display: 'none'
+				});
+			};
+			
+			//实现对元素的单选
+			selection.singleSelectElement = function(element) {
+				//清空选中列表
+				selection.selectedList.length = 0;
+				//隐藏其他被选中元素的八个助托点，表示取消其他元素的选中状态
+				selection.hideSiblingsResizePoints(element.view);
+				//将当前选中元素添加到选中列表中
+				selection.selectedList.push(element);
+				//显示当前元素的8个助托点
+				selection.show_resize_points(element);
+			};
+			
+			//取消某元素的选中
+			selection.unSelectElement = function(element) {
+				//1.隐藏当前元素的八个助托点
+				selection.hideResizePoints(element.view);
+				//2.从选中列表中移除该元素
+				selection.selectedList.remove(element);
+			};
+			
+			//取消显示题目信息框
+			selection.hideQuestionInfo = function() {
+				//隐藏题目信息框
+				$(selection.target).find('.control-content').css({
+					display: 'none'
+				});
+			};
+			
+			//判断元素当前是否是选中状态，根据元素的8个助托点来判断，如果显示，则为选中
+			selection.isElementSelected = function(element) {
+				var isSelected = false;
+				var display = $(element.view).find('.point').css('display');
+				if(display == 'block') {
+					isSelected = true;
+				}
+				
+				return isSelected;
+			};
+			
+			//取消其他被选中的元素所显示的8个助托点
+			selection.hideSiblingsResizePoints = function(view) {
+				var els = $(view).siblings('.element');
+				$(els).each(function() {
+					selection.hideResizePoints(this);
+				});
+			};
+			
+			//隐藏当前元素的8个助托点，取消对当前元素的选中
+			selection.hideResizePoints = function(view) {
+				var ps = $(view).find('.point');
+				$(ps).each(function() {
+					$(this).css({
+						display : 'none'
+					});
+				});
 			};
 			
 			//显示八个助托点，方便改变元素大小
@@ -442,19 +575,13 @@
 						display : 'inline-block'
 					});
 				});
-				
-				var els = $(element.view).siblings('.element');
-				$(els).each(function() {
-					var ps = $(this).find('.point');
-					$(ps).each(function() {
-						$(this).css({
-							display : 'none'
-						});
-					});
-				});
 			}
 			
-			selection.show_msg = function(element) {
+			selection.show_msg = function() {
+				var element = selection.currentElement;
+				if(!element) {
+					return;
+				}
 				var view = element.view;
 				var x = view.offsetLeft;
 				var y = view.offsetTop;
@@ -494,10 +621,9 @@
 			
 			//显示提示框位置
 			selection.show_size = function() {
-				if(!selection.showSize) {
+				if(!selection.showSize || !selection.currentElement) {
 					return;
 				}
-				
 				var x = selection.getOffsetLeft(selection.currentElement.view) - selection.getOffsetLeft(selection.target);
 				var y = selection.getOffsetTop(selection.currentElement.view) - selection.getOffsetTop(selection.target)-20;//20为提示框高度
 				var display = $('.size').css('display');
@@ -594,7 +720,7 @@
 			
 			//改变宽高提示框的值
 			selection.change_size_tip = function() {
-				if(!selection.showSize) {
+				if(!selection.showSize || !selection.currentElement) {
 					return;
 				}
 				
@@ -720,6 +846,18 @@
 				return url;
 			};
 
+			selection.saveOrignalExamSize = function(img) {
+				$(img).on('load', function() {
+					selection.orignalWidth = $(img).width();
+					selection.orignalHeight = $(img).height();
+					
+					//更改各个元素的位置
+					selection.updateLayoutByScale();
+					//更改整个试卷的宽高
+					selection.changeExamPagerSize();
+				});
+			}
+			
 			//初始化试卷内容，添加选框宽高提示框，添加题目信息框
 			selection.initUI = function() {
 				//1.初始化试卷内容
@@ -730,8 +868,10 @@
 					throw new Error('获取答题卡图片地址失败!');
 				}
 				
-				$(img).attr('src', imageUrl);
 				$(selection.target).append(img);
+				$(img).attr('src', imageUrl);
+				//将试卷原始大小保存起来，后面缩放需要使用到
+				selection.saveOrignalExamSize($(img));
 				
 				//2.添加宽高提示框
 				var html = '<div class="size" style="display:none;">'
@@ -805,14 +945,14 @@
 					var e=e||event;
 					var keyCode = e.keyCode || e.which || e.charCode;
 					if(keyCode == 46) {
-						if(selection.currentElement) {
-							selection.currentElement.del();
-							
-							//如果当前数据信息提示框显示，就隐藏,元素被删除了，显示数据就没有意义了
-							$(selection.target).find('.control-content').css({
-								display: 'none'
-							});
+						if(selection.selectedList.length != 0) {
+							for(var i = 0; i < selection.selectedList.length; i++) {
+								selection.selectedList[i].del();
+							}
 						}
+						
+						//将所选元素删除之后直接清空选中列表
+						selection.selectedList.length = 0;
 					}
 				});
 			};

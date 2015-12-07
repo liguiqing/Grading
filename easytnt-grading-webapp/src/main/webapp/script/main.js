@@ -91,6 +91,7 @@ var config = {
 		"select" : "lib/bootstrap/plugins/bootstrap-select",
 		"datapicker" : "lib/bootstrap/plugins/bootstrap-datetimepicker",
 		"icheck" : "lib/bootstrap/plugins/iCheck/icheck.min",
+		"bootstrapSlider" : "lib/bootstrap/plugins/bootstrap-slider/bootstrap.slider.v4",
 		"chart" : "lib/highcharts/highcharts",
 		"smartWizard" : "lib/smartWizard/jquery.smartWizard",
 		"ichart":"lib/ichart/ichart.1.2.min",

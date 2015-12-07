@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', "easyui" ];
-	define(deps, function($,easyui) {
+	var deps = [ 'jquery' ];
+	define(deps, function($) {
 		function Resize(target) {
 			var resize = this;
 			resize.target = target;
@@ -38,7 +38,7 @@
 							x = currentX;
 							y = currentY;
 							
-							resize.change_element_status();
+							resize.change_element_status(e);
 						}
 					});
 
@@ -81,7 +81,7 @@
 							x = currentX;
 							y = currentY;
 							
-							resize.change_element_status();
+							resize.change_element_status(e);
 						}
 					});
 
@@ -129,7 +129,7 @@
 							x = currentX;
 							y = currentY;
 							
-							resize.change_element_status();
+							resize.change_element_status(e);
 						}
 					});
 
@@ -172,7 +172,7 @@
 							x = currentX;
 							y = currentY;
 							
-							resize.change_element_status();
+							resize.change_element_status(e);
 						}
 					});
 
@@ -239,7 +239,7 @@
 							x = currentX;
 							y = currentY;
 							
-							resize.change_element_status();
+							resize.change_element_status(e);
 						}
 					});
 
@@ -295,7 +295,7 @@
 							x = currentX;
 							y = currentY;
 							
-							resize.change_element_status();
+							resize.change_element_status(e);
 						}
 					});
 
@@ -353,7 +353,7 @@
 							x = currentX;
 							y = currentY;
 							
-							resize.change_element_status();
+							resize.change_element_status(e);
 						}
 					});
 
@@ -397,7 +397,7 @@
 							x = currentX;
 							y = currentY;
 							
-							resize.change_element_status();
+							resize.change_element_status(e);
 						}
 					});
 
@@ -414,13 +414,15 @@
 			};
 			
 			//设置大小之后改变元素当前状态
-			resize.change_element_status = function() {
-				//显示选区当前宽高
-				selection.show_size();
-				//显示宽高提示框
-				selection.change_size_tip();
-				//显示位置信息
-				selection.show_msg(selection.currentElement);
+			resize.change_element_status = function(e) {
+				//如果用户改变元素大小为单选操作
+				selection.record_current_element(resize.target);
+				//保存上一个选中元素的数据
+				//selection.currentElement.save_preview_element_data();
+				//重新显示当前元素的数据
+				selection.show_data();
+				//选中当前元素
+				selection.select_element(selection.currentElement, e);
 				//设置中间的4个助托点居中
 				resize.position_middle_point();
 			};

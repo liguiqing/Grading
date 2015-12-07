@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', "easyui"];
-	define(deps, function($, easyui, Resize, SubQuestionPanel) {
+	var deps = [ 'jquery'];
+	define(deps, function($) {
 		//用于记录试卷对象
 		function ExamObj() {
 			this.current = 0;//计数器，记录当前被使用的答题卡索引

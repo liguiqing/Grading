@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', "easyui", "./resize", "./sub_question_panel" ];
-	define(deps, function($, easyui, Resize, SubQuestionPanel) {
+	var deps = [ 'jquery', "./resize", "./sub_question_panel" ];
+	define(deps, function($, Resize, SubQuestionPanel) {
 		function Element() {
 			var element = this;
 
