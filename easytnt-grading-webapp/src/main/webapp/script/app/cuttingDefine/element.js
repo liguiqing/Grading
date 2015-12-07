@@ -18,8 +18,8 @@
 			//根据x轴坐标和宽度进行对齐操作
 			element.align = function(left, width) {
 				//设置数据域中的值
-				element.data.areaInPaper.left = left;
-				element.data.areaInPaper.width = width;
+				element.data.area.left = left;
+				element.data.area.width = width;
 				
 				//修改页面上的位置
 				$(element.view).css({
@@ -255,10 +255,10 @@
 				el.data.fullScore = fullScore;
 				el.data.requiredPinci = requiredPinci;
 				el.data.maxerror = maxerror;
-				el.data.areaInPaper.left = left;
-				el.data.areaInPaper.top = top;
-				el.data.areaInPaper.width = width;
-				el.data.areaInPaper.height = height;
+				el.data.area.left = left;
+				el.data.area.top = top;
+				el.data.area.width = width;
+				el.data.area.height = height;
 				// 获取小题信息
 				var subQuestionPanels = $(questionPanel).find('.subQuestionPanel');
 				
@@ -382,7 +382,7 @@
 			data.requiredPinci = 1;//评次
 			data.maxerror = 1;//误差
 			data.fullScore = 10;// 满分值
-			data.areaInPaper = {
+			data.area = {
 					left: 0,// 相对图片的x轴坐标
 					top: 0, // 相对图片的y轴坐标
 					width: 0, // 所选区域的宽度

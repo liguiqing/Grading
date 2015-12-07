@@ -56,7 +56,7 @@
 					//构建数据
 					var data = buildData();
 					//提交保存
-					saveData(data);
+					//saveData(data);
 				});
 				
 				//对齐按钮，针对选中的元素，距离该元素位置范围[-15%, 15%]*width之间的元素自动按照该元素位置和宽度进行对齐操作
@@ -152,6 +152,7 @@
 					}
 				}
 				
+				console.log(CuttingsSolution);
 				return CuttingsSolution;
 			}
 			
@@ -167,7 +168,7 @@
 			
 			//恢复整个试卷内容
 			function recoverPaper(data) {
-				if(data.designFor.answerCardCuttingTemplates){
+				if(data.paper.answerCardCuttingTemplates){
 					var size =data.paper.answerCardCuttingTemplates.length;
 					for(var i=0;i<size;i++){
 						var url= data.paper.answerCardCuttingTemplates[i].url;

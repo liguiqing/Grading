@@ -48,7 +48,6 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	@Override
 	public CuttingsSolution getCuttingsSolutionWithPaperId(Long paperId) {
 		ExamPaper paper = getPaper(paperId);
-		List<CuttingsArea> cuttingsAreas = getCuttingsAreas(paperId);
 		CuttingsSolution cuttingsSolution = new CuttingsSolution();
 		cuttingsSolution.setPaper(paper);
 		return cuttingsSolution;
