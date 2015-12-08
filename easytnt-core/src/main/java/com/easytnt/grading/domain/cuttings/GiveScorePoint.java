@@ -3,6 +3,11 @@
  */
 package com.easytnt.grading.domain.cuttings;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.util.NumberUtils;
+
 import com.easytnt.grading.domain.share.Area;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -95,6 +100,60 @@ public class GiveScorePoint {
 	public GiveScorePoint setCuttingDefine(CuttingDefine cuttingDefine) {
 		this.cuttingDefine = cuttingDefine;
 		return this;
+	}
+
+	public void setValidscoredot(String validscoredot) {
+		genValidValues(validscoredot);
+	}
+
+	public void genValidValues(String validscoredot) {
+		String[] values = validscoredot.split(",");
+		if (values.length > 0) {
+			Float[] scores = new Float[values.length];
+			int i = 0;
+			for (String value : values) {
+				scores[i++] = NumberUtils.parseNumber(value, Float.class);
+			}
+			this.validValues = scores;
+		}
+	}
+
+	public String getValidscoredot() {
+		return genValidscoredot(this.validValues);
+	}
+
+	public String genValidscoredot(Float[] validValues) {
+		if (validValues.length > 0) {
+			StringBuffer sb = new StringBuffer();
+			for (Float value : validValues) {
+				sb.append(value).append(",");
+			}
+			sb.deleteCharAt(sb.length() - 1);
+			return sb.toString();
+		}
+		return null;
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return new HashCodeBuilder().append(id).append(name).toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		if (!(obj instanceof GiveScorePoint)) {
+			return false;
+		}
+		GiveScorePoint tmp = (GiveScorePoint) obj;
+
+		return new EqualsBuilder().append(id, tmp.id).append(name, tmp.name).isEquals();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("id:", id).append("name:", name).build();
 	}
 
 }

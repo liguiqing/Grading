@@ -14,7 +14,11 @@ import com.easytnt.grading.domain.cuttings.CuttingsSolution;
  */
 public interface CuttingsSolutionService {
 
-	public void saveCuttingsSolution(CuttingsSolution cuttingsSolution);
+	public void saveCuttingDefines(CuttingsSolution cuttingsSolution);
 
-	public CuttingsSolution getCuttingsSolutionWithPaperId(Long paperId);
+	public CuttingsSolution getCuttingDefines(Long paperId);
+
+	public void saveCuttingAreaes(CuttingsSolution cuttingsSolution);
+
+	public CuttingsSolution getCuttingAreaes(Long paperId);
 }

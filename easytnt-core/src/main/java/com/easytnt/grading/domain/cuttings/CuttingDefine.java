@@ -3,7 +3,12 @@
  */
 package com.easytnt.grading.domain.cuttings;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.share.Area;
@@ -106,6 +111,32 @@ public class CuttingDefine {
 	public CuttingDefine setGiveScorePoints(List<GiveScorePoint> giveScorePoints) {
 		this.giveScorePoints = giveScorePoints;
 		return this;
+	}
+
+	public void addGiveScorePoint(GiveScorePoint giveScorePoint) {
+		if (giveScorePoints == null) {
+			giveScorePoints = new ArrayList<>();
+		}
+		giveScorePoints.add(giveScorePoint);
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(name).append(id).toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof CuttingDefine) {
+			CuttingDefine tmp = (CuttingDefine) obj;
+			return new EqualsBuilder().append(id, tmp.id).isEquals();
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("id:", id).append("name:", name).append("area:", area).build();
 	}
 
 }

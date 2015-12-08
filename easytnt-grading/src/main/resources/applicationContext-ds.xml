@@ -90,7 +90,7 @@
 				<value>hibernate/mapping/exam/Exam.hbm.xml</value>
 				<value>hibernate/mapping/grade/Teacher.hbm.xml</value>
 				<value>hibernate/mapping/grade/GradeTask.hbm.xml</value>
-				<value>hibernate/mapping/grade/Referees.hbm.xml</value>				
+				<value>hibernate/mapping/grade/Referees.hbm.xml</value>
 				<value>hibernate/mapping/paper/ExamPaper.hbm.xml</value>
 				<value>hibernate/mapping/paper/Item.hbm.xml</value>
 				<value>hibernate/mapping/paper/Section.hbm.xml</value>
@@ -99,6 +99,8 @@
 				<value>hibernate/mapping/room/District.hbm.xml</value>
 				<value>hibernate/mapping/cutting/CuttingsArea.hbm.xml</value>
 				<value>hibernate/mapping/cutting/PositionOfItemInArea.hbm.xml</value>
+				<value>hibernate/mapping/cutting/CuttingDefine.hbm.xml</value>
+				<value>hibernate/mapping/cutting/GiveScorePoint.hbm.xml</value>
 				<value>hibernate/mapping/user/SsoUser.hbm.xml</value>
 			</list>
 		</property>

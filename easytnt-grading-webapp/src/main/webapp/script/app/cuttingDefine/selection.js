@@ -724,8 +724,9 @@
 					return;
 				}
 				
-				var width = $(selection.currentElement.view).width();
-				var height = $(selection.currentElement.view).height();
+				var width = Math.ceil($(selection.currentElement.view).width());
+				var height = Math.ceil($(selection.currentElement.view).height());
+				
 				
 				//调整提示框宽度而创建的一个尺子，用于测量文本宽度
 				var ruler = null;

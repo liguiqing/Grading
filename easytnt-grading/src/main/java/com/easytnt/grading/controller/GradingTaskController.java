@@ -98,7 +98,9 @@ public class GradingTaskController {
 
 		Subject subject = subjectService.load(subjectId);
 		List<Teacher> teachers = teacherService.findSubjectTeachers(subject);
-		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		// 需要修改----Begin
+		CuttingsSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		// 需要修改---END
 		return ModelAndViewFactory.newModelAndViewFor("/config").with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus()).with("menus3", configMenuGroup.getMenus())
 				.with("paperId", paperId).with("subject", subject).with("teachers", teachers)

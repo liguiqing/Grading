@@ -5,6 +5,7 @@
 
 package com.easytnt.grading.domain.cuttings;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.easytnt.commons.entity.share.ValueObject;
@@ -49,6 +50,13 @@ public class CuttingsSolution implements ValueObject<CuttingsSolution> {
 	public CuttingsSolution setCuttingBlocks(List<CuttingBlock> cuttingBlocks) {
 		this.cuttingBlocks = cuttingBlocks;
 		return this;
+	}
+
+	public void addCuttingDefine(CuttingDefine cuttingDefine) {
+		if (cuttingDefines == null) {
+			cuttingDefines = new ArrayList<>();
+		}
+		cuttingDefines.add(cuttingDefine);
 	}
 
 	@Override

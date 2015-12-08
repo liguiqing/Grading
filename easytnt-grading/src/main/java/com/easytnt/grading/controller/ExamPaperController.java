@@ -55,8 +55,10 @@ public class ExamPaperController {
 	@RequestMapping(value = "/start/{paperId}", method = RequestMethod.POST)
 	public ModelAndView onGradingStart(@PathVariable Long paperId) throws Exception {
 		logger.debug("URL /subjectExam/start{} Method POST ", paperId);
-		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		// 需要修改------Begin
+		CuttingsSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
 		// dispatcherConcreator.start(cuttingsSolution.getCutTo());
+		// 需要修改------END
 		// TODO 这个地方需要修改<刘海林 >
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}

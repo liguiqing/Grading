@@ -25,10 +25,10 @@
 			//更改当前元素数据区坐标值
 			element.updateDataPosition = function(position, scaleRate) {
 				element.data.area = {
-						left: position.left * scaleRate,
-						top: position.top * scaleRate,
-						width: position.width * scaleRate,
-						height: position.height * scaleRate
+						left: Math.ceil(position.left * scaleRate),
+						top: Math.ceil(position.top * scaleRate),
+						width: Math.ceil(position.width * scaleRate),
+						height: Math.ceil(position.height * scaleRate)
 				}
 			}
 			

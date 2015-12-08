@@ -49,7 +49,7 @@
 					//构建数据
 					var data = buildData();
 					//提交保存
-					//saveData(data);
+					saveData(data);
 				});
 				
 				//对齐按钮，针对选中的元素，距离该元素位置范围[-15%, 15%]*width之间的元素自动按照该元素位置和宽度进行对齐操作
@@ -84,11 +84,24 @@
 			
 			//保存题目数据
 			function saveData(data) {
-				var url = "/cuttingDefine/savetest";
+				var url = "/cuttingDefine/save";
 				console.info(data);
 				ajaxWrapper.postJson(url,data,'',function(data) {
-					alert(data);
+					dialog.fadedialog(getOpts("保存成功!"));
 				});
+			}
+			function getOpts(message){
+				var DialogSize = {SM:'sm',MD:'md',LG:'lg'};
+				var opts = {
+						size : DialogSize.SM,
+						header : {
+							show : true,
+							text : "操作提示"
+						},
+						iconInfo:'error',
+						tipText :message
+					};
+				return opts;
 			}
 			
 			//构建提交到后台的json数据对象

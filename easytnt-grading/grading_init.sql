@@ -1,3 +1,38 @@
+DROP TABLE IF EXISTS cuttingDefine;
+CREATE TABLE `cuttingDefine` (
+   `id` INT NOT NULL AUTO_INCREMENT,
+  `paperid` INT(11) DEFAULT NULL,
+  `name` VARCHAR(20) DEFAULT NULL,
+  `fullscore` FLOAT DEFAULT NULL,
+  `maxerror` INT(11) DEFAULT NULL,
+  `pingci` INT(11) DEFAULT NULL,
+  `left` INT(11) DEFAULT NULL,
+  `width` INT(11) DEFAULT NULL,
+  `top` INT(11) DEFAULT NULL,
+  `height` INT(11) DEFAULT NULL,
+  `answerCardImageIdx` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `giveScorePoint`;
+CREATE TABLE `giveScorePoint` (
+   `id` INT NOT NULL AUTO_INCREMENT,
+   cuttingDefineId INT,
+  `name` VARCHAR(20) DEFAULT NULL,
+  `fullscore` FLOAT DEFAULT NULL,
+  `validscoredot` VARCHAR(50) DEFAULT NULL,
+  `left` INT(11) DEFAULT NULL,
+  `top` INT(11) DEFAULT NULL,
+  `width` INT(11) DEFAULT NULL,
+  `height` INT(11) DEFAULT NULL,
+  `interval` FLOAT DEFAULT '1',
+  `seriesScore` TINYINT(1) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
 DROP TABLE IF EXISTS  `sso_user`;
 CREATE TABLE `sso_user` (
   `ssouser_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
