@@ -5,6 +5,7 @@
 package com.easytnt.grading.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import com.easytnt.commons.entity.repository.Repository;
 import com.easytnt.grading.domain.grade.GradeTask;
@@ -29,4 +30,6 @@ public interface GradeTaskRepository extends Repository<GradeTask, Long> {
 	public int countTaskTotal(Long taskId);
 
 	public int countAssignedTotal(Long taskId, Long refereesId);
+
+	public Map<String,Map<String,String>> selectItemRepeat(Long taskId);
 }

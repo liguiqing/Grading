@@ -7,6 +7,7 @@ package com.easytnt.grading.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,6 @@ import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.grade.Teacher;
-import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.service.CuttingsSolutionService;
 import com.easytnt.grading.service.GradeTaskService;
 import com.easytnt.grading.service.RefereesService;
@@ -81,6 +81,7 @@ public class GradingTaskController {
 		
 		Teacher teacher = teacherService.findTeacher(worker);
 		Subject subject = subjectService.load(subjectId);
+		
 		
 		return ModelAndViewFactory.newModelAndViewFor("/config")
 				.with("menus2", topRightMenuGroup.getMenus())
@@ -154,7 +155,8 @@ public class GradingTaskController {
 		
 		List<GradeTask> tasks = taskService.getTaskOf(referees);
 		return ModelAndViewFactory.newModelAndViewFor("/task/taskList")
-				.with("tasks", tasks).build();
+				.with("tasks", tasks)
+				.build();
 	}
 
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)
@@ -177,11 +179,14 @@ public class GradingTaskController {
 		CuttingsArea section = gradeRecord.getRecordFor().definedOf();
 		ArrayList<CuttingsArea> sections = new ArrayList<>();
 		sections.add(section);
+		
+		Map<String,Map<String,String>> repeats = taskService.getMustRepeat(taskId, referees);
 		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask")
 				.with("menus", menus)
 				.with("referees", referees)
 				.with("task", task)
 				.with("imgServer", imgServer)
+				.with("repeats", repeats)
 				.with("sections", sections).build();
 	}
 

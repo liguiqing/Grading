@@ -161,10 +161,28 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 		}
 		return null;
 	}
+	
+
+	@Override
+	public void saveRepeat(CuttingsImageGradeRecord imageGradeRecord) {
+		CuttingsImage cuttings = imageGradeRecord.getRecordFor();
+		String scoreSql = "UPDATE scoreinfolog a ,paperimport b SET a.teachermark = 'N' "
+				+ " WHERE   b.studentoid=a.studentoid AND b.itemid=a.itemid AND b.paperid=a.paperid "
+				+ " AND b.kemuoid=a.kemuoid AND b.imagepath=?";	
+		Query query =  getCurrentSession().createSQLQuery(scoreSql);
+		query.setString(0, cuttings.getImgPath());
+		query.executeUpdate();
+		
+		String importSql = "UPDATE paperimport b SET b.getmark=-1 WHERE b.imagepath=?";
+		query =  getCurrentSession().createSQLQuery(importSql);
+		query.setString(0, cuttings.getImgPath());
+		query.executeUpdate();
+	}
 
 	@Override
 	protected Class<CuttingsImageGradeRecord> getEntityClass() {
 		return CuttingsImageGradeRecord.class;
 	}
+
 
 }

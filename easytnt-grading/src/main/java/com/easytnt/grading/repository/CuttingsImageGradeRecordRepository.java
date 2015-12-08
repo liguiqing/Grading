@@ -32,4 +32,6 @@ public interface CuttingsImageGradeRecordRepository extends
 
 	void saveLastScore(CuttingsImageGradeRecord record,Float score);
 
+	void saveRepeat(CuttingsImageGradeRecord imageGradeRecord);
+
 }

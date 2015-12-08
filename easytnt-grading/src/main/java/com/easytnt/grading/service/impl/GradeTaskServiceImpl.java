@@ -5,6 +5,7 @@
 package com.easytnt.grading.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ import com.easytnt.grading.domain.cuttings.CuttingsImage;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Referees;
+import com.easytnt.grading.domain.grade.Teacher;
 import com.easytnt.grading.repository.CuttingsAreaRepository;
 import com.easytnt.grading.repository.CuttingsImageGradeRecordRepository;
 import com.easytnt.grading.repository.GradeTaskRepository;
 import com.easytnt.grading.repository.RefereesRepository;
+import com.easytnt.grading.repository.TeacherRepository;
 import com.easytnt.grading.service.GradeTaskService;
 
 /**
@@ -48,6 +51,9 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	private RefereesRepository refereesRepository;
 	
 	@Autowired
+	private TeacherRepository teacherRepository;
+	
+	@Autowired
 	private	CuttingsAreaRepository cuttingsAreaRepository;
 
 	@Override
@@ -71,6 +77,16 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		task.useDispatcher(dispatcher);
 		return task;
 	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public Map<String,Map<String,String>> getMustRepeat(Long taskId, Referees referees){
+		Teacher teacher = teacherRepository.load(referees.getId());
+		if(teacher != null && teacher.isManager()) {
+			return taskRepository.selectItemRepeat(taskId);
+		}
+		return null;
+	}
 
 	@Override
 	@Transactional
@@ -90,6 +106,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 			}else {
 				logger.info("add {} to leader queue ",cuttings);
 				//dispathcerManager.
+				gradeRecordRepository.saveRepeat(imageGradeRecord);
 			}
 		}
 		//imageGradeRecord.
