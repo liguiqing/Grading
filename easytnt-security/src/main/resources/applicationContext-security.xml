@@ -63,8 +63,25 @@
 		  </list>
 		</property>		
 		<!-- 请修改sql属性值 -->
-		<property name="Sql" value="SELECT teacher_account AS user_name,teacher_passord AS user_pwd, 1 AS enabled  FROM teacher_info WHERE teacher_account=?"/>
-	</bean>	
+		<property name="Sql" value="SELECT teacher_account AS user_name,teacher_passord AS user_pwd, 1 AS enabled  FROM teacher_info WHERE teacher_account=? and leader=0"/>
+	</bean>
+	<bean id="teacherLeaderRealm" class="com.easytnt.security.shiro.realm.ComefromDbRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
+		<property name="cachingEnabled" value="true" />
+		<property name="authenticationCachingEnabled" value="true" />
+		<property name="authenticationCacheName" value="authenticationCache" />
+		<property name="authorizationCachingEnabled" value="true" />
+		<property name="authorizationCacheName" value="authorizationCache" />
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="roles">
+		  <list>
+		      <value>LEADER</value>
+		      <value>REFEREES</value>
+		  </list>
+		</property>		
+		<!-- 请修改sql属性值 -->
+		<property name="Sql" value="SELECT teacher_account AS user_name,teacher_passord AS user_pwd, 1 AS enabled  FROM teacher_info WHERE teacher_account=? and leader=1"/>
+	</bean>		
 	<!-- cas 登录实现 -->
 	<bean id="casRealm" class="org.apache.shiro.cas.CasRealm">
 		<property name="casServerUrlPrefix" value="${shiro.sso.server.url}"/>
@@ -136,6 +153,7 @@
 		<property name="realms">
 			<list>			    
 				<ref bean="teacherRealm" />
+				<ref bean="teacherLeaderRealm" />				
 				<ref bean="ssoRealm" />
 				<ref bean="casRealm" />
 			</list>

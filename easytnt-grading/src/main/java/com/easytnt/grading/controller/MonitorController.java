@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,10 @@ import com.easytnt.commons.ui.ichart.Data;
 import com.easytnt.commons.ui.ichart.DataList;
 import com.easytnt.commons.ui.ichart.ResultData;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
+import com.easytnt.grading.domain.grade.Teacher;
+import com.easytnt.grading.service.TeacherService;
+import com.easytnt.security.ShiroService;
+import com.easytnt.security.UserDetails;
 
 
 
@@ -34,10 +39,16 @@ public class MonitorController {
 	 
 	Random random = new Random(1);
 	
+	@Autowired(required=false)
+	private TeacherService teacherService;
+	
+	@Autowired(required=false)
+	private ShiroService shiroService;
+	
 	@RequestMapping(value="/monitor/progress",method=RequestMethod.GET)
 	public ModelAndView onMonitorProgress()throws Exception{
 		logger.debug("URL /monitor/progress Method Get");
-		return createModelAndView(0,"progress");
+		return createModelAndView(0,"progress").build();
 	}
 
 	@RequestMapping(value="/monitor/progress/data",method=RequestMethod.GET)
@@ -67,14 +78,24 @@ public class MonitorController {
 	@RequestMapping(value="/monitor/worker",method=RequestMethod.GET)
 	public ModelAndView onMonitorWorker()throws Exception{
 		logger.debug("URL /monitor/worker Method Get");
-		return createModelAndView(1,"worker");
+		UserDetails user = shiroService.getUser();
+		List<Teacher> teachers;
+		if(user.roleOf("LEADER")) {
+			Teacher leader = teacherService.findTeacher(user.getUserName());
+			teachers = teacherService.findSubjectTeachers(leader.getSubject());
+		}else {
+			teachers = teacherService.list();
+		}
+		return createModelAndView(1,"worker").build();
 	}
 	
 	@RequestMapping(value="/monitor/team",method=RequestMethod.GET)
 	public ModelAndView onMonitorTeam()throws Exception{
 		//小组一致性 
+		UserDetails user = shiroService.getUser();
+		Teacher teacher = teacherService.findTeacher(user.getUserName());
 		logger.debug("URL /monitor/team Method Get");
-		return createModelAndView(2,"team");
+		return createModelAndView(2,"team").build();
 	}
 	
 	@RequestMapping(value="/monitor/team/data",method=RequestMethod.GET)
@@ -116,7 +137,7 @@ public class MonitorController {
 	public ModelAndView onPersonalStabled()throws Exception{
 		//自身稳定性
 		logger.debug("URL /monitor/personalStabled Method Get");
-		return createModelAndView(3,"personalStabled");
+		return createModelAndView(3,"personalStabled").build();
 	}
 	
 	
@@ -151,16 +172,18 @@ public class MonitorController {
 				.with("data",resultData).build();
 	}
 	
-	private ModelAndView createModelAndView(int activedIndex,String page) {
+	private ModelAndViewFactory createModelAndView(int activedIndex,String page) throws Exception{
 		MenuGroup topRightMenuGroup = MenuGroupFactory.getInstance().getTopRightMenuGroup();
 		MenuGroup rightMenuGroup = MenuGroupFactory.getInstance().getRightMenuGroup();
 		MenuGroup monitorMenuGroup = MenuGroupFactory.getInstance().getMonitorMenuGroup();
 		monitorMenuGroup.activedMenuByIndex(activedIndex);
 		rightMenuGroup.activedMenuByIndex(2);
+		UserDetails user = shiroService.getUser();
 		return ModelAndViewFactory.newModelAndViewFor("/monitor")
+				.with("user", user)
 				.with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus())
 				.with("menus3", monitorMenuGroup.getMenus())
-				.with("page",page).build();
+				.with("page",page);
 	}
 }

@@ -6,6 +6,7 @@ package com.easytnt.grading.mock.respository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -125,6 +126,12 @@ public class GradeTaskRepositoryMocker  implements GradeTaskRepository{
 	public int countAssignedTotal(Long taskId, Long id) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Map<String, Map<String, String>> selectItemRepeat(Long taskId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -152,9 +152,10 @@ public class GradingTaskController {
 		logger.debug("URL /task Method Get");
 		
 		Referees referees = refereesService.getCurrentReferees();
-		
+		Teacher teacher = teacherService.load(referees.getId());
 		List<GradeTask> tasks = taskService.getTaskOf(referees);
 		return ModelAndViewFactory.newModelAndViewFor("/task/taskList")
+				.with("teacher",teacher)
 				.with("tasks", tasks)
 				.build();
 	}
@@ -167,7 +168,8 @@ public class GradingTaskController {
 		menus.add( new Menu("参考答案",""));
 		menus.add( new Menu("统计信息",""));
 		menus.add( new Menu("锁定屏幕",""));
-		menus.add( new Menu("退出","logout"));
+		menus.add( new Menu("暂停","#pause"));
+		
 		
 		Referees referees = refereesService.getCurrentReferees();
 		GradeTask task = taskService.getTaskOf(taskId, referees);
@@ -180,10 +182,17 @@ public class GradingTaskController {
 		ArrayList<CuttingsArea> sections = new ArrayList<>();
 		sections.add(section);
 		
+		Teacher teacher = teacherService.load(referees.getId());
+		if(teacher.isManager()) {
+			menus.add( new Menu("异常卷处理","task/exception/" + task.getTaskId()));
+		}
+			
 		Map<String,Map<String,String>> repeats = taskService.getMustRepeat(taskId, referees);
+		menus.add( new Menu("退出","logout"));
 		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask")
 				.with("menus", menus)
 				.with("referees", referees)
+				.with("teacher", teacher)
 				.with("task", task)
 				.with("imgServer", imgServer)
 				.with("repeats", repeats)

@@ -27,6 +27,6 @@
   </div>  
   <#import "/taglib/commons/status.ftl" as footer> 
   <@footer.status>
-    
+    <ul class="pull-right "><li>用户：</li><li>${(user.userName)!}</li></ul>
   </@footer.status>
 </@doc.html>
