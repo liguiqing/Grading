@@ -58,7 +58,7 @@ public class StartCuttingTestpaper implements Runnable {
 
 	private void createContainer() {
 		countContainer = new CountContainer<>(0);
-		String key = "paperId:" + this.cuttingsSolution.getDesignFor().getPaperId();
+		String key = "paperId:" + this.cuttingsSolution.getPaper().getPaperId();
 		CountContainerMgr.getInstance().put(key, countContainer);
 
 	}
@@ -81,7 +81,7 @@ public class StartCuttingTestpaper implements Runnable {
 			saveService.clear();
 			countContainer.setIsOver(true);
 			long e = System.currentTimeMillis();
-			log.debug("[" + cuttingsSolution.getDesignFor().getPaperId() + "]且过完毕花费" + ((e - b) * 1.0 / 1000) + "秒!");
+			log.debug("[" + cuttingsSolution.getPaper().getPaperId() + "]且过完毕花费" + ((e - b) * 1.0 / 1000) + "秒!");
 			;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -99,7 +99,7 @@ public class StartCuttingTestpaper implements Runnable {
 	private int getStudentCount() {
 		final Counter counter = new Counter();
 		DirectoryScanner directoryScanner = DirectoryScannerFactory
-				.getDirectoryScanner(cuttingsSolution.getDesignFor().getStudentAnserCardRootPath());
+				.getDirectoryScanner(cuttingsSolution.getPaper().getStudentAnserCardRootPath());
 		try {
 			directoryScanner.scan(new VisitorFile() {
 				private ArrayList<String> paths = new ArrayList<>();
@@ -142,7 +142,7 @@ public class StartCuttingTestpaper implements Runnable {
 	}
 
 	private void publishTask(final Disruptor<StudentTestPaperAnswerCardEvent> cuttingDisruptor) throws Exception {
-		final String rootDir = cuttingsSolution.getDesignFor().getStudentAnserCardRootPath();
+		final String rootDir = cuttingsSolution.getPaper().getStudentAnserCardRootPath();
 		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(rootDir);
 		directoryScanner.scan(new VisitorFile() {
 			@Override

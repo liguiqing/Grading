@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.easytnt.grading.domain.cuttings.CuttingDefine"
+		table="cuttingDefine">
+		<id name="id" type="java.lang.Long">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="name" />
+		</property>
+
+		<property name="fullScore" type="java.lang.Float">
+			<column name="fullscore" />
+		</property>
+
+		<property name="maxerror" type="java.lang.Float">
+			<column name="maxerror" />
+		</property>
+		<property name="requiredPinci" type="java.lang.Integer">
+			<column name="pingci" />
+		</property>
+		<property name="answerCardImageIdx" type="java.lang.Integer">
+			<column name="answerCardImageIdx" />
+		</property>
+
+		<component name="area" class="com.easytnt.grading.domain.share.Area"
+			lazy="true">
+			<property name="left" column="[left]" not-null="false"
+				type="java.lang.Integer" />
+			<property name="top" column="top" not-null="false"
+				type="java.lang.Integer" />
+			<property name="width" column="width" not-null="false"
+				type="java.lang.Integer" />
+			<property name="height" column="height" not-null="false"
+				type="java.lang.Integer" />
+		</component>
+
+		<many-to-one name="paper"
+			class="com.easytnt.grading.domain.paper.ExamPaper" column="paperid"
+			cascade="none">
+		</many-to-one>
+
+		<bag name="giveScorePoints" table="giveScorePoint" cascade="all-delete-orphan"
+			fetch="join" lazy="false" inverse="false">
+			<key column="cuttingDefineId" />
+			<one-to-many class="com.easytnt.grading.domain.cuttings.GiveScorePoint" />
+		</bag>
+	</class>
+</hibernate-mapping>

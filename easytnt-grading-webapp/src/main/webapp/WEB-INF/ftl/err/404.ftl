@@ -4,8 +4,7 @@
   <@nav.navigation menus=[]/>
   <div class="container-fluid"  id="workspace">
     <div class="row" style="padding:100px;margin:100px;">  
-      <p class="bg-danger" style="padding:15px;">${Request["message"]!"未知异常"}</p>
-      <p class="bg-success" style="padding:15px;"><a href="javascript:history.go(-1)">后退</a></p>
+      <p class="bg-danger" style="padding:15px;">${exception!"未知异常"}<a style="margin-left:15px;" href="javascript:history.go(-1)">后退</a></p>
     </div>
   </div>
   <#import "/taglib/commons/status.ftl" as footer> 

@@ -42,7 +42,7 @@ public class CuttingTestpaperServiceImpl implements CuttingTestpaperService, Pro
 	@Override
 	public void cutting(long paperId) {
 		DataSource ds = SpringContextUtil.getBean("ds");
-		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		CuttingsSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
 		StartCuttingTestpaper cuttingService = new StartCuttingTestpaper(cuttingsSolution, ds);
 		EasytntExecutor.instance().getExecutorService().submit(cuttingService);
 	}

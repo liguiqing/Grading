@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
+import com.easytnt.grading.domain.cuttings.CuttingDefine;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingsSolution;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.PaperCard;
+import com.easytnt.grading.repository.CuttingDefineRepository;
 import com.easytnt.grading.repository.CuttingsAreaRepository;
 import com.easytnt.grading.repository.ExamPaperRepository;
 import com.easytnt.grading.service.CuttingsSolutionService;
@@ -32,32 +34,62 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	private CuttingsAreaRepository cuttingsAreaRepository;
 	@Autowired(required = false)
 	private ExamPaperRepository examPaperRepository;
+	@Autowired(required = false)
+	private CuttingDefineRepository cuttingDefineRepo;
 
 	@Override
-	public void saveCuttingsSolution(CuttingsSolution cuttingsSolution) {
-		ExamPaper paper = cuttingsSolution.getDesignFor();
-		paper = examPaperRepository.load(paper.getPaperId());
-		cuttingsAreaRepository.deleteCuttingAreaInPaper(paper.getPaperId());
-		List<CuttingsArea> cuttingsAreas = cuttingsSolution.getCutTo();
-		for (CuttingsArea cuttingsArea : cuttingsAreas) {
-			cuttingsArea.setPaper(paper);
-			cuttingsAreaRepository.saveOrUpdate(cuttingsArea);
+	public void saveCuttingDefines(CuttingsSolution cuttingsSolution) {
+		ExamPaper paper = cuttingsSolution.getPaper();
+		cuttingDefineRepo.deleteCuttingDefinesWith(paper.getPaperId());
+		List<CuttingDefine> cuttingDefines = cuttingsSolution.getCuttingDefines();
+		for (CuttingDefine cuttingDefine : cuttingDefines) {
+			cuttingDefine.setPaper(paper);
+			cuttingDefineRepo.saveOrUpdate(cuttingDefine);
 		}
 	}
 
 	@Override
-	public CuttingsSolution getCuttingsSolutionWithPaperId(Long paperId) {
+	public CuttingsSolution getCuttingDefines(Long paperId) {
 		ExamPaper paper = getPaper(paperId);
-		List<CuttingsArea> cuttingsAreas = getCuttingsAreas(paperId);
+		List<CuttingDefine> cuttingDefines = cuttingDefineRepo.listCuttingDefinesWith(paperId);
 		CuttingsSolution cuttingsSolution = new CuttingsSolution();
-		cuttingsSolution.setDesignFor(paper);
-		cuttingsSolution.setCutTo(cuttingsAreas);
+		cuttingsSolution.setPaper(paper);
+		cuttingsSolution.setCuttingDefines(cuttingDefines);
+		return cuttingsSolution;
+	}
+
+	@Override
+	public void saveCuttingAreaes(CuttingsSolution cuttingsSolution) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public CuttingsSolution getCuttingAreaes(Long paperId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void saveCuttingsSolution1(CuttingsSolution cuttingsSolution) {
+		ExamPaper paper = cuttingsSolution.getPaper();
+		paper = examPaperRepository.load(paper.getPaperId());
+		cuttingsAreaRepository.deleteCuttingAreaInPaper(paper.getPaperId());
+		// List<CuttingsArea> cuttingsAreas = cuttingsSolution.getCutTo();
+		// for (CuttingsArea cuttingsArea : cuttingsAreas) {
+		// cuttingsArea.setPaper(paper);
+		// cuttingsAreaRepository.saveOrUpdate(cuttingsArea);
+		// }
+	}
+
+	public CuttingsSolution getCuttingsSolutionWithPaperId1(Long paperId) {
+		ExamPaper paper = getPaper(paperId);
+		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		cuttingsSolution.setPaper(paper);
 		return cuttingsSolution;
 	}
 
 	private List<CuttingsArea> getCuttingsAreas(Long paperId) {
 		List<CuttingsArea> cuttingsAreas = cuttingsAreaRepository.listCuttingsAreaOfInPaper(paperId);
-
 		return cuttingsAreas;
 	}
 

@@ -54,6 +54,11 @@ public class MonitorController {
 	@RequestMapping(value="/monitor/progress/data",method=RequestMethod.GET)
 	public ModelAndView onGetProgressData()throws Exception{
 		logger.debug("URL /monitor/progress/data Method Get");
+		UserDetails user = shiroService.getUser();
+		if(user.getSource() == null) {
+			
+		}
+		
 		ResultData resultData = new ResultData();
 		List<Data> dataList = new ArrayList<Data>();
 		String[] color = new String[]{"#a5c2d5","#cbab4f","#76a871","#76a871","#a56f8f","#c12c44","#a56f8f","#9f7961","#76a871","#6f83a5"};
@@ -111,7 +116,7 @@ public class MonitorController {
 			DataList dataList = new DataList();
 			dataList.setName("老师"+index);
 			dataList.setLine_width(2);
-			dataList.setColor(color[index]);
+			//dataList.setColor(color[index]);
 			
 			for(int i=1;i<=24;i++){
 				values.add(((int)(random.nextFloat()*10))/10f);

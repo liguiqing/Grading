@@ -41,13 +41,13 @@ public class CuttingDefineController {
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ModelAndView save(@RequestBody CuttingsSolution cuttingsSolution) throws Exception {
-		cuttingsSolutionService.saveCuttingsSolution(cuttingsSolution);
+		// cuttingsSolutionService.saveCuttingsSolution(cuttingsSolution);
 		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
 
 	@RequestMapping(value = "/get/{examId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView get(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
-		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		CuttingsSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
 		return ModelAndViewFactory.newModelAndViewFor("").with("cuttingsSolution", cuttingsSolution).build();
 	}
 

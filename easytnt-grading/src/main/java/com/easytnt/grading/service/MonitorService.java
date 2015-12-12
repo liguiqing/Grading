@@ -6,6 +6,10 @@ package com.easytnt.grading.service;
 
 import java.util.List;
 
+import com.easytnt.commons.ui.ichart.IchartData;
+import com.easytnt.commons.ui.ichart.ResultData;
+import com.easytnt.grading.domain.grade.Teacher;
+
 /** 
  * <pre>
  * 
@@ -17,6 +21,28 @@ import java.util.List;
 public interface MonitorService {
 
 	List<String> statusOfTeacherWorking();
+	
+	/**
+	 * 科目监控
+	 * @return
+	 */
+	List<IchartData> subjectsMonitor(Long testId);
+	
+	/**
+	 * 同组监控
+	 * @param teacher
+	 * @return
+	 */
+	List<IchartData> sameTeamMonitor(Teacher teacher);
+	
+	/**
+	 * 
+	 * @param teacher
+	 * @return
+	 */
+	List<IchartData> teamMonitorOfWorking(Teacher teacher);
+	
+	List<IchartData> teamMonitorOfStabled(Teacher teacher);
 }
 
 

@@ -48,7 +48,7 @@ public class JoyMappingExceptionResolver extends SimpleMappingExceptionResolver 
 			} else if (ex instanceof SQLException)
 				request.setAttribute("message", "数据异常");
 			else
-				request.setAttribute("message", ex.getMessage());
+				request.setAttribute("message", ex.getMessage()==null?ex.getLocalizedMessage():ex.getMessage());
 			return getModelAndView(viewName, ex, request);
 		} else {
 			try {

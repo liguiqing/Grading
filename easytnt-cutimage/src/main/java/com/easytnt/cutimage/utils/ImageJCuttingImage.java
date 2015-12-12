@@ -54,7 +54,7 @@ public class ImageJCuttingImage extends BaseCuttingImage {
 	}
 
 	private void rotateImages() {
-		List<AnswerCardCuttingTemplate> templateInfos = event.getCuttingsSolution().getDesignFor()
+		List<AnswerCardCuttingTemplate> templateInfos = event.getCuttingsSolution().getPaper()
 				.getAnswerCardCuttingTemplates();
 		for (AnswerCardCuttingTemplate templateInfo : templateInfos) {
 			ImagePlus imp = imps.get(templateInfo.getIndex());
@@ -74,7 +74,8 @@ public class ImageJCuttingImage extends BaseCuttingImage {
 
 	private void executeCutting() throws Exception {
 		ArrayList<CutImageInfo> cutImageInfos = new ArrayList<>();
-		List<CuttingsArea> cutTo = event.getCuttingsSolution().getCutTo();
+		List<CuttingsArea> cutTo = new ArrayList<>();// event.getCuttingsSolution().getCutTo();
+		// TODO
 		for (CuttingsArea cuttingsArea : cutTo) {
 			String saveFilePath = createSaveFilePath(cuttingsArea.getId());
 			cuttingImage(cuttingsArea, saveFilePath);

@@ -104,7 +104,7 @@ public class GradingTaskController {
 		
 		Subject subject = subjectService.load(subjectId);
 		List<Teacher> teachers = teacherService.findSubjectTeachers(subject);
-		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		CuttingsSolution cuttingsSolution = null;//cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
 		return ModelAndViewFactory.newModelAndViewFor("/config")
 				.with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus())
@@ -150,6 +150,10 @@ public class GradingTaskController {
 	@RequestMapping( method = RequestMethod.GET)
 	public ModelAndView onGetTask() throws Exception {
 		logger.debug("URL /task Method Get");
+		List<Menu> menus = new ArrayList<Menu>();
+		menus.add( new Menu("个人中心",""));
+		menus.add( new Menu("锁定屏幕",""));
+		menus.add( new Menu("退出","logout"));
 		
 		Referees referees = refereesService.getCurrentReferees();
 		Teacher teacher = teacherService.load(referees.getId());
@@ -157,6 +161,7 @@ public class GradingTaskController {
 		return ModelAndViewFactory.newModelAndViewFor("/task/taskList")
 				.with("teacher",teacher)
 				.with("tasks", tasks)
+				.with("menus", menus)
 				.build();
 	}
 
@@ -168,7 +173,7 @@ public class GradingTaskController {
 		menus.add( new Menu("参考答案",""));
 		menus.add( new Menu("统计信息",""));
 		menus.add( new Menu("锁定屏幕",""));
-		menus.add( new Menu("暂停","#pause"));
+		//menus.add( new Menu("暂停","#pause"));
 		
 		
 		Referees referees = refereesService.getCurrentReferees();

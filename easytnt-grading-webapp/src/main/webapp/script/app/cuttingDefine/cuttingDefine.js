@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', 'ajaxwrapper', 'dialog',"easyui", "./selection", "./examObj", "./element"];
-	define(deps, function($, ajaxWrapper, dialog,easyui, Selection, ExamObj, Element) {
+	var deps = [ 'jquery', 'ajaxwrapper', 'dialog', "./selection", "./examObj", "./element",'bootstrapSlider'];
+	define(deps, function($, ajaxWrapper, dialog, Selection, ExamObj, Element,bootstrapSlider) {
 		var obj = function() {
 			var me = this;
 			this.render = function() {
@@ -13,27 +13,20 @@
 				kk();
 				//切割入口
 				entrance();
-				
 			};
 			
 			function entrance() {
-				var examId = $('#examId').val();
-				var paperId=$('#paperId').val();
-				var url='/cuttingDefine/get/'+examId+'/'+paperId;
-				ajaxWrapper.getJson(url,{},{},function(data){
-					console.log(data)
-					//准备试卷信息
-					recoverPaper(data.cuttingsSolution);
-					if(window.examObj.examPapers.length == 0) {//保存操作
-						doCreate();
-					}else {//编辑操作
-						doEdit();
-					}
-					
-					//初始化底部工具栏按钮状态
-					initBottomBarBtnStatus();
-					initBottomBarBtnEvent();
-				});
+				//准备试卷信息
+				recoverPaper();
+				if(window.examObj.examPapers.length == 0) {//保存操作
+					doCreate();
+				}else {//编辑操作
+					doEdit();
+				}
+				
+				//初始化底部工具栏按钮状态
+				initBottomBarBtnStatus();
+				initBottomBarBtnEvent();
 			}
 			
 			//进行新建试卷初始化
@@ -44,8 +37,8 @@
 			//进行编辑操作,默认恢复第一张答题卡数据
 			function doEdit() {
 				var selection = window.examObj.examPapers[0];
-				//selection.recover();
-				recoverSelection(selection);
+				selection.recover();
+				window.selection = selection;
 			}
 			
 			//初始化底部工具栏中按钮点击事件
@@ -74,6 +67,19 @@
 					var index = Number(val) - 1;
 					jumpTo(this, index);
 				});
+				
+				//初始化缩放组件拖动事件
+				$('.sliderui').change(function(data){
+					//缩放时不选中任何一个元素，所以需要先把之前选中的元素数据保存
+					stage_unsaved_element();
+					selection.unSelectAll();
+					//更改元素缩放倍数
+					selection.scaleRate = (data.value.newValue / 100);
+					//更改各个元素的位置
+					selection.updateLayoutByScale();
+					//更改整个试卷的宽高
+					selection.changeExamPagerSize();
+				});
 			}
 			
 			//保存题目数据
@@ -84,7 +90,6 @@
 					dialog.fadedialog(getOpts("保存成功!"));
 				});
 			}
-			
 			function getOpts(message){
 				var DialogSize = {SM:'sm',MD:'md',LG:'lg'};
 				var opts = {
@@ -102,11 +107,11 @@
 			//构建提交到后台的json数据对象
 			function buildData() {
 				var CuttingsSolution = {
-						designFor: {
+						paper: {
 							paperId: window.examObj.paperId,
 							answerCardCuttingTemplates : window.examObj.answerCardCuttingTemplates,
 						},
-						cutTo: []
+						cuttingDefines: []
 				};
 				
 				for(var i = 0; i < window.examObj.examPapers.length; i++) {
@@ -115,43 +120,38 @@
 						var element = selection.elements[j];
 						var data = element.data;
 						var cut = {
-								//id: data.id,
+								id: data.id,
 								name: data.name,
 								answerCardImageIdx: data.answerCardImageIdx,
 								requiredPinci: data.requiredPinci,
 								maxerror: data.maxerror,
 								fullScore: data.fullScore,
-								areaInPaper: {
-									left: data.areaInPaper.left,
-									top: data.areaInPaper.top,
-									width: data.areaInPaper.width,
-									height: data.areaInPaper.height
+								area: {
+									left: data.area.left,
+									top: data.area.top,
+									width: data.area.width,
+									height: data.area.height
 								},
-								itemAreas:[]
+								giveScorePoints:[]
 						};
-						if(data.id != 0){
-							//cut.id=data.id;
-						}
-						CuttingsSolution.cutTo.push(cut);
+						CuttingsSolution.cuttingDefines.push(cut);
 						
-						for(var k = 0; k < data.itemAreas.length; k++) {
-							var itemArea = data.itemAreas[k];
-							if(!$.isArray(itemArea.validValues)){
-								itemArea.validValues=itemArea.validValues.split(',');
-							}
+						for(var k = 0; k < data.giveScorePoints.length; k++) {
+							var itemArea = data.giveScorePoints[k];
 							var item = {
-										//id: itemArea.id,
-										name: itemArea.title,
-										fullScore: itemArea.fullScore,
-										seriesScore: itemArea.seriesScore,
-										interval: itemArea.interval,
-										validValues: itemArea.validValues
+									id: itemArea.id,
+									title: itemArea.title,
+									fullScore: itemArea.fullScore,
+									seriesScore: itemArea.seriesScore,
+									interval: itemArea.interval,
+									validValues: itemArea.validValues.split(',')
 							};
-							cut.itemAreas.push(item);
+							cut.giveScorePoints.push(item);
 						}
 					}
 				}
 				
+				console.log(CuttingsSolution);
 				return CuttingsSolution;
 			}
 			
@@ -166,89 +166,266 @@
 			}
 			
 			//恢复整个试卷内容
-			function recoverPaper(data) {
-				if(data.designFor.answerCardCuttingTemplates){
-					var size =data.designFor.answerCardCuttingTemplates.length;
-					for(var i=0;i<size;i++){
-						var url= data.designFor.answerCardCuttingTemplates[i].url;
-						data.designFor.answerCardCuttingTemplates[i].url=window.app.rootPath+url;
-					}
-					
-				}
-				
-				/*
+			function recoverPaper() {
 				var data = {
-				    designFor: {
-				        paperId: 1,
-				        answerCardImageNum: 0,
-				        answerCardCuttingTemplates: [{
-				            index: 0,
-				            rotate: 0,
-				            url: "/grading/static/css/images/shijuan.jpg"
-				        },
-				        {
-				            index: 1,
-				            rotate: 0,
-				            url: "/grading/static/css/images/shijuan2.jpg"
-				        }]
-				    }/*,
-				    cutTo: [{
-				        id: 0,
-				        name: 1,
-				        areaInPaper: {
-				            left: 244,
-				            top: 119,
-				            width: 191,
-				            height: 102
-				        },
-				        itemAreas: [{
-				        	id:1,
-				        	name: 2,
-			                fullScore: 6.0,
-			                validValues: [0.0, 2.0, 4.0, 6.0],
-			                seriesScore: true,
-			                interval: 2.0
-				        }],
-				        requiredPinci: 1,
-				        maxerror: 1.0,
-				        answerCardImageIdx: 0,
-				        fullScore: 10.0
-				    },
-				    {
-				        id: 0,
-				        name: 1,
-				        areaInPaper: {
-				            left: 257,
-				            top: 259,
-				            width: 236,
-				            height: 145
-				        },
-				        itemAreas: [{
-				        	id:1,
-				        	name: 2,
-			                fullScore: 6.0,
-			                validValues: [0.0, 2.0, 4.0, 6.0],
-			                seriesScore: true,
-			                interval: 2.0
-				        }],
-				        requiredPinci: 1,
-				        maxerror: 1.0,
-				        answerCardImageIdx: 1,
-				        fullScore: 10.0
-				    }]
-				}*/
-				
-				
+						paper: {
+					        paperId: 1,
+					        answerCardImageNum: 0,
+					        answerCardCuttingTemplates: [{
+					            index: 0,
+					            rotate: 0,
+					            url: "/grading/static/css/images/shijuan.jpg"
+					        },
+					        {
+					            index: 1,
+					            rotate: 0,
+					            url: "/grading/static/css/images/shijuan2.jpg"
+					        }]
+					    },
+					    cuttingDefines: [{
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 244,
+					            top: 119,
+					            width: 191,
+					            height: 102
+					        },
+					        giveScorePoints: [{
+					        	title: 2,
+				                fullScore: 5.0,
+				                validValues: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
+				                seriesScore: true,
+				                interval: 1.0
+					        }],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 0,
+					        fullScore: 10.0
+					    }]
+					    /*
+					    cuttingDefines: [{
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 244,
+					            top: 119,
+					            width: 191,
+					            height: 102
+					        },
+					        giveScorePoints: [{
+					            item: {
+					                title: 2,
+					                fullScore: 5.0,
+					                validValues: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
+					                seriesScore: true,
+					                interval: 1.0
+					            }
+					        }],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 0,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 505,
+					            top: 63,
+					            width: 271,
+					            height: 136
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 0,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 998,
+					            top: 258,
+					            width: 268,
+					            height: 114
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 0,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 257,
+					            top: 259,
+					            width: 236,
+					            height: 145
+					        },
+					        giveScorePoints: [{
+					            item: {
+					                title: 2,
+					                fullScore: 6.0,
+					                validValues: [0.0, 2.0, 4.0, 6.0],
+					                seriesScore: true,
+					                interval: 2.0
+					            }
+					        }],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 770,
+					            top: 340,
+					            width: 184,
+					            height: 128
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 557,
+					            top: 622,
+					            width: 291,
+					            height: 157
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 0,
+					            top: 0,
+					            width: 0,
+					            height: 0
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 1254,
+					            top: 818,
+					            width: 650,
+					            height: 304
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 637,
+					            top: 1393,
+					            width: 712,
+					            height: 312
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 2280,
+					            top: 1200,
+					            width: 886,
+					            height: 620
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 1888,
+					            top: 216,
+					            width: 350,
+					            height: 272
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 0,
+					            top: 0,
+					            width: 0,
+					            height: 0
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    },
+					    {
+					        id: 0,
+					        name: 1,
+					        area: {
+					            left: 351,
+					            top: 996,
+					            width: 477,
+					            height: 274
+					        },
+					        giveScorePoints: [],
+					        requiredPinci: 1,
+					        maxerror: 1.0,
+					        answerCardImageIdx: 1,
+					        fullScore: 10.0
+					    }]*/
+					};
 				//试卷数据
 				var examObj = ExamObj.newInstance();
-				examObj.paperId = data.designFor.paperId;
-				examObj.answerCardCuttingTemplates = data.designFor.answerCardCuttingTemplates;
+				examObj.paperId = data.paper.paperId;
+				examObj.answerCardCuttingTemplates = data.paper.answerCardCuttingTemplates;
 				//答题卡数据
 				var selections = [];
 				var index = -1; 
-				if(data.cutTo){
-					for(var i = 0; i < data.cutTo.length; i++) {
-						var cut = data.cutTo[i];
+				if(data.cuttingDefines){
+					for(var i = 0; i < data.cuttingDefines.length; i++) {
+						var cut = data.cuttingDefines[i];
 						index = cut.answerCardImageIdx;
 						//当前selection如果没有被创建，就新建一个
 						var selection = selections[index];
@@ -262,22 +439,26 @@
 						//创建题目信息
 						var element = Element.newInstance();
 						element.data = {
-								//id: cut.id,
+								id: cut.id,
 								name: cut.name,// 题号
 								answerCardImageIdx :cut.answerCardImageIdx,//答题卡位置
 								requiredPinci: cut.requiredPinci,//评次
 								maxerror: cut.maxerror,//误差
 								fullScore: cut.fullScore,// 满分值
-								areaInPaper: cut.areaInPaper,
-								itemAreas:[]// 小题定义
+								area: cut.area,
+								giveScorePoints:[]// 小题定义
 						};
 						
 						//创建小题信息
-						for(var j = 0; j < cut.itemAreas.length; j++) {
-							var itemArea = cut.itemAreas[j];
+						for(var j = 0; j < cut.giveScorePoints.length; j++) {
+							var itemArea = cut.giveScorePoints[j];
 							itemArea.seriesScore = itemArea.seriesScore ? 1 : 0;//转换为select的值
-							itemArea.title = itemArea.name;//转换为select的值
-							element.data.itemAreas.push(itemArea);
+							if(itemArea.validValues.length == 0) {
+								itemArea.validValues = '';
+							}else {
+								itemArea.validValues = itemArea.validValues.join(',');
+							}
+							element.data.giveScorePoints.push(itemArea);
 						}
 						
 						selection.elements.push(element);
@@ -347,7 +528,28 @@
 			
 			//根据examObj初始化底部上翻下翻按钮状态
 			function initBottomBarBtnStatus() {
-				//根据examobj中的试卷答题卡数量创建对应每一张答题卡的超链接
+				//初始化分页组件
+				initPageNums();
+				//初始化缩放组件
+				initSliderBar();
+			}
+			
+			//初始化缩放slider控件
+			function initSliderBar() {
+				$(".sliderui").slider();
+				$(".slider-enabled").click(function() {
+					if(this.checked) {
+						$(this).siblings(".sliderui").slider("enable");
+					}
+					else {
+						$(this).siblings(".sliderui").slider("disable");
+					}
+				});
+			}
+			
+			//初始化分页
+			//根据examobj中的试卷答题卡数量创建对应每一张答题卡的超链接
+			function initPageNums() {
 				var arr = window.examObj.answerCardCuttingTemplates;
 				if(arr.length == 0) {
 					throw new Error('异常，试卷无答题卡!');
@@ -375,16 +577,17 @@
 				}else {//跳转到其他答题卡页面
 					stage_unsaved_element();
 					var selection = window.examObj.examPapers[index];
+					
 					//如果是不存在的就直接创建一个
 					if(selection == undefined) {
-						initSelection(index);
-					}else {
-						recoverSelection(selection);
-						
+						selection =initSelection(index);
 					}
+					//设置当前缩放倍数等于当前设置的缩放倍数
+					selection.scaleRate = window.examObj.examPapers[curIndex].scaleRate;
+					recoverSelection(selection);
+					//更改当前选中元素样式
+					resetCurrentPageStyle(target);
 				}
-				
-				resetCurrentPageStyle(target);
 			}
 			
 			//重新设置当前页面索引样式
@@ -412,6 +615,7 @@
 				selection.init();
 				//将当前答题卡保存到指定索引
 				window.examObj.examPapers[index] = window.selection;
+				return selection;
 			}
 
 			function kk(){

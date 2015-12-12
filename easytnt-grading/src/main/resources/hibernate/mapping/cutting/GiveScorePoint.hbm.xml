@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.easytnt.grading.domain.cuttings.GiveScorePoint"
+		table="giveScorePoint">
+		<id name="id" type="java.lang.Long">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="name" />
+		</property>
+		<property name="validscoredot" type="java.lang.String">
+			<column name="validscoredot" />
+		</property>
+		<property name="fullScore" type="java.lang.Float">
+			<column name="fullscore" />
+		</property>
+		<property name="interval" type="java.lang.Float">
+			<column name="[interval]" />
+		</property>
+		<property name="seriesScore" type="java.lang.Boolean">
+			<column name="seriesScore" />
+		</property>
+
+		<component name="area" class="com.easytnt.grading.domain.share.Area"
+			lazy="true">
+			<property name="left" column="[left]" type="java.lang.Integer" />
+			<property name="top" column="top" type="java.lang.Integer" />
+			<property name="width" column="width" type="java.lang.Integer" />
+			<property name="height" column="height" type="java.lang.Integer" />
+		</component>
+
+		<many-to-one name="cuttingDefine" column="cuttingDefineId"
+			class="com.easytnt.grading.domain.cuttings.CuttingDefine" cascade="all" />
+
+	</class>
+</hibernate-mapping>

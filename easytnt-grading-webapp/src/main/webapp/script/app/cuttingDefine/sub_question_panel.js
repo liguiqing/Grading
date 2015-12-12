@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
-	var deps = [ 'jquery', 'easyui' ];
-	define(deps, function($, easyui) {
+	var deps = [ 'jquery' ];
+	define(deps, function($) {
 		
 		/*小题面板*/
 		//如果是遍历小题集合，需要传递index
@@ -43,7 +43,7 @@
 					var id = panelview.attr('id');
 					
 					//删除小题定义数组中的当前小题对象
-					selection.currentElement.data.itemAreas[id] = null;//当前还不能彻底删除该对象，会对后面元素位置有影响，所以只设置为空
+					selection.currentElement.data.giveScorePoints[id] = null;//当前还不能彻底删除该对象，会对后面元素位置有影响，所以只设置为空
 					$(panelview).remove();
 				});
 			};
@@ -109,7 +109,7 @@
 		//面板内容布局
 		function create_sub_question_panel(index) {
 			if(index == undefined) {
-				index = selection.currentElement.data.itemAreas.length;
+				index = selection.currentElement.data.giveScorePoints.length;
 			}
 			var panel = $('#subQuestionPanel').clone();
 			

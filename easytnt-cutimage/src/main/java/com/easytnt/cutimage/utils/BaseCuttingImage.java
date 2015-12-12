@@ -59,14 +59,14 @@ public abstract class BaseCuttingImage {
 	}
 
 	private void setCuttingRootPath() {
-		cuttingRootPath = event.getCuttingsSolution().getDesignFor().getCuttingRootPath();
+		cuttingRootPath = event.getCuttingsSolution().getPaper().getCuttingRootPath();
 	}
 
 	public abstract void cutting() throws Exception;
 
 	protected String createSaveFilePath(Long itemId) throws Exception {
 		StringBuffer saveFilePath = new StringBuffer();
-		saveFilePath.append(cuttingRootPath).append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/")
+		saveFilePath.append(cuttingRootPath).append(event.getCuttingsSolution().getPaper().getPaperId()).append("/")
 				.append(diquId).append("/").append(kcId).append("/").append(itemId).append("/").append(studentId)
 				.append(".png");
 		Path path = Paths.get(saveFilePath.toString());
@@ -78,11 +78,11 @@ public abstract class BaseCuttingImage {
 
 	protected CutImageInfo createCutImageInfo(Long itemId) {
 		StringBuffer imagePath = new StringBuffer();
-		imagePath.append(event.getCuttingsSolution().getDesignFor().getPaperId()).append("/").append(diquId).append("/")
+		imagePath.append(event.getCuttingsSolution().getPaper().getPaperId()).append("/").append(diquId).append("/")
 				.append(kcId).append("/").append(itemId).append("/").append(studentId).append(".png");
 		CutImageInfo cutImageInfo = new CutImageInfo();
-		cutImageInfo.setPaperId(event.getCuttingsSolution().getDesignFor().getPaperId()).setDiquId(diquId)
-				.setRoomId(kcId).setVirtualroomId(kcId).setItemId(itemId).setImagePath(imagePath.toString())
+		cutImageInfo.setPaperId(event.getCuttingsSolution().getPaper().getPaperId()).setDiquId(diquId).setRoomId(kcId)
+				.setVirtualroomId(kcId).setItemId(itemId).setImagePath(imagePath.toString())
 				.setStudentId(Long.parseLong(studentId));
 		return cutImageInfo;
 	}

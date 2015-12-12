@@ -1,3 +1,4 @@
+
 (function(){
 	"use strict";
 	define( ['jquery','ajaxwrapper'],function($,ajax){

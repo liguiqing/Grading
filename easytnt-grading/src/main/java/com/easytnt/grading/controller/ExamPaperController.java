@@ -42,145 +42,140 @@ public class ExamPaperController {
 
 	@Autowired(required = false)
 	private ExamPaperService examPaperService;
-	
+
 	@Value("${easytnt.exampaper.card.sample.path}")
 	private String imgDir;
-	
+
 	@Autowired(required = false)
 	private CuttingsSolutionService cuttingsSolutionService;
-	
+
 	@Autowired(required = false)
-	private DispatcherConcreator dispatcherConcreator; 
-	
+	private DispatcherConcreator dispatcherConcreator;
+
 	@RequestMapping(value = "/start/{paperId}", method = RequestMethod.POST)
 	public ModelAndView onGradingStart(@PathVariable Long paperId) throws Exception {
 		logger.debug("URL /subjectExam/start{} Method POST ", paperId);
-		CuttingsSolution cuttingsSolution = cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
-		dispatcherConcreator.start(cuttingsSolution.getCutTo());
+		// 需要修改------Begin
+		CuttingsSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		// dispatcherConcreator.start(cuttingsSolution.getCutTo());
+		// 需要修改------END
+		// TODO 这个地方需要修改<刘海林 >
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView onCreateExamPaper(@RequestBody ExamPaper examPaper)
-					throws Exception {
+	public ModelAndView onCreateExamPaper(@RequestBody ExamPaper examPaper) throws Exception {
 		logger.debug("URL /examPaper Method POST ", examPaper);
 		examPaperService.create(examPaper);
 		return ModelAndViewFactory.newModelAndViewFor("/examPaper/editExamPaper").build();
 	}
-	
+
 	@RequestMapping(value = "/{examPaperId}", method = RequestMethod.GET)
-	public ModelAndView onViewExamPaper(@PathVariable Long examPaperId)
-					throws Exception {
+	public ModelAndView onViewExamPaper(@PathVariable Long examPaperId) throws Exception {
 		logger.debug("URL /examPaperId/{} Method Get ", examPaperId);
 		ExamPaper examPaper = examPaperService.load(examPaperId);
-		return ModelAndViewFactory.newModelAndViewFor("/examPaper/editExamPaper").with("examPaper",examPaper).build();
+		return ModelAndViewFactory.newModelAndViewFor("/examPaper/editExamPaper").with("examPaper", examPaper).build();
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT)
-	public ModelAndView onUpdateExamPaper(@RequestBody ExamPaper examPaper)
-					throws Exception {
+	public ModelAndView onUpdateExamPaper(@RequestBody ExamPaper examPaper) throws Exception {
 		logger.debug("URL /examPaper Method PUT ", examPaper);
 		examPaperService.update(examPaper);
 		return ModelAndViewFactory.newModelAndViewFor("/examPaper/editExamPaper").build();
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ModelAndView onDeleteExamPaper(@RequestBody ExamPaper examPaper)
-					throws Exception {
+	public ModelAndView onDeleteExamPaper(@RequestBody ExamPaper examPaper) throws Exception {
 		logger.debug("URL /examPaper Method DELETE ", examPaper);
 		examPaperService.delete(examPaper);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
-	@RequestMapping(value="/{examPaperId}/section",method = RequestMethod.POST)
-	public ModelAndView onAddSection(@PathVariable Long examPaperId,@RequestBody Section section)
-					throws Exception {
+
+	@RequestMapping(value = "/{examPaperId}/section", method = RequestMethod.POST)
+	public ModelAndView onAddSection(@PathVariable Long examPaperId, @RequestBody Section section) throws Exception {
 		logger.debug("URL /examPaper Method DELETE ", section);
-		examPaperService.addSectionFor(examPaperId,section);
+		examPaperService.addSectionFor(examPaperId, section);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
-	
-	@RequestMapping(value="/{examPaperId}/{rotate}",method = RequestMethod.POST)
-	public ModelAndView onAddPaperCard(@PathVariable Long examPaperId,@PathVariable Integer rotate,MultipartHttpServletRequest request)
-					throws Exception {
-		logger.debug("URL /examPaper Method onAddPaperCard "+imgDir);
+
+	@RequestMapping(value = "/{examPaperId}/{rotate}", method = RequestMethod.POST)
+	public ModelAndView onAddPaperCard(@PathVariable Long examPaperId, @PathVariable Integer rotate,
+			MultipartHttpServletRequest request) throws Exception {
+		logger.debug("URL /examPaper Method onAddPaperCard " + imgDir);
 		Iterator<String> it = request.getFileNames();
-		if(it.hasNext()) {
+		if (it.hasNext()) {
 			String fileName = it.next();
 			MultipartFile mfile = request.getFile(fileName);
-			File cardFile  = FileUtil.inputStreamToFile(mfile.getInputStream(),mfile.getOriginalFilename());
+			File cardFile = FileUtil.inputStreamToFile(mfile.getInputStream(), mfile.getOriginalFilename());
 			ExamPaper examPaper = examPaperService.load(examPaperId);
-			examPaperService.addPaperCardTo(examPaper, cardFile,rotate);
-		}else {
+			examPaperService.addPaperCardTo(examPaper, cardFile, rotate);
+		} else {
 			throw new IllegalArgumentException("无效的文件名");
 		}
-		//examPaperService.update(examPaper);
+		// examPaperService.update(examPaper);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
-	@RequestMapping(value="/{examPaperId}/{cardId}",method = RequestMethod.GET)
-	public void onShowPaperCard(@PathVariable Long examPaperId,@PathVariable Long cardId,
-			HttpServletResponse response)
-					throws Exception {
+
+	@RequestMapping(value = "/{examPaperId}/{cardId}", method = RequestMethod.GET)
+	public void onShowPaperCard(@PathVariable Long examPaperId, @PathVariable Long cardId, HttpServletResponse response)
+			throws Exception {
 		ExamPaper examPaper = examPaperService.load(examPaperId);
-		File file = examPaperService.getPaperCardFile(examPaper,cardId);
+		File file = examPaperService.getPaperCardFile(examPaper, cardId);
 
 		FileInputStream iis = new FileInputStream(file);
 		OutputStream out = response.getOutputStream();
 		try {
 			int read = 0;
 			byte[] bytes = new byte[1024];
-			while((read = iis.read(bytes)) != -1) {
+			while ((read = iis.read(bytes)) != -1) {
 				out.write(bytes);
 			}
 			out.flush();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logger.error(ThrowableParser.toString(e));
-		}finally{
+		} finally {
 			Closer.close(iis);
 		}
 	}
-	
-	@RequestMapping(value="/count/{examPaperId}",method = RequestMethod.GET)
-	public ModelAndView onGetPaperCount(@PathVariable Long examPaperId,HttpServletResponse response)
-					throws Exception {
+
+	@RequestMapping(value = "/count/{examPaperId}", method = RequestMethod.GET)
+	public ModelAndView onGetPaperCount(@PathVariable Long examPaperId, HttpServletResponse response) throws Exception {
 		int paperCount = examPaperService.countPapers(examPaperId);
 		return ModelAndViewFactory.newModelAndViewFor().with("amount", paperCount).build();
 	}
-	
-	@RequestMapping(value="/{examPaperId}/section/{position}",method = RequestMethod.PUT)
-	public ModelAndView onUpdateSection(@PathVariable Long examPaperId,@RequestBody Section section,@PathVariable Integer position)
-					throws Exception {
+
+	@RequestMapping(value = "/{examPaperId}/section/{position}", method = RequestMethod.PUT)
+	public ModelAndView onUpdateSection(@PathVariable Long examPaperId, @RequestBody Section section,
+			@PathVariable Integer position) throws Exception {
 		logger.debug("URL /examPaper Method U ", section);
-		examPaperService.updateSectionFor(examPaperId,section,position);
+		examPaperService.updateSectionFor(examPaperId, section, position);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
-	@RequestMapping(value="/onRemoveSection/{paperId}/section",method = RequestMethod.DELETE)
-	public ModelAndView onRemoveSection(@PathVariable Long paperId,@RequestBody Section section)
-					throws Exception {
+
+	@RequestMapping(value = "/onRemoveSection/{paperId}/section", method = RequestMethod.DELETE)
+	public ModelAndView onRemoveSection(@PathVariable Long paperId, @RequestBody Section section) throws Exception {
 		logger.debug("URL /examPaper Method U ", section);
-		examPaperService.deleteSectionFor(paperId,section);
+		examPaperService.deleteSectionFor(paperId, section);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	@RequestMapping(value="/removePaperCard/{paperId}",method = RequestMethod.DELETE)
-	public ModelAndView onRemovePaperCard(@PathVariable Long paperId,@RequestBody PaperCard paperCard,HttpServletRequest request)
-					throws Exception {
+
+	@RequestMapping(value = "/removePaperCard/{paperId}", method = RequestMethod.DELETE)
+	public ModelAndView onRemovePaperCard(@PathVariable Long paperId, @RequestBody PaperCard paperCard,
+			HttpServletRequest request) throws Exception {
 		logger.debug("URL /examPaper Method U ", paperCard);
 		examPaperService.deletePaperCardFor(paperId, paperCard);
-		File file  = new File(request.getServletContext().getRealPath("/")+File.separator+paperCard.getPath());
+		File file = new File(request.getServletContext().getRealPath("/") + File.separator + paperCard.getPath());
 		file.delete();
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
-	
-	@RequestMapping(value="/query/{page}/{size}",method = RequestMethod.GET)
-	public ModelAndView onQueryExamPaper(@PathVariable int page,@PathVariable int size,HttpServletRequest request)
-					throws Exception {
-		logger.debug("URL /examPaper/query/{}/{} Method GET ", page,size);
-        Query<ExamPaper> query = new QueryBuilder().newQuery(page,size,request.getParameterMap());
-        examPaperService.query(query);
-		return ModelAndViewFactory.newModelAndViewFor("/examPaper/listExamPaper").with("result",query.getResults())
-				.with("totalPage",query.getTotalPage()).build();
+
+	@RequestMapping(value = "/query/{page}/{size}", method = RequestMethod.GET)
+	public ModelAndView onQueryExamPaper(@PathVariable int page, @PathVariable int size, HttpServletRequest request)
+			throws Exception {
+		logger.debug("URL /examPaper/query/{}/{} Method GET ", page, size);
+		Query<ExamPaper> query = new QueryBuilder().newQuery(page, size, request.getParameterMap());
+		examPaperService.query(query);
+		return ModelAndViewFactory.newModelAndViewFor("/examPaper/listExamPaper").with("result", query.getResults())
+				.with("totalPage", query.getTotalPage()).build();
 	}
 }
