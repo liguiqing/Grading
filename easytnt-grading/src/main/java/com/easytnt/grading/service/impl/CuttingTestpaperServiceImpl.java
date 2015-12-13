@@ -42,8 +42,7 @@ public class CuttingTestpaperServiceImpl implements CuttingTestpaperService, Pro
 	 */
 	@Override
 	public void cutting(long paperId) {
-		DataSource ds = null;
-		SpringContextUtil.getBean("ds");
+		DataSource ds = SpringContextUtil.getBean("ds");
 		CuttingSolution cuttingSolution = cuttingsSolutionService.getCuttingDefines(paperId);
 		CuttingBlockBuilder blockBuilder = new CuttingBlockBuilder(cuttingSolution);
 		cuttingSolution.setCuttingBlocks(blockBuilder.toBuild());

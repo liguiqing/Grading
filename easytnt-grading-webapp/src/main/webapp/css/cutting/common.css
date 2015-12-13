@@ -43,13 +43,14 @@ html,body{
 }
 
 .image-content {
-	position:relative;
+	position: relative;
+	display: inline-block;
 }
 
 .control-content {
-	width :330px;
-	position:absolute;
-	z-index:101;/*浮在选区上面*/
+	width: 330px;
+	position: absolute;
+	z-index: 101;/*浮在选区上面*/
 }
 
 .size {
@@ -94,6 +95,9 @@ html,body{
 /*添加小题按钮*/
 .add-btn {
 	background-image : url(../images/add_default.png);
+	position: absolute;
+	right: 40px;
+	top: 8px;
 }
 
 .close-btn {
@@ -119,4 +123,9 @@ td.table-label {
 
 .element {
     box-sizing: content-box;
+}
+
+/*slider被选中的样式*/
+.slider-selection {
+	background: #BABABA none repeat scroll 0 0;
 }

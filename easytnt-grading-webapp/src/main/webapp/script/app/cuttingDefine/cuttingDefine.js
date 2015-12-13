@@ -27,7 +27,6 @@
 					}else {//编辑操作
 						doEdit();
 					}
-					
 					//初始化底部工具栏按钮状态
 					initBottomBarBtnStatus();
 					initBottomBarBtnEvent();
@@ -109,7 +108,6 @@
 					};
 				return opts;
 			}
-			
 			//构建提交到后台的json数据对象
 			function buildData() {
 				var CuttingsSolution = {
@@ -157,7 +155,6 @@
 					}
 				}
 				
-				console.log(CuttingsSolution);
 				return CuttingsSolution;
 			}
 			
@@ -171,17 +168,7 @@
 				}
 			}
 			
-			//恢复整个试卷内容
-			function recoverPaper(data) {
-				if(data.paper.answerCardCuttingTemplates){
-					var size =data.paper.answerCardCuttingTemplates.length;
-					for(var i=0;i<size;i++){
-						var url= data.paper.answerCardCuttingTemplates[i].url;
-						data.paper.answerCardCuttingTemplates[i].url=window.app.rootPath+url;
-					}
-					
-				}
-				/*
+			function getData(){
 				var data = {
 						paper: {
 					        paperId: 1,
@@ -218,7 +205,23 @@
 					        answerCardImageIdx: 0,
 					        fullScore: 10.0
 					    }]
-					};*/
+					};
+				return data;
+			}
+			//恢复整个试卷内容
+			function recoverPaper(data) {
+				if(data.paper.answerCardCuttingTemplates){
+					var size =data.paper.answerCardCuttingTemplates.length;
+					for(var i=0;i<size;i++){
+						var url= data.paper.answerCardCuttingTemplates[i].url;
+						data.paper.answerCardCuttingTemplates[i].url=window.app.rootPath+url;
+					}
+				}
+				
+				if(!data){
+					data = getData();
+				}
+				
 				//试卷数据
 				var examObj = ExamObj.newInstance();
 				examObj.paperId = data.paper.paperId;
@@ -268,8 +271,6 @@
 						selection.elements.push(element);
 					}
 				}
-				
-				
 				examObj.examPapers = selections;
 				window.examObj = examObj;
 			}
@@ -381,10 +382,9 @@
 				}else {//跳转到其他答题卡页面
 					stage_unsaved_element();
 					var selection = window.examObj.examPapers[index];
-					
 					//如果是不存在的就直接创建一个
 					if(selection == undefined) {
-						selection =initSelection(index);
+						initSelection(index);
 					}
 					//设置当前缩放倍数等于当前设置的缩放倍数
 					selection.scaleRate = window.examObj.examPapers[curIndex].scaleRate;
@@ -419,7 +419,6 @@
 				selection.init();
 				//将当前答题卡保存到指定索引
 				window.examObj.examPapers[index] = window.selection;
-				return selection;
 			}
 
 			function kk(){
