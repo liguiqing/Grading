@@ -10,7 +10,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.easytnt.grading.domain.paper.Item;
 import com.easytnt.grading.domain.share.Area;
 
 /**
@@ -101,7 +100,7 @@ public class CuttingBlock {
 		cuttingsArea.setRequiredPinci(cutDef.getRequiredPinci());
 		cuttingsArea.setMaxerror(cutDef.getMaxerror());
 		cuttingsArea.setFullScore(getFullScore());
-		cuttingsArea.setItems(getItems());
+		cuttingsArea.setItemAreas(getPositionOfItemInArea());
 		return cuttingsArea;
 	}
 
@@ -113,17 +112,17 @@ public class CuttingBlock {
 		return fullScore;
 	}
 
-	private List<Item> getItems() {
-		ArrayList<Item> items = new ArrayList<>();
+	private List<PositionOfItemInArea> getPositionOfItemInArea() {
+		ArrayList<PositionOfItemInArea> items = new ArrayList<>();
 		int top = 0;
 		for (CuttingDefine cutDef : cuttingDefines) {
 			Area area = cutDef.getArea();
 			for (GiveScorePoint giveScorePoint : cutDef.getGiveScorePoints()) {
-				Item item = createItem(giveScorePoint);
+				PositionOfItemInArea item = createItem(giveScorePoint);
 				Area tempArea = area.clone();
 				tempArea.setLeft(0);
 				tempArea.setTop(top);
-				item.setAnswerArea(area);
+				item.setAreaIn(tempArea);
 				items.add(item);
 			}
 			top = area.getHeight();
@@ -131,9 +130,9 @@ public class CuttingBlock {
 		return items;
 	}
 
-	private Item createItem(GiveScorePoint giveScorePoint) {
-		Item item = new Item();
-		item.setTitle(giveScorePoint.getName());
+	private PositionOfItemInArea createItem(GiveScorePoint giveScorePoint) {
+		PositionOfItemInArea item = new PositionOfItemInArea();
+		item.setName(giveScorePoint.getName());
 		item.setFullScore(giveScorePoint.getFullScore());
 		item.setValidValues(giveScorePoint.getValidValues());
 		return item;

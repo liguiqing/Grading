@@ -53,7 +53,8 @@ public class CuttingDefineController {
 
 	@RequestMapping(value = "/cutting/{paperId}", method = RequestMethod.GET)
 	public ModelAndView cutting(@PathVariable Long paperId) throws Exception {
-		cuttingTestpaperService.cutting(paperId);
+		CuttingSolution cuttingSolution = cuttingsSolutionService.getCuttingDefines(paperId);
+		cuttingTestpaperService.cutting(cuttingSolution);
 		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
 

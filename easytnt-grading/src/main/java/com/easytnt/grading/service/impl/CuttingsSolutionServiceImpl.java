@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
+import com.easytnt.grading.domain.cuttings.CuttingBlock;
 import com.easytnt.grading.domain.cuttings.CuttingDefine;
-import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingSolution;
+import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.PaperCard;
 import com.easytnt.grading.repository.CuttingDefineRepository;
@@ -59,38 +60,20 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	}
 
 	@Override
-	public void saveCuttingAreaes(CuttingSolution cuttingsSolution) {
-		// TODO Auto-generated method stub
-
+	public void saveCuttingAreaes(ExamPaper paper, List<CuttingBlock> cuttingBlocks) {
+		cuttingsAreaRepository.deleteCuttingAreaInPaper(paper.getPaperId());
+		for (CuttingBlock cutBlock : cuttingBlocks) {
+			CuttingsArea cutArea = cutBlock.toCuttingsArea();
+			cutArea.setPaper(paper);
+			cuttingsAreaRepository.saveOrUpdate(cutArea);
+			Long id = cutArea.getId();
+			cutBlock.setKey(id);
+		}
 	}
 
 	@Override
-	public CuttingSolution getCuttingAreaes(Long paperId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void saveCuttingsSolution1(CuttingSolution cuttingsSolution) {
-		ExamPaper paper = cuttingsSolution.getPaper();
-		paper = examPaperRepository.load(paper.getPaperId());
-		cuttingsAreaRepository.deleteCuttingAreaInPaper(paper.getPaperId());
-		// List<CuttingsArea> cuttingsAreas = cuttingsSolution.getCutTo();
-		// for (CuttingsArea cuttingsArea : cuttingsAreas) {
-		// cuttingsArea.setPaper(paper);
-		// cuttingsAreaRepository.saveOrUpdate(cuttingsArea);
-		// }
-	}
-
-	public CuttingSolution getCuttingsSolutionWithPaperId1(Long paperId) {
-		ExamPaper paper = getPaper(paperId);
-		CuttingSolution cuttingsSolution = new CuttingSolution();
-		cuttingsSolution.setPaper(paper);
-		return cuttingsSolution;
-	}
-
-	private List<CuttingsArea> getCuttingsAreas(Long paperId) {
-		List<CuttingsArea> cuttingsAreas = cuttingsAreaRepository.listCuttingsAreaOfInPaper(paperId);
-		return cuttingsAreas;
+	public List<CuttingsArea> getCuttingAreaes(Long paperId) {
+		return cuttingsAreaRepository.listCuttingsAreaOfInPaper(paperId);
 	}
 
 	private ExamPaper getPaper(Long paperId) {
