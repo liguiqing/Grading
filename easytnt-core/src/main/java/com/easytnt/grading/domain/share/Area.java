@@ -40,8 +40,8 @@ public class Area implements ValueObject<Area> {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(this.left).append(this.top)
-				.append(this.width).append(this.height).toHashCode();
+		return new HashCodeBuilder().append(this.left).append(this.top).append(this.width).append(this.height)
+				.toHashCode();
 	}
 
 	@Override
@@ -50,16 +50,14 @@ public class Area implements ValueObject<Area> {
 			return false;
 		Area other = (Area) o;
 
-		return new EqualsBuilder().append(this.left, other.left)
-				.append(this.top, other.top).append(this.width, other.width)
-				.append(this.height, other.height).isEquals();
+		return new EqualsBuilder().append(this.left, other.left).append(this.top, other.top)
+				.append(this.width, other.width).append(this.height, other.height).isEquals();
 	}
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append("Left:", this.left)
-				.append("Top:", this.top).append("Width:", this.width)
-				.append("Height:", this.height).build();
+		return new ToStringBuilder(this).append("Left:", this.left).append("Top:", this.top)
+				.append("Width:", this.width).append("Height:", this.height).build();
 	}
 
 	@Override
@@ -97,6 +95,15 @@ public class Area implements ValueObject<Area> {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public Area clone() {
+		Area area = new Area();
+		area.left = left;
+		area.top = top;
+		area.width = width;
+		area.height = height;
+		return area;
 	}
 
 }

@@ -22,12 +22,23 @@
 			//选区一系列初始化操作
 			selection.init = function() {
 				selection.initUI();//初始化界面元素
+				selection.initPopover(); //初始化提示框
 				selection.preventImageDrag();
 				selection.enable_key_del();
 				selection.enable_selection();
 				selection.btn_style();
 				selection.init_event();
 				selection.make_element_data_panel_draggable();
+			};
+			
+			selection.initPopover = function() {
+				$('span.add-btn').mouseover(function() {
+					$(this).popover('show');
+				});
+				$('span.add-btn').mouseout(function() {
+					$(this).popover('hide');
+				});
+
 			};
 			
 			//根据缩放倍数改变布局和元素位置
@@ -90,7 +101,7 @@
 						elementPosition = selection.getPosition(siblingElement);
 						if(elementPosition.left >= range.min 
 								&& elementPosition.left <= range.max) {
-							siblingElement.align(position.left, position.width);
+							siblingElement.align(position.left, position.width, selection.scaleRate);
 						}
 					}
 					
@@ -724,9 +735,8 @@
 					return;
 				}
 				
-				var width = Math.ceil($(selection.currentElement.view).width());
+				var width =Math.ceil($(selection.currentElement.view).width());
 				var height = Math.ceil($(selection.currentElement.view).height());
-				
 				
 				//调整提示框宽度而创建的一个尺子，用于测量文本宽度
 				var ruler = null;
@@ -889,46 +899,62 @@
 					+ '<div class="panel panel-info">'
 						+ '<div class="panel-heading" style="position:relative;">'
 							+ '<span>题目信息</span>'
+							+ '<span class="span-btn add-btn" data-toggle="popover" data-content="新建小题信息" data-container="body" data-placement="bottom"></span>'
 							+ '<span class="span-btn close-btn"></span>'
 						+ '</div>'
-						+ '<div class="panel-body" style="width:100%;height:400px;overflow:auto;">'
+						+ '<div class="panel-body" style="width:100%;height:360px;overflow:auto;">'
 							+ '<table class="table no-border">'
 								+ '<tr>'
 									+ '<td>题号</td>'
 									+ '<td><input type="text" id="name" name="name" class="form-control"></td>'
 								+ '</tr>'
+//								+ '<tr>'
+//									+ '<td>满分值</td>'
+//									+ '<td><input id="fullScore" type="text" name="fullScore" class="form-control"></td>'
+//								+ '</tr>'
+//								+ '<tr>'
+//								+ '<td>评次</td>'
+//								+ '<td><input type="text" id="requiredPinci" name="requiredPinci" class="form-control"></td>'
+//								+ '</tr>'
+//								+ '<tr>'
+//								+ '<td>误差</td>'
+//								+ '<td><input id="maxerror" type="text" name="maxerror" class="form-control"></td>'
+//								+ '</tr>'
 								+ '<tr>'
-									+ '<td>满分值</td>'
-									+ '<td><input id="fullScore" type="text" name="fullScore" class="form-control"></td>'
+									+ '<td colspan="2">'
+										+ '<span>满分值</span>&nbsp;<input id="fullScore" type="text" name="fullScore" style="width:45px;display:inline-block;" class="form-control">&nbsp;&nbsp;'
+										+ '<span>评次</span>&nbsp;<input type="text" id="requiredPinci" name="requiredPinci" style="width:45px;display:inline-block;" class="form-control">&nbsp;&nbsp;'
+										+ '<span>误差</span>&nbsp;<input id="maxerror" type="text" name="maxerror" style="width:45px;display:inline-block;" class="form-control">'
+									+ '</td>'
 								+ '</tr>'
+//								+ '<tr>'
+//									+ '<td>X坐标(px)</td>'
+//									+ '<td><span id="left" class="label label-success"></span></td>'
+//								+ '</tr>'
+//								+ '<tr>'
+//									+ '<td>Y坐标(px)</td>'
+//									+ '<td><span id="top" class="label label-success"></span></td>'
+//								+ '</tr>'
+//								+ '<tr>'
+//									+ '<td>宽度(px)</td>'
+//									+ '<td><span id="width" class="label label-info"></span></td>'
+//								+ '</tr>'
+//								+ '<tr>'
+//									+ '<td>高度(px)</td>'
+//									+ '<td><span id="height" class="label label-info"></span></td>'
+//								+ '</tr>'
 								+ '<tr>'
-								+ '<td>评次</td>'
-								+ '<td><input type="text" id="requiredPinci" name="requiredPinci" class="form-control"></td>'
+									+ '<td colspan="2">'
+										+ '<span>X</span>&nbsp;<span id="left" class="label label-success"></span>&emsp;'
+										+ '<span>Y</span>&nbsp;<span id="top" class="label label-success"></span>&emsp;'
+										+ '<span>宽度</span>&nbsp;<span id="width" class="label label-info"></span>&emsp;'
+										+ '<span>高度</span>&nbsp;<span id="height" class="label label-info"></span>'
+									+ '</td>'
 								+ '</tr>'
-								+ '<tr>'
-								+ '<td>误差</td>'
-								+ '<td><input id="maxerror" type="text" name="maxerror" class="form-control"></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>X坐标(px)</td>'
-									+ '<td><span id="left" class="label label-success"></span></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>Y坐标(px)</td>'
-									+ '<td><span id="top" class="label label-success"></span></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>宽度(px)</td>'
-									+ '<td><span id="width" class="label label-info"></span></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>高度(px)</td>'
-									+ '<td><span id="height" class="label label-info"></span></td>'
-								+ '</tr>'
-								+ '<tr>'
-									+ '<td>小题定义</td>'
-									+ '<td><span class="span-btn add-btn"></span></td>'
-								+ '</tr>'
+//								+ '<tr>'
+//									+ '<td>小题定义</td>'
+//									+ '<td><span class="span-btn add-btn"></span></td>'
+//								+ '</tr>'
 								+ '<tr>'
 									+ '<td colspan="2" class="sub-question-container"></td>'
 								+ '</tr>'

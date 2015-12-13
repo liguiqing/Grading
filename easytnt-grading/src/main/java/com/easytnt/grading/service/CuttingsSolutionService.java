@@ -3,7 +3,12 @@
  */
 package com.easytnt.grading.service;
 
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import java.util.List;
+
+import com.easytnt.grading.domain.cuttings.CuttingBlock;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
+import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.domain.paper.ExamPaper;
 
 /**
  * <pre>
@@ -14,11 +19,11 @@ import com.easytnt.grading.domain.cuttings.CuttingsSolution;
  */
 public interface CuttingsSolutionService {
 
-	public void saveCuttingDefines(CuttingsSolution cuttingsSolution);
+	public void saveCuttingDefines(CuttingSolution cuttingsSolution);
 
-	public CuttingsSolution getCuttingDefines(Long paperId);
+	public CuttingSolution getCuttingDefines(Long paperId);
 
-	public void saveCuttingAreaes(CuttingsSolution cuttingsSolution);
+	public void saveCuttingAreaes(ExamPaper paper, List<CuttingBlock> cuttingBlocks);
 
-	public CuttingsSolution getCuttingAreaes(Long paperId);
+	public List<CuttingsArea> getCuttingAreaes(Long paperId);
 }

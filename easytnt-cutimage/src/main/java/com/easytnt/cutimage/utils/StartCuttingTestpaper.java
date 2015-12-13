@@ -22,7 +22,7 @@ import com.easytnt.cutimage.disruptor.handler.CountDownLatchHandler;
 import com.easytnt.cutimage.disruptor.handler.CuttingImageHandler;
 import com.easytnt.cutimage.disruptor.handler.LogHandlerException;
 import com.easytnt.cutimage.disruptor.handler.SaveCuttingBlockToDBHandler;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.importpaper.bean.CountContainer;
 import com.easytnt.importpaper.bean.CountContainerMgr;
 import com.easytnt.importpaper.io.scanfiledir.DirectoryScanner;
@@ -46,11 +46,11 @@ import com.lmax.disruptor.util.Util;
  */
 public class StartCuttingTestpaper implements Runnable {
 	private Logger log = LoggerFactory.getLogger(StartCuttingTestpaper.class);
-	private CuttingsSolution cuttingsSolution;
+	private CuttingSolution cuttingsSolution;
 	private CountContainer<Integer> countContainer;
 	private SaveCutImageInfoToDatabaseService saveService;
 
-	public StartCuttingTestpaper(CuttingsSolution cuttingsSolution, DataSource ds) {
+	public StartCuttingTestpaper(CuttingSolution cuttingsSolution, DataSource ds) {
 		this.cuttingsSolution = cuttingsSolution;
 		createContainer();
 		createSaveDatabaseService(ds);
@@ -168,7 +168,7 @@ public class StartCuttingTestpaper implements Runnable {
 	private StudentTestPaperAnswerCardEvent createStudentTestPaperAnswerCardEvent(String rootDir, Path parentPath,
 			String studentInfo) {
 		StudentTestPaperAnswerCardEvent event = new StudentTestPaperAnswerCardEvent();
-		event.setFilePaths(createSourceImagePath(parentPath, studentInfo)).setRootDir(rootDir)
+		event.setFilePaths(createSourceImagePath(parentPath, studentInfo)).setScanSourceImageRootDir(rootDir)
 				.setCuttingsSolution(cuttingsSolution).setStudentId(getStudentId(studentInfo));
 		return event;
 	}

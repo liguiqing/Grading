@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.easytnt.commons.web.view.ModelAndViewFactory;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.service.CuttingTestpaperService;
 import com.easytnt.grading.service.CuttingsSolutionService;
 import com.google.gson.Gson;
@@ -40,31 +40,32 @@ public class CuttingDefineController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView save(@RequestBody CuttingsSolution cuttingsSolution) throws Exception {
-		// cuttingsSolutionService.saveCuttingsSolution(cuttingsSolution);
+	public ModelAndView save(@RequestBody CuttingSolution cuttingsSolution) throws Exception {
+		cuttingsSolutionService.saveCuttingDefines(cuttingsSolution);
 		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
 
 	@RequestMapping(value = "/get/{examId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView get(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
-		CuttingsSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		CuttingSolution cuttingsSolution = cuttingsSolutionService.getCuttingDefines(paperId);
 		return ModelAndViewFactory.newModelAndViewFor("").with("cuttingsSolution", cuttingsSolution).build();
 	}
 
 	@RequestMapping(value = "/cutting/{paperId}", method = RequestMethod.GET)
 	public ModelAndView cutting(@PathVariable Long paperId) throws Exception {
-		cuttingTestpaperService.cutting(paperId);
+		CuttingSolution cuttingSolution = cuttingsSolutionService.getCuttingDefines(paperId);
+		cuttingTestpaperService.cutting(cuttingSolution);
 		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
 
 	@RequestMapping(value = "/gettest/{examId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView getTest(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
-		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		CuttingSolution cuttingsSolution = new CuttingSolution();
 		return ModelAndViewFactory.newModelAndViewFor("").with("cuttingsSolution", cuttingsSolution).build();
 	}
 
 	@RequestMapping(value = "/savetest", method = RequestMethod.POST)
-	public void saveTest(@RequestBody CuttingsSolution cuttingsSolution) throws Exception {
+	public void saveTest(@RequestBody CuttingSolution cuttingsSolution) throws Exception {
 		Gson gson = new Gson();
 		String json = gson.toJson(cuttingsSolution);
 		System.out.println(json);

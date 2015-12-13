@@ -36,18 +36,18 @@ public class ExamPaper implements Entity<ExamPaper> {
 	private Long paperId;
 
 	private Long paperOid;
-	
+
 	private Set<Section> sections;
-	
+
 	private Set<SubjectExam> subjectExam;
-	
+
 	private Set<PaperCard> paperCards;
-	
+
 	private Float fullScore;
-	
-	private Float objectivityScore; //客观题满分
-	
-	private Float subjectivityScore; //主观题满分
+
+	private Float objectivityScore; // 客观题满分
+
+	private Float subjectivityScore; // 主观题满分
 
 	private int answerCardImageNum;// 答题卡图片模板数量
 
@@ -57,28 +57,28 @@ public class ExamPaper implements Entity<ExamPaper> {
 
 	private String studentAnserCardRootPath;// 学生答题卡图片路劲
 
-	public ExamPaper(String name,Float fullScore) {
+	public ExamPaper(String name, Float fullScore) {
 		this.name = name;
 		this.fullScore = fullScore;
 	}
-	
-	public ExamPaper(String name,Float fullScore,Float objectivityScore,Float subjectivityScore) {
+
+	public ExamPaper(String name, Float fullScore, Float objectivityScore, Float subjectivityScore) {
 		this.name = name;
 		this.fullScore = fullScore;
 		this.objectivityScore = objectivityScore;
 		this.subjectivityScore = subjectivityScore;
 	}
-	
-	public ExamPaper(String name,Float fullScore,Float objectivityScore,Float subjectivityScore,
-			String cuttingRootPath,String studentAnserCardRootPath) {
+
+	public ExamPaper(String name, Float fullScore, Float objectivityScore, Float subjectivityScore,
+			String cuttingRootPath, String studentAnserCardRootPath) {
 		this.name = name;
 		this.fullScore = fullScore;
 		this.objectivityScore = objectivityScore;
 		this.subjectivityScore = subjectivityScore;
-		this.cuttingRootPath = cuttingRootPath;
+		setCuttingRootPath(cuttingRootPath);
 		this.studentAnserCardRootPath = studentAnserCardRootPath;
 	}
-	
+
 	private void init() {
 		if (this.sections == null) {
 			this.sections = new LinkedHashSet<Section>();
@@ -90,51 +90,51 @@ public class ExamPaper implements Entity<ExamPaper> {
 			this.paperCards = new LinkedHashSet<PaperCard>();
 		}
 	}
-	
-	public void addPaperCard(PaperCard paperCard){
+
+	public void addPaperCard(PaperCard paperCard) {
 		init();
 		paperCard.setPaper(this);
-		paperCard.setCardSeq(this.paperCards.size()+1);
+		paperCard.setCardSeq(this.paperCards.size() + 1);
 		this.paperCards.add(paperCard);
 	}
-	
-	public void removePaperCard(PaperCard paperCard){
+
+	public void removePaperCard(PaperCard paperCard) {
 		init();
 		paperCard.setPaper(null);
 		this.paperCards.remove(paperCard);
 	}
-	
-	private Integer index=1;
-	
-	public void addSection(Section section){
+
+	private Integer index = 1;
+
+	public void addSection(Section section) {
 		init();
-		if(section.getFullScore()==null){
+		if (section.getFullScore() == null) {
 			throw new UnsupportedOperationException("试题分数为空");
 		}
 		int index = this.sections.size();
 		section.setPaper(this);
-		section.genOid(index+1);
+		section.genOid(index + 1);
 		this.sections.add(section);
 		validate();
 		index++;
 	}
-	
-	public void addSubjectExams(SubjectExam subjectExam){
+
+	public void addSubjectExams(SubjectExam subjectExam) {
 		init();
 		this.subjectExam.add(subjectExam);
 	}
-	
-	public void addSection(Integer position,Section section){
+
+	public void addSection(Integer position, Section section) {
 		init();
-		if(section.getFullScore()==null){
+		if (section.getFullScore() == null) {
 			throw new UnsupportedOperationException("试题分数为空");
 		}
 		List<Section> sectionList = new ArrayList<Section>();
 		sectionList.addAll(sections);
-		if((sectionList.get(position).getSectionOid()%10)==(position+1)){
+		if ((sectionList.get(position).getSectionOid() % 10) == (position + 1)) {
 			section.setSectionOid(sectionList.get(position).getSectionOid());
 			sectionList.set(position, section);
-		}else{
+		} else {
 			section.setPaper(this);
 			section.genOid(position);
 			sectionList.add(position, section);
@@ -143,9 +143,10 @@ public class ExamPaper implements Entity<ExamPaper> {
 		this.sections.addAll(sectionList);
 		validate();
 	}
-	public void updateSection(Section oldSection,Section newSection){
+
+	public void updateSection(Section oldSection, Section newSection) {
 		init();
-		if(newSection.getFullScore()==null){
+		if (newSection.getFullScore() == null) {
 			throw new UnsupportedOperationException("试题分数为空");
 		}
 		newSection.setSectionOid(oldSection.getSectionOid());
@@ -156,7 +157,8 @@ public class ExamPaper implements Entity<ExamPaper> {
 		sections.addAll(sectionList);
 		validate();
 	}
-	public void removeSections(Integer position){
+
+	public void removeSections(Integer position) {
 		init();
 		List<Section> sectionList = new ArrayList<Section>();
 		sectionList.addAll(sections);
@@ -165,26 +167,29 @@ public class ExamPaper implements Entity<ExamPaper> {
 		sections.addAll(sectionList);
 		validate();
 	}
-	public void removeSections(Section section){
+
+	public void removeSections(Section section) {
 		init();
 		section.setPaper(null);
 		this.sections.remove(section);
 	}
-	public void clearSections(){
+
+	public void clearSections() {
 		init();
 		this.sections.clear();
 	}
-	private void validate(){
-		if(this.fullScore == null){
+
+	private void validate() {
+		if (this.fullScore == null) {
 			throw new UnsupportedOperationException("试卷分数为空");
 		}
-		Iterator<Section> iterSection =  sections.iterator();
+		Iterator<Section> iterSection = sections.iterator();
 		float sectionFullScores = 0;
-		while(iterSection.hasNext()){
+		while (iterSection.hasNext()) {
 			Section section = iterSection.next();
-			sectionFullScores+=section.getFullScore();
+			sectionFullScores += section.getFullScore();
 		}
-		if(sectionFullScores > this.fullScore){
+		if (sectionFullScores > this.fullScore) {
 			throw new UnsupportedOperationException("试题分数大于试卷分数");
 		}
 	}
@@ -312,15 +317,15 @@ public class ExamPaper implements Entity<ExamPaper> {
 	public void setSubjectivityScore(Float subjectivityScore) {
 		this.subjectivityScore = subjectivityScore;
 	}
-	
+
 	public String getCuttingRootPath() {
 		return cuttingRootPath;
 	}
 
 	public void setCuttingRootPath(String cuttingRootPath) {
-//		if (!cuttingRootPath.endsWith("/") && !cuttingRootPath.endsWith("\\")) {
-//			cuttingRootPath += "/";
-//		}
+		if (!cuttingRootPath.endsWith("/") && !cuttingRootPath.endsWith("\\")) {
+			cuttingRootPath += "/";
+		}
 		this.cuttingRootPath = cuttingRootPath;
 	}
 

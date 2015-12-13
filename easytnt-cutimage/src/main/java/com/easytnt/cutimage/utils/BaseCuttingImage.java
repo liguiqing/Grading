@@ -41,7 +41,7 @@ public abstract class BaseCuttingImage {
 	}
 
 	private void setDqIdAndKcId() {
-		Path rootDir = Paths.get(event.getRootDir());
+		Path rootDir = Paths.get(event.getScanSourceImageRootDir());
 		Path filePath = Paths.get(event.getFilePaths().get(0));
 		int rootDirNum = rootDir.getNameCount();
 		String dqIdStr = filePath.getName(rootDirNum).toString();

@@ -16,17 +16,22 @@
 			};
 			
 			function entrance() {
-				//准备试卷信息
-				recoverPaper();
-				if(window.examObj.examPapers.length == 0) {//保存操作
-					doCreate();
-				}else {//编辑操作
-					doEdit();
-				}
+				var examId = $('#examId').val();
+				var paperId=$('#paperId').val();
+				var url='/cuttingDefine/get/'+examId+'/'+paperId;
+				ajaxWrapper.getJson(url,{},{},function(data){
+					//准备试卷信息
+					recoverPaper(data.cuttingsSolution);
+					if(window.examObj.examPapers.length == 0) {//保存操作
+						doCreate();
+					}else {//编辑操作
+						doEdit();
+					}
+					//初始化底部工具栏按钮状态
+					initBottomBarBtnStatus();
+					initBottomBarBtnEvent();
+				});
 				
-				//初始化底部工具栏按钮状态
-				initBottomBarBtnStatus();
-				initBottomBarBtnEvent();
 			}
 			
 			//进行新建试卷初始化
@@ -103,7 +108,6 @@
 					};
 				return opts;
 			}
-			
 			//构建提交到后台的json数据对象
 			function buildData() {
 				var CuttingsSolution = {
@@ -120,7 +124,7 @@
 						var element = selection.elements[j];
 						var data = element.data;
 						var cut = {
-								id: data.id,
+								//id: data.id,
 								name: data.name,
 								answerCardImageIdx: data.answerCardImageIdx,
 								requiredPinci: data.requiredPinci,
@@ -139,8 +143,8 @@
 						for(var k = 0; k < data.giveScorePoints.length; k++) {
 							var itemArea = data.giveScorePoints[k];
 							var item = {
-									id: itemArea.id,
-									title: itemArea.title,
+									//id: itemArea.id,
+									name: itemArea.title,
 									fullScore: itemArea.fullScore,
 									seriesScore: itemArea.seriesScore,
 									interval: itemArea.interval,
@@ -151,7 +155,6 @@
 					}
 				}
 				
-				console.log(CuttingsSolution);
 				return CuttingsSolution;
 			}
 			
@@ -165,8 +168,7 @@
 				}
 			}
 			
-			//恢复整个试卷内容
-			function recoverPaper() {
+			function getData(){
 				var data = {
 						paper: {
 					        paperId: 1,
@@ -203,219 +205,23 @@
 					        answerCardImageIdx: 0,
 					        fullScore: 10.0
 					    }]
-					    /*
-					    cuttingDefines: [{
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 244,
-					            top: 119,
-					            width: 191,
-					            height: 102
-					        },
-					        giveScorePoints: [{
-					            item: {
-					                title: 2,
-					                fullScore: 5.0,
-					                validValues: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
-					                seriesScore: true,
-					                interval: 1.0
-					            }
-					        }],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 0,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 505,
-					            top: 63,
-					            width: 271,
-					            height: 136
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 0,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 998,
-					            top: 258,
-					            width: 268,
-					            height: 114
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 0,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 257,
-					            top: 259,
-					            width: 236,
-					            height: 145
-					        },
-					        giveScorePoints: [{
-					            item: {
-					                title: 2,
-					                fullScore: 6.0,
-					                validValues: [0.0, 2.0, 4.0, 6.0],
-					                seriesScore: true,
-					                interval: 2.0
-					            }
-					        }],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 770,
-					            top: 340,
-					            width: 184,
-					            height: 128
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 557,
-					            top: 622,
-					            width: 291,
-					            height: 157
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 0,
-					            top: 0,
-					            width: 0,
-					            height: 0
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 1254,
-					            top: 818,
-					            width: 650,
-					            height: 304
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 637,
-					            top: 1393,
-					            width: 712,
-					            height: 312
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 2280,
-					            top: 1200,
-					            width: 886,
-					            height: 620
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 1888,
-					            top: 216,
-					            width: 350,
-					            height: 272
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 0,
-					            top: 0,
-					            width: 0,
-					            height: 0
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        area: {
-					            left: 351,
-					            top: 996,
-					            width: 477,
-					            height: 274
-					        },
-					        giveScorePoints: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
-					    }]*/
 					};
+				return data;
+			}
+			//恢复整个试卷内容
+			function recoverPaper(data) {
+				if(data.paper.answerCardCuttingTemplates){
+					var size =data.paper.answerCardCuttingTemplates.length;
+					for(var i=0;i<size;i++){
+						var url= data.paper.answerCardCuttingTemplates[i].url;
+						data.paper.answerCardCuttingTemplates[i].url=window.app.rootPath+url;
+					}
+				}
+				
+				if(!data){
+					data = getData();
+				}
+				
 				//试卷数据
 				var examObj = ExamObj.newInstance();
 				examObj.paperId = data.paper.paperId;
@@ -458,14 +264,13 @@
 							}else {
 								itemArea.validValues = itemArea.validValues.join(',');
 							}
+							itemArea.title = itemArea.name;
 							element.data.giveScorePoints.push(itemArea);
 						}
 						
 						selection.elements.push(element);
 					}
 				}
-				
-				
 				examObj.examPapers = selections;
 				window.examObj = examObj;
 			}
@@ -577,10 +382,9 @@
 				}else {//跳转到其他答题卡页面
 					stage_unsaved_element();
 					var selection = window.examObj.examPapers[index];
-					
 					//如果是不存在的就直接创建一个
 					if(selection == undefined) {
-						selection =initSelection(index);
+						initSelection(index);
 					}
 					//设置当前缩放倍数等于当前设置的缩放倍数
 					selection.scaleRate = window.examObj.examPapers[curIndex].scaleRate;
@@ -615,7 +419,6 @@
 				selection.init();
 				//将当前答题卡保存到指定索引
 				window.examObj.examPapers[index] = window.selection;
-				return selection;
 			}
 
 			function kk(){

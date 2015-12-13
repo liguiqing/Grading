@@ -3,18 +3,22 @@
  */
 package com.easytnt.grading.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.easytnt.commons.util.SpringContextUtil;
 import com.easytnt.commons.web.view.Progress;
 import com.easytnt.commons.web.view.ProgressListener;
+import com.easytnt.cutimage.utils.CuttingBlockBuilder;
 import com.easytnt.cutimage.utils.StartCuttingTestpaper;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingBlock;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.service.CuttingTestpaperService;
 import com.easytnt.grading.service.CuttingsSolutionService;
 import com.easytnt.importpaper.bean.CountContainer;
@@ -40,10 +44,15 @@ public class CuttingTestpaperServiceImpl implements CuttingTestpaperService, Pro
 	 * @see com.easytnt.grading.service.CuttingTestpaperService#cutting(long)
 	 */
 	@Override
-	public void cutting(long paperId) {
+	@Transactional(readOnly = false)
+	public void cutting(CuttingSolution cuttingSolution) {
 		DataSource ds = SpringContextUtil.getBean("ds");
-		CuttingsSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
-		StartCuttingTestpaper cuttingService = new StartCuttingTestpaper(cuttingsSolution, ds);
+		CuttingBlockBuilder blockBuilder = new CuttingBlockBuilder(cuttingSolution);
+		List<CuttingBlock> cuttingBlocks = blockBuilder.toBuild();
+		cuttingsSolutionService.saveCuttingAreaes(cuttingSolution.getPaper(), cuttingBlocks);
+		cuttingSolution.setCuttingBlocks(cuttingBlocks);
+
+		StartCuttingTestpaper cuttingService = new StartCuttingTestpaper(cuttingSolution, ds);
 		EasytntExecutor.instance().getExecutorService().submit(cuttingService);
 	}
 

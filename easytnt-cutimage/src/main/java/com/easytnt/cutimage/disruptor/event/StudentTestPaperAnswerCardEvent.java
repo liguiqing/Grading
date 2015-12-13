@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.importpaper.bean.CutImageInfo;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventTranslator;
@@ -22,9 +22,9 @@ import com.lmax.disruptor.EventTranslator;
 public class StudentTestPaperAnswerCardEvent {
 
 	private String studentId;
-	private CuttingsSolution cuttingsSolution;
+	private CuttingSolution cuttingsSolution;
 
-	private String rootDir;
+	private String scanSourceImageRootDir;
 
 	private List<String> filePaths = new ArrayList<>();
 
@@ -41,11 +41,11 @@ public class StudentTestPaperAnswerCardEvent {
 		return this;
 	}
 
-	public CuttingsSolution getCuttingsSolution() {
+	public CuttingSolution getCuttingsSolution() {
 		return cuttingsSolution;
 	}
 
-	public StudentTestPaperAnswerCardEvent setCuttingsSolution(CuttingsSolution cuttingsSolution) {
+	public StudentTestPaperAnswerCardEvent setCuttingsSolution(CuttingSolution cuttingsSolution) {
 		this.cuttingsSolution = cuttingsSolution;
 		return this;
 	}
@@ -59,8 +59,8 @@ public class StudentTestPaperAnswerCardEvent {
 		return this;
 	}
 
-	public String getRootDir() {
-		return rootDir;
+	public String getScanSourceImageRootDir() {
+		return scanSourceImageRootDir;
 	}
 
 	public String getStudentId() {
@@ -72,11 +72,11 @@ public class StudentTestPaperAnswerCardEvent {
 		return this;
 	}
 
-	public StudentTestPaperAnswerCardEvent setRootDir(String rootDir) {
-		if (!rootDir.endsWith("/") && !rootDir.endsWith("\\")) {
-			rootDir += "/";
+	public StudentTestPaperAnswerCardEvent setScanSourceImageRootDir(String scanSourceImageRootDir) {
+		if (!scanSourceImageRootDir.endsWith("/") && !scanSourceImageRootDir.endsWith("\\")) {
+			scanSourceImageRootDir += "/";
 		}
-		this.rootDir = rootDir;
+		this.scanSourceImageRootDir = scanSourceImageRootDir;
 
 		return this;
 	}
@@ -92,7 +92,7 @@ public class StudentTestPaperAnswerCardEvent {
 
 	public void clone(StudentTestPaperAnswerCardEvent obj) {
 		this.filePaths = obj.filePaths;
-		this.rootDir = obj.rootDir;
+		this.scanSourceImageRootDir = obj.scanSourceImageRootDir;
 		this.cuttingsSolution = obj.cuttingsSolution;
 		this.studentId = obj.studentId;
 	}

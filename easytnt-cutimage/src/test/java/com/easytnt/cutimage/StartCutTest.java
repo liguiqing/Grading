@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.easytnt.commons.util.SpringContextUtil;
 import com.easytnt.cutimage.utils.StartCuttingTestpaper;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 
 /**
  * <pre>
@@ -40,7 +40,7 @@ public class StartCutTest {
 		long b = System.currentTimeMillis();
 		// DataSource ds = SpringContextUtil.getBean("ds");
 
-		CuttingsSolution cuttingsSolution = MockCuttingsSolution.cuttingsSolution();
+		CuttingSolution cuttingsSolution = MockCuttingsSolution.cuttingsSolution();
 
 		StartCuttingTestpaper cutting = new StartCuttingTestpaper(cuttingsSolution, null);
 		cutting.run();

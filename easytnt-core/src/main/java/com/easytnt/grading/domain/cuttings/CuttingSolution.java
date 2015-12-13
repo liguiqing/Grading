@@ -19,7 +19,7 @@ import com.easytnt.grading.domain.paper.ExamPaper;
  * @author 李贵庆2015年10月14日
  * @version 1.0
  **/
-public class CuttingsSolution implements ValueObject<CuttingsSolution> {
+public class CuttingSolution implements ValueObject<CuttingSolution> {
 
 	private ExamPaper paper;
 	private List<CuttingDefine> cuttingDefines;
@@ -29,7 +29,7 @@ public class CuttingsSolution implements ValueObject<CuttingsSolution> {
 		return paper;
 	}
 
-	public CuttingsSolution setPaper(ExamPaper paper) {
+	public CuttingSolution setPaper(ExamPaper paper) {
 		this.paper = paper;
 		return this;
 	}
@@ -38,7 +38,7 @@ public class CuttingsSolution implements ValueObject<CuttingsSolution> {
 		return cuttingDefines;
 	}
 
-	public CuttingsSolution setCuttingDefines(List<CuttingDefine> cuttingDefines) {
+	public CuttingSolution setCuttingDefines(List<CuttingDefine> cuttingDefines) {
 		this.cuttingDefines = cuttingDefines;
 		return this;
 	}
@@ -47,7 +47,7 @@ public class CuttingsSolution implements ValueObject<CuttingsSolution> {
 		return cuttingBlocks;
 	}
 
-	public CuttingsSolution setCuttingBlocks(List<CuttingBlock> cuttingBlocks) {
+	public CuttingSolution setCuttingBlocks(List<CuttingBlock> cuttingBlocks) {
 		this.cuttingBlocks = cuttingBlocks;
 		return this;
 	}
@@ -60,7 +60,7 @@ public class CuttingsSolution implements ValueObject<CuttingsSolution> {
 	}
 
 	@Override
-	public boolean sameValueAs(CuttingsSolution other) {
+	public boolean sameValueAs(CuttingSolution other) {
 		return false;
 	}
 

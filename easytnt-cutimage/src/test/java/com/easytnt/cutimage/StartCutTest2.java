@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.easytnt.cutimage.utils.StartCuttingTestpaper;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 
 /**
  * <pre>
@@ -23,7 +23,7 @@ public class StartCutTest2 {
 	@Test
 	public void testCutting() throws Exception {
 		long b = System.currentTimeMillis();
-		CuttingsSolution cuttingsSolution = MockCuttingsSolution.cuttingsSolution();
+		CuttingSolution cuttingsSolution = MockCuttingsSolution.cuttingsSolution();
 
 		StartCuttingTestpaper cutting = new StartCuttingTestpaper(cuttingsSolution, null);
 		cutting.run();
