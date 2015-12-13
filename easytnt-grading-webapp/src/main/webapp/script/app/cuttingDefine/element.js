@@ -43,10 +43,10 @@
 			}
 			
 			//根据x轴坐标和宽度进行对齐操作
-			element.align = function(left, width) {
+			element.align = function(left, width, scaleRate) {
 				//设置数据域中的值
-				element.data.areaInPaper.left = left;
-				element.data.areaInPaper.width = width;
+				element.data.areaInPaper.left = Math.round(left / scaleRate);
+				element.data.areaInPaper.width = Math.round(width / scaleRate);
 				
 				//修改页面上的位置
 				$(element.view).css({
@@ -337,11 +337,14 @@
 					return;
 				}
 				if(createSubData) {
+					//如果是点击添加小题信息，那么需要把当前元素的数据保存一下
+					element.save_preview_element_data(true);
 					var subData = create_sub_question_data();
 					element.data.itemAreas.push(subData);
+					
 				}
 				//调整题目信息框位置
-				element.position_question_panel();
+				//element.position_question_panel();
 				//显示对象中的数据到信息框上
 				element.show_with_element_data(createSubData);
 			};

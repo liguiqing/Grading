@@ -156,230 +156,271 @@
 			//恢复整个试卷内容
 			function recoverPaper() {
 				var data = {
-					    designFor: {
-					        paperId: 1,
-					        answerCardImageNum: 0,
-					        answerCardCuttingTemplates: [{
-					            index: 0,
-					            rotate: 0,
-					            url: "/grading/static/css/images/shijuan.jpg"
+					    "designFor": {
+					        "paperId": 1,
+					        "answerCardImageNum": 0,
+					        "answerCardCuttingTemplates": [{
+					            "index": 0,
+					            "rotate": 0,
+					            "url": "/grading/static/css/images/shijuan.jpg"
 					        },
 					        {
-					            index: 1,
-					            rotate: 0,
-					            url: "/grading/static/css/images/shijuan2.jpg"
+					            "index": 1,
+					            "rotate": 0,
+					            "url": "/grading/static/css/images/shijuan2.jpg"
 					        }]
 					    },
-					    cutTo: [{
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 244,
-					            top: 119,
-					            width: 191,
-					            height: 102
+					    "cutTo": [{
+					        "id": 0,
+					        "name": "2",
+					        "areaInPaper": {
+					            "left": 1326,
+					            "top": 197,
+					            "width": 979,
+					            "height": 241
 					        },
-					        itemAreas: [{
-					            item: {
-					                title: 2,
-					                fullScore: 5.0,
-					                validValues: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
-					                seriesScore: true,
-					                interval: 1.0
+					        "itemAreas": [{
+					            "item": {
+					                "id": 0,
+					                "title": "0",
+					                "fullScore": 10.0,
+					                "validValues": [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+					                "seriesScore": true,
+					                "interval": 1.0
+					            }
+					        },
+					        {
+					            "item": {
+					                "id": 0,
+					                "title": "0",
+					                "fullScore": 10.0,
+					                "validValues": [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+					                "seriesScore": true,
+					                "interval": 1.0
 					            }
 					        }],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 0,
-					        fullScore: 10.0
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 0,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 505,
-					            top: 63,
-					            width: 271,
-					            height: 136
+					        "id": 0,
+					        "name": "2",
+					        "areaInPaper": {
+					            "left": 1326,
+					            "top": 1158,
+					            "width": 979,
+					            "height": 417
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 0,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 998,
-					            top: 258,
-					            width: 268,
-					            height: 114
+					        "itemAreas": [{
+					            "item": {
+					                "id": 0,
+					                "title": "0",
+					                "fullScore": 10.0,
+					                "validValues": [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+					                "seriesScore": true,
+					                "interval": 1.0
+					            }
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 0,
-					        fullScore: 10.0
-					    },
-					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 257,
-					            top: 259,
-					            width: 236,
-					            height: 145
-					        },
-					        itemAreas: [{
-					            item: {
-					                title: 2,
-					                fullScore: 6.0,
-					                validValues: [0.0, 2.0, 4.0, 6.0],
-					                seriesScore: true,
-					                interval: 2.0
+					        {
+					            "item": {
+					                "id": 0,
+					                "title": "0",
+					                "fullScore": 10.0,
+					                "validValues": [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+					                "seriesScore": true,
+					                "interval": 1.0
 					            }
 					        }],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 0,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 770,
-					            top: 340,
-					            width: 184,
-					            height: 128
+					        "id": 0,
+					        "name": "2",
+					        "areaInPaper": {
+					            "left": 1326,
+					            "top": 544,
+					            "width": 979,
+					            "height": 391
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "itemAreas": [{
+					            "item": {
+					                "id": 0,
+					                "title": "0",
+					                "fullScore": 10.0,
+					                "validValues": [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+					                "seriesScore": true,
+					                "interval": 1.0
+					            }
+					        },
+					        {
+					            "item": {
+					                "id": 0,
+					                "title": "0",
+					                "fullScore": 10.0,
+					                "validValues": [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+					                "seriesScore": true,
+					                "interval": 1.0
+					            }
+					        }],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 0,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 557,
-					            top: 622,
-					            width: 291,
-					            height: 157
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 162,
+					            "top": 658,
+					            "width": 535,
+					            "height": 620
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 0,
-					            top: 0,
-					            width: 0,
-					            height: 0
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 247,
+					            "top": 944,
+					            "width": 417,
+					            "height": 291
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 1254,
-					            top: 818,
-					            width: 650,
-					            height: 304
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 162,
+					            "top": 1285,
+					            "width": 535,
+					            "height": 358
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 637,
-					            top: 1393,
-					            width: 712,
-					            height: 312
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 0,
+					            "top": 0,
+					            "width": 0,
+					            "height": 0
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 2280,
-					            top: 1200,
-					            width: 886,
-					            height: 620
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 1361,
+					            "top": 1579,
+					            "width": 470,
+					            "height": 144
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 1888,
-					            top: 216,
-					            width: 350,
-					            height: 272
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 1361,
+					            "top": 1302,
+					            "width": 470,
+					            "height": 199
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 0,
-					            top: 0,
-					            width: 0,
-					            height: 0
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 162,
+					            "top": 1570,
+					            "width": 535,
+					            "height": 582
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
 					    },
 					    {
-					        id: 0,
-					        name: 1,
-					        areaInPaper: {
-					            left: 351,
-					            top: 996,
-					            width: 477,
-					            height: 274
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 162,
+					            "top": 397,
+					            "width": 535,
+					            "height": 617
 					        },
-					        itemAreas: [],
-					        requiredPinci: 1,
-					        maxerror: 1.0,
-					        answerCardImageIdx: 1,
-					        fullScore: 10.0
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
+					    },
+					    {
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 0,
+					            "top": 0,
+					            "width": 0,
+					            "height": 0
+					        },
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
+					    },
+					    {
+					        "id": 0,
+					        "name": "1",
+					        "areaInPaper": {
+					            "left": 162,
+					            "top": 658,
+					            "width": 535,
+					            "height": 620
+					        },
+					        "itemAreas": [],
+					        "requiredPinci": 1,
+					        "maxerror": 1.0,
+					        "answerCardImageIdx": 1,
+					        "fullScore": 10.0
 					    }]
 					};
 				//试卷数据

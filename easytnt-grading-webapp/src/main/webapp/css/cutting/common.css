@@ -95,6 +95,9 @@ html,body{
 /*添加小题按钮*/
 .add-btn {
 	background-image : url(../images/add_default.png);
+	position: absolute;
+	right: 40px;
+	top: 8px;
 }
 
 .close-btn {
