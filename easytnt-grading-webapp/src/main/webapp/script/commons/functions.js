@@ -93,11 +93,11 @@
 				
 				return false;
 			};
-		}
+		};
 		
 		window['login'] = function(data) {
 
-		}
+		};
 		
 		window['logger'] = {
 			log : function(msg){
@@ -115,6 +115,6 @@
 		        }
 		    }
 		    return false;
-		}		
+		};
 	});
 })();
