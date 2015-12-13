@@ -3,7 +3,7 @@
  */
 package com.easytnt.grading.service;
 
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 
 /**
  * <pre>
@@ -14,11 +14,11 @@ import com.easytnt.grading.domain.cuttings.CuttingsSolution;
  */
 public interface CuttingsSolutionService {
 
-	public void saveCuttingDefines(CuttingsSolution cuttingsSolution);
+	public void saveCuttingDefines(CuttingSolution cuttingsSolution);
 
-	public CuttingsSolution getCuttingDefines(Long paperId);
+	public CuttingSolution getCuttingDefines(Long paperId);
 
-	public void saveCuttingAreaes(CuttingsSolution cuttingsSolution);
+	public void saveCuttingAreaes(CuttingSolution cuttingsSolution);
 
-	public CuttingsSolution getCuttingAreaes(Long paperId);
+	public CuttingSolution getCuttingAreaes(Long paperId);
 }

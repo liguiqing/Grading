@@ -25,7 +25,7 @@ import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingsImage;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.GradeTask;
@@ -99,7 +99,7 @@ public class GradingTaskController {
 		Subject subject = subjectService.load(subjectId);
 		List<Teacher> teachers = teacherService.findSubjectTeachers(subject);
 		// 需要修改----Begin
-		CuttingsSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		CuttingSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
 		// 需要修改---END
 		return ModelAndViewFactory.newModelAndViewFor("/config").with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus()).with("menus3", configMenuGroup.getMenus())

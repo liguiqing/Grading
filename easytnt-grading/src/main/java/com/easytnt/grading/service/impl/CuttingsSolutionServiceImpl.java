@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
 import com.easytnt.grading.domain.cuttings.CuttingDefine;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.PaperCard;
 import com.easytnt.grading.repository.CuttingDefineRepository;
@@ -38,7 +38,7 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	private CuttingDefineRepository cuttingDefineRepo;
 
 	@Override
-	public void saveCuttingDefines(CuttingsSolution cuttingsSolution) {
+	public void saveCuttingDefines(CuttingSolution cuttingsSolution) {
 		ExamPaper paper = cuttingsSolution.getPaper();
 		cuttingDefineRepo.deleteCuttingDefinesWith(paper.getPaperId());
 		List<CuttingDefine> cuttingDefines = cuttingsSolution.getCuttingDefines();
@@ -49,28 +49,28 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	}
 
 	@Override
-	public CuttingsSolution getCuttingDefines(Long paperId) {
+	public CuttingSolution getCuttingDefines(Long paperId) {
 		ExamPaper paper = getPaper(paperId);
 		List<CuttingDefine> cuttingDefines = cuttingDefineRepo.listCuttingDefinesWith(paperId);
-		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		CuttingSolution cuttingsSolution = new CuttingSolution();
 		cuttingsSolution.setPaper(paper);
 		cuttingsSolution.setCuttingDefines(cuttingDefines);
 		return cuttingsSolution;
 	}
 
 	@Override
-	public void saveCuttingAreaes(CuttingsSolution cuttingsSolution) {
+	public void saveCuttingAreaes(CuttingSolution cuttingsSolution) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public CuttingsSolution getCuttingAreaes(Long paperId) {
+	public CuttingSolution getCuttingAreaes(Long paperId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void saveCuttingsSolution1(CuttingsSolution cuttingsSolution) {
+	public void saveCuttingsSolution1(CuttingSolution cuttingsSolution) {
 		ExamPaper paper = cuttingsSolution.getPaper();
 		paper = examPaperRepository.load(paper.getPaperId());
 		cuttingsAreaRepository.deleteCuttingAreaInPaper(paper.getPaperId());
@@ -81,9 +81,9 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 		// }
 	}
 
-	public CuttingsSolution getCuttingsSolutionWithPaperId1(Long paperId) {
+	public CuttingSolution getCuttingsSolutionWithPaperId1(Long paperId) {
 		ExamPaper paper = getPaper(paperId);
-		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		CuttingSolution cuttingsSolution = new CuttingSolution();
 		cuttingsSolution.setPaper(paper);
 		return cuttingsSolution;
 	}

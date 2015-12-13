@@ -31,12 +31,9 @@ public class CuttingImageHandler
 	@Override
 	public void onEvent(StudentTestPaperAnswerCardEvent event) throws Exception {
 		log.debug("开始切割....");
-		// CuttingImage cuttingImage = new CuttingImage(event);
-		// CuttingImageService service = new CuttingImageService(event);
 		ImageJCuttingImage cuttingImage = new ImageJCuttingImage(event);
 		try {
 			cuttingImage.cutting();
-			// service.cutting();
 			event.setBufferedImages(null);
 		} catch (Exception e) {
 			e.printStackTrace();

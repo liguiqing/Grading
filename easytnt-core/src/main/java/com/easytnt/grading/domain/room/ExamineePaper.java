@@ -14,7 +14,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.easytnt.commons.entity.share.Entity;
 import com.easytnt.grading.domain.cuttings.CuttingsImage;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.paper.ExamPaper;
 
 /**
@@ -35,7 +35,7 @@ public class ExamineePaper implements Entity<ExamineePaper> {
 	
 	private List<CuttingsImage> cutings;
 	
-	public  List<CuttingsImage> cutBy(CuttingsSolution solution) {
+	public  List<CuttingsImage> cutBy(CuttingSolution solution) {
 		this.initCutings();
 		//TODO
 		

@@ -27,7 +27,7 @@ import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.commons.io.FileUtil;
 import com.easytnt.commons.util.Closer;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.PaperCard;
 import com.easytnt.grading.domain.paper.Section;
@@ -56,7 +56,7 @@ public class ExamPaperController {
 	public ModelAndView onGradingStart(@PathVariable Long paperId) throws Exception {
 		logger.debug("URL /subjectExam/start{} Method POST ", paperId);
 		// 需要修改------Begin
-		CuttingsSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
+		CuttingSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
 		// dispatcherConcreator.start(cuttingsSolution.getCutTo());
 		// 需要修改------END
 		// TODO 这个地方需要修改<刘海林 >

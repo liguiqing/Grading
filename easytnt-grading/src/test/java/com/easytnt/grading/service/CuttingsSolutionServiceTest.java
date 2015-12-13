@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.easytnt.grading.domain.cuttings.CuttingDefine;
-import com.easytnt.grading.domain.cuttings.CuttingsSolution;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.cuttings.GiveScorePoint;
 import com.easytnt.grading.domain.paper.ExamPaper;
 
@@ -38,7 +38,7 @@ public class CuttingsSolutionServiceTest {
 		cuttingDefine.addGiveScorePoint(createGiveScorePoint("1", 5, "0,1,2,3,4,5"));
 		cuttingDefine.addGiveScorePoint(createGiveScorePoint("2", 5, "0,1,2,3,4,5"));
 
-		CuttingsSolution cuttingsSolution = new CuttingsSolution();
+		CuttingSolution cuttingsSolution = new CuttingSolution();
 		cuttingsSolution.setPaper(paper);
 		cuttingsSolution.addCuttingDefine(cuttingDefine);
 
@@ -53,7 +53,7 @@ public class CuttingsSolutionServiceTest {
 
 	@Test
 	public void getCuttingDefines() throws Exception {
-		CuttingsSolution cuttingsSolution = service.getCuttingDefines(3L);
+		CuttingSolution cuttingsSolution = service.getCuttingDefines(3L);
 		System.out.println();
 	}
 }
