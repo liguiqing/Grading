@@ -16,9 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.ui.ichart.Data;
 import com.easytnt.commons.ui.ichart.DataList;
+import com.easytnt.commons.ui.ichart.IchartData;
 import com.easytnt.commons.ui.ichart.ResultData;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.grade.Teacher;
+import com.easytnt.grading.service.MonitorService;
 import com.easytnt.grading.service.TeacherService;
 import com.easytnt.security.ShiroService;
 import com.easytnt.security.UserDetails;
@@ -45,6 +47,9 @@ public class MonitorController {
 	@Autowired(required=false)
 	private ShiroService shiroService;
 	
+	@Autowired(required=false)
+	private MonitorService monitorService;
+	
 	@RequestMapping(value="/monitor/progress",method=RequestMethod.GET)
 	public ModelAndView onMonitorProgress()throws Exception{
 		logger.debug("URL /monitor/progress Method Get");
@@ -54,29 +59,9 @@ public class MonitorController {
 	@RequestMapping(value="/monitor/progress/data",method=RequestMethod.GET)
 	public ModelAndView onGetProgressData()throws Exception{
 		logger.debug("URL /monitor/progress/data Method Get");
-		UserDetails user = shiroService.getUser();
-		if(user.getSource() == null) {
-			
-		}
-		
-		ResultData resultData = new ResultData();
-		List<Data> dataList = new ArrayList<Data>();
-		String[] color = new String[]{"#a5c2d5","#cbab4f","#76a871","#76a871","#a56f8f","#c12c44","#a56f8f","#9f7961","#76a871","#6f83a5"};
-		for(int i=0;i<10;i++){
-			Data data = new Data();
-			data.setName("数据"+i);
-			data.setColor(color[i]);
-			data.setValue(((int)(random.nextFloat()*10))/10f);
-			dataList.add(data);
-		}
-		resultData.setData(dataList);
-		resultData.setMax(1f);
-		resultData.setMin(0f);
-		resultData.setSpace(0.1f);
-		resultData.setUnit("数据");
-		
+		IchartData  datas  = monitorService.subjectsMonitor(-1l);
 		return ModelAndViewFactory.newModelAndViewFor()
-				.with("data",resultData).build();
+				.with("data",datas).build();
 	}
 	
 	
@@ -84,21 +69,20 @@ public class MonitorController {
 	public ModelAndView onMonitorWorker()throws Exception{
 		logger.debug("URL /monitor/worker Method Get");
 		UserDetails user = shiroService.getUser();
-		List<Teacher> teachers;
+		IchartData  datas ;
 		if(user.roleOf("LEADER")) {
 			Teacher leader = teacherService.findTeacher(user.getUserName());
-			teachers = teacherService.findSubjectTeachers(leader.getSubject());
+		    datas = monitorService.sameTeamMonitor(leader);
 		}else {
-			teachers = teacherService.list();
+			Teacher leader = teacherService.findTeacher(user.getUserName());
+		    datas = monitorService.sameTeamMonitor(leader);
 		}
-		return createModelAndView(1,"worker").build();
+		return createModelAndView(1,"worker").with("datas", datas).build();
 	}
 	
 	@RequestMapping(value="/monitor/team",method=RequestMethod.GET)
 	public ModelAndView onMonitorTeam()throws Exception{
 		//小组一致性 
-		UserDetails user = shiroService.getUser();
-		Teacher teacher = teacherService.findTeacher(user.getUserName());
 		logger.debug("URL /monitor/team Method Get");
 		return createModelAndView(2,"team").build();
 	}
@@ -107,35 +91,11 @@ public class MonitorController {
 	public ModelAndView onGetTeamData()throws Exception{
 		logger.debug("URL /monitor/team/data Method Get");
 
-		ResultData resultData = new ResultData();
-		List<DataList> dataListList = new ArrayList<DataList>();
-		List<String> labels = new ArrayList<String>();
-		String[] color = new String[]{"#a5c2d5","#cbab4f","#76a871","#76a871","#a56f8f","#c12c44","#a56f8f","#9f7961","#76a871","#6f83a5"};
-		for(int index=0;index<10;index++){
-			List<Float> values = new ArrayList<Float>();
-			DataList dataList = new DataList();
-			dataList.setName("老师"+index);
-			dataList.setLine_width(2);
-			//dataList.setColor(color[index]);
-			
-			for(int i=1;i<=24;i++){
-				values.add(((int)(random.nextFloat()*10))/10f);
-			}
-			dataList.setValue(values);
-			dataListList.add(dataList);
-		}
-		for(int i=1;i<=24;i++){
-			labels.add(i+"");
-		}
-		resultData.setData(dataListList);
-		resultData.setLabels(labels);
-		resultData.setMax(1f);
-		resultData.setMin(0f);
-		resultData.setSpace(0.1f);
-		resultData.setUnit("数据");
+		UserDetails user = shiroService.getUser();
+		Teacher leader = teacherService.findTeacher(user.getUserName());
+		IchartData  datas  = monitorService.sameTeamMonitor(leader);
 		
-		return ModelAndViewFactory.newModelAndViewFor()
-				.with("data",resultData).build();
+		return createModelAndView(1,"worker").with("datas", datas).build();
 	}
 	
 	@RequestMapping(value="/monitor/personalStabled",method=RequestMethod.GET)
@@ -146,35 +106,24 @@ public class MonitorController {
 	}
 	
 	
-	@RequestMapping(value="/monitor/personalStabled/data/{account}",method=RequestMethod.GET)
+	@RequestMapping(value="/monitor/personalStabled/data",method=RequestMethod.GET)
 	public ModelAndView onGetWorkerData(@PathVariable String account)throws Exception{
-		logger.debug("URL /monitor/personalStabled/data{account} Method Get" ,account);
-		ResultData resultData = new ResultData();
-		List<DataList> dataList = new ArrayList<DataList>();
-		List<String> labels = new ArrayList<String>();
-		List<Float> values = new ArrayList<Float>();
-		DataList DataList = new DataList();
-		DataList.setName("张老师");
-		DataList.setLine_width(2);
-		DataList.setColor("#01acb6");
+		logger.debug("URL /monitor/personalStabled/data Method Get" ,account);
 		
-		for(int i=1;i<=24;i++){
-			values.add(((int)(random.nextFloat()*10))/10f);
-			labels.add(i+"");
+
+		UserDetails user = shiroService.getUser();
+		IchartData  datas ;
+		if(user.roleOf("LEADER")) {
+			Teacher leader = teacherService.findTeacher(user.getUserName());
+		    datas = monitorService.sameTeamMonitor(leader);
+			
+		}else {
+			Teacher leader = teacherService.findTeacher(user.getUserName());
+		    datas = monitorService.sameTeamMonitor(leader);
 		}
-		DataList.setValue(values);
-		
-		dataList.add(DataList);
-		resultData.setData(dataList);
-		resultData.setLabels(labels);
-		resultData.setMax(1f);
-		resultData.setMin(0f);
-		resultData.setSpace(0.1f);
-		resultData.setUnit("数据");
-		
 		
 		return ModelAndViewFactory.newModelAndViewFor()
-				.with("data",resultData).build();
+				.with("data",datas).build();
 	}
 	
 	private ModelAndViewFactory createModelAndView(int activedIndex,String page) throws Exception{
@@ -185,7 +134,7 @@ public class MonitorController {
 		rightMenuGroup.activedMenuByIndex(2);
 		UserDetails user = shiroService.getUser();
 		return ModelAndViewFactory.newModelAndViewFor("/monitor")
-				.with("user", user)
+				//.with("user", user)
 				.with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus())
 				.with("menus3", monitorMenuGroup.getMenus())

@@ -114,7 +114,7 @@
 					chart.draw();
 				}
 		};
-		return ichartDraw;
+		return draw;
 	});
 
 })();

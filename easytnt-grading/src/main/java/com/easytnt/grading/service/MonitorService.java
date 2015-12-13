@@ -26,23 +26,23 @@ public interface MonitorService {
 	 * 科目监控
 	 * @return
 	 */
-	List<IchartData> subjectsMonitor(Long testId);
+	IchartData subjectsMonitor(Long testId);
 	
 	/**
 	 * 同组监控
 	 * @param teacher
 	 * @return
 	 */
-	List<IchartData> sameTeamMonitor(Teacher teacher);
+	IchartData sameTeamMonitor(Teacher teacher);
 	
 	/**
 	 * 
 	 * @param teacher
 	 * @return
 	 */
-	List<IchartData> teamMonitorOfWorking(Teacher teacher);
+	IchartData teamMonitorOfWorking(Teacher teacher);
 	
-	List<IchartData> teamMonitorOfStabled(Teacher teacher);
+	IchartData teamMonitorOfStabled(Teacher teacher);
 }
 
 
