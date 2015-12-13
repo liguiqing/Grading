@@ -7,6 +7,7 @@ package com.easytnt.grading.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.easytnt.commons.ui.Menu;
 import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
+import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingsImage;
-import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.exam.Subject;
 import com.easytnt.grading.domain.grade.CuttingsImageGradeRecord;
 import com.easytnt.grading.domain.grade.GradeTask;
@@ -98,9 +99,7 @@ public class GradingTaskController {
 
 		Subject subject = subjectService.load(subjectId);
 		List<Teacher> teachers = teacherService.findSubjectTeachers(subject);
-		// 需要修改----Begin
 		CuttingSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
-		// 需要修改---END
 		return ModelAndViewFactory.newModelAndViewFor("/config").with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus()).with("menus3", configMenuGroup.getMenus())
 				.with("paperId", paperId).with("subject", subject).with("teachers", teachers)
@@ -140,11 +139,16 @@ public class GradingTaskController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView onGetTask() throws Exception {
 		logger.debug("URL /task Method Get");
+		List<Menu> menus = new ArrayList<Menu>();
+		menus.add(new Menu("个人中心", ""));
+		menus.add(new Menu("锁定屏幕", ""));
+		menus.add(new Menu("退出", "logout"));
 
 		Referees referees = refereesService.getCurrentReferees();
-
+		Teacher teacher = teacherService.load(referees.getId());
 		List<GradeTask> tasks = taskService.getTaskOf(referees);
-		return ModelAndViewFactory.newModelAndViewFor("/task/taskList").with("tasks", tasks).build();
+		return ModelAndViewFactory.newModelAndViewFor("/task/taskList").with("teacher", teacher).with("tasks", tasks)
+				.with("menus", menus).build();
 	}
 
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET)
@@ -155,7 +159,7 @@ public class GradingTaskController {
 		menus.add(new Menu("参考答案", ""));
 		menus.add(new Menu("统计信息", ""));
 		menus.add(new Menu("锁定屏幕", ""));
-		menus.add(new Menu("退出", "logout"));
+		// menus.add( new Menu("暂停","#pause"));
 
 		Referees referees = refereesService.getCurrentReferees();
 		GradeTask task = taskService.getTaskOf(taskId, referees);
@@ -167,9 +171,17 @@ public class GradingTaskController {
 		CuttingsArea section = gradeRecord.getRecordFor().definedOf();
 		ArrayList<CuttingsArea> sections = new ArrayList<>();
 		sections.add(section);
+
+		Teacher teacher = teacherService.load(referees.getId());
+		if (teacher.isManager()) {
+			menus.add(new Menu("异常卷处理", "task/exception/" + task.getTaskId()));
+		}
+
+		Map<String, Map<String, String>> repeats = taskService.getMustRepeat(taskId, referees);
+		menus.add(new Menu("退出", "logout"));
 		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask").with("menus", menus)
-				.with("referees", referees).with("task", task).with("imgServer", imgServer).with("sections", sections)
-				.build();
+				.with("referees", referees).with("teacher", teacher).with("task", task).with("imgServer", imgServer)
+				.with("repeats", repeats).with("sections", sections).build();
 	}
 
 	/**

@@ -5,6 +5,7 @@
 package com.easytnt.grading.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.easytnt.commons.entity.service.EntityService;
 import com.easytnt.grading.domain.grade.GradeTask;
@@ -47,6 +48,11 @@ public interface GradeTaskService extends EntityService<GradeTask, Long> {
 	List<GradeTask> getTaskOf(Long cuttoId);
 	
 	List<GradeTask> getTaskOf(Referees referees);
+
+	/*
+	 * 查询要重改的题卡
+	 */
+	Map<String,Map<String,String>> getMustRepeat(Long taskId, Referees referees);
 
 }
 

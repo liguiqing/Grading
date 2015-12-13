@@ -44,8 +44,12 @@ public class LoginController {
 		logger.debug("URL /login/success Method Get");
 		UserDetails user = shiroService.getUser();
 		String forward = "redirect:/config?page=subject";
-		if(user.roleOf("REFEREES"))
-			forward = "redirect:/task";
+		if(user.roleOf("REFEREES")) {		
+			forward = "redirect:/task";		
+		}
+		if(user.roleOf("LEADER")) {
+			forward = "redirect:/monitor?page=team";
+		}
 		return ModelAndViewFactory.newModelAndViewFor(forward).build();
 	}
 	

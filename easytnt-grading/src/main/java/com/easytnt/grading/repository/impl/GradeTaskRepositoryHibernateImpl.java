@@ -5,12 +5,16 @@
 package com.easytnt.grading.repository.impl;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.easytnt.commons.entity.repository.HibernateRepository;
@@ -77,6 +81,33 @@ public class GradeTaskRepositoryHibernateImpl extends
 		query.setLong(1, refereesId);
 		BigInteger o = (BigInteger)query.uniqueResult();
 		return o.intValue();
+	}
+
+	@Override
+	public Map<String,Map<String,String>> selectItemRepeat(Long taskId) {
+		String sql = "SELECT c.score,c.scorestr,d.teacher_account,a.imagepath "
+				+ " FROM paperimport a INNER JOIN grade_task b ON b.teacher_id=1 AND b.item_id=a.itemid "
+				+ " INNER JOIN scoreinfolog c ON c.studentoid=a.studentoid AND c.itemid=b.item_id "
+				+ " INNER JOIN teacher_info d ON c.teacheroid=d.teacher_id "
+				+ " WHERE b.task_id=? AND a.getmark=-1 ORDER BY c.studentoid";
+		Query query = getCurrentSession().createSQLQuery(sql);
+		query.setLong(0, taskId);
+		query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		
+		List<Map> result =  query.list();
+		HashMap<String,Map<String,String>> rows  = new HashMap<>();
+		if(result != null && result.size() >0) {
+			for(Map m:result) {
+				String imagePath = m.get("imagepath")+"";
+				Map row = rows.get(imagePath);
+				if(row == null) {
+					row = new HashMap<String,String>();
+				}
+				row.put(m.get("teacher_account")+"", m.get("score")+","+m.get("scorestr"));
+			}
+			
+		}
+		return rows;
 	}
 
 }

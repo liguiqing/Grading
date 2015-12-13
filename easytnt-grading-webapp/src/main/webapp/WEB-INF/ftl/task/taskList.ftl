@@ -9,6 +9,11 @@
 			    <#list tasks as task>
 			        <li class=" list-group-item" data-taskid="${task.taskId}">
 			            <a href="${request.contextPath}/task/${task.taskId}">${task.genBy.name}</a>
+			          <#---
+			          <#if teacher.isManager()>  
+			            <a  class="pull-right item-redo" href="${request.contextPath}/task/team/redo/${task.taskId}">${task.genBy.name}</a>
+			          </#if>
+			          -->
 			        </li>
 			    </#list>
 			    </ul>			
