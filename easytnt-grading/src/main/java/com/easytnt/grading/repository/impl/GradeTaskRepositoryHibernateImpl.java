@@ -12,9 +12,11 @@ import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Repository;
 
 import com.easytnt.commons.entity.repository.HibernateRepository;
@@ -90,10 +92,13 @@ public class GradeTaskRepositoryHibernateImpl extends
 				+ " INNER JOIN scoreinfolog c ON c.studentoid=a.studentoid AND c.itemid=b.item_id "
 				+ " INNER JOIN teacher_info d ON c.teacheroid=d.teacher_id "
 				+ " WHERE b.task_id=? AND a.getmark=-1 ORDER BY c.studentoid";
-		Query query = getCurrentSession().createSQLQuery(sql);
+		SQLQuery query = getCurrentSession().createSQLQuery(sql);
 		query.setLong(0, taskId);
 		query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-		
+		query.addScalar("score",StandardBasicTypes.FLOAT);
+		query.addScalar("scorestr", StandardBasicTypes.STRING);
+		query.addScalar("teacher_account", StandardBasicTypes.STRING);
+		query.addScalar("imagepath", StandardBasicTypes.STRING);
 		List<Map> result =  query.list();
 		HashMap<String,Map<String,String>> rows  = new HashMap<>();
 		if(result != null && result.size() >0) {
@@ -103,7 +108,9 @@ public class GradeTaskRepositoryHibernateImpl extends
 				if(row == null) {
 					row = new HashMap<String,String>();
 				}
-				row.put(m.get("teacher_account")+"", m.get("score")+","+m.get("scorestr"));
+				
+				row.put(m.get("teacher_account"), new String[] {m.get("score")+"",m.get("scorestr")+""});
+				rows.put(imagePath,row);
 			}
 			
 		}

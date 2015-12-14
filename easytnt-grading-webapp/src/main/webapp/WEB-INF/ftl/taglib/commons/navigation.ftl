@@ -15,7 +15,7 @@
 	            <ul class="nav navbar-nav">
 	                <li class="active hidden"></li>
 	                <#list menus as menu>
-	                <li class=""><a class="smoothScroll" id="${menu.id!""}" href="${request.contextPath}/${menu.url!""}">${menu.name}</a></li>
+	                <li class=""><a class="smoothScroll" id="${menu.id!""}" href="<#if menu.url??>${request.contextPath}/${menu.url}<#else>#</#if>">${menu.name}</a></li>
 	                </#list>
 	            </ul>
 	            </#if>

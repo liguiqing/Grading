@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ import com.easytnt.commons.io.FileUtil;
 import com.easytnt.commons.util.Closer;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingSolution;
+import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.PaperCard;
 import com.easytnt.grading.domain.paper.Section;
@@ -56,8 +58,8 @@ public class ExamPaperController {
 	public ModelAndView onGradingStart(@PathVariable Long paperId) throws Exception {
 		logger.debug("URL /subjectExam/start{} Method POST ", paperId);
 		// 需要修改------Begin
-		CuttingSolution cuttingsSolution = null;// cuttingsSolutionService.getCuttingsSolutionWithPaperId(paperId);
-		// dispatcherConcreator.start(cuttingsSolution.getCutTo());
+		List<CuttingsArea> cuttings = cuttingsSolutionService.getCuttingAreaes(paperId);//getCuttingsSolutionWithPaperId(paperId);
+		dispatcherConcreator.start(cuttings);
 		// 需要修改------END
 		// TODO 这个地方需要修改<刘海林 >
 		return ModelAndViewFactory.newModelAndViewFor().build();

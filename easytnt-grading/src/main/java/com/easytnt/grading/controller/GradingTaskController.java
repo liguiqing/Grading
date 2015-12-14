@@ -37,6 +37,7 @@ import com.easytnt.grading.service.GradeTaskService;
 import com.easytnt.grading.service.RefereesService;
 import com.easytnt.grading.service.SubjectService;
 import com.easytnt.grading.service.TeacherService;
+import com.google.gson.Gson;
 
 /**
  * <pre>
@@ -174,14 +175,12 @@ public class GradingTaskController {
 
 		Teacher teacher = teacherService.load(referees.getId());
 		if (teacher.isManager()) {
-			menus.add(new Menu("异常卷处理", "task/exception/" + task.getTaskId()));
+			menus.add(new Menu("异常卷", null));
 		}
 
-		Map<String, Map<String, String>> repeats = taskService.getMustRepeat(taskId, referees);
-		menus.add(new Menu("退出", "logout"));
 		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask").with("menus", menus)
 				.with("referees", referees).with("teacher", teacher).with("task", task).with("imgServer", imgServer)
-				.with("repeats", repeats).with("sections", sections).build();
+				.with("sections", sections).with("reDo", teacher.isManager()).build();
 	}
 
 	/**
@@ -284,6 +283,18 @@ public class GradingTaskController {
 		Referees referees = refereesService.getCurrentReferees();
 		taskService.itemBlank(taskId, referees);
 		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
+	
+	
+	@RequestMapping(value = "/{taskId}/exception", method = RequestMethod.GET)
+	public ModelAndView onException(@PathVariable Long taskId) throws Exception {
+		logger.debug("URL /task/{}/error Method POST", taskId);
+
+		Referees referees = refereesService.getCurrentReferees();
+
+		Map<String, Map<String, String>> repeats = taskService.getMustRepeat(taskId, referees);
+
+		return ModelAndViewFactory.newModelAndViewFor().with("repeats", repeats).build();
 	}
 
 }

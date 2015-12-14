@@ -1,5 +1,6 @@
  <div id="markingPanel" class="workspace ">
   <input type="hidden" id="imgServer" value="${imgServer!"http://localhost:8888"}/">
+  <input type="hidden" id="taskId" value="${task.taskId}">
   <div class="container-fluid">
     <div class="row">
       <aside class="col-xs-9 col-sm-9 col-md-9 col-lg-9 img-panel-container">

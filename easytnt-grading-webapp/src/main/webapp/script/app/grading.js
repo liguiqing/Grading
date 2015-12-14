@@ -1,8 +1,8 @@
 (function() {
 	"use strict";
 	var __browser = getBrowser();
-	define([ 'jquery','logger','app/marking/ImgToolbox','app/marking/PointPanel', 'app/marking/ImgView' ,'ui','ajaxwrapper'],
-			function($,logger,imgToolbox,point,imgViewer,ui,ajaxWrapper) {
+	define([ 'jquery','logger','app/marking/ImgToolbox','app/marking/PointPanel', 'app/marking/ImgView', 'app/marking/LeaderReDo' ,'ui','ajaxwrapper'],
+			function($,logger,imgToolbox,point,imgViewer,reDo,ui,ajaxWrapper) {
 		var _grading;
 		var _imgViewer;
 		

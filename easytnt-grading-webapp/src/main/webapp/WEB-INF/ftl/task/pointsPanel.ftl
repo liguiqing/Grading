@@ -26,6 +26,9 @@
         </div>
          <div class="col-sm-1 col-md-1 col-lg-1"></div>
       </div>
+      <#if reDo=true>
+      <div id="repeats" style="display:none"></div>
+      </#if>
     </div>
     <div class="panel-footer ">
       <div class="form-group " style="bottom: 5px;">
