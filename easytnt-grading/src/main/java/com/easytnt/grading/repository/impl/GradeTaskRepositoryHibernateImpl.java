@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.codec.binary.Base64;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -101,15 +102,20 @@ public class GradeTaskRepositoryHibernateImpl extends
 		query.addScalar("imagepath", StandardBasicTypes.STRING);
 		List<Map> result =  query.list();
 		HashMap<String,Map<String,String>> rows  = new HashMap<>();
+		Base64 base64=new Base64();
 		if(result != null && result.size() >0) {
 			for(Map m:result) {
 				String imagePath = m.get("imagepath")+"";
+				
+				String uuid = new String(base64.encode(imagePath.getBytes()));
+				
+				//uuid = new String(base64.decode(uuid.getBytes()));
 				Map row = rows.get(imagePath);
 				if(row == null) {
 					row = new HashMap<String,String>();
 				}
 				
-				row.put(m.get("teacher_account"), new String[] {m.get("score")+"",m.get("scorestr")+""});
+				row.put(m.get("teacher_account"), new String[] {m.get("score")+"",m.get("scorestr")+"",uuid});
 				rows.put(imagePath,row);
 			}
 			

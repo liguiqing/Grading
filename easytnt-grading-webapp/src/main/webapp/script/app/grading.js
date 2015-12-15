@@ -7,9 +7,16 @@
 		var _imgViewer;
 		
 		function save(data){
-			ajaxWrapper.postJson(getTaskUrl()+"/itemscoring",data.onlyValues(),{beforeMsg:{tipText:"系统正在计分....",show:false},successMsg:{tipText:"计分成功",show:true}},
+			var url = getTaskUrl()+"/itemscoring";
+			if(_grading.mode === 'exception'){
+				url = getTaskUrl() + "/directScoring/"+_grading.uuid;
+			}
+			ajaxWrapper.postJson(url,data.onlyValues(),{beforeMsg:{tipText:"系统正在计分....",show:false},successMsg:{tipText:"计分成功",show:true}},
 					function(m){
 				if(m.status.success){
+					if(_grading.mode === 'exception'){
+						reDo.remove();
+					}
 					_grading.nextPaper();
 					_grading.incrementTask();
 				}
@@ -101,15 +108,22 @@
 			var navigationPanel = $('#navigation .container');
 			var statusPanel = $('footer.status-bar');
 			var _imgServer = $('#imgServer').val();
-			
+			reDo.grading = this;
+			this.mode = 'normal';//normal 取新卷;and exception 处理异常卷
+			this.uuid = undefined;
 			this.nextPaper = function(){
 				point.reset();
 				pointPanelKeyShort();
-				ajaxWrapper.getJson(getTaskUrl()+'/cuttings',{},{show:false},function(data){					
-					if(data.imgPath)
-						imgToolbox.switchTo(_imgServer + data.imgPath);
-				});
-				
+				if(this.mode==='exception'){
+					var imgPath = reDo.next();
+					imgToolbox.switchTo(_imgServer + imgPath);
+				}else{
+					ajaxWrapper.getJson(getTaskUrl()+'/cuttings',{},{show:false},function(data){					
+						if(data.imgPath)
+							imgToolbox.switchTo(_imgServer + data.imgPath);
+					});						
+				}
+		
 			};
 			
 			this.incrementTask = function(){

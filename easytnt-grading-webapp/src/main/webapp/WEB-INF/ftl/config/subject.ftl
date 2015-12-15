@@ -37,7 +37,7 @@
 	  	        <td ><i data-paperid="${usedPaper.paperId}" title＝"切割" class="cuttingPaper glyphicon glyphicon-scissors" style="cursor: pointer;" ></i></td>
 		  	    </#list>
 	  	    </#if>
-	  	    <td class="doing"><i class=" icon-remove" style="cursor: pointer;"></i></td>
+	  	    <td class="doing"><i class="glyphicon glyphicon-remove" style="cursor: pointer;"></i></td>
 
 	  	    <#--
 	  	    <td>

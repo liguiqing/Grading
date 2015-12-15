@@ -217,6 +217,24 @@ public class GradingTaskController {
 		taskService.itemScoring(taskId, referees, scores);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
+	
+	/**
+	 * 给分
+	 * 
+	 * @param scores
+	 * @param taskId
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/{taskId}/directScoring/{uuid}", method = RequestMethod.POST)
+	public ModelAndView onDirectScoring(@RequestBody Float[] scores, @PathVariable Long taskId,
+			@PathVariable String uuid) throws Exception {
+		logger.debug("URL /task/{}/directScoring{} Method POST", taskId, uuid);
+
+		Referees referees = refereesService.getCurrentReferees();
+		//taskService.itemScoring(taskId, referees, scores);
+		return ModelAndViewFactory.newModelAndViewFor().build();
+	}
 
 	/**
 	 * 回看已经评过某一记录
@@ -294,7 +312,7 @@ public class GradingTaskController {
 
 		Map<String, Map<String, String>> repeats = taskService.getMustRepeat(taskId, referees);
 
-		return ModelAndViewFactory.newModelAndViewFor().with("repeats", repeats).build();
+		return ModelAndViewFactory.newModelAndViewFor().with("redo", repeats).build();
 	}
 
 }

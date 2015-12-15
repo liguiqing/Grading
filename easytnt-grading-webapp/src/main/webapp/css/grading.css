@@ -327,3 +327,42 @@
     width: 100%;
     text-align: center;
 }
+
+#redo hr{
+	margin:0px;
+}
+
+#redo ul{
+	margin: 0px 15px;
+	padding: 0px;
+}
+
+#redo li{
+	margin: 0px;
+	padding: 0px;
+	font-size: 14px;
+    font-weight: bold;
+}
+
+
+#redo li a{
+	color:#FF4351;
+	margin-right:5px;
+}
+
+#redo li span{
+	margin-right:5px;
+}
+
+#redo li span em{
+	margin:0 5px;
+	color:#FF4351;
+}
+
+#redo li.actived{
+	text-decoration: underline;
+}
+
+.exception-doing{
+	color:#FF4351;
+}

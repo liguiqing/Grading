@@ -19,15 +19,19 @@
       <div class="form-group ">
          <div class="col-sm-1 col-md-1 col-lg-1"></div>
          <div class="col-sm-5 col-md-5 col-lg-5" style="text-align:center;">
-           <button type="button" class="button button-highlight button-rounded button-small " ><i class="icon-save"></i>&nbsp;&nbsp;记分</button>
+           <button type="button" class="button button-highlight button-rounded button-small " ><i class="glyphicon glyphicon-save"></i>&nbsp;&nbsp;记分</button>
          </div> 
          <div class="col-sm-5 col-md-5 col-lg-5" style="text-align:center;">  
-           <button type="button" class=" button button-highlight button-rounded button-small" ><i class="icon-repeat"></i>&nbsp;&nbsp;重改</button>
+           <button type="button" class=" button button-highlight button-rounded button-small" ><i class="glyphicon glyphicon-repeat"></i>&nbsp;&nbsp;重改</button>
         </div>
          <div class="col-sm-1 col-md-1 col-lg-1"></div>
       </div>
       <#if reDo=true>
-      <div id="repeats" style="display:none"></div>
+      <div id="redo" style="display:none;height:200px;overflow-x:auto;">
+        <h4>异常卷</h4>
+        <hr/>
+        <div class=""><ul><ul></div>
+      </div>
       </#if>
     </div>
     <div class="panel-footer ">
@@ -81,8 +85,8 @@ position={"top":10,"left":10,"height":30,"width":100}>
           <li >
              <div class="row" >
                <div class="col-md-3"><a href="#0" class="nine-grid button button-primary button-square button-tiny"> . </a></div>
-               <div class="col-md-3"><a href="##" alt ="清除 " class="nine-grid button button-action button-square button-tiny"><i class=" icon-ok"></i></a></div>
-               <div class="col-md-3"><a href="#0" class="nine-grid button btn-success button-square button-tiny"><i class=" icon-undo"></i></a></div>               
+               <div class="col-md-3"><a href="##" alt ="清除 " class="nine-grid button button-action button-square button-tiny"><i class="glyphicon glyphicon-ok"></i></a></div>
+               <div class="col-md-3"><a href="#0" class="nine-grid button btn-success button-square button-tiny"><i class="glyphicon glyphicon-refresh"></i></a></div>               
              </div>
           </li>
           <li role="separator" class="divider"></li> 

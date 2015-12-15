@@ -180,9 +180,9 @@
 								row.find('td:eq(1)').text(m.amount);
 								if(m.amount > 0){
 									row.find('td:last').removeClass("doing").addClass('completed')
-									   .find('i').removeClass('icon-remove').addClass('icon-ok')
-									   .parent().prev().find('i').removeClass('cuttingPaper')
-									   .addClass('icon-copy').attr('title','开始评卷');
+									   .find('i').removeClass('glyphicon-remove').addClass('glyphicon-ok')
+									   .parent().prev().find('i').removeClass('cuttingPaper').removeClass('glyphicon-scissors')
+									   .addClass('glyphicon-edit').attr('title','开始评卷');
 								}
 							}
 						});				
@@ -299,7 +299,7 @@
 					$p.remove();
 				});
 				e.stopPropagation();
-			}).on('click','tbody tr td i.icon-copy',function(e){
+			}).on('click','tbody tr td i.glyphicon-edit',function(e){
 				var paperId = $(this).attr('data-paperid');
 				ajaxWrapper.postJson("examPaper/start/"+paperId,{},
 						{beforeMsg:{tipText:".",show:true},
