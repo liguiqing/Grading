@@ -232,7 +232,7 @@ public class GradingTaskController {
 		logger.debug("URL /task/{}/directScoring{} Method POST", taskId, uuid);
 
 		Referees referees = refereesService.getCurrentReferees();
-		//taskService.itemScoring(taskId, referees, scores);
+		taskService.itemDirectScoringForValide(referees, uuid, scores);
 		return ModelAndViewFactory.newModelAndViewFor().build();
 	}
 

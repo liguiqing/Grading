@@ -34,4 +34,6 @@ public interface CuttingsImageGradeRecordRepository extends
 
 	void saveRepeat(CuttingsImageGradeRecord imageGradeRecord);
 
+	void saveDirectScored(Long teacherId,String uuid, Float[] scores);
+
 }

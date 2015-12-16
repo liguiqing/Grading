@@ -111,6 +111,13 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 		}
 		//imageGradeRecord.
 	}
+	
+	@Override
+	@Transactional
+	public void itemDirectScoringForValide(Referees referees,String uuid, Float[] scores) throws Exception {
+		logger.debug("itemDirectScoring ", uuid);
+		gradeRecordRepository.saveDirectScored(referees.getId(), uuid, scores);
+	}
 
 	@Override
 	@Transactional

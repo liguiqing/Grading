@@ -54,6 +54,16 @@ public interface GradeTaskService extends EntityService<GradeTask, Long> {
 	 */
 	Map<String,Map<String,String>> getMustRepeat(Long taskId, Referees referees);
 
+	/**
+	 * 多评直接给分（可以给分的卷必须经过多评无效处理）
+	 * @param referees
+	 * @param uuid
+	 * @param scores
+	 * @throws Exception
+	 */
+	void itemDirectScoringForValide(Referees referees, String uuid, Float[] scores)
+			throws Exception;
+
 }
 
 

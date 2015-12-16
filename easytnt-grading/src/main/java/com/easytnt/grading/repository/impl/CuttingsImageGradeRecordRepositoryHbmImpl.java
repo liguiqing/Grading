@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
@@ -78,6 +79,63 @@ public class CuttingsImageGradeRecordRepositoryHbmImpl extends
 	@Override
 	public void saveForError(CuttingsImageGradeRecord record) {
 		saveGradeRecord(record,"E");
+	}
+	
+	@Override
+	public void saveDirectScored(Long teacherId,String uuid,Float[] scores) {
+		Base64 base64=new Base64();
+		String imagePath = new String(base64.decode(uuid.getBytes()));
+	
+		String sql1 = "INSERT INTO  scoreinfolog (paperid, virtualroomid, studentoid, itemid, score, "
+				+ " postdatetime,  teacheroid, scorestr, pingci, spenttime, teacherip, memo, markstr, "
+				+ " delmark, teachermark, kemuoid, papertype, id ) SELECT  a.paperid paperid, "
+				+ " a.virtualroomid, a.studentoid, a.itemid, ?, ?, ?, ?,"
+				+ " a.pingci+1, a.spenttime, a.teacherip, a.memo, a.markstr, a.delmark, "
+				+ " 'Y', a.kemuoid, a.papertype, a.id FROM scoreinfolog a  "
+				+ " INNER JOIN paperimport b ON  a.studentoid=b.studentoid AND a.itemid=b.itemid "
+				+ " AND a.teachermark='N' AND b.imagepath=? "
+				+ " AND b.getmark=-1 INNER JOIN scoreinfolog c ON c.itemid =a.itemid AND "
+				+ " c.studentoid=a.studentoid AND c.pingci<a.pingci";
+		
+		String sql2 = "INSERT INTO lastscore (paperid,kemuoid,virtualroomid,studentoid,itemid,score,"
+				+ " postdatetime, scoretype,delmark)"
+				+ " SELECT DISTINCT (a.paperid),a.kemuoid,a.virtualroomid,a.studentoid,a.itemid,?,?,1,0 "
+				+ " FROM scoreinfolog a LEFT JOIN  paperimport b ON b.studentoid=a.studentoid "
+				+ " AND b.itemid=a.itemid AND b.paperid=a.paperid AND b.kemuoid=a.kemuoid "
+				+ " AND b.paperid=a.paperid  INNER JOIN scoreinfolog c ON c.itemid =a.itemid "
+				+ " AND c.studentoid=a.studentoid AND c.pingci<a.pingci"
+				+ " WHERE b.getmark=-1 AND b.imagepath=?";
+		
+		String sql3 = "UPDATE paperimport SET pingci= pingci+1,getmark=1 WHERE imagepath=? AND getmark=-1;";
+		
+		Float score = 0f;
+		StringBuilder sb = new StringBuilder();
+		for(int i=0;i<scores.length;i++) {
+			score += scores[i];
+			sb.append(scores[i] + ",");
+		}
+		sb.deleteCharAt(sb.length()-1);
+
+		Query query =  getCurrentSession().createSQLQuery(sql1);
+		int index = 0;
+		query.setFloat(index++, score);
+		query.setDate(index++, Calendar.getInstance().getTime());
+		query.setLong(index++, teacherId);
+		query.setString(index++, sb.toString());
+		query.setString(index++, imagePath);
+		query.executeUpdate();
+		
+		query =  getCurrentSession().createSQLQuery(sql2);
+		index = 0;
+		query.setFloat(index++, score);
+		query.setDate(index++, Calendar.getInstance().getTime());
+		query.setString(index++, imagePath);
+		query.executeUpdate();
+		
+		query =  getCurrentSession().createSQLQuery(sql3);
+		index = 0;
+		query.setString(index++, imagePath);
+		query.executeUpdate();
 	}
 	
 	@Override
