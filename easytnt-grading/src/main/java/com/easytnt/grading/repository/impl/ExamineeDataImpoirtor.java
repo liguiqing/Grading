@@ -227,11 +227,11 @@ public class ExamineeDataImpoirtor{
 	}
 	
 	private Long getRoomFromDb(String room_number) {
-		return selectIdFrom(RoomTable.selectSql,"room_id",Integer.valueOf(room_number));
+		return selectIdFrom(RoomTable.selectSql,"room_id",(room_number));
 	}
 	
 	private Long insertRoomTable(String room_number) {
-		return insertInto(RoomTable.insertSql,Integer.valueOf(room_number));
+		return insertInto(RoomTable.insertSql,(room_number));
 	}
 	
 	private void newCurRoom(Long room_id,String room_number) {

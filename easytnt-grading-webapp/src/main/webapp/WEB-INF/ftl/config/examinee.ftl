@@ -1,6 +1,6 @@
 <div class="subject-container" >
-  <div class="col-md-12" style="padding-right:0px;padding-left:0px;">  
-    <#if query.results??>
+  <div class="col-md-12" style="padding-right:0px;padding-left:0px;">
+    <#if query.results?size gt 0>
     <div class="col-md-7" style="padding-left:0px;">
     <#import "/taglib/commons/pager.ftl" as page > 
     <@page.pager pager=query css="margin:0;text-align:left;"/>
@@ -15,6 +15,7 @@
       </form>
     </div>
     <#else>
+    <div class="col-md-7" ></div>
     <div class="col-md-5" style="padding-right:0px;">
 	  <form id="uploadForm"  method="POST" action="" enctype="multipar/form-data" class="form-inline">
 	    <div class="col-md-offset-1 col-md-11 input-group file-preview">
@@ -42,7 +43,7 @@
   </div>
   <br>
   <hr >
-  <#if query.results??>
+  <#if query.results?size gt 0>
     <table class="table table-striped table-bordered ">
   	<thead class="bg-primary">
   	  <tr>

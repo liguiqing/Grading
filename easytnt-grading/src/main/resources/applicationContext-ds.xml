@@ -94,6 +94,7 @@
 				<value>hibernate/mapping/paper/ExamPaper.hbm.xml</value>
 				<value>hibernate/mapping/paper/Item.hbm.xml</value>
 				<value>hibernate/mapping/paper/Section.hbm.xml</value>
+
 				<value>hibernate/mapping/paper/PaperCard.hbm.xml</value>
 				<value>hibernate/mapping/exam/SubjectExam.hbm.xml</value>
 				<value>hibernate/mapping/room/District.hbm.xml</value>
