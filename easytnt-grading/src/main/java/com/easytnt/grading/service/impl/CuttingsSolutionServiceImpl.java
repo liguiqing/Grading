@@ -91,9 +91,9 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 			answerCardCuttingTemplates.add(template);
 		}
 
-		paper.setSubjectExam(null);
-		paper.setSections(null);
-		paper.setPaperCards(null);
+		// paper.setSubjectExam(null);
+		// paper.setSections(null);
+		// paper.setPaperCards(null);
 
 		paper.setAnswerCardCuttingTemplates(answerCardCuttingTemplates);
 		String cuttingRootPath = paper.getCuttingRootPath();
@@ -101,10 +101,17 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 			cuttingRootPath += "/";
 			paper.setCuttingRootPath(cuttingRootPath);
 		}
-		// // 设置原图路径
-		// paper.setStudentAnserCardRootPath("D:/test/tif/lizong");
-		// // 设置切割路径
-		// paper.setCuttingRootPath("D:/test/cuttingImage");
+
+		// ExamPaper newpaper = new ExamPaper();
+		// newpaper.setPaperId(paperId);
+		// newpaper.setName(paper.getName());
+		// newpaper.setFullScore(paper.getFullScore());
+		// newpaper.setObjectivityScore(paper.getObjectivityScore());
+		// newpaper.setSubjectivityScore(paper.getSubjectivityScore());
+		// newpaper.setAnswerCardImageNum(paper.getAnswerCardImageNum());
+		// newpaper.setAnswerCardCuttingTemplates(paper.getAnswerCardCuttingTemplates());
+		// newpaper.setCuttingRootPath(paper.getCuttingRootPath());
+		// newpaper.setStudentAnserCardRootPath(paper.getStudentAnserCardRootPath());
 
 		return paper;
 	}

@@ -18,6 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.easytnt.commons.entity.share.Entity;
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
 import com.easytnt.grading.domain.exam.SubjectExam;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * <pre>
@@ -37,10 +38,11 @@ public class ExamPaper implements Entity<ExamPaper> {
 
 	private Long paperOid;
 
+	@JsonIgnore
 	private Set<Section> sections;
-
+	@JsonIgnore
 	private Set<SubjectExam> subjectExam;
-
+	@JsonIgnore
 	private Set<PaperCard> paperCards;
 
 	private Float fullScore;
