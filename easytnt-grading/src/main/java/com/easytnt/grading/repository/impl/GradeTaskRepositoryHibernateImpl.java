@@ -87,14 +87,15 @@ public class GradeTaskRepositoryHibernateImpl extends
 	}
 
 	@Override
-	public Map<String,Map<String,String>> selectItemRepeat(Long taskId) {
+	public Map<String,Map<String,String>> selectItemRepeat(Long taskId, Long refereesId) {
 		String sql = "SELECT c.score,c.scorestr,d.teacher_account,a.imagepath "
-				+ " FROM paperimport a INNER JOIN grade_task b ON b.teacher_id=1 AND b.item_id=a.itemid "
+				+ " FROM paperimport a INNER JOIN grade_task b ON b.teacher_id=? AND b.item_id=a.itemid "
 				+ " INNER JOIN scoreinfolog c ON c.studentoid=a.studentoid AND c.itemid=b.item_id "
 				+ " INNER JOIN teacher_info d ON c.teacheroid=d.teacher_id "
 				+ " WHERE b.task_id=? AND a.getmark=-1 ORDER BY c.studentoid";
 		SQLQuery query = getCurrentSession().createSQLQuery(sql);
-		query.setLong(0, taskId);
+		query.setLong(0, refereesId);
+		query.setLong(1, taskId);
 		query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 		query.addScalar("score",StandardBasicTypes.FLOAT);
 		query.addScalar("scorestr", StandardBasicTypes.STRING);

@@ -14,6 +14,7 @@
 				if(!$(this).hasClass('exception-doing')){
 					this.style.color = "#FFF";
 					self.grading.mode='normal';
+					$reDoPanel.find('ul').empty();
 					return false;
 				}
 				self.grading.mode='exception';

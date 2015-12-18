@@ -1,5 +1,7 @@
 <#import "/taglib/html.ftl" as doc> 
 <@doc.html entryjs="taskList" title=title>
+  <#import "/taglib/commons/navigation.ftl" as nav> 
+  <@nav.navigation menus=menus/>
   <div class="workspace ">
       <div class="container">
         <div class="row"　style="margin-top:100px;">         

@@ -83,7 +83,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	public Map<String,Map<String,String>> getMustRepeat(Long taskId, Referees referees){
 		Teacher teacher = teacherRepository.load(referees.getId());
 		if(teacher != null && teacher.isManager()) {
-			return taskRepository.selectItemRepeat(taskId);
+			return taskRepository.selectItemRepeat(taskId,referees.getId());
 		}
 		return null;
 	}
@@ -145,7 +145,7 @@ public class GradeTaskServiceImpl extends AbstractEntityService<GradeTask, Long>
 	}
 
 	@Override
-	@Transactional
+	@Transactional(rollbackFor=Exception.class)
 	public CuttingsImageGradeRecord createImageGradeRecordBy(Long taskId, Referees referees) throws Exception {
 		//GradeTask task = this.getTaskOf(taskId, referees);
 		//task.setAssignedTo(referees);
