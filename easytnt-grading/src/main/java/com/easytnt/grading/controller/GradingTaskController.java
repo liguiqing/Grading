@@ -105,7 +105,7 @@ public class GradingTaskController {
 		return ModelAndViewFactory.newModelAndViewFor("/config").with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus()).with("menus3", configMenuGroup.getMenus())
 				.with("paperId", paperId).with("subject", subject).with("teachers", teachers)
-				.with("cuttingsSolution", cuttingsSolution).with("js", "config/subjectTask").with("page", "subjectTask")
+				.with("cuttings", cuttings).with("js", "config/subjectTask").with("page", "subjectTask")
 				.build();
 	}
 

@@ -7,8 +7,7 @@
 <div class="row" style="display:none;">  
   <div class="col-md-12">
 	<ul class="list-group list-task">
-	<#if cuttingsSolution ?? && cuttingsSolution.cutTo?size gt 0>
-	  <#list cuttingsSolution.cutTo as cutTo>
+	  <#list cuttings as cutTo>
 	  <li class="list-group-item" data-cuttoid="${cutTo.id}" data-sid="${subject.id}" data-pid="${paperId}">
 	    <ul class="col-md-12 nav navbar-nav" >
 	      <li ><a href="javascript:void(0);">${cutTo.name!""}</a></li>
@@ -27,7 +26,6 @@
 	    <div class="clearfix"></div>
 	  </li>
 	  </#list>
-	</#if>  
 	</ul>
   </div>
   
