@@ -16,7 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easytnt.commons.ui.ichart.IchartData;
 import com.easytnt.commons.ui.ichart.ResultData;
+import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Teacher;
+import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.service.MonitorService;
 
 /** 
@@ -92,14 +95,29 @@ public class MonitorServiceImpl implements MonitorService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public IchartData teamMonitorOfWorking(Teacher teacher) {
-		// TODO Auto-generated method stub
-		return null;
+	public IchartData teamMonitorOfWorking(Teacher teacher,GradeTask task) {
+		String sql = "SELECT b.teacher_account,c.score,COUNT(c.score) total FROM grade_task a "
+				+ "INNER JOIN teacher_info b ON a.teacher_id = b.teacher_id AND a.item_id=? LEFT JOIN scoreinfolog c ON c.teacheroid= b.teacher_id "
+				+ "AND c.pingci<=(SELECT pingci FROM cuttingdefine WHERE paperid=c.paperid AND NAME=? limit 1) "
+				+ "GROUP BY b.teacher_account,c.score";
+		CuttingsArea  genBy = task.getArea();
+		final IchartData data = new IchartData();
+		jdbcTemplate.query(sql, new Object[] {genBy.getId(),genBy.getName()}, new RowMapper<IchartData>() {
+
+			@Override
+			public IchartData mapRow(ResultSet rs, int rowNum) throws SQLException {
+				//IchartData data = new IchartData();
+				data.addRow(rs.getString("teacher_account"),rs.getInt("score"),rs.getInt("total"));
+				return null;
+			}
+			
+		});
+		return data;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public IchartData teamMonitorOfStabled(Teacher teacher) {
+	public IchartData teamMonitorOfStabled(Teacher teacher,GradeTask task) {
 		// TODO Auto-generated method stub
 		return null;
 	}

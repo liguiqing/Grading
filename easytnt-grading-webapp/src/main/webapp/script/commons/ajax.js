@@ -129,6 +129,8 @@
 												clazz : 'btn-default',
 												callback : function() {
 													$(this).trigger('close');
+													if($.isFunction(settings.callback))
+														settings.callback(data);
 												}
 											} ]
 										},
@@ -140,7 +142,8 @@
 									//	dialog.fadedialog(settings.beforeMsg);
 									if (settings.successMsg.show)
 										dialog.fadedialog(settings.successMsg);
-									settings.callback(data);
+									if($.isFunction(settings.callback))
+										settings.callback(data);
 								}
 							},
 							error : function(xhr, textStatus) {

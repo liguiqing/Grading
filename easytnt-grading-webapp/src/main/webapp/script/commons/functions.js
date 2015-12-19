@@ -107,10 +107,28 @@
 			}
 		};
 		
-		Array.prototype.contains = function(obj) {
+		Array.prototype.remove = function(obj) {
+			var index = -1;
+			for(var i = 0; i < this.length; i++) {
+				if(this[i] == obj) {
+					index = i;
+					break;
+				}
+			}
+			
+			if(index != -1) {
+				this.splice(index, 1);
+			}
+		};		
+		Array.prototype.contains = function(obj,func) {
 		    var i = this.length;
 		    while (i--) {
-		        if (this[i] === obj) {
+		        if($.isFunction(func)){
+		        	var v = this.call(func,this[i]);
+		        	if(v){ return true;}
+		        }
+		    	
+		    	if (this[i] === obj) {
 		            return true;
 		        }
 		    }

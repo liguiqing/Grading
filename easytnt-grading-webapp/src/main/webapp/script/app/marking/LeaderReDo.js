@@ -9,7 +9,7 @@
 				return;
 			}
 			var self = this;
-			$('#navigation ul.navbar-nav li:last a').click(function(){
+			$('#navigation ul.navbar-nav li:last').prev().find('>a').click(function(){
 				$(this).toggleClass('exception-doing');
 				if(!$(this).hasClass('exception-doing')){
 					this.style.color = "#FFF";

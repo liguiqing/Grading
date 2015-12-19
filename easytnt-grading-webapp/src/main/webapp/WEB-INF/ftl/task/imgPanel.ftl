@@ -23,7 +23,7 @@
     <li role="separator" class="divider"></li>
     <li class="row" >
       <div class="col-md-12">
-        <button type="button" class=" button   button-plain button-border button-square button-tiny" ><b class="left">←</b><b class="right">→</b><b class="top" style="top:3px;">↑</b><b class="bottom" style="top:5px;">↓</b></button>
+        <button type="button" class=" button   button-plain button-border button-square button-tiny marking-zoom" ><b class="left">←</b><b class="right">→</b><b class="top" style="top:3px;">↑</b><b class="bottom" style="top:5px;">↓</b></button>
       </div>
     </li>
     <li role="separator" class="divider"></li>
