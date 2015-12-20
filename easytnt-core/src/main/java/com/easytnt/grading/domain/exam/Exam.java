@@ -5,6 +5,9 @@
 
 package com.easytnt.grading.domain.exam;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -34,7 +37,9 @@ public class Exam implements Entity<Exam> {
 	}
 
 	public void genOid(){
-		this.oid = System.currentTimeMillis();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
+    	Calendar now = Calendar.getInstance();  
+		this.oid = Long.valueOf(sdf.format(now.getTime()));
 	}
 	
 	@Override

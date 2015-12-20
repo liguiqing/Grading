@@ -18,9 +18,9 @@
 					if(_grading.mode === 'exception'){
 						reDo.remove();
 					}
-					_grading.nextPaper();
-					_grading.incrementTask();
 					_grading.canSubmit = false;
+					_grading.nextPaper();
+					_grading.incrementTask();					
 				}
 			});
 		};

@@ -39,7 +39,7 @@ public class MenuGroupFactory {
     	
     	workerTopMenuGroup.appendMenu(new Menu("退    出","logout"));
     	
-    	rightMenuGroup.appendMenu(new Menu("首    页","home"));
+    	rightMenuGroup.appendMenu(new Menu("首    页","index"));
     	rightMenuGroup.appendMenu(new Menu("评    卷","task"));
     	rightMenuGroup.appendMenu(new Menu("进度监控","monitor?page=progress"));
     	rightMenuGroup.appendMenu(new Menu("评卷设置","config?page=subject"));

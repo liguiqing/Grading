@@ -4,19 +4,21 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="com.easytnt.grading.domain.paper.Item" table="paper_item_info">
+	<class name="com.easytnt.grading.domain.paper.Item" table="papersubiteminfo">
 		<id name="itemId" type="java.lang.Long">
-			<column name="item_id" />
+			<column name="subitemid" />
 			<generator class="identity" />
 		</id>
+		<!--
 		<property name="itemOid" type="java.lang.Long">
 			<column name="item_oid" />
 		</property>
+		-->
 		<property name="title" type="java.lang.String">
-			<column name="item_name" />
+			<column name="subitemname" />
 		</property>
 		<property name="caption" type="java.lang.String">
-			<column name="item_caption" />
+			<column name="subitemcaption" />
 		</property>
 		<component name="answerArea" class="com.easytnt.grading.domain.share.Area" lazy="true">
             <property name="left" column="[left]" type="java.lang.Integer"/>
@@ -25,7 +27,7 @@
             <property name="height" column="height" type="java.lang.Integer"/>
         </component>
 		<property name="fullScore" type="java.lang.Float">
-			<column name="full_score" />
+			<column name="fullscore" />
 		</property>
 		<property name="validscoredot" type="java.lang.String">
 			<column name="validscoredot" />

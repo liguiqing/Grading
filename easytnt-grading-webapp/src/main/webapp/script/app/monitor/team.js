@@ -8,7 +8,7 @@
 				data: [],
 				align:'center',
 				title:{
-					text:'11',
+					text:'',
 					font:'微软雅黑',
 					color:'#d4e0ec',
 					height:40,
@@ -151,6 +151,7 @@
 						 chartDef.height=$('#teamChart').height();
 						 chartDef.width = $('#teamChart').width();
 						 chartDef.data = datas;
+						 chartDef.title.text=r.title
 						 chartDef.coordinate.scale[1].labels=labels;
 						 var chart = new iChart.Area2D(chartDef);
 						 chart.draw();

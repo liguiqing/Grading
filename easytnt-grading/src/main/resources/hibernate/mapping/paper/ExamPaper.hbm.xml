@@ -37,7 +37,7 @@
         </component>
 		
 		<set name="sections" inverse="true" cascade="all-delete-orphan"   >
-            <key column="paper_id" ></key>
+            <key column="paperid" ></key>
             <one-to-many class="com.easytnt.grading.domain.paper.Section"/>
         </set>
         <set name="subjectExam" table="test_used_paper"  lazy="false" cascade="all">

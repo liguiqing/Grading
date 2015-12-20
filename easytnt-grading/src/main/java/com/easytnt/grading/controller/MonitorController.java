@@ -108,9 +108,11 @@ public class MonitorController {
 		List<GradeTask> tasks = gradeTaskService.getTaskOf(referees);
 		//GradeTask task = gradeTaskService.getTaskOf(refereesService.load(leader.getTeacherId())).get(0);
 		if(tasks!= null && tasks.size() >0) {
-			IchartData  datas  = monitorService.teamMonitorOfWorking(leader,tasks.get(0));
+			GradeTask task = tasks.get(0);
+			IchartData  datas  = monitorService.teamMonitorOfWorking(leader,task);
+			String title = task.getArea().getName();
 			
-			return createModelAndView(1,"worker").with("datas", datas).build();
+			return createModelAndView(1,"worker").with("datas", datas).with("title",title).build();
 		}else {
 			return createModelAndView(1,"worker").with("datas", new ArrayList()).build();
 		}

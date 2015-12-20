@@ -35,4 +35,10 @@ public class ExamineeServiceImpl extends AbstractEntityService<Examinee, Long> i
 		super.setRepository(examineeRepository);
 	}
 
+	@Override
+	public String calFinalScore(String examineeuuid, Long testId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

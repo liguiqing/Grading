@@ -98,6 +98,7 @@
 				<value>hibernate/mapping/paper/PaperCard.hbm.xml</value>
 				<value>hibernate/mapping/exam/SubjectExam.hbm.xml</value>
 				<value>hibernate/mapping/room/District.hbm.xml</value>
+				<value>hibernate/mapping/room/Examinee.hbm.xml</value>
 				<value>hibernate/mapping/cutting/CuttingsArea.hbm.xml</value>
 				<value>hibernate/mapping/cutting/PositionOfItemInArea.hbm.xml</value>
 				<value>hibernate/mapping/cutting/CuttingDefine.hbm.xml</value>
