@@ -16,4 +16,6 @@ import com.easytnt.grading.domain.room.Examinee;
 public interface ExamineeService extends EntityService<Examinee, Long>{
 	
 	void imports(ListDataSourceMapper mapper,ListDataSourceReader reader);
+	
+	String calFinalScore(String examineeuuid,Long testId);
 }

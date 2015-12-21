@@ -61,6 +61,7 @@
 			
 			this.switchTo = function(imgSrc){
 				_imgViewer.next(imgSrc);
+				_imgViewer.autoAdaptationWidth();
 			};
 			
 		};

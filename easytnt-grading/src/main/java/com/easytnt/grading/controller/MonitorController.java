@@ -19,8 +19,12 @@ import com.easytnt.commons.ui.ichart.DataList;
 import com.easytnt.commons.ui.ichart.IchartData;
 import com.easytnt.commons.ui.ichart.ResultData;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
+import com.easytnt.grading.domain.grade.GradeTask;
+import com.easytnt.grading.domain.grade.Referees;
 import com.easytnt.grading.domain.grade.Teacher;
+import com.easytnt.grading.service.GradeTaskService;
 import com.easytnt.grading.service.MonitorService;
+import com.easytnt.grading.service.RefereesService;
 import com.easytnt.grading.service.TeacherService;
 import com.easytnt.security.ShiroService;
 import com.easytnt.security.UserDetails;
@@ -49,6 +53,13 @@ public class MonitorController {
 	
 	@Autowired(required=false)
 	private MonitorService monitorService;
+	
+	@Autowired(required=false)
+	private GradeTaskService gradeTaskService;
+	
+	@Autowired(required=false)
+	private RefereesService refereesService;
+	
 	
 	@RequestMapping(value="/monitor/progress",method=RequestMethod.GET)
 	public ModelAndView onMonitorProgress()throws Exception{
@@ -93,9 +104,18 @@ public class MonitorController {
 
 		UserDetails user = shiroService.getUser();
 		Teacher leader = teacherService.findTeacher(user.getUserName());
-		IchartData  datas  = monitorService.sameTeamMonitor(leader);
-		
-		return createModelAndView(1,"worker").with("datas", datas).build();
+		Referees referees = refereesService.getCurrentReferees();
+		List<GradeTask> tasks = gradeTaskService.getTaskOf(referees);
+		//GradeTask task = gradeTaskService.getTaskOf(refereesService.load(leader.getTeacherId())).get(0);
+		if(tasks!= null && tasks.size() >0) {
+			GradeTask task = tasks.get(0);
+			IchartData  datas  = monitorService.teamMonitorOfWorking(leader,task);
+			String title = task.getArea().getName();
+			
+			return createModelAndView(1,"worker").with("datas", datas).with("title",title).build();
+		}else {
+			return createModelAndView(1,"worker").with("datas", new ArrayList()).build();
+		}
 	}
 	
 	@RequestMapping(value="/monitor/personalStabled",method=RequestMethod.GET)

@@ -7,6 +7,7 @@
 		var _imgViewer;
 		
 		function save(data){
+
 			var url = getTaskUrl()+"/itemscoring";
 			if(_grading.mode === 'exception'){
 				url = getTaskUrl() + "/directScoring/"+_grading.uuid;
@@ -17,8 +18,9 @@
 					if(_grading.mode === 'exception'){
 						reDo.remove();
 					}
+					_grading.canSubmit = false;
 					_grading.nextPaper();
-					_grading.incrementTask();
+					_grading.incrementTask();					
 				}
 			});
 		};
@@ -108,6 +110,7 @@
 			var navigationPanel = $('#navigation .container');
 			var statusPanel = $('footer.status-bar');
 			var _imgServer = $('#imgServer').val();
+			this.canSubmit = false;
 			reDo.grading = this;
 			this.mode = 'normal';//normal 取新卷;and exception 处理异常卷
 			this.uuid = undefined;
@@ -116,14 +119,24 @@
 				pointPanelKeyShort();
 				if(this.mode==='exception'){
 					var imgPath = reDo.next();
-					imgToolbox.switchTo(_imgServer + imgPath);
+					if(imgPath){
+						this.canSubmit = true;
+						imgToolbox.switchTo(_imgServer + imgPath);
+					}else{
+						this.canSubmit = false;
+					}
+					
 				}else{
 					ajaxWrapper.getJson(getTaskUrl()+'/cuttings',{},{show:false},function(data){					
-						if(data.imgPath)
-							imgToolbox.switchTo(_imgServer + data.imgPath);
+						if(data.imgPath){
+							_grading.canSubmit = true;
+							imgToolbox.switchTo(_imgServer + data.imgPath);							
+						}else{
+							_grading.canSubmit=false;
+						}				
 					});						
 				}
-		
+				
 			};
 			
 			this.incrementTask = function(){
@@ -173,6 +186,11 @@
 			};
 			
 			this.record = function(){
+				if(!this.canSubmit){
+					ui.modal('评卷提示',"没有评卷数据",'sm',[]);
+					return false;
+				}
+				
 				var score = point.total();
 				var btns = [{text:'确认',clazz : 'btn-primary',callback:function(){
 					save(score);
@@ -205,6 +223,7 @@
 					imgLoaded:function(){
 						point.addFocusListener(function(){
 							_imgViewer.hilightArea(this.position,this.dataTo);
+							
 						});
 						point.actived();
 				}});
@@ -226,6 +245,13 @@
 				});
 				$('div.point-panel-marking div.panel-footer .form-group').on('click','button:last',function(e){
 					_grading.submitError();
+				});
+				
+				$('div.img-panel>div.panel>div.panel-body').on('click','button.marking-zoom',function(e){
+					_imgViewer.autoAdaptationWidth();
+				});
+				$('form').on('submit',function(){
+					return false;
 				});
 			};
 			

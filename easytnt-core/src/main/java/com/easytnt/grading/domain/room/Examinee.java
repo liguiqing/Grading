@@ -23,7 +23,15 @@ public class Examinee implements Entity<Examinee>{
 
 	private String uuid;
 	
+	private String name;
+	
 	private Room room;
+	
+	public Examinee(String uuid,String name,Room room) {
+		this.uuid = uuid;
+		this.name = name;
+		this.room = room;
+	}
 	
 	public Examinee(String uuid,Room room) {
 		this.uuid = uuid;
@@ -61,7 +69,7 @@ public class Examinee implements Entity<Examinee>{
 	private Long id;
 
 	public String getUuid() {
-		return uuid;
+		return uuid==null?"":uuid.trim();
 	}
 
 	public void setUuid(String uuid) {
@@ -82,6 +90,14 @@ public class Examinee implements Entity<Examinee>{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name==null?"":name.trim();
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
+import com.easytnt.security.UserDetails;
 
 /** 
  * <pre>
@@ -37,8 +39,17 @@ public class MainController {
 	@RequestMapping(value="/index",method=RequestMethod.GET)
 	public ModelAndView onIndex()throws Exception{
 		logger.debug("URL /index Method Get");
+		MenuGroup topRightMenuGroup = MenuGroupFactory.getInstance().getTopRightMenuGroup();
+		MenuGroup rightMenuGroup = MenuGroupFactory.getInstance().getRightMenuGroup();
+		//MenuGroup monitorMenuGroup = MenuGroupFactory.getInstance().getMonitorMenuGroup();
+		//monitorMenuGroup.activedMenuByIndex(0);
+		rightMenuGroup.activedMenuByIndex(0);
+		return ModelAndViewFactory.newModelAndViewFor("/index")
+				//.with("user", user)
+				.with("menus2", topRightMenuGroup.getMenus())
+				.with("rightSideMenu", rightMenuGroup.getMenus()).build();
 		
-		return ModelAndViewFactory.newModelAndViewFor("/index").build();
+		//return ModelAndViewFactory.newModelAndViewFor("/index").build();
 	}
 
 	@RequestMapping(value="/config",method=RequestMethod.GET)
@@ -71,6 +82,7 @@ public class MainController {
 			});
 		}
 		return ModelAndViewFactory.newModelAndViewFor().with("dirs",dirs).build();
-
 	}
+	
+
 }

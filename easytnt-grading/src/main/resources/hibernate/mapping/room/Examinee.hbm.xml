@@ -3,11 +3,12 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2015-11-3 13:21:23 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.easytnt.grading.domain.room.Examinee" table="sample">
+    <class name="com.easytnt.grading.domain.room.Examinee" table="examinne">
         <id name="id" type="java.lang.Long">
-            <column name="test_id" />
+            <column name="examinne_id" />
             <generator class="identity" />
         </id>
-        <property name="oid" column="test_oid"></property>
+        <property name="uuid" column="examinne_uuid"></property>
+        <property name="name" column="examinne_name"></property>
     </class>
 </hibernate-mapping>

@@ -4,32 +4,33 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="com.easytnt.grading.domain.paper.Section" table="paper_section_info">
+	<class name="com.easytnt.grading.domain.paper.Section" table="paperiteminfo">
+	    <cache usage="read-only"/>
 		<id name="sectionId" type="java.lang.Long">
-			<column name="section_id" />
+			<column name="itemid" />
 			<generator class="identity" />
 		</id>
 		<property name="fullScore" type="java.lang.Float">
-			<column name="full_score" />
+			<column name="fullscore" />
 		</property>
 		<many-to-one name="paper" class="com.easytnt.grading.domain.paper.ExamPaper" 
-                     column="paper_id" cascade="all"  >
+                     column="paperid" cascade="all"  >
          </many-to-one>
-         
+         <!-- 
          <property name="sectionOid" type="java.lang.Long">
 			<column name="section_oid" />
 		</property>
-         
+         -->
 		<property name="title" type="java.lang.String">
-			<column name="section_name" />
+			<column name="itemname" />
 		</property>
 		
 		<property name="caption" type="java.lang.String">
-			<column name="section_caption" />
+			<column name="itemcaption" />
 		</property>
 		
 		<property name="maxPinci" type="java.lang.Integer">
-			<column name="max_pinci" />
+			<column name="pingci" />
 		</property>
 		
 		 <property name="maxerror" type="java.lang.Float">
@@ -43,7 +44,7 @@
             <property name="height" column="height" type="java.lang.Integer"/>
         </component>
         
-		 <set name="items" inverse="true" cascade="all-delete-orphan">
+		 <set name="items" inverse="true" cascade="all-delete-orphan" lazy="true">
             <key column="section_id" ></key>
             <one-to-many class="com.easytnt.grading.domain.paper.Item"/>
         </set>

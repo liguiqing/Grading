@@ -61,6 +61,7 @@ public class JoyMappingExceptionResolver extends SimpleMappingExceptionResolver 
 
 				writer.write(json);
 				writer.flush();
+				//response.reset();
 			} catch (IOException e) {
 				logger.error(ThrowableParser.toString(e));
 			} finally {

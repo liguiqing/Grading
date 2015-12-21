@@ -69,9 +69,7 @@
 						 position:'left',
 						 label:{color:'#d4e0ec',font:'微软雅黑',fontweight:600},
 						 start_scale:0,
-						 end_scale:600,
-						 scale_space:100,
-						 scale_size:2,
+						 
 						 scale_color:'#9f9f9f'
 					},{
 						 position:'bottom',	

@@ -31,5 +31,5 @@ public interface GradeTaskRepository extends Repository<GradeTask, Long> {
 
 	public int countAssignedTotal(Long taskId, Long refereesId);
 
-	public Map<String,Map<String,String>> selectItemRepeat(Long taskId);
+	public Map<String,Map<String,String>> selectItemRepeat(Long taskId, Long refereesId);
 }

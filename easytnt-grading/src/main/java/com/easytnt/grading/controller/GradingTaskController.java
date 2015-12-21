@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.commons.ui.Menu;
 import com.easytnt.commons.ui.MenuGroup;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
+import com.easytnt.commons.web.view.Responser;
 import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
 import com.easytnt.grading.domain.cuttings.CuttingsImage;
@@ -105,7 +107,7 @@ public class GradingTaskController {
 		return ModelAndViewFactory.newModelAndViewFor("/config").with("menus2", topRightMenuGroup.getMenus())
 				.with("rightSideMenu", rightMenuGroup.getMenus()).with("menus3", configMenuGroup.getMenus())
 				.with("paperId", paperId).with("subject", subject).with("teachers", teachers)
-				.with("cuttingsSolution", cuttingsSolution).with("js", "config/subjectTask").with("page", "subjectTask")
+				.with("cuttings", cuttings).with("js", "config/subjectTask").with("page", "subjectTask")
 				.build();
 	}
 
@@ -161,6 +163,7 @@ public class GradingTaskController {
 		menus.add(new Menu("参考答案", ""));
 		menus.add(new Menu("统计信息", ""));
 		menus.add(new Menu("锁定屏幕", ""));
+		
 		// menus.add( new Menu("暂停","#pause"));
 
 		Referees referees = refereesService.getCurrentReferees();
@@ -168,9 +171,22 @@ public class GradingTaskController {
 		taskService.recoverUndo(task);
 		referees = task.getAssignedTo();
 
-		CuttingsImageGradeRecord gradeRecord = task.getAGradeRecord();
+		CuttingsImageGradeRecord gradeRecord = null;
+		
+		try {
+			gradeRecord = task.getAGradeRecord();
+		}catch(Exception e) {
+			logger.info(ThrowableParser.toString(e));
+		}
 		// List<Section> sections = gradeRecord.getRecordFor().getSections();
-		CuttingsArea section = gradeRecord.getRecordFor().definedOf();
+		CuttingsArea section = null;
+		if(gradeRecord != null) {
+			section = gradeRecord.getRecordFor().definedOf();
+		}else{
+			section = task.getGenBy();
+			//List<CuttingsArea> cuttings = cuttingsSolutionService.getCuttingAreaes(paperId);
+		}
+		
 		ArrayList<CuttingsArea> sections = new ArrayList<>();
 		sections.add(section);
 
@@ -178,7 +194,7 @@ public class GradingTaskController {
 		if (teacher.isManager()) {
 			menus.add(new Menu("异常卷", null));
 		}
-
+		menus.add(new Menu("退    出","logout"));
 		return ModelAndViewFactory.newModelAndViewFor("/task/gradingTask").with("menus", menus)
 				.with("referees", referees).with("teacher", teacher).with("task", task).with("imgServer", imgServer)
 				.with("sections", sections).with("reDo", teacher.isManager()).build();
@@ -196,10 +212,14 @@ public class GradingTaskController {
 		logger.debug("URL /task/{}/cuttings Method Get", taskId);
 		Referees referees = refereesService.getCurrentReferees();
 		// GradeTask task = taskService.getTaskOf(taskId, referees);
-		CuttingsImageGradeRecord pieceGradeRecord = taskService.createImageGradeRecordBy(taskId, referees);
-		CuttingsImage cuttings = pieceGradeRecord.getRecordFor();
-		return ModelAndViewFactory.newModelAndViewFor().with("imgPath", cuttings.getImgPath())
+		try {
+			CuttingsImageGradeRecord pieceGradeRecord = taskService.createImageGradeRecordBy(taskId, referees);
+			CuttingsImage cuttings = pieceGradeRecord.getRecordFor();
+			return ModelAndViewFactory.newModelAndViewFor().with("imgPath", cuttings.getImgPath())
 				.with("imageId", cuttings.getImageId()).build();
+		}catch(Exception e) {
+			return ModelAndViewFactory.newModelAndViewFor().with(Responser.ModelName, new Responser.Builder().msg("评卷已经完成，或者还没有开始").failure().create()).build();
+		}
 	}
 
 	/**

@@ -56,8 +56,7 @@
 							 position:'left',	
 							 scale_enable : false,
 							 start_scale:0,
-							 scale_space:10,
-							 end_scale:100,
+							 
 							 label:{color:'#dcd6cb',fontsize:11,fontweight:600}
 						}],
 						width:'80%',

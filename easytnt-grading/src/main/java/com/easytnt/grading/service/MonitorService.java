@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.easytnt.commons.ui.ichart.IchartData;
 import com.easytnt.commons.ui.ichart.ResultData;
+import com.easytnt.grading.domain.grade.GradeTask;
 import com.easytnt.grading.domain.grade.Teacher;
 
 /** 
@@ -40,9 +41,9 @@ public interface MonitorService {
 	 * @param teacher
 	 * @return
 	 */
-	IchartData teamMonitorOfWorking(Teacher teacher);
+	IchartData teamMonitorOfWorking(Teacher teacher,GradeTask task);
 	
-	IchartData teamMonitorOfStabled(Teacher teacher);
+	IchartData teamMonitorOfStabled(Teacher teacher,GradeTask task);
 }
 
 

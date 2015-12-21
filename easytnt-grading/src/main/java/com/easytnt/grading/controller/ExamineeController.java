@@ -130,7 +130,17 @@ public class ExamineeController {
         examineeService.query(query);
 		return ModelAndViewFactory.newModelAndViewFor("/examinee/examineeList").with("query",query)
 				.with("totalPage",query.getTotalPage()).build();
-	}	
+	}
+	
+	@RequestMapping(value="/score/query/{page}/{size}",method = RequestMethod.GET)
+	public ModelAndView onQueryExamnieeScore(@PathVariable int page,@PathVariable int size,HttpServletRequest request)
+					throws Exception {
+		logger.debug("URL /Teacher/query/{}/{} Method GET ", page,size);
+        Query<Examinee> query = new QueryBuilder().newQuery(page,size,request.getParameterMap());
+        examineeService.query(query);
+		return ModelAndViewFactory.newModelAndViewFor("/examinee/examineeList").with("query",query)
+				.with("totalPage",query.getTotalPage()).build();
+	}
 	
 	@RequestMapping(value="/importExaminee",method = RequestMethod.POST)
 	public ModelAndView importExaminee(@RequestBody DataSourceMapperFormBean[] mappedBeans,HttpServletRequest request)throws Exception {
