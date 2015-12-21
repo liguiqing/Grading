@@ -6,12 +6,17 @@ package com.easytnt.grading.repository.impl;
 
 import static org.junit.Assert.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 
 import com.easytnt.commons.util.SpringContextUtil;
 
@@ -43,11 +48,21 @@ public class ExamineeFinalScoreCalculatorTest {
 	public void testOutputFinalScoreOf() throws Exception{
 		assertNotNull(jdbcTemplate);
 		assertNotNull(sessionFactroy);
-		ExamineeFinalScoreCalculator calculator = ExamineeFinalScoreCalculator.newCalculator(1l);
+		final ExamineeFinalScoreCalculator calculator = ExamineeFinalScoreCalculator.newCalculator(1l);
 		calculator.setJdbcTemplate(jdbcTemplate);
 		calculator.setSessionFactory(sessionFactroy);
-		
-		calculator.outputFinalScoreOf("0401130010001");
+		jdbcTemplate.query("SELECT examinne_uuid FROM examinne ", new ResultSetExtractor() {
+
+			@Override
+			public Object extractData(ResultSet rs) throws SQLException,
+					DataAccessException {
+				while(rs.next())
+					calculator.calScore(rs.getString(1));
+				return null;
+			}
+		});
+		calculator.ranking();
+		calculator.output();
 	}
 	
 }

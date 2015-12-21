@@ -21,19 +21,19 @@ import com.easytnt.commons.entity.share.Entity;
  **/
 public class Examinee implements Entity<Examinee>{
 
-	private String uuid;
+	private Long uuid;
 	
 	private String name;
 	
 	private Room room;
 	
-	public Examinee(String uuid,String name,Room room) {
+	public Examinee(Long uuid,String name,Room room) {
 		this.uuid = uuid;
 		this.name = name;
 		this.room = room;
 	}
 	
-	public Examinee(String uuid,Room room) {
+	public Examinee(Long uuid,Room room) {
 		this.uuid = uuid;
 		this.room = room;
 	}
@@ -68,11 +68,11 @@ public class Examinee implements Entity<Examinee>{
 	
 	private Long id;
 
-	public String getUuid() {
-		return uuid==null?"":uuid.trim();
+	public Long getUuid() {
+		return uuid;
 	}
 
-	public void setUuid(String uuid) {
+	public void setUuid(Long uuid) {
 		this.uuid = uuid;
 	}
 

@@ -8,7 +8,7 @@
             <column name="examinne_id" />
             <generator class="identity" />
         </id>
-        <property name="uuid" column="examinne_uuid"></property>
+        <property name="uuid" column="examinne_uuid" type="java.lang.Long"></property>
         <property name="name" column="examinne_name"></property>
     </class>
 </hibernate-mapping>
