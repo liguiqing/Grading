@@ -15,11 +15,14 @@ import com.easytnt.grading.domain.cuttings.CuttingBlock;
 import com.easytnt.grading.domain.cuttings.CuttingDefine;
 import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.domain.cuttings.OmrDefine;
+import com.easytnt.grading.domain.cuttings.SelectItemDefine;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.PaperCard;
 import com.easytnt.grading.repository.CuttingDefineRepository;
 import com.easytnt.grading.repository.CuttingsAreaRepository;
 import com.easytnt.grading.repository.ExamPaperRepository;
+import com.easytnt.grading.repository.SelectItemDefineRepository;
 import com.easytnt.grading.service.CuttingsSolutionService;
 
 /**
@@ -37,6 +40,8 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	private ExamPaperRepository examPaperRepository;
 	@Autowired(required = false)
 	private CuttingDefineRepository cuttingDefineRepo;
+	@Autowired(required = false)
+	private SelectItemDefineRepository selectItemDefineRepo;
 
 	@Override
 	public void saveCuttingDefines(CuttingSolution cuttingsSolution) {
@@ -74,6 +79,15 @@ public class CuttingsSolutionServiceImpl implements CuttingsSolutionService {
 	@Override
 	public List<CuttingsArea> getCuttingAreaes(Long paperId) {
 		return cuttingsAreaRepository.listCuttingsAreaOfInPaper(paperId);
+	}
+
+	@Override
+	public OmrDefine listSelectItemDefines(Long paperId) {
+		ExamPaper paper = getPaper(paperId);
+		List<SelectItemDefine> selectItemDefines = selectItemDefineRepo.listSelectItemDefines(paperId);
+		OmrDefine omr = new OmrDefine();
+		omr.setPaper(paper).setSelectItemDefines(selectItemDefines);
+		return omr;
 	}
 
 	private ExamPaper getPaper(Long paperId) {

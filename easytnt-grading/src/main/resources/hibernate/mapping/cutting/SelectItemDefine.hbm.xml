@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.easytnt.grading.domain.cuttings.SelectItemDefine"
+		table="selectitemdefine">
+		<id name="id" type="java.lang.Long">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="name" />
+		</property>
+
+		<property name="fullScore" type="java.lang.Float">
+			<column name="fullscore" />
+		</property>
+		<property name="templateIndex" type="java.lang.Integer">
+			<column name="templateIndex" />
+		</property>
+		<property name="answer" type="java.lang.String">
+			<column name="answer" />
+		</property>
+		<property name="gieveScoreRuleCharacter" type="java.lang.String">
+			<column name="giveScoreRule" />
+		</property>
+		<property name="gieveScoreRuleScoreCharacter" type="java.lang.String">
+			<column name="giveScoreRuleScore" />
+		</property>
+
+		<many-to-one name="paper"
+			class="com.easytnt.grading.domain.paper.ExamPaper" column="paperid"
+			cascade="none">
+		</many-to-one>
+		<bag name="areas" table="giveScorePoint" cascade="all-delete-orphan"
+			fetch="join" lazy="false" inverse="false">
+			<key column="selectItemDefineId" />
+			<one-to-many class="com.easytnt.grading.domain.cuttings.SelectItemArea" />
+		</bag>
+	</class>
+</hibernate-mapping>

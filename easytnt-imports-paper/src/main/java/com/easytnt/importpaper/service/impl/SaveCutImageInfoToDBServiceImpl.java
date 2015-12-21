@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.easytnt.commons.exception.ThrowableParser;
 import com.easytnt.importpaper.bean.CutImageInfo;
-import com.easytnt.importpaper.service.SaveCutImageInfoToDatabaseService;
+import com.easytnt.importpaper.service.SaveCutImageInfoToDBService;
 
 /**
  * <pre>
@@ -25,9 +25,9 @@ import com.easytnt.importpaper.service.SaveCutImageInfoToDatabaseService;
  * @author liuyu
  *
  */
-public class SaveCutImageInfoToDatabaseServiceImpl implements SaveCutImageInfoToDatabaseService {
+public class SaveCutImageInfoToDBServiceImpl implements SaveCutImageInfoToDBService {
 
-	private final Logger log = LoggerFactory.getLogger(SaveCutImageInfoToDatabaseServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(SaveCutImageInfoToDBServiceImpl.class);
 
 	private DataSource ds;
 	private ReentrantLock lock = new ReentrantLock();

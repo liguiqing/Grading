@@ -12,11 +12,12 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import com.easytnt.cutimage.disruptor.event.DistinguishOMREvent;
-import com.easytnt.cutimage.utils.DistinguishOMR;
+import com.easytnt.cutimage.utils.DistinguishOmr;
 import com.easytnt.cutimage.utils.ImageJTool;
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
-import com.easytnt.grading.domain.cuttings.SelectItem;
+import com.easytnt.grading.domain.cuttings.OmrDefine;
 import com.easytnt.grading.domain.cuttings.SelectItemArea;
+import com.easytnt.grading.domain.cuttings.SelectItemDefine;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.share.Area;
 
@@ -146,8 +147,8 @@ public class DiscernImageTest {
 		ip = imp.getProcessor();
 
 		imp.show();
-		List<SelectItem> items = MockSelectItem.items();
-		for (SelectItem item : items) {
+		List<SelectItemDefine> items = MockSelectItem.items();
+		for (SelectItemDefine item : items) {
 			List<SelectItemArea> areas = item.getAreas();
 			for (SelectItemArea area : areas) {
 				Roi roi = new Roi(area.getLeft(), area.getTop(), area.getWidth(), area.getHeight());
@@ -180,13 +181,16 @@ public class DiscernImageTest {
 		template.setRotate(-90);
 		tmplates.add(template);
 
-		List<SelectItem> items = MockSelectItem.items();
+		List<SelectItemDefine> items = MockSelectItem.items();
 		ArrayList<String> filepaths = new ArrayList<>();
 		filepaths.add("d:/test/2.tif");
 
+		OmrDefine omrDefine = new OmrDefine();
+		omrDefine.setPaper(paper).setSelectItemDefines(items);
+
 		DistinguishOMREvent event = new DistinguishOMREvent();
-		event.setStudentId("11111111111").setPaper(paper).setItems(items).setFilePaths(filepaths);
-		DistinguishOMR omr = new DistinguishOMR(event);
+		event.setStudentId("11111111111").setOmrDefine(omrDefine).setFilePaths(filepaths);
+		DistinguishOmr omr = new DistinguishOmr(event);
 		omr.distinguish();
 		System.out.println();
 	}

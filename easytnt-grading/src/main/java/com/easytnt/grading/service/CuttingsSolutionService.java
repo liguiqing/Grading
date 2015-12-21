@@ -8,6 +8,7 @@ import java.util.List;
 import com.easytnt.grading.domain.cuttings.CuttingBlock;
 import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.cuttings.CuttingsArea;
+import com.easytnt.grading.domain.cuttings.OmrDefine;
 import com.easytnt.grading.domain.paper.ExamPaper;
 
 /**
@@ -26,4 +27,6 @@ public interface CuttingsSolutionService {
 	public void saveCuttingAreaes(ExamPaper paper, List<CuttingBlock> cuttingBlocks);
 
 	public List<CuttingsArea> getCuttingAreaes(Long paperId);
+
+	public OmrDefine listSelectItemDefines(Long paperId);
 }

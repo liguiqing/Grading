@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.easytnt.grading.domain.cuttings.SelectItemArea"
+		table="selectitemarea">
+		<id name="id" type="java.lang.Long">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="selectOption" type="java.lang.String">
+			<column name="selectOption" />
+		</property>
+		<property name="left" column="[left]" type="java.lang.Integer" />
+		<property name="top" column="top" type="java.lang.Integer" />
+		<property name="width" column="width" type="java.lang.Integer" />
+		<property name="height" column="height" type="java.lang.Integer" />
+		<many-to-one name="selectItemDefine" column="selectItemDefineId"
+			class="com.easytnt.grading.domain.cuttings.SelectItemDefine" cascade="all" />
+
+	</class>
+</hibernate-mapping>

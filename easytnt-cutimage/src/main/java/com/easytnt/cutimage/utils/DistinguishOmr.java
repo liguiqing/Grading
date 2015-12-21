@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import com.easytnt.cutimage.disruptor.event.DistinguishOMREvent;
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
-import com.easytnt.grading.domain.cuttings.SelectItem;
 import com.easytnt.grading.domain.cuttings.SelectItemArea;
+import com.easytnt.grading.domain.cuttings.SelectItemDefine;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -28,12 +28,12 @@ import ij.process.ImageStatistics;
  * @author liuyu
  *
  */
-public class DistinguishOMR {
-	private Logger log = LoggerFactory.getLogger(DistinguishOMR.class);
+public class DistinguishOmr {
+	private Logger log = LoggerFactory.getLogger(DistinguishOmr.class);
 	private DistinguishOMREvent event;
 	private ArrayList<ImagePlus> sourceImageImps = new ArrayList<>();
 
-	public DistinguishOMR(DistinguishOMREvent event) {
+	public DistinguishOmr(DistinguishOMREvent event) {
 		this.event = event;
 	}
 
@@ -46,7 +46,7 @@ public class DistinguishOMR {
 	}
 
 	private void rotateImages() {
-		List<AnswerCardCuttingTemplate> templateInfos = event.getPaper().getAnswerCardCuttingTemplates();
+		List<AnswerCardCuttingTemplate> templateInfos = event.getOmrDefine().getPaper().getAnswerCardCuttingTemplates();
 		for (AnswerCardCuttingTemplate templateInfo : templateInfos) {
 			ImagePlus imp = sourceImageImps.get(templateInfo.getIndex());
 			String command = "left";
@@ -60,12 +60,12 @@ public class DistinguishOMR {
 	public void distinguish() {
 		loadImagePlus();
 		rotateImages();
-		List<SelectItem> items = event.getItems();
+		List<SelectItemDefine> items = event.getOmrDefine().getSelectItemDefines();
 
 		StringBuffer selectedOptionBuffer = new StringBuffer();
 		StringBuffer scoreBuffer = new StringBuffer();
 
-		for (SelectItem item : items) {
+		for (SelectItemDefine item : items) {
 			String selectedOption = distinguishItem(item);
 			String score = calcualteScore(item, selectedOption);
 			selectedOptionBuffer.append(selectedOption).append(",");
@@ -78,12 +78,12 @@ public class DistinguishOMR {
 			scoreBuffer.deleteCharAt(scoreBuffer.length() - 1);
 		}
 
-		log.debug(new ToStringBuilder("").append("paperID:", event.getPaper().getPaperId())
+		log.debug(new ToStringBuilder("").append("paperID:", event.getOmrDefine().getPaper().getPaperId())
 				.append("studentId:", event.getStudentId()).append("OMRSTR:", selectedOptionBuffer.toString())
 				.append("OMRSCORE:", scoreBuffer.toString()).toString());
 	}
 
-	private String calcualteScore(SelectItem item, String selectedOption) {
+	private String calcualteScore(SelectItemDefine item, String selectedOption) {
 		if (item.isSingleSelect()) {
 			if (selectedOption.equals(item.getAnswer())) {
 				return NumberFormat.clearZero(item.getFullScore());
@@ -100,8 +100,8 @@ public class DistinguishOMR {
 		}
 	}
 
-	private String distinguishItem(SelectItem item) {
-		ImagePlus imp = sourceImageImps.get(item.getIndex());
+	private String distinguishItem(SelectItemDefine item) {
+		ImagePlus imp = sourceImageImps.get(item.getTemplateIndex());
 		ImageProcessor ip = imp.getProcessor();
 		List<SelectItemArea> areas = item.getAreas();
 		StringBuffer selectedOption = new StringBuffer();

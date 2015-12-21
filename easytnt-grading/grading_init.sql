@@ -1,3 +1,40 @@
+
+
+DROP TABLE IF EXISTS omrResult;
+CREATE TABLE omrResult(
+	paperId INT,
+	studentId INT COMMENT '学生ID',
+	kgScore FLOAT COMMENT '学生分数',
+	omrStr TEXT COMMENT '学生选择串',
+	omrScore TEXT COMMENT '学生得分串'
+)COMMENT='学生客观题成绩表';
+
+DROP TABLE IF EXISTS SelectItemDefine;
+CREATE TABLE SelectItemDefine(
+	id INT NOT NULL AUTO_INCREMENT,
+	NAME VARCHAR(10) COMMENT '题号',
+	answer VARCHAR(10) COMMENT '答案',
+	fullScore FLOAT COMMENT '分值',
+	singleSelect BOOLEAN DEFAULT TRUE COMMENT '是否单项选择题',
+	giveScoreRule VARCHAR(50) COMMENT '多项选择题给分规则',
+	giveScoreRuleScore VARCHAR(50) COMMENT '多项选择题规则给分',
+	templateIndex int COMMENT '小题在那张图片上',
+	paperId int,
+	PRIMARY KEY (`id`)
+) COMMENT='选择题定义';
+
+DROP TABLE IF EXISTS SelectItemArea;
+CREATE TABLE SelectItemArea(
+	id INT NOT NULL AUTO_INCREMENT,
+	selectItemDefineId int,
+	selectOption CHAR(1) COMMENT '对应选项',
+	`left` INT COMMENT 'x坐标',
+	top INT COMMENT 'y坐标',
+	width INT COMMENT '宽度',
+	height INT COMMENT '高度',
+	PRIMARY KEY (`id`)
+) COMMENT='选择题定位点';
+
 DROP TABLE IF EXISTS cuttingDefine;
 CREATE TABLE `cuttingDefine` (
    `id` INT NOT NULL AUTO_INCREMENT,

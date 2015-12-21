@@ -19,7 +19,7 @@ import com.easytnt.grading.domain.paper.ExamPaper;
  * @author liuyu
  *
  */
-public class SelectItem {
+public class SelectItemDefine {
 	private Long id;
 	private String name;
 	private String answer;
@@ -29,22 +29,22 @@ public class SelectItem {
 	private List<Float> giveScoreRuleScore;
 	private ExamPaper paper;
 	private List<SelectItemArea> areas;
+	private int templateIndex;
 
-	private int index;
-
-	public int getIndex() {
-		return index;
+	public int getTemplateIndex() {
+		return templateIndex;
 	}
 
-	public void setIndex(int index) {
-		this.index = index;
+	public SelectItemDefine setTemplateIndex(int templateIndex) {
+		this.templateIndex = templateIndex;
+		return this;
 	}
 
 	public List<SelectItemArea> getAreas() {
 		return areas;
 	}
 
-	public SelectItem setAreas(List<SelectItemArea> areas) {
+	public SelectItemDefine setAreas(List<SelectItemArea> areas) {
 		this.areas = areas;
 		return this;
 	}
@@ -53,7 +53,7 @@ public class SelectItem {
 		return id;
 	}
 
-	public SelectItem setId(Long id) {
+	public SelectItemDefine setId(Long id) {
 		this.id = id;
 		return this;
 	}
@@ -62,7 +62,7 @@ public class SelectItem {
 		return paper;
 	}
 
-	public SelectItem setPaper(ExamPaper paper) {
+	public SelectItemDefine setPaper(ExamPaper paper) {
 		this.paper = paper;
 		return this;
 	}
@@ -71,7 +71,7 @@ public class SelectItem {
 		return singleSelect;
 	}
 
-	public SelectItem setSingleSelect(boolean singleSelect) {
+	public SelectItemDefine setSingleSelect(boolean singleSelect) {
 		this.singleSelect = singleSelect;
 		return this;
 	}
@@ -80,7 +80,7 @@ public class SelectItem {
 		return name;
 	}
 
-	public SelectItem setName(String name) {
+	public SelectItemDefine setName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -89,7 +89,7 @@ public class SelectItem {
 		return answer;
 	}
 
-	public SelectItem setAnswer(String answer) {
+	public SelectItemDefine setAnswer(String answer) {
 		this.answer = answer;
 		return this;
 	}
@@ -98,7 +98,7 @@ public class SelectItem {
 		return fullScore;
 	}
 
-	public SelectItem setFullScore(float fullScore) {
+	public SelectItemDefine setFullScore(float fullScore) {
 		this.fullScore = fullScore;
 		return this;
 	}
@@ -107,7 +107,7 @@ public class SelectItem {
 		return giveScoreRule;
 	}
 
-	public SelectItem setGiveScoreRule(List<String> giveScoreRule) {
+	public SelectItemDefine setGiveScoreRule(List<String> giveScoreRule) {
 		this.giveScoreRule = giveScoreRule;
 		return this;
 	}
@@ -116,17 +116,20 @@ public class SelectItem {
 		return giveScoreRuleScore;
 	}
 
-	public SelectItem setGiveScoreRuleScore(List<Float> giveScoreRuleScore) {
+	public SelectItemDefine setGiveScoreRuleScore(List<Float> giveScoreRuleScore) {
 		this.giveScoreRuleScore = giveScoreRuleScore;
 		return this;
 	}
 
-	public SelectItem setGieveScoreRuleCharacter(String gieveScoreRuleCharacter) {
+	public SelectItemDefine setGieveScoreRuleCharacter(String gieveScoreRuleCharacter) {
 		genGiveScoreRule(gieveScoreRuleCharacter);
 		return this;
 	}
 
 	private void genGiveScoreRule(String gieveScoreRuleCharacter) {
+		if (gieveScoreRuleCharacter == null || "".equals(gieveScoreRuleCharacter)) {
+			return;
+		}
 		String[] rules = gieveScoreRuleCharacter.split(",");
 		if (rules.length > 0) {
 			giveScoreRule = new ArrayList<>();
@@ -152,12 +155,15 @@ public class SelectItem {
 		return null;
 	}
 
-	public SelectItem setGieveScoreRuleScoreCharacter(String gieveScoreRuleScoreCharacter) {
+	public SelectItemDefine setGieveScoreRuleScoreCharacter(String gieveScoreRuleScoreCharacter) {
 		genGiveScoreRuleScore(gieveScoreRuleScoreCharacter);
 		return this;
 	}
 
 	private void genGiveScoreRuleScore(String gieveScoreRuleScoreCharacter) {
+		if (gieveScoreRuleScoreCharacter == null || "".equals(gieveScoreRuleScoreCharacter)) {
+			return;
+		}
 		String[] rules = gieveScoreRuleScoreCharacter.split(",");
 		if (rules.length > 0) {
 			giveScoreRuleScore = new ArrayList<>();
@@ -183,7 +189,7 @@ public class SelectItem {
 		return null;
 	}
 
-	public SelectItem addAreas(SelectItemArea area) {
+	public SelectItemDefine addAreas(SelectItemArea area) {
 		if (areas == null) {
 			areas = new ArrayList<>();
 		}
@@ -198,9 +204,9 @@ public class SelectItem {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof SelectItem))
+		if (!(obj instanceof SelectItemDefine))
 			return false;
-		SelectItem other = (SelectItem) obj;
+		SelectItemDefine other = (SelectItemDefine) obj;
 
 		return new EqualsBuilder().append(this.id, other.id).append(this.name, other.name).isEquals();
 	}

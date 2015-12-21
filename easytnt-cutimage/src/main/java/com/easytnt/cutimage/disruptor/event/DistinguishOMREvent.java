@@ -6,8 +6,8 @@ package com.easytnt.cutimage.disruptor.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.easytnt.grading.domain.cuttings.SelectItem;
-import com.easytnt.grading.domain.paper.ExamPaper;
+import com.easytnt.grading.domain.cuttings.OmrDefine;
+import com.easytnt.grading.domain.cuttings.OrmResult;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventTranslator;
 
@@ -20,16 +20,25 @@ import com.lmax.disruptor.EventTranslator;
  */
 public class DistinguishOMREvent {
 	private String studentId;
-	private ExamPaper paper;
-	private List<SelectItem> items;
+	private OmrDefine omrDefine;
 	private List<String> filePaths = new ArrayList<>();
+	private OrmResult ormResult;
 
-	public ExamPaper getPaper() {
-		return paper;
+	public OrmResult getOrmResult() {
+		return ormResult;
 	}
 
-	public DistinguishOMREvent setPaper(ExamPaper paper) {
-		this.paper = paper;
+	public DistinguishOMREvent setOrmResult(OrmResult ormResult) {
+		this.ormResult = ormResult;
+		return this;
+	}
+
+	public OmrDefine getOmrDefine() {
+		return omrDefine;
+	}
+
+	public DistinguishOMREvent setOmrDefine(OmrDefine omrDefine) {
+		this.omrDefine = omrDefine;
 		return this;
 	}
 
@@ -39,15 +48,6 @@ public class DistinguishOMREvent {
 
 	public DistinguishOMREvent setStudentId(String studentId) {
 		this.studentId = studentId;
-		return this;
-	}
-
-	public List<SelectItem> getItems() {
-		return items;
-	}
-
-	public DistinguishOMREvent setItems(List<SelectItem> items) {
-		this.items = items;
 		return this;
 	}
 
@@ -61,10 +61,9 @@ public class DistinguishOMREvent {
 	}
 
 	protected void clone(DistinguishOMREvent event) {
-		items = event.items;
 		studentId = event.studentId;
 		filePaths = event.filePaths;
-		paper = event.paper;
+		omrDefine = event.omrDefine;
 	}
 
 	public static final EventFactory<DistinguishOMREvent> FACTORY = new EventFactory<DistinguishOMREvent>() {
