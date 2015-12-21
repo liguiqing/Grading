@@ -103,6 +103,8 @@
 				<value>hibernate/mapping/cutting/PositionOfItemInArea.hbm.xml</value>
 				<value>hibernate/mapping/cutting/CuttingDefine.hbm.xml</value>
 				<value>hibernate/mapping/cutting/GiveScorePoint.hbm.xml</value>
+				<value>hibernate/mapping/cutting/SelectItemDefine.hbm.xml</value>
+				<value>hibernate/mapping/cutting/SelectItemArea.hbm.xml</value>
 				<value>hibernate/mapping/user/SsoUser.hbm.xml</value>
 			</list>
 		</property>

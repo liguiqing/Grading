@@ -4,7 +4,7 @@
 package com.easytnt.importpaper.disruptor.handler;
 
 import com.easytnt.importpaper.disruptor.event.CutImageEvent;
-import com.easytnt.importpaper.service.SaveCutImageInfoToDatabaseService;
+import com.easytnt.importpaper.service.SaveCutImageInfoToDBService;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;
 
@@ -16,9 +16,9 @@ import com.lmax.disruptor.WorkHandler;
  *
  */
 public class SaveToDatabase implements EventHandler<CutImageEvent>, WorkHandler<CutImageEvent> {
-	private SaveCutImageInfoToDatabaseService saveService;
+	private SaveCutImageInfoToDBService saveService;
 
-	public SaveToDatabase(SaveCutImageInfoToDatabaseService saveService) {
+	public SaveToDatabase(SaveCutImageInfoToDBService saveService) {
 		this.saveService = saveService;
 	}
 

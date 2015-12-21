@@ -21,4 +21,5 @@ public interface CuttingDefineRepository extends Repository<CuttingDefine, Long>
 	public List<CuttingDefine> listCuttingDefinesWith(Long paperId);
 
 	public void deleteCuttingDefinesWith(Long paperId);
+
 }

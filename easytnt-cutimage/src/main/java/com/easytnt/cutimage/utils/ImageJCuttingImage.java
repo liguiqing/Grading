@@ -18,7 +18,6 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Roi;
 import ij.plugin.Duplicator;
-import ij.plugin.filter.Transformer;
 import ij.process.ImageProcessor;
 
 /**
@@ -65,14 +64,8 @@ public class ImageJCuttingImage extends BaseCuttingImage {
 			if (templateInfo.getRotate() > 0) {
 				command = "right";
 			}
-			transformer(imp, command);
+			ImageJTool.transformer(imp, command);
 		}
-	}
-
-	private void transformer(ImagePlus imp, String command) {
-		Transformer transformer = new Transformer();
-		transformer.setup(command, imp);
-		transformer.run(imp.getProcessor());
 	}
 
 	private void executeCutting() throws Exception {

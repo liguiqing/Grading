@@ -17,7 +17,7 @@ import com.easytnt.importpaper.disruptor.handler.CountDownLatchHandler;
 import com.easytnt.importpaper.disruptor.handler.SaveToDatabase;
 import com.easytnt.importpaper.disruptor.handler.StatisticScanFile;
 import com.easytnt.importpaper.disruptor.produce.ScanDirProduce;
-import com.easytnt.importpaper.service.SaveCutImageInfoToDatabaseService;
+import com.easytnt.importpaper.service.SaveCutImageInfoToDBService;
 import com.easytnt.thread.EasytntExecutor;
 import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -34,11 +34,11 @@ import com.lmax.disruptor.util.Util;
 public class StartScanDirSaveToDatabase implements Runnable {
 	private final Logger log = LoggerFactory.getLogger(StartScanDirSaveToDatabase.class);
 	private ScannerDirectoryConfig config;
-	private SaveCutImageInfoToDatabaseService saveService;
+	private SaveCutImageInfoToDBService saveService;
 
 	public StartScanDirSaveToDatabase(ScannerDirectoryConfig config, DataSource ds) {
 		this.config = config;
-		SaveCutImageInfoToDatabaseServiceImpl saveService = new SaveCutImageInfoToDatabaseServiceImpl();
+		SaveCutImageInfoToDBServiceImpl saveService = new SaveCutImageInfoToDBServiceImpl();
 		saveService.setDatasource(ds);
 		this.saveService = saveService;
 	}

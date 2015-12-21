@@ -14,7 +14,7 @@ import com.easytnt.importpaper.bean.CutImageInfo;
  * @author liuyu
  *
  */
-public interface SaveCutImageInfoToDatabaseService {
+public interface SaveCutImageInfoToDBService {
 	public void save(CutImageInfo cutImageInfo);
 
 	public void save(List<CutImageInfo> cutImageInfos);

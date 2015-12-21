@@ -16,21 +16,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.easytnt.commons.exception.ThrowableParser;
-import com.easytnt.cutimage.disruptor.event.StudentTestPaperAnswerCardEvent;
-import com.easytnt.cutimage.disruptor.event.StudentTestPaperAnswerCardEvent.StudentTestPaperAnswerCardEventTranslator;
-import com.easytnt.cutimage.disruptor.handler.CountDownLatchHandler;
-import com.easytnt.cutimage.disruptor.handler.CuttingImageHandler;
-import com.easytnt.cutimage.disruptor.handler.LogHandlerException;
-import com.easytnt.cutimage.disruptor.handler.SaveCuttingBlockToDBHandler;
-import com.easytnt.grading.domain.cuttings.CuttingSolution;
+import com.easytnt.cutimage.disruptor.event.DistinguishOMREvent;
+import com.easytnt.cutimage.disruptor.event.DistinguishOMREvent.DistinguishOMREventTranslator;
+import com.easytnt.cutimage.disruptor.handler.OMRCountDownLatchHandler;
+import com.easytnt.cutimage.disruptor.handler.OMRDistinguishHandler;
+import com.easytnt.cutimage.disruptor.handler.OMRLogHandlerException;
+import com.easytnt.cutimage.disruptor.handler.OMRResultToDBHandler;
+import com.easytnt.grading.domain.cuttings.OmrDefine;
 import com.easytnt.importpaper.bean.CountContainer;
 import com.easytnt.importpaper.bean.CountContainerMgr;
 import com.easytnt.importpaper.io.scanfiledir.DirectoryScanner;
 import com.easytnt.importpaper.io.scanfiledir.DirectoryScannerFactory;
 import com.easytnt.importpaper.io.scanfiledir.FileInfo;
 import com.easytnt.importpaper.io.scanfiledir.VisitorFile;
-import com.easytnt.importpaper.service.SaveCutImageInfoToDBService;
-import com.easytnt.importpaper.service.impl.SaveCutImageInfoToDBServiceImpl;
+import com.easytnt.importpaper.service.SaveOmrResultToDBService;
+import com.easytnt.importpaper.service.impl.SaveOmrResultToDBServiceImpl;
 import com.easytnt.thread.EasytntExecutor;
 import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -44,27 +44,27 @@ import com.lmax.disruptor.util.Util;
  * @author liuyu
  *
  */
-public class StartCuttingTestpaper implements Runnable {
-	private Logger log = LoggerFactory.getLogger(StartCuttingTestpaper.class);
-	private CuttingSolution cuttingsSolution;
+public class StartDistinguishOmr implements Runnable {
+	private Logger log = LoggerFactory.getLogger(StartDistinguishOmr.class);
+	private OmrDefine omrDefine;
 	private CountContainer<Integer> countContainer;
-	private SaveCutImageInfoToDBService saveService;
+	private SaveOmrResultToDBService saveService;
 
-	public StartCuttingTestpaper(CuttingSolution cuttingsSolution, DataSource ds) {
-		this.cuttingsSolution = cuttingsSolution;
+	public StartDistinguishOmr(OmrDefine omrDefine, DataSource ds) {
+		this.omrDefine = omrDefine;
 		createContainer();
 		createSaveDatabaseService(ds);
 	}
 
 	private void createContainer() {
 		countContainer = new CountContainer<>(0);
-		String key = "paperId:" + this.cuttingsSolution.getPaper().getPaperId();
+		String key = "OMR:paperId:" + omrDefine.getPaper().getPaperId();
 		CountContainerMgr.getInstance().put(key, countContainer);
 
 	}
 
 	private void createSaveDatabaseService(DataSource ds) {
-		SaveCutImageInfoToDBServiceImpl saveServiceImpl = new SaveCutImageInfoToDBServiceImpl();
+		SaveOmrResultToDBServiceImpl saveServiceImpl = new SaveOmrResultToDBServiceImpl();
 		saveServiceImpl.setDatasource(ds);
 		this.saveService = saveServiceImpl;
 	}
@@ -73,16 +73,15 @@ public class StartCuttingTestpaper implements Runnable {
 	public void run() {
 		long b = System.currentTimeMillis();
 		CountDownLatch studentCountDownLatch = createStudentCountDownLatch();
-		Disruptor<StudentTestPaperAnswerCardEvent> cuttingDisruptor = createCuttingDisruptor(studentCountDownLatch);
+		Disruptor<DistinguishOMREvent> disruptor = createDisruptor(studentCountDownLatch);
 		try {
-			publishTask(cuttingDisruptor);
+			publishTask(disruptor);
 			studentCountDownLatch.await();
-			cuttingDisruptor.shutdown();
+			disruptor.shutdown();
 			saveService.clear();
 			countContainer.setIsOver(true);
 			long e = System.currentTimeMillis();
-			log.debug("[" + cuttingsSolution.getPaper().getPaperId() + "]且过完毕花费" + ((e - b) * 1.0 / 1000) + "秒!");
-			;
+			log.debug("[" + omrDefine.getPaper().getPaperId() + "]且过完毕花费" + ((e - b) * 1.0 / 1000) + "秒!");
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(ThrowableParser.toString(e));
@@ -99,7 +98,7 @@ public class StartCuttingTestpaper implements Runnable {
 	private int getStudentCount() {
 		final Counter counter = new Counter();
 		DirectoryScanner directoryScanner = DirectoryScannerFactory
-				.getDirectoryScanner(cuttingsSolution.getPaper().getStudentAnserCardRootPath());
+				.getDirectoryScanner(omrDefine.getPaper().getStudentAnserCardRootPath());
 		try {
 			directoryScanner.scan(new VisitorFile() {
 				private ArrayList<String> paths = new ArrayList<>();
@@ -124,25 +123,24 @@ public class StartCuttingTestpaper implements Runnable {
 		return counter.getCounter();
 	}
 
-	private Disruptor<StudentTestPaperAnswerCardEvent> createCuttingDisruptor(CountDownLatch countDownLatch) {
+	private Disruptor<DistinguishOMREvent> createDisruptor(CountDownLatch countDownLatch) {
 		int bufferSize = Util.ceilingNextPowerOfTwo(1024);
-		final Disruptor<StudentTestPaperAnswerCardEvent> disruptor = new Disruptor<>(
-				StudentTestPaperAnswerCardEvent.FACTORY, bufferSize, EasytntExecutor.instance().getExecutorService(),
-				ProducerType.SINGLE, new YieldingWaitStrategy());
+		final Disruptor<DistinguishOMREvent> disruptor = new Disruptor<>(DistinguishOMREvent.FACTORY, bufferSize,
+				EasytntExecutor.instance().getExecutorService(), ProducerType.SINGLE, new YieldingWaitStrategy());
 
-		disruptor.handleExceptionsWith(new LogHandlerException());
+		disruptor.handleExceptionsWith(new OMRLogHandlerException());
 
 		disruptor
-				.handleEventsWithWorkerPool(new CuttingImageHandler(), new CuttingImageHandler(),
-						new CuttingImageHandler(), new CuttingImageHandler())
-				.handleEventsWithWorkerPool(new SaveCuttingBlockToDBHandler(saveService))
-				.handleEventsWith(new CountDownLatchHandler(countDownLatch, countContainer));
+				.handleEventsWithWorkerPool(new OMRDistinguishHandler(), new OMRDistinguishHandler(),
+						new OMRDistinguishHandler(), new OMRDistinguishHandler())
+				.handleEventsWithWorkerPool(new OMRResultToDBHandler(saveService))
+				.handleEventsWith(new OMRCountDownLatchHandler(countDownLatch, countContainer));
 		disruptor.start();
 		return disruptor;
 	}
 
-	private void publishTask(final Disruptor<StudentTestPaperAnswerCardEvent> cuttingDisruptor) throws Exception {
-		final String rootDir = cuttingsSolution.getPaper().getStudentAnserCardRootPath();
+	private void publishTask(final Disruptor<DistinguishOMREvent> disruptor) throws Exception {
+		final String rootDir = omrDefine.getPaper().getStudentAnserCardRootPath();
 		DirectoryScanner directoryScanner = DirectoryScannerFactory.getDirectoryScanner(rootDir);
 		directoryScanner.scan(new VisitorFile() {
 			@Override
@@ -156,20 +154,19 @@ public class StartCuttingTestpaper implements Runnable {
 						e.printStackTrace();
 					}
 					for (String studentInfo : studentInfos) {
-						StudentTestPaperAnswerCardEvent event = createStudentTestPaperAnswerCardEvent(rootDir,
+						DistinguishOMREvent event = createDistinguishOMREvent(rootDir,
 								fileInfo.getFilePath().getParent(), studentInfo);
-						cuttingDisruptor.publishEvent(new StudentTestPaperAnswerCardEventTranslator(event));
+						disruptor.publishEvent(new DistinguishOMREventTranslator(event));
 					}
 				}
 			}
 		});
 	}
 
-	private StudentTestPaperAnswerCardEvent createStudentTestPaperAnswerCardEvent(String rootDir, Path parentPath,
-			String studentInfo) {
-		StudentTestPaperAnswerCardEvent event = new StudentTestPaperAnswerCardEvent();
-		event.setFilePaths(createSourceImagePath(parentPath, studentInfo)).setScanSourceImageRootDir(rootDir)
-				.setCuttingsSolution(cuttingsSolution).setStudentId(getStudentId(studentInfo));
+	private DistinguishOMREvent createDistinguishOMREvent(String rootDir, Path parentPath, String studentInfo) {
+		DistinguishOMREvent event = new DistinguishOMREvent();
+		event.setFilePaths(createSourceImagePath(parentPath, studentInfo)).setOmrDefine(omrDefine)
+				.setStudentId(getStudentId(studentInfo));
 		return event;
 	}
 

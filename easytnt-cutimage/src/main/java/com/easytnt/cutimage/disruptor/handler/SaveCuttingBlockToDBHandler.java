@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.easytnt.cutimage.disruptor.event.StudentTestPaperAnswerCardEvent;
-import com.easytnt.importpaper.service.SaveCutImageInfoToDatabaseService;
+import com.easytnt.importpaper.service.SaveCutImageInfoToDBService;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;
 
@@ -21,9 +21,9 @@ import com.lmax.disruptor.WorkHandler;
 public class SaveCuttingBlockToDBHandler
 		implements WorkHandler<StudentTestPaperAnswerCardEvent>, EventHandler<StudentTestPaperAnswerCardEvent> {
 	private static Logger log = LoggerFactory.getLogger(SaveCuttingBlockToDBHandler.class);
-	private SaveCutImageInfoToDatabaseService saveService;
+	private SaveCutImageInfoToDBService saveService;
 
-	public SaveCuttingBlockToDBHandler(SaveCutImageInfoToDatabaseService saveService) {
+	public SaveCuttingBlockToDBHandler(SaveCutImageInfoToDBService saveService) {
 		this.saveService = saveService;
 	}
 

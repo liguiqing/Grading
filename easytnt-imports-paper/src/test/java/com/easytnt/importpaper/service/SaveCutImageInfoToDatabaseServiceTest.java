@@ -5,7 +5,7 @@ package com.easytnt.importpaper.service;
 
 import org.junit.Test;
 
-import com.easytnt.importpaper.service.impl.SaveCutImageInfoToDatabaseServiceImpl;
+import com.easytnt.importpaper.service.impl.SaveCutImageInfoToDBServiceImpl;
 
 /**
  * <pre>
@@ -18,6 +18,6 @@ public class SaveCutImageInfoToDatabaseServiceTest {
 
 	@Test
 	public void newSaveCutImageInfoToDatabaseService() throws Exception {
-		SaveCutImageInfoToDatabaseServiceImpl serviceImpl = new SaveCutImageInfoToDatabaseServiceImpl();
+		SaveCutImageInfoToDBServiceImpl serviceImpl = new SaveCutImageInfoToDBServiceImpl();
 	}
 }

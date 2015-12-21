@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.easytnt.grading.domain.cuttings.CuttingDefine;
 import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.domain.cuttings.GiveScorePoint;
+import com.easytnt.grading.domain.cuttings.OmrDefine;
 import com.easytnt.grading.domain.paper.ExamPaper;
 
 /**
@@ -54,6 +55,12 @@ public class CuttingsSolutionServiceTest {
 	@Test
 	public void getCuttingDefines() throws Exception {
 		CuttingSolution cuttingsSolution = service.getCuttingDefines(3L);
+		System.out.println();
+	}
+
+	@Test
+	public void listSelectItemDefines() throws Exception {
+		OmrDefine omrDefine = service.listSelectItemDefines(3L);
 		System.out.println();
 	}
 }
