@@ -26,7 +26,7 @@
 		  	    <#if usedPaper.sections ?size = 0>
 		  	      <td><a class="cuttingDefine" href="javascript:void(0)" data-paperid="${usedPaper.paperId}">定义切割方案</a></td>
 		  	    <#else>
-		  	      <td><a href="javascript:void(0)">${usedPaper.sections ?size}</a></td>
+		  	      <td><a class="cuttingDefine" href="javascript:void(0)" data-paperid="${usedPaper.paperId}">${usedPaper.sections ?size}</a></td>
 		  	    </#if>
 		  	    <td ><a href="${request.contextPath}/task/assignto/${result.subject.id}/${usedPaper.paperId}">分配任务</a></td>
 		  	    <td data-rr-paperId="${usedPaper.paperId}" >${usedPaper.fullScore}</td>

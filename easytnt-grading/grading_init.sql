@@ -1,13 +1,13 @@
 
 
 DROP TABLE IF EXISTS omrResult;
-CREATE TABLE omrResult(
-	paperId INT,
-	studentId INT COMMENT '学生ID',
-	kgScore FLOAT COMMENT '学生分数',
-	omrStr TEXT COMMENT '学生选择串',
-	omrScore TEXT COMMENT '学生得分串'
-)COMMENT='学生客观题成绩表';
+CREATE TABLE `omrresult` (
+   `paperId` bigint(20) DEFAULT NULL,
+   `studentId` bigint(20) DEFAULT NULL COMMENT '学生ID',
+   `kgScore` float(5,2) DEFAULT NULL COMMENT '学生分数',
+   `omrStr` text COMMENT '学生选择串',
+   `omrScore` text COMMENT '学生得分串'
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学生客观题成绩表';
 
 DROP TABLE IF EXISTS SelectItemDefine;
 CREATE TABLE SelectItemDefine(
@@ -327,7 +327,7 @@ CREATE TABLE `paperimport` (
   `testid` bigint(20) DEFAULT NULL COMMENT '科目考试id，关联到test.test_id',
   `paperid` bigint(20) DEFAULT NULL COMMENT '考试用卷id，关联到paper_info.paper_id',
   `kemuoid` bigint(20) DEFAULT NULL COMMENT '考试用卷对应科目id，关联到sbuject.subject_id',
-  `studentoid` varchar(32) DEFAULT NULL COMMENT '切割图片所属学生oid,关联到examinee.examinne_uuid',
+  `studentoid` bigint(20) DEFAULT NULL COMMENT '切割图片所属学生oid,关联到examinee.examinne_uuid',
   `itemid` bigint(20) DEFAULT NULL COMMENT '切割块id',
   `diquId` bigint(20) DEFAULT NULL COMMENT '关联到district.district_id',
   `roomid` bigint(20) DEFAULT NULL COMMENT '考场id,关联到room.room_id',
@@ -343,7 +343,7 @@ CREATE TABLE `getpaper` (
   `paperid` bigint(20) DEFAULT NULL COMMENT '考试用卷id，关联到paper_info.paper_id',
   `kemuoid` bigint(20) DEFAULT NULL COMMENT '考试用卷对应科目id，关联到sbuject.subject_id',
   `virtualroomid` bigint(20) DEFAULT NULL COMMENT '考场id,关联到room.room_id',
-  `studentoid` varchar(32) DEFAULT NULL COMMENT '切割图片所属学生oid,关联到examinee.examinne_uuid',
+  `studentoid` bigint(20) DEFAULT NULL COMMENT '切割图片所属学生oid,关联到examinee.examinne_uuid',
   `itemid` bigint(20) DEFAULT NULL COMMENT '切割块id',
   `teacheroid` bigint(20) DEFAULT NULL COMMENT '评卷老师id',
   `getpaperdatetime` datetime DEFAULT NULL COMMENT '取卷时间,精确到秒',
@@ -359,7 +359,7 @@ CREATE TABLE `scoreinfolog` (
   `paperid` bigint(20) DEFAULT NULL COMMENT '考试用卷id，关联到paper_info.paper_id',
   `kemuoid` bigint(20) DEFAULT NULL COMMENT '考试用卷对应科目id，关联到sbuject.subject_id',
   `virtualroomid` bigint(20) DEFAULT NULL COMMENT '考场id,关联到room.room_id',
-  `studentoid` varchar(32) DEFAULT NULL COMMENT '切割图片所属学生oid,关联到examinee.examinne_uuid',
+  `studentoid` bigint(20) DEFAULT NULL COMMENT '切割图片所属学生oid,关联到examinee.examinne_uuid',
   `itemid` bigint(20) DEFAULT NULL COMMENT '切割块id',
   `papertype` varchar(10) DEFAULT NULL COMMENT '试卷类型，其值来源于getpaper.papertype',
   `score` float(5,2) DEFAULT NULL COMMENT '得分',
@@ -380,7 +380,7 @@ CREATE TABLE `lastscore` (
   `paperid` bigint(20) DEFAULT NULL COMMENT '考试用卷id，关联到paper_info.paper_id',
   `kemuoid` bigint(20) DEFAULT NULL COMMENT '考试用卷对应科目id，关联到sbuject.subject_id',
   `virtualroomid` bigint(20) DEFAULT NULL COMMENT '考场id,关联到room.room_id',
-  `studentoid` varchar(32) DEFAULT NULL COMMENT '切割图片所属学生oid,关联到examinee.examinne_uuid',
+  `studentoid` bigint(20) DEFAULT NULL COMMENT '切割图片所属学生oid,关联到examinee.examinne_uuid',
   `itemid` bigint(20) DEFAULT NULL COMMENT '切割块id',
   `score` float(5,2) DEFAULT NULL COMMENT '切割块得分，n评计算的最终结果',
   `postdatetime` datetime DEFAULT NULL COMMENT '提交时间',
