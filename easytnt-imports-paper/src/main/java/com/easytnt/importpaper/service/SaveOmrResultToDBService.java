@@ -5,7 +5,7 @@ package com.easytnt.importpaper.service;
 
 import java.util.List;
 
-import com.easytnt.grading.domain.cuttings.OrmResult;
+import com.easytnt.grading.domain.cuttings.OmrResult;
 
 /**
  * <pre>
@@ -15,9 +15,9 @@ import com.easytnt.grading.domain.cuttings.OrmResult;
  *
  */
 public interface SaveOmrResultToDBService {
-	public void save(OrmResult ormResult);
+	public void save(OmrResult ormResult);
 
-	public void save(List<OrmResult> ormResults);
+	public void save(List<OmrResult> ormResults);
 
 	public void clear();
 }
