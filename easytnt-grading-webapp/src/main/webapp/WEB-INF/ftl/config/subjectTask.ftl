@@ -14,7 +14,7 @@
 	      <li class="col-md-12">
 	        <ul class="col-md-12 nav navbar-nav">
 	        <#list teachers as t>
-		      <li class="col-md-2 col-radio">
+		      <li class="col-md-3 col-radio">
 		        <label class="control-label <#if t.leader = 1>leader</#if>">
 		          <input class="form-control" type="checkbox" data-tid="${t.teacherId}">${t.teacherAccount}[${t.teacherName!}]
 		        </label>
