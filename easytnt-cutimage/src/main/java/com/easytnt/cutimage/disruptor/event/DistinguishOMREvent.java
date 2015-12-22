@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.easytnt.grading.domain.cuttings.OmrDefine;
-import com.easytnt.grading.domain.cuttings.OrmResult;
+import com.easytnt.grading.domain.cuttings.OmrResult;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventTranslator;
 
@@ -22,13 +22,13 @@ public class DistinguishOMREvent {
 	private String studentId;
 	private OmrDefine omrDefine;
 	private List<String> filePaths = new ArrayList<>();
-	private OrmResult ormResult;
+	private OmrResult ormResult;
 
-	public OrmResult getOrmResult() {
+	public OmrResult getOrmResult() {
 		return ormResult;
 	}
 
-	public DistinguishOMREvent setOrmResult(OrmResult ormResult) {
+	public DistinguishOMREvent setOrmResult(OmrResult ormResult) {
 		this.ormResult = ormResult;
 		return this;
 	}

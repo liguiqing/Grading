@@ -3,6 +3,8 @@
  */
 package com.easytnt.grading.domain.cuttings;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * <pre>
  * </pre>
@@ -10,7 +12,7 @@ package com.easytnt.grading.domain.cuttings;
  * @author liuyu
  *
  */
-public class OrmResult {
+public class OmrResult {
 	private Long paperId;
 	private Long studentId;
 	private String omrStr;
@@ -21,7 +23,7 @@ public class OrmResult {
 		return paperId;
 	}
 
-	public OrmResult setPaperId(Long paperId) {
+	public OmrResult setPaperId(Long paperId) {
 		this.paperId = paperId;
 		return this;
 	}
@@ -30,7 +32,7 @@ public class OrmResult {
 		return studentId;
 	}
 
-	public OrmResult setStudentId(Long studentId) {
+	public OmrResult setStudentId(Long studentId) {
 		this.studentId = studentId;
 		return this;
 	}
@@ -39,7 +41,7 @@ public class OrmResult {
 		return omrStr;
 	}
 
-	public OrmResult setOmrStr(String omrStr) {
+	public OmrResult setOmrStr(String omrStr) {
 		this.omrStr = omrStr;
 		return this;
 	}
@@ -48,7 +50,7 @@ public class OrmResult {
 		return omrScore;
 	}
 
-	public OrmResult setOmrScore(String omrScore) {
+	public OmrResult setOmrScore(String omrScore) {
 		this.omrScore = omrScore;
 		return this;
 	}
@@ -57,9 +59,16 @@ public class OrmResult {
 		return kgScore;
 	}
 
-	public OrmResult setKgScore(float kgScore) {
+	public OmrResult setKgScore(float kgScore) {
 		this.kgScore = kgScore;
 		return this;
+	}
+
+	@Override
+	public String toString() {
+
+		return new ToStringBuilder(this).append("paperId:", paperId).append("studentId:", studentId)
+				.append("kgScore:" + kgScore).append("omrStr:", omrStr).append("omrScore:", omrScore).build();
 	}
 
 }

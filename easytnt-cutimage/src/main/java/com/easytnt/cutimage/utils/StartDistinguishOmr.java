@@ -49,6 +49,7 @@ public class StartDistinguishOmr implements Runnable {
 	private OmrDefine omrDefine;
 	private CountContainer<Integer> countContainer;
 	private SaveOmrResultToDBService saveService;
+	private boolean isTest = false;
 
 	public StartDistinguishOmr(OmrDefine omrDefine, DataSource ds) {
 		this.omrDefine = omrDefine;
@@ -73,6 +74,9 @@ public class StartDistinguishOmr implements Runnable {
 	public void run() {
 		long b = System.currentTimeMillis();
 		CountDownLatch studentCountDownLatch = createStudentCountDownLatch();
+		if (isTest) {
+			initTest(studentCountDownLatch);
+		}
 		Disruptor<DistinguishOMREvent> disruptor = createDisruptor(studentCountDownLatch);
 		try {
 			publishTask(disruptor);
@@ -156,7 +160,11 @@ public class StartDistinguishOmr implements Runnable {
 					for (String studentInfo : studentInfos) {
 						DistinguishOMREvent event = createDistinguishOMREvent(rootDir,
 								fileInfo.getFilePath().getParent(), studentInfo);
-						disruptor.publishEvent(new DistinguishOMREventTranslator(event));
+						if (isTest) {
+							testProcess(event);
+						} else {
+							disruptor.publishEvent(new DistinguishOMREventTranslator(event));
+						}
 					}
 				}
 			}
@@ -189,6 +197,37 @@ public class StartDistinguishOmr implements Runnable {
 
 	private boolean isDatFile(FileInfo fileInfo) {
 		return fileInfo.getFilePath().toString().toLowerCase().endsWith(".dat");
+	}
+
+	public boolean isTest() {
+		return isTest;
+	}
+
+	public StartDistinguishOmr setTest(boolean isTest) {
+		this.isTest = isTest;
+		return this;
+	}
+
+	private OMRDistinguishHandler handler1;
+	private OMRResultToDBHandler handler2;
+	private OMRCountDownLatchHandler handler3;
+
+	private void initTest(CountDownLatch countDownLatch) {
+		handler1 = new OMRDistinguishHandler();
+		handler2 = new OMRResultToDBHandler(saveService);
+		handler3 = new OMRCountDownLatchHandler(countDownLatch, countContainer);
+	}
+
+	private void testProcess(DistinguishOMREvent event) {
+		try {
+			handler1.onEvent(event);
+			handler2.onEvent(event);
+			handler3.onEvent(event);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(ThrowableParser.toString(e));
+		}
+
 	}
 
 	private class Counter {

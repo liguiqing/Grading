@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.easytnt.commons.exception.ThrowableParser;
-import com.easytnt.grading.domain.cuttings.OrmResult;
+import com.easytnt.grading.domain.cuttings.OmrResult;
 import com.easytnt.importpaper.service.SaveOmrResultToDBService;
 
 /**
@@ -38,9 +38,9 @@ public class SaveOmrResultToDBServiceImpl implements SaveOmrResultToDBService {
 	}
 
 	@Override
-	public void save(List<OrmResult> ormResults) {
+	public void save(List<OmrResult> ormResults) {
 		ArrayList<String> tmepSqls = new ArrayList<>();
-		for (OrmResult ormResult : ormResults) {
+		for (OmrResult ormResult : ormResults) {
 			tmepSqls.add(createSQL(ormResult));
 		}
 
@@ -69,7 +69,7 @@ public class SaveOmrResultToDBServiceImpl implements SaveOmrResultToDBService {
 	 * com.easytnt.importpaper.bean.CutImageInfo)
 	 */
 	@Override
-	public void save(OrmResult ormResult) {
+	public void save(OmrResult ormResult) {
 		String sql = createSQL(ormResult);
 		ArrayList<String> tempSqls = new ArrayList<>();
 		lock.lock();
@@ -130,12 +130,12 @@ public class SaveOmrResultToDBServiceImpl implements SaveOmrResultToDBService {
 		}
 	}
 
-	private String createSQL(OrmResult ormResult) {
+	private String createSQL(OmrResult ormResult) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("INSERT INTO omrResult(paperId,studentId,kgScore,omrStr,omrScore) VALUES(");
 		sql.append(ormResult.getPaperId()).append(",").append(ormResult.getStudentId()).append(",")
 				.append(ormResult.getKgScore()).append(",'").append(ormResult.getOmrStr()).append("','")
-				.append(ormResult).append("'");
+				.append(ormResult.getOmrScore()).append("'");
 		sql.append(")");
 		return sql.toString();
 	}

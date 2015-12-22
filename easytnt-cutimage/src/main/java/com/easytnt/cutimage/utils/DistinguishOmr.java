@@ -6,12 +6,12 @@ package com.easytnt.cutimage.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.easytnt.cutimage.disruptor.event.DistinguishOMREvent;
 import com.easytnt.grading.domain.cuttings.AnswerCardCuttingTemplate;
+import com.easytnt.grading.domain.cuttings.OmrResult;
 import com.easytnt.grading.domain.cuttings.SelectItemArea;
 import com.easytnt.grading.domain.cuttings.SelectItemDefine;
 
@@ -64,12 +64,14 @@ public class DistinguishOmr {
 
 		StringBuffer selectedOptionBuffer = new StringBuffer();
 		StringBuffer scoreBuffer = new StringBuffer();
+		Float kgScore = 0f;
 
 		for (SelectItemDefine item : items) {
 			String selectedOption = distinguishItem(item);
-			String score = calcualteScore(item, selectedOption);
+			Float score = calcualteScore(item, selectedOption);
+			kgScore += score;
 			selectedOptionBuffer.append(selectedOption).append(",");
-			scoreBuffer.append(score).append(",");
+			scoreBuffer.append(NumberFormat.clearZero(score)).append(",");
 		}
 		if (selectedOptionBuffer.length() > 0) {
 			selectedOptionBuffer.deleteCharAt(selectedOptionBuffer.length() - 1);
@@ -78,23 +80,27 @@ public class DistinguishOmr {
 			scoreBuffer.deleteCharAt(scoreBuffer.length() - 1);
 		}
 
-		log.debug(new ToStringBuilder("").append("paperID:", event.getOmrDefine().getPaper().getPaperId())
-				.append("studentId:", event.getStudentId()).append("OMRSTR:", selectedOptionBuffer.toString())
-				.append("OMRSCORE:", scoreBuffer.toString()).toString());
+		OmrResult omrResult = new OmrResult();
+		omrResult.setPaperId(event.getOmrDefine().getPaper().getPaperId()).setKgScore(kgScore)
+				.setStudentId(Long.parseLong(event.getStudentId())).setOmrStr(selectedOptionBuffer.toString())
+				.setOmrScore(scoreBuffer.toString());
+		event.setOrmResult(omrResult);
+
+		log.debug(omrResult.toString());
 	}
 
-	private String calcualteScore(SelectItemDefine item, String selectedOption) {
+	private Float calcualteScore(SelectItemDefine item, String selectedOption) {
 		if (item.isSingleSelect()) {
 			if (selectedOption.equals(item.getAnswer())) {
-				return NumberFormat.clearZero(item.getFullScore());
+				return item.getFullScore();
 			} else {
-				return "0";
+				return 0f;
 			}
 		} else {
-			String score = "0";
+			float score = 0f;
 			int idx = item.getGiveScoreRule().indexOf(item);
 			if (idx != -1) {
-				score = NumberFormat.clearZero(item.getGiveScoreRuleScore().get(idx));
+				score = item.getGiveScoreRuleScore().get(idx);
 			}
 			return score;
 		}
@@ -105,23 +111,44 @@ public class DistinguishOmr {
 		ImageProcessor ip = imp.getProcessor();
 		List<SelectItemArea> areas = item.getAreas();
 		StringBuffer selectedOption = new StringBuffer();
+		ArrayList<ImageStatistics> stats = new ArrayList<>();
 		for (SelectItemArea area : areas) {
 			Roi roi = ImageJTool.createRoi(area);
 			ip.setRoi(roi);
 			ImageStatistics stat = ip.getStatistics();
+			stats.add(stat);
 			if (isSelected(stat)) {
 				selectedOption.append(area.getSelectOption());
 			}
 		}
 
 		if (selectedOption.length() == 0) {
-			selectedOption.append("#");
+			int idx = findMax(stats);
+			if (idx == -1) {
+				selectedOption.append("#");
+			} else {
+				selectedOption.append(areas.get(idx).getSelectOption());
+			}
+
 		}
 		return selectedOption.toString();
 	}
 
+	private int findMax(final List<ImageStatistics> stats) {
+		int idx = -1;
+		double max = 0;
+		for (int i = 0; i < stats.size(); i++) {
+			double mean = stats.get(i).mean;
+			if (mean > max) {
+				max = mean;
+				idx = i;
+			}
+		}
+		return idx;
+	}
+
 	private boolean isSelected(ImageStatistics stat) {
-		int min = 256 >> 1;
+		int min = 100;
 
 		if (stat.mean < min) {
 			return false;
@@ -132,7 +159,7 @@ public class DistinguishOmr {
 			sum += h[i];
 		}
 
-		if (1.0 * sum / stat.longPixelCount < 0.7) {
+		if (1.0 * sum / stat.longPixelCount < 0.5) {
 			return false;
 		}
 		return true;

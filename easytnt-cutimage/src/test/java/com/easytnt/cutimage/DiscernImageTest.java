@@ -59,7 +59,6 @@ public class DiscernImageTest {
 		}
 
 		ImagePlus imp = IJ.openImage("d:/test/2.tif");
-
 		Transformer transformer = new Transformer();
 		transformer.setup("left", imp);
 		transformer.run(imp.getProcessor());
