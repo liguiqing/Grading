@@ -188,7 +188,26 @@
 						});				
 			});
 			
-			myTable.on('click','.cuttingPaper',function(e){
+			myTable.on('click','.distinguishOmr',function(e){
+				var $container=$(this).parent();
+				var paperId = $(this).attr('data-paperid');
+				var url='/cuttingDefine/distinguish/'+paperId;
+				ajaxWrapper.getJson(url,{},{},function(){
+					var $html=$container.html();
+					$container.empty();
+					var param={
+							container : $container,
+							entry : 'distinguishOmrService',
+							finishedCallBack : function() {
+								$container.html($html);
+							},
+							data : {
+								paperId : paperId
+							}
+					};
+					progress.init(param);
+				});
+			}).on('click','.cuttingPaper',function(e){
 				var $container=$(this).parent();
 				var paperId = $(this).attr('data-paperid');
 				var url = '/cuttingDefine/cutting/'+paperId;
