@@ -24,6 +24,7 @@
 	
     <mvc:resources location="/css/" mapping="/static/css/**" />
     <mvc:resources location="/script/" mapping="/static/script/**" />
+    <mvc:resources location="/html/" mapping="/static/html/**" />
 	
     <context:annotation-config />
     <!-- 开启controller注解支持 -->

@@ -1,3 +1,17 @@
+Array.prototype.remove = function(obj) {
+	var index = -1;
+	for(var i = 0; i < this.length; i++) {
+		if(this[i] == obj) {
+			index = i;
+			break;
+		}
+	}
+	
+	if(index != -1) {
+		this.splice(index, 1);
+	}
+}
+
 function getUrlFileName(){
 	var pathname = window.location.pathname;
 	if(pathname == '' || pathname == '/') return 'index';
@@ -59,28 +73,25 @@ if(browser.ie && browser.ie * 1 < 10){
 }
 //IEMobile10 
 if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-	var msViewportStyle = document.createElement('style');
-	msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'));
-	document.querySelector('head').appendChild(msViewportStyle);
+	var msViewportStyle = document.createElement('style')
+	msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'))
+	document.querySelector('head').appendChild(msViewportStyle)
 }
+
+
 
 var config = {
 	contextPath : window.app.rootPath,
-	baseUrl : window.app.rootPath + "static/script/", 
+	baseUrl : window.app.rootPath + "script/", 
 	optimize : "none",
 
 	paths : {
 		"jquery" : jqueryPath,
-		"pager" : "lib/jquery/jquery.pager",
-		"easyui" : "lib/jquery/jquery.easyui.min",
 		"bootstrap" : "lib/bootstrap/bootstrap.min",
-		"select" : "lib/bootstrap/plugins/bootstrap-select",
-		"datapicker" : "lib/bootstrap/plugins/bootstrap-datetimepicker",
-		"icheck" : "lib/bootstrap/plugins/iCheck/icheck.min",
 		"bootstrapSlider" : "lib/bootstrap/plugins/bootstrap-slider/bootstrap.slider.v4",
+		"headroom":"http://hm.baidu.com/h.js?3d8e7fc0de8a2a75f2ca3bfe128e6391",
 		"chart" : "lib/highcharts/highcharts",
 		"smartWizard" : "lib/smartWizard/jquery.smartWizard",
-		"ichart":"lib/ichart/ichart.1.2.min",
 		"dialog":"commons/dialog",
 		"ui":"commons/uiwrapper", 
 		"ajax":"commons/ajax",
@@ -88,15 +99,12 @@ var config = {
 		"logger":"util/logger",
 		"funcs":"commons/functions",
 		"StringBuffer":"ext/StringBuffer",
-		"Map":"ext/Map",
-		"ichartUtil":"commons/ichart",
-		"intense":"lib/jquery/intense"
+		"Map":"ext/Map"
 	},
 	shim : {
 		'bootstrap' : {deps:['jquery']},
 		'chart' : {deps:['jquery']},
-		'select' : {deps:['bootstrap']},
-		'icheck' : {deps:['bootstrap']}
+		'headroom': {deps:['jquery']}
 	}
 };
 if(browser.isMobile()){
