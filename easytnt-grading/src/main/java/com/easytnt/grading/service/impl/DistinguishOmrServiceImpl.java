@@ -5,13 +5,21 @@ package com.easytnt.grading.service.impl;
 
 import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.easytnt.commons.util.SpringContextUtil;
 import com.easytnt.commons.web.view.Progress;
 import com.easytnt.commons.web.view.ProgressListener;
+import com.easytnt.cutimage.utils.StartDistinguishOmr;
+import com.easytnt.grading.domain.cuttings.OmrDefine;
+import com.easytnt.grading.service.CuttingsSolutionService;
 import com.easytnt.grading.service.DistinguishOmrService;
 import com.easytnt.importpaper.bean.CountContainer;
 import com.easytnt.importpaper.bean.CountContainerMgr;
+import com.easytnt.thread.EasytntExecutor;
 
 /**
  * <pre>
@@ -22,6 +30,8 @@ import com.easytnt.importpaper.bean.CountContainerMgr;
  */
 @Service("distinguishOmrService")
 public class DistinguishOmrServiceImpl implements DistinguishOmrService, ProgressListener {
+	@Autowired(required = false)
+	private CuttingsSolutionService cuttingsSolutionService;
 
 	/*
 	 * (non-Javadoc)
@@ -32,8 +42,11 @@ public class DistinguishOmrServiceImpl implements DistinguishOmrService, Progres
 	 */
 	@Override
 	public void startDistinguishOmr(Long paperId) {
-		// TODO Auto-generated method stub
-
+		DataSource ds = SpringContextUtil.getBean("ds");
+		OmrDefine omrDefine = cuttingsSolutionService.listSelectItemDefines(paperId);
+		System.out.println();
+		StartDistinguishOmr starter = new StartDistinguishOmr(omrDefine, ds);
+		EasytntExecutor.instance().getExecutorService().submit(starter);
 	}
 
 	@Override

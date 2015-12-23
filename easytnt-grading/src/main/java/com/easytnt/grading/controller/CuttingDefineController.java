@@ -15,6 +15,7 @@ import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.cuttings.CuttingSolution;
 import com.easytnt.grading.service.CuttingTestpaperService;
 import com.easytnt.grading.service.CuttingsSolutionService;
+import com.easytnt.grading.service.DistinguishOmrService;
 import com.google.gson.Gson;
 
 /**
@@ -31,6 +32,8 @@ public class CuttingDefineController {
 	private CuttingTestpaperService cuttingTestpaperService;
 	@Autowired(required = false)
 	private CuttingsSolutionService cuttingsSolutionService;
+	@Autowired(required = false)
+	private DistinguishOmrService distinguishOmrService;
 
 	@RequestMapping(value = "/{examId}/{paperId}", method = RequestMethod.GET)
 	public ModelAndView index(@PathVariable Long examId, @PathVariable Long paperId) throws Exception {
@@ -55,6 +58,12 @@ public class CuttingDefineController {
 	public ModelAndView cutting(@PathVariable Long paperId) throws Exception {
 		CuttingSolution cuttingSolution = cuttingsSolutionService.getCuttingDefines(paperId);
 		cuttingTestpaperService.cutting(cuttingSolution);
+		return ModelAndViewFactory.newModelAndViewFor("").build();
+	}
+
+	@RequestMapping(value = "/distinguish/{paperId}", method = RequestMethod.GET)
+	public ModelAndView distinguishOmr(@PathVariable Long paperId) throws Exception {
+		distinguishOmrService.startDistinguishOmr(paperId);
 		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
 
