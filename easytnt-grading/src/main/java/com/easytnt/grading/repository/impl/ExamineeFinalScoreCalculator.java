@@ -4,6 +4,13 @@
  **/
 package com.easytnt.grading.repository.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,6 +34,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import com.easytnt.commons.exception.ThrowableParser;
+import com.easytnt.commons.io.Outputor;
+import com.easytnt.commons.util.Closer;
 import com.easytnt.grading.domain.exam.Exam;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Section;
@@ -59,14 +69,17 @@ public class ExamineeFinalScoreCalculator {
 	
 	private HashMap<ExamPaper,TreeSet<Float>> allPaperScores;
 	
+	private Outputor out;
+	
 	private static ConcurrentHashMap<Long, ExamineeFinalScoreCalculator> pool  = new ConcurrentHashMap<>();
 	
-	public static ExamineeFinalScoreCalculator newCalculator(Long testId) {
+	public static ExamineeFinalScoreCalculator newCalculator(Long testId,Outputor out) {
 		ExamineeFinalScoreCalculator calculator = pool.get(testId);
 		if(calculator != null)
 			return calculator;
 		
 		calculator = new ExamineeFinalScoreCalculator();
+		calculator.out=out;
 		calculator.testId = testId;
 		calculator.totalScores = new ArrayList<>();
 		calculator.allTotalScores = new TreeSet<>(new Comparator<Float>() {
@@ -96,7 +109,10 @@ public class ExamineeFinalScoreCalculator {
 		session.close();
 	}
 	
-	public void output() {
+	public void output(String rootPath) {
+		if(rootPath == null) {
+			rootPath = System.getProperty("java.io.tmpdir");
+		}
 		for(ExamineeTotalScore totalScore:this.totalScores) {
 			logger.debug(totalScore.getExaminee().getName()+
 					" 唯一编号：" + totalScore.getExaminee().getUuid() + 
@@ -104,6 +120,24 @@ public class ExamineeFinalScoreCalculator {
 					" 得分" + totalScore.getScore() +
 					" 分数等级" + totalScore.degree +
 					" 排名等级" +	totalScore.ranking);
+			String fileName = totalScore.examinee.getUuid()+".html";
+			logger.debug("Output to " + rootPath +File.separator+fileName);
+			Writer writer = null;
+			try {
+				File html = new File(rootPath+File.separator+fileName);
+				html.createNewFile();
+				writer = new OutputStreamWriter(new FileOutputStream(html),"UTF-8");
+				out.output(totalScore,writer);
+			} catch (UnsupportedEncodingException e) {
+				logger.error(ThrowableParser.toString(e));
+			} catch (FileNotFoundException e) {
+				logger.error(ThrowableParser.toString(e));
+			} catch (IOException e) {
+				logger.error(ThrowableParser.toString(e));
+			}finally {
+				Closer.close(writer);
+			}
+			
 		}
 	}
 	
@@ -279,8 +313,18 @@ public class ExamineeFinalScoreCalculator {
 			this.degree = Degree.cal(level);
 		}
 
+		public boolean hasMoreSubjects() {
+			if(this.paperScores == null || this.paperScores.size() == 0)
+				return false;
+			return true;
+		}
+		
 		public Examinee getExaminee() {
 			return examinee;
+		}
+		
+		public String getExamName() {
+			return exam.getDesc().getName();
 		}
 
 		public Float getFullScore() {
@@ -291,6 +335,25 @@ public class ExamineeFinalScoreCalculator {
 			return score;
 		}
 		
+		public String getRankingName() {
+			return Ranking.levelName(this.ranking);
+		}
+		
+		public String getDegreeName() {
+			return Degree.levelName(this.degree);
+		}
+
+		public List<ExamPaperScore> getPaperScores() {
+			return paperScores;
+		}
+
+		public int getRanking() {
+			return ranking;
+		}
+
+		public int getDegree() {
+			return degree;
+		}
 		
 	}
 	
@@ -423,7 +486,24 @@ public class ExamineeFinalScoreCalculator {
 
 		public void setItemsScore(List<ItemScore> itemsScore) {
 			this.itemsScore = itemsScore;
-		}		
+		}
+		
+		
+		public String getRankingName() {
+			return Ranking.levelName(this.ranking);
+		}
+		
+		public String getDegreeName() {
+			return Degree.levelName(this.degree);
+		}
+
+		public int getRanking() {
+			return ranking;
+		}
+
+		public int getDegree() {
+			return degree;
+		}
 	}
 	
 	public class ItemScore{
@@ -483,6 +563,8 @@ public class ExamineeFinalScoreCalculator {
 		
 		private final static int[] levels = new int[] {0,1,2,3};
 		
+		private final static String[] levenlsName = new String[] {"不及格","及格","良好","优秀"};
+		
 		public static int  cal(Float level) {
 			for(int i = levelValues.length-1;i>=0;i--) {
 				if(level >=levelValues[i]) {
@@ -490,6 +572,14 @@ public class ExamineeFinalScoreCalculator {
 				}
 			}
 			return levels[0];
+		}
+		
+		public static String levelName(int level) {
+			for(int i=0;i<levels.length;i++) {
+				if(level == levels[i])
+					return levenlsName[i];
+			}
+			return levenlsName[0];
 		}
 	}
 	
@@ -505,6 +595,8 @@ public class ExamineeFinalScoreCalculator {
 		
 		private static int [] levels = new int[] {0,1,2,3};
 		
+		private final static String[] levenlsName = new String[] {"","中下","中上","上等"};
+		
 		public static int  cal(Float level) {
 			for(int i = levelValues.length-1;i>=0;i--) {
 				if(level >=levelValues[i]) {
@@ -512,6 +604,14 @@ public class ExamineeFinalScoreCalculator {
 				}
 			}
 			return levels[0];
+		}
+		
+		public static String levelName(int level) {
+			for(int i=0;i<levels.length;i++) {
+				if(level == levels[i])
+					return levenlsName[i];
+			}
+			return levenlsName[0];
 		}
 	}
 }
