@@ -138,6 +138,56 @@
 				};
 			};
 			
+			//针对选中的元素，距离该元素位置范围[-15%, 15%]*width之间的元素自动按照该元素位置和宽度进行对齐操作
+			selection.alignElements = function(element) {
+				var position = selection.getPosition(element);
+				var range = selection.getRange(position);
+				
+				var siblingElement = null;
+				var elementPosition = {};
+				for(var i = 0; i < selection.elements.length; i++) {
+					siblingElement = selection.elements[i];
+					if(element != siblingElement) {
+						elementPosition = selection.getPosition(siblingElement);
+						if(elementPosition.left >= range.min 
+								&& elementPosition.left <= range.max) {
+							siblingElement.align(position.left, position.width, selection.scaleRate);
+						}
+					}
+					
+				}
+			};
+			
+			//根据位置信息算出需要对齐的范围 width*[-15%, 15%]
+			selection.getRange = function(position) {
+				var minRange = parseInt(position.left - (position.width * 0.15));
+				minRange = minRange < 0 ? 0 : minRange;
+				
+				var parentWidth = $(selection.target)[0].scrollWidth;
+				var maxRange = parseInt(position.left + (position.width * 0.15));
+				maxRange = maxRange > parentWidth ? parentWidth : maxRange;
+				
+				return {
+					min: minRange,
+					max: maxRange
+				}
+			}
+			
+			//获取指定元素针对当前试卷的相对位置和宽高
+			selection.getPosition = function(element) {
+				var left = element.view.offsetLeft;
+				var top = element.view.offsetTop;
+				var width = $(element.view).width();
+				var height = $(element.view).height();
+				
+				return {
+					left: left,
+					top: top,
+					width: width,
+					height: height
+				};
+			};
+			
 			selection.add_exist_element = function(element){
 				//清空原来元素中设定的八个助托点,重新设置元素可编辑
 				$(element.view).empty();
