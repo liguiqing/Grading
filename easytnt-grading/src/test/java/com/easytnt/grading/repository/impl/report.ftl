@@ -25,7 +25,7 @@
     <nav class="navbar navbar-default navbar-fixed-top" style="display:none;">
       <div class="container" >
         <div class="navbar-header row" >
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 user-info"><strong>${examinee.name}</strong><span>同学</span></div>
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 user-info"><strong>${totalPaper.examinee.name}</strong><span>同学</span></div>
           <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
           <button type="button" class="navbar-toggle " data-toggle="collapse" 
             data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -52,20 +52,20 @@
       </div>
     </nav>
     <div class="jumbotron home" >
-      <h2 class="report-title">${examName} 成绩分析</h2>
+      <h2 class="report-title">${totalPaper.examName} 成绩分析</h2>
       <div class="container" >     
         <div class="text-wrapper" >
           <div class="row" >  
-            <div class="col-xs-12 col-sm-6 col-md-3"><span>姓名： </span><strong >${examinee.name!}</strong></div>
-            <div class="col-xs-12 col-sm-6 col-md-3"><span>唯一编号： </span><strong >${examinee.uuid!}</strong></div>  
-            <div class="col-xs-12 col-sm-6 col-md-3"><span>学校： </span><strong >${examinee.school!}</strong></div>
-            <div class="col-xs-12 col-sm-6 col-md-3"><span>班级： </span><strong >${examinee.clazzName!}</strong></div>
+            <div class="col-xs-12 col-sm-6 col-md-3"><span>姓名： </span><strong >${totalPaper.examinee.name!}</strong></div>
+            <div class="col-xs-12 col-sm-6 col-md-3"><span>唯一编号： </span><strong >${totalPaper.examinee.uuid!}</strong></div>  
+            <div class="col-xs-12 col-sm-6 col-md-3"><span>学校： </span><strong >${totalPaper.examinee.school!}</strong></div>
+            <div class="col-xs-12 col-sm-6 col-md-3"><span>班级： </span><strong >${totalPaper.examinee.clazzName!}</strong></div>
           </div>
           <div class="row comment">
             <div class="col-xs-12">
               <hr/>
               <pre>
- 恭喜您取得<strong>${rankingName}</strong>水平的成绩。根据心理学对于学习的规律研究，学习的每个阶段都有“天花板效应”，就是达到一个相对较高的水平之后，会稳定一段时间，经过不懈的努力才会再再上升一个大的台阶。建议您继续保持当前的学习方法和热情，不要对自己的能力有怀疑，也不要急于求成，要遵守科学的规律。
+ 恭喜您取得<strong>${totalPaper.rankingName}</strong>水平的成绩。根据心理学对于学习的规律研究，学习的每个阶段都有“天花板效应”，就是达到一个相对较高的水平之后，会稳定一段时间，经过不懈的努力才会再再上升一个大的台阶。建议您继续保持当前的学习方法和热情，不要对自己的能力有怀疑，也不要急于求成，要遵守科学的规律。
 推荐您阅读：优秀课件初一历史与社会、优秀英文原著改编《书虫系列》、知名演讲TED、优秀图书推荐-历史类、优秀图书推荐-社科类、心理学小知识“学习规律”。
 推荐您练习：词汇量测试、初中一年级历史与社会针对性练习
               
@@ -86,11 +86,11 @@
             <div class="score-desc">
               <h4>位置排行</h4>
 			  <ul>
-                <li class="good"><label>你的总分：</label><span>中上</span></li>
-                <li class="excellence"><label>靠前的科目有：</label><span>语文</span><span>英文</span></li>
-                <li class="good"><label>中上的科目有：</label><span>史社</span></li>
-                <li class="pass"><label>中下的科目有：</label><span>数学</span><span>科学</span></li>
-                <li class="terrible"><label>靠后的科目有：</label>无</li>
+                <li class="<@getRankingCss totalPaper/>"><label>你的总分：</label><span>${totalPaper.rankingName!}</span></li>
+                <li class="excellence"><label>靠前的科目有：</label><#if totalPaper.paperScores??><#list totalPaper.paperScores as paper><@getRankingName paper 3/></#list></#if></li>
+                <li class="good"><label>中上的科目有：</label><span><#if totalPaper.paperScores??><#list totalPaper.paperScores as paper><@getRankingName paper 2/></#list></#if></span></li>
+                <li class="pass"><label>中下的科目有：</label><#if totalPaper.paperScores??><#list totalPaper.paperScores as paper><@getRankingName paper 1/></#list></#if></li>
+                <li class="terrible"><label>靠后的科目有：</label><#if totalPaper.paperScores??><#list totalPaper.paperScores as paper><@getRankingName paper 0/></#list></#if></li>
               </ul>
               <p>
 说明：中上分数线（Q1）为排名的25%，星级为<i class="glyphicon glyphicon-star"></i>；中上分数线（Q2）为排名的50%，星级为<i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i>；靠前分数线（Q3）为排名的75%，星级为<i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i>；靠后评定为<i class="glyphicon glyphicon-star-empty"></i>。
@@ -101,11 +101,11 @@
               </p>               
               <h4>得分情况</h4>
               <ul>
-                <li class="excellence"><label>你的总分：</label><span >中上</span></li>
-                <li class="excellence"><label>优秀的科目有：</label><span>语文</span><span >英文</span></li>
-                <li class="good"><label>良好的科目有：</label><span>史社</span></li>
-                <li class="pass"><label>及格的科目有：</label><span>数学</span></li>
-                <li class="terrible"><label>不及格的科目有：</label><span>科学</span></li>
+                <li class="<@getDegreeCss totalPaper/>"><label>你的总分：</label><span >${totalPaper.degreeName}</span></li>
+                <li class="excellence"><label>优秀的科目有：</label><#if totalPaper.paperScores??><#list totalPaper.paperScores as paper><@getDegreeName paper 3/></#list></#if></li>
+                <li class="good"><label>良好的科目有：</label><#if totalPaper.paperScores??><#list totalPaper.paperScores as paper><@getDegreeName paper 2/></#list></#if></li>
+                <li class="pass"><label>及格的科目有：</label><#if totalPaper.paperScores??><#list totalPaper.paperScores as paper><@getDegreeName paper 1/></#list></#if></li>
+                <li class="terrible"><label>不及格的科目有：</label><#if totalPaper.paperScores??><#list totalPaper.paperScores as paper><@getDegreeName paper 0/></#list></#if></li>
               </ul>
               <p>
 说明：及格分数线为该科目满分的60%，星级为<i class="glyphicon glyphicon-star"></i>；良好分数线为该科目满分的75%，星级为<i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i>；优秀分数线为该科目满分的90%，星级为<i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i>；不及格科目评定为<i class="glyphicon glyphicon-star-empty"></i>。
@@ -117,87 +117,33 @@
             <article class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
               <section class="row subject">
                 <h1>总分</h1>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 glyphicon-wrapper" ><div class="glyphicon glyphicon-education" ></div></div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 glyphicon-wrapper" ><div class="glyphicon <@getLevelIconCss totalPaper/>" ></div></div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 score-info">
-                  <div class="col-xs-6"><label>得分星级:</label><span><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i></span></div>
-                  <div class="col-xs-6"><label>个人得分:</label><span>${score}</span></div>
-                  <div class="col-xs-6"><label>排位星级:</label><span><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i></span></div>
+                  <div class="col-xs-6"><label>得分星级:</label><span><@getStarIconCss totalPaper.degree/></span></div>
+                  <div class="col-xs-6"><label>个人得分:</label><span>${totalPaper.score}</span></div>
+                  <div class="col-xs-6"><label>排位星级:</label><span><@getStarIconCss totalPaper.ranking/></span></div>
                   <div class="col-xs-6"><label>个人排位:</label><span>58%</span></div>
-                  <div class="col-xs-6"><label>科目满分:</label><span>100</span></div>
-                  <div class="col-xs-6"><label>得分率:</label><span>58%</span></div>
+                  <div class="col-xs-6"><label>科目满分:</label><span>${totalPaper.fullScore}</span></div>
+                  <div class="col-xs-6"><label>得分率:</label><span>${(totalPaper.scoreRate * 100)?string("#.##")}%</span></div>
                 </div>
               </section>  
-            </article>
+            </article>          
+            <#if totalPaper.paperScores??><#list totalPaper.paperScores as paper>
             <article class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
               <section class="row subject">
-                <h1>语文</h1>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 glyphicon-wrapper" ><div class="glyphicon glyphicon-thumbs-up" ></div></div>
+                <h1>${paper.paperName}</h1>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 glyphicon-wrapper" ><div class="glyphicon <@getLevelIconCss paper/>" ></div></div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 score-info">
-                  <div class="col-xs-6"><label>得分星级:</label><span><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i></span></div>
-                  <div class="col-xs-6"><label>个人得分:</label><span>79.5</span></div>
-                  <div class="col-xs-6"><label>排位星级:</label><span><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i></span></div>
+                  <div class="col-xs-6"><label>得分星级:</label><span><@getStarIconCss paper.degree/></span></div>
+                  <div class="col-xs-6"><label>个人得分:</label><span>${paper.score}</span></div>
+                  <div class="col-xs-6"><label>排位星级:</label><span><@getStarIconCss paper.ranking/></span></div>
                   <div class="col-xs-6"><label>个人排位:</label><span>58%</span></div>
-                  <div class="col-xs-6"><label>科目满分:</label><span>100</span></div>
-                  <div class="col-xs-6"><label>得分率:</label><span>58%</span></div>
+                  <div class="col-xs-6"><label>科目满分:</label><span>${paper.fullScore}</span></div>
+                  <div class="col-xs-6"><label>得分率:</label><span>${(paper.scoreRate * 100)?string("#.##")}%</span></div>
                 </div>
               </section>  
             </article>
-           <article class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
-              <section class="row subject">
-                <h1>科学</h1>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 glyphicon-wrapper" ><div class="glyphicon glyphicon-thumbs-up" ></div></div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 score-info">
-                  <div class="col-xs-6"><label>得分星级:</label><span><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i></span></div>
-                  <div class="col-xs-6"><label>个人得分:</label><span>79.5</span></div>
-                  <div class="col-xs-6"><label>排位星级:</label><span><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i></span></div>
-                  <div class="col-xs-6"><label>个人排位:</label><span>58%</span></div>
-                  <div class="col-xs-6"><label>科目满分:</label><span>100</span></div>
-                  <div class="col-xs-6"><label>得分率:</label><span>58%</span></div>
-                </div>
-              </section>  
-            </article>
-            <article class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
-              <section class="row subject">
-                <h1>史社</h1>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 glyphicon-wrapper" ><div class="glyphicon glyphicon-thumbs-up" ></div></div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 score-info">
-                  <div class="col-xs-6"><label>得分星级:</label><span><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i></span></div>
-                  <div class="col-xs-6"><label>个人得分:</label><span>79.5</span></div>
-                  <div class="col-xs-6"><label>排位星级:</label><span><i class="glyphicon glyphicon-star"></i><i class="glyphicon glyphicon-star"></i></span></div>
-                  <div class="col-xs-6"><label>个人排位:</label><span>58%</span></div>
-                  <div class="col-xs-6"><label>科目满分:</label><span>100</span></div>
-                  <div class="col-xs-6"><label>得分率:</label><span>58%</span></div>
-                </div>
-              </section>  
-            </article>                
-            <article class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
-              <section class="row subject">
-                <h1>数学</h1>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 glyphicon-wrapper" ><div class="glyphicon glyphicon-edit" ></div></div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 score-info">
-                  <div class="col-xs-6"><label>得分星级:</label><span><i class="glyphicon glyphicon-star"></i></span></div>
-                  <div class="col-xs-6"><label>个人得分:</label><span>79.5</span></div>
-                  <div class="col-xs-6"><label>排位星级:</label><span><i class="glyphicon glyphicon-star"></i></span></div>
-                  <div class="col-xs-6"><label>个人排位:</label><span>58%</span></div>
-                  <div class="col-xs-6"><label>科目满分:</label><span>100</span></div>
-                  <div class="col-xs-6"><label>得分率:</label><span>58%</span></div>
-                </div>
-              </section>  
-            </article>
-            <article class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <section class="row subject">
-                <h1>英语</h1>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 glyphicon-wrapper" ><div class="glyphicon glyphicon-wrench" ></div></div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 score-info">
-                  <div class="col-xs-6"><label>得分星级:</label><span><i class="glyphicon  glyphicon-star-empty"></i></span></div>
-                  <div class="col-xs-6"><label>个人得分:</label><span>79.5</span></div>
-                  <div class="col-xs-6"><label>排位星级:</label><span><i class="glyphicon glyphicon-star-empty"></i></span></div>
-                  <div class="col-xs-6"><label>个人排位:</label><span>58%</span></div>
-                  <div class="col-xs-6"><label>科目满分:</label><span>100</span></div>
-                  <div class="col-xs-6"><label>得分率:</label><span>58%</span></div>
-                </div>
-              </section>  
-            </article>                                                                   
+            </#list></#if>                                                                   
           </section> 
           <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
             <article class="score-detail">
@@ -486,3 +432,68 @@
 	});
 </script>
 </html>
+<#macro getRankingCss paperScore>
+  <#switch paperScore.ranking>
+  <#case 3>
+    excellence
+    <#break>
+  <#case 2>
+    good
+    <#break>
+  <#case 1>
+    pass
+    <#break>
+  <#default>
+    terrible           
+  </#switch>
+</#macro>
+
+<#macro getDegreeCss paperScore>
+  <#switch paperScore.ranking>
+  <#case 3>
+    excellence
+    <#break>
+  <#case 2>
+    good
+    <#break>
+  <#case 1>
+    pass
+    <#break>
+  <#default>
+    terrible           
+  </#switch>
+</#macro>
+
+<#macro getLevelIconCss paperScore>
+  <#switch paperScore.ranking>
+  <#case 3>
+    glyphicon-education
+    <#break>
+  <#case 2>
+    glyphicon-thumbs-up
+    <#break>
+  <#case 1>
+    glyphicon-edit
+    <#break>
+  <#default>
+    glyphicon-wrench           
+  </#switch>
+</#macro>
+
+<#macro getStarIconCss paperScore degree=0>
+  <#if degree=0><i class="glyphicon  glyphicon-star-empty"></i>
+  <#else>  
+    <#list 1..degree as x>
+     <i class="glyphicon  glyphicon-star"></i>
+    </#list> 
+  </#if>
+</#macro>
+
+
+<#macro getRankingName paperScore ranking=0>
+  <#if paperScore.ranking=ranking><span>${paperScore.paper.name}</span></#if>
+</#macro>
+
+<#macro getDegreeName paperScore degree=0>
+  <#if paperScore.degree=degree><span>${paperScore.paper.name}</span></#if>
+</#macro>

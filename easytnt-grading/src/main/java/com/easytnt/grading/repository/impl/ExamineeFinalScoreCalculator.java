@@ -127,7 +127,9 @@ public class ExamineeFinalScoreCalculator {
 				File html = new File(rootPath+File.separator+fileName);
 				html.createNewFile();
 				writer = new OutputStreamWriter(new FileOutputStream(html),"UTF-8");
-				out.output(totalScore,writer);
+				HashMap root = new HashMap();
+				root.put("totalPaper", totalScore);
+				out.output(root,writer);
 			} catch (UnsupportedEncodingException e) {
 				logger.error(ThrowableParser.toString(e));
 			} catch (FileNotFoundException e) {
@@ -309,14 +311,24 @@ public class ExamineeFinalScoreCalculator {
 				this.score += paperScore.calScore();
 			}
 			allTotalScores.add(score);
-			Float level = this.score / this.fullScore;
+			Float level = this.getLevel();
 			this.degree = Degree.cal(level);
+			//this.ranking = Ranking.cal(level);
 		}
 
 		public boolean hasMoreSubjects() {
 			if(this.paperScores == null || this.paperScores.size() == 0)
 				return false;
 			return true;
+		}
+		
+		public Float getLevel() {
+			Float level = this.score / this.fullScore;
+			return level;
+		}
+		
+		public Float getScoreRate() {
+			return getLevel();
 		}
 		
 		public Examinee getExaminee() {
@@ -402,7 +414,7 @@ public class ExamineeFinalScoreCalculator {
 			for(ItemScore item:this.itemsScore) {
 				this.score += item.score;
 			}
-			Float level = this.score / this.paper.getFullScore();
+			Float level = getLevel();
 			this.degree = Degree.cal(level);
 			
 			if(allPaperScores.get(this.paper) == null) {
@@ -435,6 +447,23 @@ public class ExamineeFinalScoreCalculator {
 			}
 		}
 
+		public Float getLevel() {
+			Float level = this.score / this.paper.getFullScore();
+			return level;
+		}
+		
+		public Float getScoreRate() {
+			return getLevel();
+		}
+		
+		public String getPaperName() {
+			return this.paper.getName();
+		}
+		
+		public Float getFullScore() {
+			return this.paper.getFullScore();
+		}
+		
 		public boolean equals(Object o) {
 			if(!(o instanceof ExamPaperScore)) {
 				return false;
@@ -586,6 +615,7 @@ public class ExamineeFinalScoreCalculator {
 	/**
 	 * 排名等级
 	 * 得分在群体中的百分位
+	 * 计算值越大排名越高
 	 * @author liguiqing
 	 *
 	 */
@@ -595,7 +625,7 @@ public class ExamineeFinalScoreCalculator {
 		
 		private static int [] levels = new int[] {0,1,2,3};
 		
-		private final static String[] levenlsName = new String[] {"","中下","中上","上等"};
+		private final static String[] levenlsName = new String[] {"下等","中下","中上","上等"};
 		
 		public static int  cal(Float level) {
 			for(int i = levelValues.length-1;i>=0;i--) {
