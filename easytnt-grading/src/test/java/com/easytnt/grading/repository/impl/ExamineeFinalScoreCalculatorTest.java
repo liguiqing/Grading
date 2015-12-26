@@ -22,8 +22,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-import com.easytnt.commons.io.Outputor;
-import com.easytnt.commons.io.html.FreemarkerOutputor;
+import com.easytnt.reporting.out.*;
 import com.easytnt.commons.util.SpringContextUtil;
 
 import freemarker.cache.ClassTemplateLoader;
@@ -65,6 +64,7 @@ public class ExamineeFinalScoreCalculatorTest {
         config.setEncoding(Locale.CHINA, "utf-8");
         config.setObjectWrapper(new DefaultObjectWrapper()); 
         File file = new File(this.getClass().getResource("").getPath()+File.separator+"report.ftl");
+        
         String html = FileUtils.readFileToString(file, "utf-8");
         
         StringTemplateLoader statements = new StringTemplateLoader();
@@ -72,7 +72,7 @@ public class ExamineeFinalScoreCalculatorTest {
         
         config.setTemplateLoader(statements);
 		
-		Outputor out = new FreemarkerOutputor(config,"report");//mock(Outputor.class);
+        FreemarkerHtmlOutput out = new FreemarkerHtmlOutput(config,"report");//mock(Outputor.class);
 		final ExamineeFinalScoreCalculator calculator = ExamineeFinalScoreCalculator.newCalculator(1l,out);
 		calculator.setJdbcTemplate(jdbcTemplate);
 		calculator.setSessionFactory(sessionFactroy);
@@ -87,7 +87,8 @@ public class ExamineeFinalScoreCalculatorTest {
 			}
 		});
 		calculator.ranking();
-		calculator.output(null);
+		String rootPath = "E:\\eclipse\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\easytnt-grading-webapp\\html";
+		calculator.output(rootPath);
 	}
 	
 }
