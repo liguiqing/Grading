@@ -218,6 +218,7 @@
 			<value>
 				/static/css/** = anon
 				/static/script/** = anon
+				/static/html/** = anon
 				/exp/** = anon
 				/sso/login = cas
 				/login = authc

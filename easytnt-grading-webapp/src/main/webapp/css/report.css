@@ -1,0 +1,331 @@
+body{
+	background:#fff;
+}
+.jumbotron{
+	background: radial-gradient(ellipse at center,#73d0f0 0,#73d0f0 4%,#3d9dd0 100%);
+	padding: 0;
+    border-bottom: 20px solid #03739C;
+}
+
+.jumbotron.home {
+    margin-bottom: 0;
+    padding-top:30px;
+}
+
+.report-title{
+	margin: 0;
+	padding: 0;
+	width:100%;
+	color:#fff;
+	text-align: center;
+}
+
+.jumbotron .container {
+    position: relative;
+    background: url(images/splash.svg) bottom right no-repeat;
+    color: #fff;
+    padding: 150px 0;
+}
+
+@media screen and (max-width:768px){
+	.jumbotron{
+		background: #3d9dd0;
+	}
+	
+	.jumbotron .container {
+	    position: relative;
+	    background: none;
+	    color: #fff;
+	    padding: 15px 0;
+	}
+	.report-title {
+	    top: 30px;
+	}
+}
+
+.jumbotron .container .text-wrapper {
+    width: 50%;
+    font-size: 14px;
+    margin-top: -135px;
+}
+
+.jumbotron .container .text-wrapper .col-xs-6, .jumbotron .container .text-wrapper .col-sm-6,.jumbotron .container .text-wrapper .col-md-3{
+	padding-left:0px;
+}
+.jumbotron .container .text-wrapper .comment{
+	position: absolute;
+	width: 50%;
+}
+
+
+.jumbotron .container .text-wrapper .comment .col-xs-12{
+    margin: 0px;
+    padding: 0px;
+}
+
+.jumbotron .container .text-wrapper .comment .col-xs-12 pre{
+    font-size:16px;
+    padding:0px;
+    background: transparent;
+    border:0px;
+    color:#fff;
+    text-indent:22px;
+}
+
+@media screen and (max-width:768px){
+	.jumbotron .container .text-wrapper {
+	    width: 100%;
+	    padding:0 15px;
+	    margin-top:0px;
+	}
+	.jumbotron .container .text-wrapper .col-xs-6, .jumbotron .container .text-wrapper .col-sm-6,.jumbotron .container .text-wrapper .col-md-3{
+	    padding-left:15px;
+	}
+	.jumbotron .container .text-wrapper .comment{
+		position: relative;
+		width:100%;
+		margin: 0px;
+	}
+}
+
+
+/****成绩单****/
+.container-fluid:after, .container-fluid:before, .container:after, .container:before, .row:after, .row:before {
+	display: table;
+	content: " ";
+}
+
+.home-panel{
+	padding: 0 0 2em 0;
+}
+
+.home-panel h1 {
+	text-align: center;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	margin-top: 0;
+	letter-spacing:15px;
+}
+
+.home-panel-heading-divider {
+	display: block;
+	width: 100%;
+	background-color: #2BBAED;
+	height: 2px;
+	margin: 1em auto;
+}
+
+.home-panel-subheading {
+	text-align: center;
+	margin-top: 0;
+}
+
+
+.steps .row {
+	margin-top: 2.2em;
+	margin-left:0px;
+	margin-right:0px;
+}
+
+.steps .row section.col-xs-12{
+	padding-left:0px;
+	padding-right:0px;
+}
+
+.steps .score-desc>h4{
+	margin-bottom:0px;
+}
+
+.steps .score-desc>p{
+	margin: 0 15px 0 20px;
+}
+
+.steps .score-desc>p i.glyphicon,.steps .glyphicon-star,.steps .glyphicon-star-empty{
+	color:#ff4500;
+}
+
+.steps .score-desc ul{
+	display: table;
+	padding-left:10px;
+	margin:0px;
+}
+
+
+
+.steps .score-desc ul>li{
+	float:left;
+	padding: 5px 10px 0;
+}
+
+.steps .score-desc ul>li span{
+	font-weight: 700;
+	margin-right:5px;
+}
+
+.steps .score-desc ul>li.excellence span{
+	color:#359947;
+}
+
+.steps .score-desc ul>li.good span{
+	color:#196aeb;
+}
+
+.steps .score-desc ul>li.pass span{
+	color:#fbb046;
+}
+
+.steps .score-desc ul>li.terrible span{
+	color:#b12d26;
+}
+
+.steps .col-md-3 {
+	padding: 0;
+	text-align: center;
+}
+
+.steps .subject{
+	border: 5px solid #2BBAED;
+	border-radius: 8px;
+	padding:5px 0 ;
+}
+
+.steps .row.subject{
+	margin-top:15px;
+}
+
+.steps .subject .col-xs-6{
+	margin: 0px;
+	padding: 0px;
+}
+
+.steps .glyphicon {
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	font-family: 'Glyphicons Halflings';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.steps .glyphicon-wrapper{
+	padding:5px 0;
+	text-align:center;
+}
+.steps .glyphicon-education {
+	border: 5px solid #359947;
+	border-radius: 150px;
+	padding: 10px 10px 10px 10px;
+	color:#359947;
+
+}
+
+.steps .glyphicon-edit {
+	border: 5px solid #fbb046;
+	border-radius: 150px;
+	padding: 10px 10px 10px 10px;
+	color:#fbb046;
+}
+
+.steps .glyphicon-thumbs-up {
+	border: 5px solid #196aeb;
+	border-radius: 150px;
+	padding: 10px 10px 10px 10px;
+	color:#196aeb;
+}
+
+.steps .glyphicon-wrench {
+	border: 5px solid #b12d26;
+	border-radius: 150px;
+	padding: 10px 10px 10px 10px;
+	color:#b12d26;
+}
+
+.steps .glyphicon-thumbs-up, .steps .glyphicon-education, .steps .glyphicon-edit,.steps .glyphicon-wrench {
+	font-size: 20px;
+	text-align: center;
+}
+
+.steps .score-detail i.glyphicon-star{
+	color:#ff4500;
+}
+
+.steps .score-detail i.glyphicon-star-empty{
+	color:#ff1022;
+}
+
+@media screen and (max-width:768px){
+	.home-panel h1{
+	    margin-top:15px;
+	}
+	.container label{
+	    font-weight:500;
+	}
+	
+	.container.steps>article.row{
+	    margin-top:0px;
+	}
+	
+	.container.steps, .steps .score-desc ul{
+	    padding-left:5px;
+	    padding-right:5px;
+	}
+	.steps .score-desc ul li{
+	    float: inherit;
+	}
+}
+
+/********各科得分明细*******/
+
+.steps .score-detail, .steps .score-comment{
+	padding: 0 10px;	
+	display: block;
+	margin: 15px;
+	font-size: 13px;
+	line-height: 1.42857143;
+	color: #333;
+	background-color: #fefefe;
+	border: 1px solid #eee;
+	border-radius: 4px;	
+}
+
+.steps .score-detail .row section.col-xs-12{
+	
+}
+
+.steps .score-detail h1,.steps .score-detail h3{
+	text-align: center;
+	padding: 0 0 0 12px;
+	letter-spacing:0px;
+}
+.steps .score-detail h3{
+	margin: 10px 0 5px 0;
+}
+
+.steps .score-detail .row.subject{
+	padding: 0 10px;
+	border: 0;
+	padding: 5px 0;
+	margin-top: 0px;
+}
+
+.steps .score-detail .row.subject ul{
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.steps .score-detail .row.subject ul li.terrible{
+	color: #ff4500;
+}
+
+@media screen and (max-width:768px){
+	.steps .score-detail .row.subject ul{
+		padding: 0px;
+	}
+	
+	.steps .score-detail .row.subject ul li{
+	    padding:5px;
+	}
+}

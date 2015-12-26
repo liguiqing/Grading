@@ -4,6 +4,13 @@
  **/
 package com.easytnt.grading.repository.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,6 +34,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import com.easytnt.commons.exception.ThrowableParser;
+import com.easytnt.reporting.out.ReportingOutput;
+import com.easytnt.commons.util.Closer;
 import com.easytnt.grading.domain.exam.Exam;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Section;
@@ -59,14 +69,20 @@ public class ExamineeFinalScoreCalculator {
 	
 	private HashMap<ExamPaper,TreeSet<Float>> allPaperScores;
 	
+	private HashMap<ExamPaper,List> paperObjectItems;
+	
+	private ReportingOutput out;
+	
 	private static ConcurrentHashMap<Long, ExamineeFinalScoreCalculator> pool  = new ConcurrentHashMap<>();
 	
-	public static ExamineeFinalScoreCalculator newCalculator(Long testId) {
+	public static ExamineeFinalScoreCalculator newCalculator(Long testId,ReportingOutput out) {
 		ExamineeFinalScoreCalculator calculator = pool.get(testId);
 		if(calculator != null)
 			return calculator;
 		
 		calculator = new ExamineeFinalScoreCalculator();
+		calculator.paperObjectItems = new HashMap();
+		calculator.out=out;
 		calculator.testId = testId;
 		calculator.totalScores = new ArrayList<>();
 		calculator.allTotalScores = new TreeSet<>(new Comparator<Float>() {
@@ -92,11 +108,20 @@ public class ExamineeFinalScoreCalculator {
 		Examinee examinee = getExaminee(session, examineeuuid);
 		initExam(session);
 		initExamPapers(session);
+		initObjectItems(session);
 		calTotalScore(examinee);
 		session.close();
 	}
 	
-	public void output() {
+	public void output(String rootPath) {
+		if(rootPath == null) {
+			rootPath = System.getProperty("java.io.tmpdir");
+		}
+		
+		File rootDir = new File(rootPath+File.separator+testId);
+		if(!rootDir.exists()) {
+			rootDir.mkdir();
+		}
 		for(ExamineeTotalScore totalScore:this.totalScores) {
 			logger.debug(totalScore.getExaminee().getName()+
 					" 唯一编号：" + totalScore.getExaminee().getUuid() + 
@@ -104,6 +129,26 @@ public class ExamineeFinalScoreCalculator {
 					" 得分" + totalScore.getScore() +
 					" 分数等级" + totalScore.degree +
 					" 排名等级" +	totalScore.ranking);
+			String fileName = totalScore.examinee.getUuid()+".html";
+			logger.debug("Output to " + rootPath +File.separator+fileName);
+			Writer writer = null;
+			try {
+				File html = new File(rootDir.getAbsolutePath()+File.separator+fileName);
+				html.createNewFile();
+				writer = new OutputStreamWriter(new FileOutputStream(html),"UTF-8");
+				HashMap root = new HashMap();
+				root.put("totalPaper", totalScore);
+				out.write(root,writer);
+			} catch (UnsupportedEncodingException e) {
+				logger.error(ThrowableParser.toString(e));
+			} catch (FileNotFoundException e) {
+				logger.error(ThrowableParser.toString(e));
+			} catch (IOException e) {
+				logger.error(ThrowableParser.toString(e));
+			}finally {
+				Closer.close(writer);
+			}
+			
 		}
 	}
 	
@@ -118,6 +163,7 @@ public class ExamineeFinalScoreCalculator {
 					break;
 				}
 			}
+			paperScore.rankingRate = new Float(p)/size;
 			paperScore.ranking = Ranking.cal(new Float(size-p)/size);
 		}
 		
@@ -133,6 +179,7 @@ public class ExamineeFinalScoreCalculator {
 					break;
 				}
 			}
+			totalScore.rankingRate = new Float(p)/size;
 			totalScore.ranking = Ranking.cal(new Float(size-p)/size);
 			paperRanking(totalScore);
 	    }
@@ -195,12 +242,16 @@ public class ExamineeFinalScoreCalculator {
 		});
 		//客观题目得分
 		newOrgs = new Object[] {paper.getPaperId(),examinee.getUuid()};
-		jdbcTemplate.query("select 0,'客观题',kgScore from omrResult where paperid=? and studentId=?",newOrgs , new RowMapper<ItemScore>() {
+		jdbcTemplate.query("select omrScore,kgScore,omrStr from omrResult where paperid=? and studentId=?",newOrgs , new RowMapper<ItemScore>() {
 
 			@Override
 			public ItemScore mapRow(ResultSet rs, int rowNum) throws SQLException {
-				//ItemScore score = new ItemScore(rs.getLong(1),rs.getString(2),rs.getFloat(3));
-				paperScore.addItemScore(rs.getLong(1),rs.getString(2),rs.getFloat(3));
+				ItemScore score = new ItemScore();
+				score.object = true;
+				score.myAnswer = rs.getString("omrStr");
+				score.score = rs.getFloat("kgScore");
+				score.itemName = rs.getString("omrScore");
+				paperScore.addItemScore(score);
 				return null;
 			}
 			
@@ -229,6 +280,36 @@ public class ExamineeFinalScoreCalculator {
 		}
 	}
 	
+	private void initObjectItems(Session session) {
+		if(this.examPapers == null)
+			this.initExamPapers(session);
+		String sql = "SELECT * FROM selectitemdefine WHERE paperid=? ORDER BY NAME*1";
+		for(ExamPaper paper:this.examPapers) {
+			final ArrayList<Long> ids = new ArrayList<>();
+			final ArrayList<String> names = new ArrayList<>();
+			final ArrayList<Float> scores = new ArrayList<>();
+			final ArrayList<String> options = new ArrayList<>();
+			this.jdbcTemplate.query(sql, new Object[] {paper.getPaperId()}, new RowMapper(){
+
+				@Override
+				public Object mapRow(ResultSet rs, int rowNum)
+						throws SQLException {
+					ids.add(rs.getLong("id"));
+					scores.add(rs.getFloat("fullscore"));
+					options.add(rs.getString("answer"));
+					names.add(rs.getString("name"));
+					return null;
+				}		
+			});
+			ArrayList objectItems = new ArrayList();
+			objectItems.add(ids);
+			objectItems.add(names);
+			objectItems.add(options);
+			objectItems.add(scores);
+			this.paperObjectItems.put(paper, objectItems);
+		}
+	}
+	
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
@@ -242,6 +323,8 @@ public class ExamineeFinalScoreCalculator {
 	}
 	
 	public class ExamineeTotalScore{
+		public float rankingRate;
+
 		private List<ExamPaperScore> paperScores;
 		
 		private Examinee examinee;
@@ -275,12 +358,36 @@ public class ExamineeFinalScoreCalculator {
 				this.score += paperScore.calScore();
 			}
 			allTotalScores.add(score);
-			Float level = this.score / this.fullScore;
+			Float level = this.getLevel();
 			this.degree = Degree.cal(level);
+			//this.ranking = Ranking.cal(level);
 		}
 
+		public boolean hasMoreSubjects() {
+			if(this.paperScores == null || this.paperScores.size() == 0)
+				return false;
+			return true;
+		}
+		
+		public Float getLevel() {
+			Float level = this.score / this.fullScore;
+			return level;
+		}
+		
+		public Float getScoreRate() {
+			return getLevel();
+		}
+		
+		public Float getRankingRate() {
+			return this.rankingRate;
+		}
+		
 		public Examinee getExaminee() {
 			return examinee;
+		}
+		
+		public String getExamName() {
+			return exam.getDesc().getName();
 		}
 
 		public Float getFullScore() {
@@ -291,10 +398,32 @@ public class ExamineeFinalScoreCalculator {
 			return score;
 		}
 		
+		public String getRankingName() {
+			return Ranking.levelName(this.ranking);
+		}
+		
+		public String getDegreeName() {
+			return Degree.levelName(this.degree);
+		}
+
+		public List<ExamPaperScore> getPaperScores() {
+			return paperScores;
+		}
+
+		public int getRanking() {
+			return ranking;
+		}
+
+		public int getDegree() {
+			return degree;
+		}
 		
 	}
 	
 	public class ExamPaperScore{
+		
+		public float rankingRate;
+
 		private ExamPaper paper;
 		
 		private Examinee examinee;
@@ -339,7 +468,7 @@ public class ExamineeFinalScoreCalculator {
 			for(ItemScore item:this.itemsScore) {
 				this.score += item.score;
 			}
-			Float level = this.score / this.paper.getFullScore();
+			Float level = getLevel();
 			this.degree = Degree.cal(level);
 			
 			if(allPaperScores.get(this.paper) == null) {
@@ -354,24 +483,46 @@ public class ExamineeFinalScoreCalculator {
 			allPaperScores.get(this.paper).add(this.score);
 			return this.score;
 		}
-
-		public void addItemScore(String itemName,Float score) {
+		
+		public void addItemScore(ItemScore score) {
 			if(this.itemsScore == null) {
 				this.itemsScore = new ArrayList<>();
 			}
-			this.itemsScore.add(new ItemScore(itemName,score));
+			this.itemsScore.add(score);
+		}
+
+		public void addItemScore(String itemName,Float score) {
+			this.addItemScore(new ItemScore(itemName,score));
 		}
 		
 		public void addItemScore(Long itemId,String itemName,Float score) {
-			if(this.itemsScore == null) {
-				this.itemsScore = new ArrayList<>();
-			}
-			this.itemsScore.add(new ItemScore(itemId,itemName,score));
+			this.addItemScore(new ItemScore(itemId,itemName,score));
 			if(this.requiredItemIds.get(itemId) != null) {
 				this.requiredItemIds.put(itemId, Boolean.TRUE);
 			}
 		}
 
+		public Float getLevel() {
+			Float level = this.score / this.paper.getFullScore();
+			return level;
+		}
+		
+		public Float getScoreRate() {
+			return getLevel();
+		}
+		
+		public Float getRankingRate() {
+			return this.rankingRate;
+		}
+		
+		public String getPaperName() {
+			return this.paper.getName();
+		}
+		
+		public Float getFullScore() {
+			return this.paper.getFullScore();
+		}
+		
 		public boolean equals(Object o) {
 			if(!(o instanceof ExamPaperScore)) {
 				return false;
@@ -389,10 +540,6 @@ public class ExamineeFinalScoreCalculator {
 			return score;
 		}
 
-		public void setScore(Float score) {
-			this.score = score;
-		}
-
 		public String getExamineeName() {
 			return this.examinee.getName();
 		}
@@ -405,25 +552,40 @@ public class ExamineeFinalScoreCalculator {
 			return schoolName;
 		}
 
-		public void setSchoolName(String schoolName) {
-			this.schoolName = schoolName;
-		}
-
 		public String getClassName() {
 			return className;
 		}
 
-		public void setClassName(String className) {
-			this.className = className;
-		}
-
 		public List<ItemScore> getItemsScore() {
-			return itemsScore;
+			ArrayList<ItemScore> items = new ArrayList<>();
+			if(this.itemsScore != null) {
+				for(ItemScore itemScore:this.itemsScore) {
+					if(itemScore.isObject()) {
+						items.addAll(itemScore.getObjectSubItemScores());
+					}else {
+						items.add(itemScore);
+					}				
+				}
+			}
+			return items;
+		}		
+		
+		public String getRankingName() {
+			return Ranking.levelName(this.ranking);
+		}
+		
+		public String getDegreeName() {
+			return Degree.levelName(this.degree);
 		}
 
-		public void setItemsScore(List<ItemScore> itemsScore) {
-			this.itemsScore = itemsScore;
-		}		
+		public int getRanking() {
+			return ranking;
+		}
+
+		public int getDegree() {
+			return degree;
+		}
+
 	}
 	
 	public class ItemScore{
@@ -431,7 +593,15 @@ public class ExamineeFinalScoreCalculator {
 		
 		private String itemName;
 		
+		private String answer;
+		
+		private String myAnswer;
+		
 		private Float score = 0.0f;
+		
+		private boolean object = false;
+		
+		public ItemScore() {}
 		
 		public ItemScore(String itemName, Float score) {
 			this.itemName = itemName;
@@ -444,7 +614,7 @@ public class ExamineeFinalScoreCalculator {
 			this.itemName = itemName;
 			this.score = score;
 		}
-
+		
 		public Long getItemId() {
 			return itemId;
 		}
@@ -468,6 +638,38 @@ public class ExamineeFinalScoreCalculator {
 		public void setScore(Float score) {
 			this.score = score;
 		}
+		
+		public boolean isObject() {
+			return this.object;
+		}
+		
+		public List<ItemScore> getObjectSubItemScores() {
+			if(this.object) {
+				List<List> omr = this.getOmr();
+				List<Long> ids = omr.get(0);
+				List<String> names = omr.get(1);
+				List<String> options = omr.get(2);
+				List<Float> scores = omr.get(3);
+				String[] myans = this.myAnswer.split(",");
+				String[] myscores = this.itemName.split(",");
+				ArrayList<ItemScore> items = new ArrayList<>();
+				for(int i = 0;i<ids.size();i++) {
+					ItemScore score = new ItemScore();
+					score.itemId = ids.get(i);
+					score.score = new Float(myscores[i]);
+					score.itemName = names.get(i);
+					score.answer = myans[i];
+					score.object = true;
+					items.add(score);
+				}
+				return items;
+			}
+			return null;
+		}
+		
+		public List getOmr() {
+			return  paperObjectItems.get(this);
+		}
 	}
 	
 	/**
@@ -483,6 +685,8 @@ public class ExamineeFinalScoreCalculator {
 		
 		private final static int[] levels = new int[] {0,1,2,3};
 		
+		private final static String[] levenlsName = new String[] {"不及格","及格","良好","优秀"};
+		
 		public static int  cal(Float level) {
 			for(int i = levelValues.length-1;i>=0;i--) {
 				if(level >=levelValues[i]) {
@@ -491,11 +695,20 @@ public class ExamineeFinalScoreCalculator {
 			}
 			return levels[0];
 		}
+		
+		public static String levelName(int level) {
+			for(int i=0;i<levels.length;i++) {
+				if(level == levels[i])
+					return levenlsName[i];
+			}
+			return levenlsName[0];
+		}
 	}
 	
 	/**
 	 * 排名等级
 	 * 得分在群体中的百分位
+	 * 计算值越大排名越高
 	 * @author liguiqing
 	 *
 	 */
@@ -505,6 +718,8 @@ public class ExamineeFinalScoreCalculator {
 		
 		private static int [] levels = new int[] {0,1,2,3};
 		
+		private final static String[] levenlsName = new String[] {"下等","中下","中上","上等"};
+		
 		public static int  cal(Float level) {
 			for(int i = levelValues.length-1;i>=0;i--) {
 				if(level >=levelValues[i]) {
@@ -512,6 +727,14 @@ public class ExamineeFinalScoreCalculator {
 				}
 			}
 			return levels[0];
+		}
+		
+		public static String levelName(int level) {
+			for(int i=0;i<levels.length;i++) {
+				if(level == levels[i])
+					return levenlsName[i];
+			}
+			return levenlsName[0];
 		}
 	}
 }

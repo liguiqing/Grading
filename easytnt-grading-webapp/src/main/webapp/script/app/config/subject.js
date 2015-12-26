@@ -181,7 +181,7 @@
 								if(m.amount > 0){
 									row.find('td:last').removeClass("doing").addClass('completed')
 									   .find('i').removeClass('glyphicon-remove').addClass('glyphicon-ok')
-									   .parent().prev().find('i').removeClass('cuttingPaper').removeClass('glyphicon-scissors')
+									   .parent().prev().prev().find('i').removeClass('cuttingPaper').removeClass('glyphicon-scissors')
 									   .addClass('glyphicon-edit').attr('title','开始评卷');
 								}
 							}
