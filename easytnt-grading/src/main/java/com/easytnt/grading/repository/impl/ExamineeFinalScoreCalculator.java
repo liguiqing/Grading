@@ -222,26 +222,12 @@ public class ExamineeFinalScoreCalculator {
 			}
 			i++;
 		}
-		Object[] newOrgs = new Object[args.size()];
-		for(i=0;i<args.size();i++) {
-			newOrgs[i] = args.get(i);
-		}
+		
 		
 		final ExamPaperScore paperScore = new ExamPaperScore(paper,examinee);
 		paperScore.requiredItems(allSectionIds);
-		//主观题目得分
-		jdbcTemplate.query(newSql.toString(), newOrgs, new RowMapper<ItemScore>() {
-
-			@Override
-			public ItemScore mapRow(ResultSet rs, int rowNum) throws SQLException {
-				//ItemScore score = new ItemScore(rs.getLong(1),rs.getString(2),rs.getFloat(3));
-				paperScore.addItemScore(rs.getLong(1),rs.getString(2),rs.getFloat(3));
-				return null;
-			}
-			
-		});
 		//客观题目得分
-		newOrgs = new Object[] {paper.getPaperId(),examinee.getUuid()};
+		Object[] newOrgs = new Object[] {paper.getPaperId(),examinee.getUuid()};
 		jdbcTemplate.query("select omrScore,kgScore,omrStr from omrResult where paperid=? and studentId=?",newOrgs , new RowMapper<ItemScore>() {
 
 			@Override
@@ -257,6 +243,21 @@ public class ExamineeFinalScoreCalculator {
 			
 		});
 		
+		//主观题目得分
+		newOrgs = new Object[args.size()];
+		for(i=0;i<args.size();i++) {
+			newOrgs[i] = args.get(i);
+		}
+		jdbcTemplate.query(newSql.toString(), newOrgs, new RowMapper<ItemScore>() {
+
+			@Override
+			public ItemScore mapRow(ResultSet rs, int rowNum) throws SQLException {
+				//ItemScore score = new ItemScore(rs.getLong(1),rs.getString(2),rs.getFloat(3));
+				paperScore.addItemScore(rs.getLong(1),rs.getString(2),rs.getFloat(3));
+				return null;
+			}
+			
+		});
 		return paperScore;
 	}
 
@@ -561,7 +562,7 @@ public class ExamineeFinalScoreCalculator {
 			if(this.itemsScore != null) {
 				for(ItemScore itemScore:this.itemsScore) {
 					if(itemScore.isObject()) {
-						items.addAll(itemScore.getObjectSubItemScores());
+						items.addAll(itemScore.getObjectSubItemScores(this.paper));
 					}else {
 						items.add(itemScore);
 					}				
@@ -599,6 +600,8 @@ public class ExamineeFinalScoreCalculator {
 		
 		private Float score = 0.0f;
 		
+		private Float fullScore = 0.0f;
+		
 		private boolean object = false;
 		
 		public ItemScore() {}
@@ -626,6 +629,18 @@ public class ExamineeFinalScoreCalculator {
 		public String getItemName() {
 			return itemName;
 		}
+		
+		public String getAnswer() {
+			return this.answer;
+		}
+		
+		public String getMyAnswer() {
+			return this.myAnswer;
+		}
+		
+		public Float getFullScore() {
+			return this.fullScore;
+		}
 
 		public void setItemName(String itemName) {
 			this.itemName = itemName;
@@ -643,9 +658,9 @@ public class ExamineeFinalScoreCalculator {
 			return this.object;
 		}
 		
-		public List<ItemScore> getObjectSubItemScores() {
+		public List<ItemScore> getObjectSubItemScores(ExamPaper paper) {
 			if(this.object) {
-				List<List> omr = this.getOmr();
+				List<List> omr = paperObjectItems.get(paper);
 				List<Long> ids = omr.get(0);
 				List<String> names = omr.get(1);
 				List<String> options = omr.get(2);
@@ -657,8 +672,10 @@ public class ExamineeFinalScoreCalculator {
 					ItemScore score = new ItemScore();
 					score.itemId = ids.get(i);
 					score.score = new Float(myscores[i]);
+					score.fullScore = scores.get(i);
 					score.itemName = names.get(i);
-					score.answer = myans[i];
+					score.answer = options.get(i);
+					score.myAnswer = myans[i];
 					score.object = true;
 					items.add(score);
 				}
@@ -666,10 +683,7 @@ public class ExamineeFinalScoreCalculator {
 			}
 			return null;
 		}
-		
-		public List getOmr() {
-			return  paperObjectItems.get(this);
-		}
+
 	}
 	
 	/**
@@ -718,7 +732,7 @@ public class ExamineeFinalScoreCalculator {
 		
 		private static int [] levels = new int[] {0,1,2,3};
 		
-		private final static String[] levenlsName = new String[] {"下等","中下","中上","上等"};
+		private final static String[] levenlsName = new String[] {"下等","中下","中上","优等"};
 		
 		public static int  cal(Float level) {
 			for(int i = levelValues.length-1;i>=0;i--) {
