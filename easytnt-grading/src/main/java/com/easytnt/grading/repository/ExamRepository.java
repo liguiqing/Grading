@@ -2,6 +2,7 @@ package com.easytnt.grading.repository;
 
 import com.easytnt.commons.entity.repository.Repository;
 import com.easytnt.grading.domain.exam.Exam;
+import com.easytnt.grading.repository.impl.ExamineeFinalScoreCalculator;
 
 /** 
  * <pre>
@@ -12,5 +13,7 @@ import com.easytnt.grading.domain.exam.Exam;
  * @version 1.0
  **/
 public interface ExamRepository extends Repository<Exam, Long> {
+
+	ExamineeFinalScoreCalculator createFinalScoreCalculator(Long examId);
 
 }

@@ -1,5 +1,7 @@
 package com.easytnt.grading.controller;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -11,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.easytnt.commons.entity.cqrs.Query;
 import com.easytnt.commons.entity.cqrs.QueryBuilder;
 import com.easytnt.commons.ui.MenuGroup;
+import com.easytnt.commons.util.SpringContextUtil;
 import com.easytnt.commons.web.view.ModelAndViewFactory;
 import com.easytnt.grading.domain.exam.Exam;
 import com.easytnt.grading.service.ExamService;
@@ -27,6 +31,8 @@ public class ExamController {
 	@Autowired(required = false)
 	private ExamService examService;
 	
+	@Autowired(required = false)
+	private FreeMarkerConfigurer configurer;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView onGet()throws Exception {
@@ -85,5 +91,13 @@ public class ExamController {
         examService.query(query);
 		return ModelAndViewFactory.newModelAndViewFor("/exam/listExam").with("result",query.getResults())
 				.with("totalPage",query.getTotalPage()).build();
+	}
+	
+	@RequestMapping(value="/reporting/{examId}",method = RequestMethod.POST)
+	public ModelAndView onReporting(@PathVariable Long examId,HttpServletRequest request)
+					throws Exception {
+		String reportingPath = request.getRealPath("/") +"html";
+        examService.reportingFor(examId,reportingPath,configurer.getConfiguration());    
+		return ModelAndViewFactory.newModelAndViewFor("").build();
 	}
 }

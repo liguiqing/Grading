@@ -7,12 +7,18 @@
   	</thead>
   	<tbody>
   	<#list examList as t>
-	  	  <tr>
-	  	    <td><a href="javascript:void(0)" data-rr-name="examName" data-rr-id="${t.id}" data-rr-oid="${t.oid}">${t.desc.name}</a></td>
-	  	    <td>${t.desc.from?string("yyyy-MM-dd")}</a></td>
-		    <td>${t.desc.to?string("yyyy-MM-dd")}</a></td>
-		    <td><a href="javascript:void(0);" data-rr-name="deleteExam">删除</a></td>
-	  	  </tr>
+  	  <tr>
+  	    <td><a href="javascript:void(0)" data-rr-name="examName" data-rr-id="${t.id}" data-rr-oid="${t.oid}">${t.desc.name}</a></td>
+  	    <td>${t.desc.from?string("yyyy-MM-dd")}</a></td>
+	    <td>${t.desc.to?string("yyyy-MM-dd")}</a></td>
+	    <td><a href="javascript:void(0);" data-rr-name="deleteExam">删除</a>
+	    <#if t.status=0>
+	      <a href="javascript:void(0);" data-rr-name="reportingExam" style="margin-left:15px;">统计成绩</a>
+	    <#else>
+	      <a href="${request.contextPath}/static/html/${t.id}/index.html" target="_blank" style="margin-left:15px;">查看成绩</a>
+	    </#if>
+	    </td>
+  	  </tr>
 	 </#list> 	  
   	  <tr class="bg-warning">
   	    <td><a href="javascript:void(0)" id="newExam"><i class="icon-plus"></i></a></td><td></td><td></td><td class="doing"></td>

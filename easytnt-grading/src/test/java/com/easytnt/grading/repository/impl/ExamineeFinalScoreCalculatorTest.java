@@ -64,16 +64,16 @@ public class ExamineeFinalScoreCalculatorTest {
         config.setEncoding(Locale.CHINA, "utf-8");
         config.setObjectWrapper(new DefaultObjectWrapper()); 
         File file = new File(this.getClass().getResource("").getPath()+File.separator+"report.ftl");
-        
+        File file2 = new File(this.getClass().getResource("").getPath()+File.separator+"scoreList.ftl");
         String html = FileUtils.readFileToString(file, "utf-8");
-        
+        String html2 =  FileUtils.readFileToString(file2, "utf-8");
         StringTemplateLoader statements = new StringTemplateLoader();
         statements.putTemplate("report", html);
-        
+        statements.putTemplate("scoreList", html2);
         config.setTemplateLoader(statements);
 		
         FreemarkerHtmlOutput out = new FreemarkerHtmlOutput(config,"report");//mock(Outputor.class);
-		final ExamineeFinalScoreCalculator calculator = ExamineeFinalScoreCalculator.newCalculator(1l,out);
+		final ExamineeFinalScoreCalculator calculator = ExamineeFinalScoreCalculator.newCalculator(1l);
 		calculator.setJdbcTemplate(jdbcTemplate);
 		calculator.setSessionFactory(sessionFactroy);
 		jdbcTemplate.query("SELECT examinne_uuid FROM examinne ", new ResultSetExtractor() {
@@ -88,7 +88,8 @@ public class ExamineeFinalScoreCalculatorTest {
 		});
 		calculator.ranking();
 		String rootPath = "E:\\eclipse\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\easytnt-grading-webapp\\html";
-		calculator.output(rootPath);
+		calculator.reportingOutput(rootPath,new FreemarkerHtmlOutput(config,"report"));
+		calculator.scoreListOutput(rootPath,new FreemarkerHtmlOutput(config,"scoreList"));
 	}
 	
 }

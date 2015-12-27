@@ -95,6 +95,7 @@ CREATE TABLE `term_test` (
   `term_test_name` VARCHAR(16)  COMMENT '考试名称',
   `term_test_from` DATETIME DEFAULT NULL COMMENT '考试开始时间' ,
   `term_test_to` DATETIME DEFAULT NULL COMMENT '考试完成时间' ,
+  `term_test_status` int(2) DEFAULT '0' COMMENT '评卷进行状态' ,
   PRIMARY KEY (`term_test_id`)
 ) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='学期考试定义';
 

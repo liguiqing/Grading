@@ -14,10 +14,8 @@ import java.io.Writer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,19 +26,18 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.easytnt.commons.exception.ThrowableParser;
-import com.easytnt.reporting.out.ReportingOutput;
 import com.easytnt.commons.util.Closer;
 import com.easytnt.grading.domain.exam.Exam;
 import com.easytnt.grading.domain.paper.ExamPaper;
 import com.easytnt.grading.domain.paper.Section;
 import com.easytnt.grading.domain.room.Examinee;
+import com.easytnt.reporting.out.ReportingOutput;
 
 /** 
  * <pre>
@@ -70,19 +67,16 @@ public class ExamineeFinalScoreCalculator {
 	private HashMap<ExamPaper,TreeSet<Float>> allPaperScores;
 	
 	private HashMap<ExamPaper,List> paperObjectItems;
-	
-	private ReportingOutput out;
-	
+
 	private static ConcurrentHashMap<Long, ExamineeFinalScoreCalculator> pool  = new ConcurrentHashMap<>();
 	
-	public static ExamineeFinalScoreCalculator newCalculator(Long testId,ReportingOutput out) {
+	public static ExamineeFinalScoreCalculator newCalculator(Long testId) {
 		ExamineeFinalScoreCalculator calculator = pool.get(testId);
 		if(calculator != null)
 			return calculator;
 		
 		calculator = new ExamineeFinalScoreCalculator();
 		calculator.paperObjectItems = new HashMap();
-		calculator.out=out;
 		calculator.testId = testId;
 		calculator.totalScores = new ArrayList<>();
 		calculator.allTotalScores = new TreeSet<>(new Comparator<Float>() {
@@ -104,16 +98,48 @@ public class ExamineeFinalScoreCalculator {
 	 * @throws UnsupportedOperationException 该考生试卷没有改完成时抛出
 	 */
 	public void calScore(String examineeuuid) throws UnsupportedOperationException{
-		Session session = this.sessionFactroy.openSession();
+		Session session = getSession();
 		Examinee examinee = getExaminee(session, examineeuuid);
 		initExam(session);
 		initExamPapers(session);
 		initObjectItems(session);
 		calTotalScore(examinee);
-		session.close();
+		//session.close();
 	}
 	
-	public void output(String rootPath) {
+	private Session getSession() {
+		try {
+			return this.sessionFactroy.getCurrentSession();
+		}catch(Exception e) {
+			return this.sessionFactroy.openSession();
+		}
+	}
+	
+	public void scoreListOutput(String rootPath,ReportingOutput output) {
+		File rootDir = initOutputPath(rootPath);
+		Writer writer = null;
+		try {
+			String fileName = "index.html";
+			File html = new File(rootDir.getAbsolutePath()+File.separator+fileName);
+			html.createNewFile();
+			writer = new OutputStreamWriter(new FileOutputStream(html),"UTF-8");
+			HashMap root = new HashMap();
+			root.put("exam", this.exam);
+			root.put("totalScoreList", this.totalScores);
+			logger.debug("Score List to {}",fileName);
+			output.write(root,writer);
+		} catch (UnsupportedEncodingException e) {
+			logger.error(ThrowableParser.toString(e));
+		} catch (FileNotFoundException e) {
+			logger.error(ThrowableParser.toString(e));
+		} catch (IOException e) {
+			logger.error(ThrowableParser.toString(e));
+		}finally {
+			Closer.close(writer);
+		}
+	}
+	
+	private File initOutputPath(String rootPath) {
 		if(rootPath == null) {
 			rootPath = System.getProperty("java.io.tmpdir");
 		}
@@ -122,6 +148,12 @@ public class ExamineeFinalScoreCalculator {
 		if(!rootDir.exists()) {
 			rootDir.mkdir();
 		}
+		return rootDir;
+	}
+	
+	public void reportingOutput(String rootPath,ReportingOutput output) {
+		File rootDir = initOutputPath(rootPath);
+		
 		for(ExamineeTotalScore totalScore:this.totalScores) {
 			logger.debug(totalScore.getExaminee().getName()+
 					" 唯一编号：" + totalScore.getExaminee().getUuid() + 
@@ -138,7 +170,7 @@ public class ExamineeFinalScoreCalculator {
 				writer = new OutputStreamWriter(new FileOutputStream(html),"UTF-8");
 				HashMap root = new HashMap();
 				root.put("totalPaper", totalScore);
-				out.write(root,writer);
+				output.write(root,writer);
 			} catch (UnsupportedEncodingException e) {
 				logger.error(ThrowableParser.toString(e));
 			} catch (FileNotFoundException e) {
@@ -151,6 +183,46 @@ public class ExamineeFinalScoreCalculator {
 			
 		}
 	}
+//	
+//	public void output(String rootPath) {
+//		if(rootPath == null) {
+//			rootPath = System.getProperty("java.io.tmpdir");
+//		}
+//		
+//		File rootDir = new File(rootPath+File.separator+testId);
+//		if(!rootDir.exists()) {
+//			rootDir.mkdir();
+//		}
+//		
+//		for(ExamineeTotalScore totalScore:this.totalScores) {
+//			logger.debug(totalScore.getExaminee().getName()+
+//					" 唯一编号：" + totalScore.getExaminee().getUuid() + 
+//					" 满分" + totalScore.getFullScore() +
+//					" 得分" + totalScore.getScore() +
+//					" 分数等级" + totalScore.degree +
+//					" 排名等级" +	totalScore.ranking);
+//			String fileName = totalScore.examinee.getUuid()+".html";
+//			logger.debug("Output to " + rootPath +File.separator+fileName);
+//			Writer writer = null;
+//			try {
+//				File html = new File(rootDir.getAbsolutePath()+File.separator+fileName);
+//				html.createNewFile();
+//				writer = new OutputStreamWriter(new FileOutputStream(html),"UTF-8");
+//				HashMap root = new HashMap();
+//				root.put("totalPaper", totalScore);
+//				out.write(root,writer);
+//			} catch (UnsupportedEncodingException e) {
+//				logger.error(ThrowableParser.toString(e));
+//			} catch (FileNotFoundException e) {
+//				logger.error(ThrowableParser.toString(e));
+//			} catch (IOException e) {
+//				logger.error(ThrowableParser.toString(e));
+//			}finally {
+//				Closer.close(writer);
+//			}
+//			
+//		}
+//	}
 	
 	private void paperRanking(ExamineeTotalScore totalScore) {
 		for(ExamPaperScore paperScore:totalScore.paperScores) {
@@ -300,7 +372,7 @@ public class ExamineeFinalScoreCalculator {
 					options.add(rs.getString("answer"));
 					names.add(rs.getString("name"));
 					return null;
-				}		
+				}
 			});
 			ArrayList objectItems = new ArrayList();
 			objectItems.add(ids);

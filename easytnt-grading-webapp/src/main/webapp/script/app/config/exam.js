@@ -122,6 +122,18 @@
 								setTimeout(function(){location.reload();},1000);
 						}
 				   });
+			}).on('click','tbody tr td a[data-rr-name="reportingExam"]',function(e){
+				var $this = $(this);
+				var $tr = $this.parent().parent();
+				var id = $tr.find('td:eq(0) a').attr('data-rr-id');
+				ajaxWrapper.postJson("exam/reporting/"+id,{},
+						{beforeMsg:{tipText:"正在生成成绩报告",show:true},
+					     successMsg:{tipText:"报告生成完成",show:true}},
+					function(m){
+						if(m.status.success){
+							setTimeout(function(){location.reload();},1000);
+						}
+				});
 			});
 			ui.pretty(myTable.next());
 		};

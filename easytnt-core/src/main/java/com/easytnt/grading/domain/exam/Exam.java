@@ -30,12 +30,17 @@ public class Exam implements Entity<Exam> {
     
     private ExamDesc desc;
     
+    private int status = 0;
 	
 	public Exam(ExamDesc desc,Long oid) {
 		this.desc = desc;
 		this.oid = oid;
 	}
 
+	public void finished() {
+		this.status = 9;
+	}
+	
 	public void genOid(){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
     	Calendar now = Calendar.getInstance();  
@@ -94,4 +99,14 @@ public class Exam implements Entity<Exam> {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	
 }

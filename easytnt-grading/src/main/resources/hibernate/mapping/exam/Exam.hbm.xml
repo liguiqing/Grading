@@ -9,6 +9,8 @@
             <generator class="identity" />
         </id>
         <property name="oid" column="term_test_oid" type="java.lang.Long"></property>
+        <property name="status" column="term_test_status" type="java.lang.Integer"></property>
+        
       <!--   <property name="year" column="test_year" type="java.lang.Integer"></property>
         <property name="month" column="test_month" type="java.lang.Integer"></property>
         <property name="week" column="test_week" type="java.lang.Integer"></property> -->
