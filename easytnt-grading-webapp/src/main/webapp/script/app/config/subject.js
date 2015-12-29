@@ -82,7 +82,7 @@
 						fullScore :editorForm.find('#fullScore').val(),
 						objectivityScore :editorForm.find('#objectivityScore').val(),
 						subjectivityScore :editorForm.find('#subjectivityScore').val(),
-						cuttingRootPath :editorForm.find('#studentAnserCardRootPath').val(),
+						cuttingRootPath :editorForm.find('#cuttingRootPath').val(),
 						studentAnserCardRootPath :editorForm.find('#studentAnserCardRootPath').val()
 					};
 					ajaxWrapper.postJson("subjectExam",p,
